@@ -1,0 +1,2 @@
+
+import Starter from './starter';
