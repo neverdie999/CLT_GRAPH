@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>ALGETA GUI Mapping Tool</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+    <script src="assets/js/context-menu/jquery.contextMenu.min.js"></script>
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+    <link rel='stylesheet' href='src/styles/font-awesome/css/font-awesome.min.css'>
+    <link rel='stylesheet' href='src/styles/context-menu/jquery.contextMenu.min.css'>
+    <link rel="stylesheet" href="src/styles/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="src/styles/vertex.css">
+  </head>
+  <body>
+    <div id="algetaContainer" class="algetaContainer" style="height: 690px">
+    </div>
+    <div class="container" style="width: 100% !important; border: 1px solid; height: 115px;">
+      <form class="form-horizontal" style="margin: 15px 0;">
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="exampleInputFile">File input</label>
+          <div class="col-sm-5">
+            <input type="file" class="form-control" id="inputFile" name="inputFile">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="exampleInputFile">Save File</label>
+          <div class="col-sm-5">
+            <div class="input-group">
+              <input type="text" class="form-control" name="outFile" id="outFile" placeholder="Enter file name">
+              <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="button">Download</button>
+                </span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+  <script type="text/javascript" src="../dist/bundle.js"></script>
+</html>

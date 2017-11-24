@@ -1,0 +1,30 @@
+{
+  "name": "Algenta",
+  "version": "0.0.1",
+  "main": "electron/app.js",
+  "author": "DOU",
+  "license": "MIT",
+  "scripts": {
+    "start-app-dev": "cross-env HOT=1 NODE_ENV=development electron -r babel-register ./electron/app",
+    "watch": "webpack --watch"
+  },
+  "dependencies": {
+    "d3": "^4.12.0",
+    "electron": "^1.7.9"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-dynamic-import-webpack": "^1.0.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "cross-env": "^5.1.1",
+    "css-loader": "^0.28.7",
+    "electron-devtools-installer": "^2.2.1",
+    "html-webpack-plugin": "^2.30.1",
+    "webpack": "^3.8.1"
+  }
+}
