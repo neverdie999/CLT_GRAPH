@@ -1,2 +1,1 @@
-
 import Starter from './starter';
