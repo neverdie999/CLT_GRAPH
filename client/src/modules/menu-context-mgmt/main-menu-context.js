@@ -86,7 +86,7 @@ class MainMenuContext{
     let dfd = jQuery.Deferred();
     setTimeout(() => {
       dfd.resolve(subItems);
-    }, 300);
+    }, 10);
     return dfd.promise();
   }
 }

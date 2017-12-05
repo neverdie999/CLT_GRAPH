@@ -18,6 +18,8 @@ let nodesData = {
   edge: []
 };
 
+
+
 let vertexTypes = {
   "Grunt": {
     "hp": 500,
@@ -31,6 +33,12 @@ let vertexTypes = {
     "def": "L0",
     "spd": 1.1
   }
+};
+
+d3.selection.prototype.moveToFront = function() {
+  return this.each(function(){
+    this.parentNode.appendChild(this);
+  });
 };
 
 class Starter {

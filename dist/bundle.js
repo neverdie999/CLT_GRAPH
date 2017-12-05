@@ -2653,6 +2653,7 @@ module.exports = function (it) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_d3_selection__ = __webpack_require__(11);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["f"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["g"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_d3_shape__ = __webpack_require__(758);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_d3_time__ = __webpack_require__(108);
@@ -18569,6 +18570,8 @@ let nodesData = {
   edge: []
 };
 
+
+
 let vertexTypes = {
   "Grunt": {
     "hp": 500,
@@ -18582,6 +18585,12 @@ let vertexTypes = {
     "def": "L0",
     "spd": 1.1
   }
+};
+
+__WEBPACK_IMPORTED_MODULE_4_d3__["d" /* selection */].prototype.moveToFront = function() {
+  return this.each(function(){
+    this.parentNode.appendChild(this);
+  });
 };
 
 class Starter {
@@ -18723,7 +18732,7 @@ class MainMenuContext{
     let dfd = jQuery.Deferred();
     setTimeout(() => {
       dfd.resolve(subItems);
-    }, 300);
+    }, 10);
     return dfd.promise();
   }
 }
@@ -31832,19 +31841,19 @@ class VertexMenuContext{
         switch (key)
         {
           case "editVertex":
-            this.vertexMgmt.editVertex(vertexId);
-          break;
+            this.vertexMgmt.edit(vertexId);
+            break;
 
           case "copyVertex":
             this.vertexMgmt.copy(vertexId);
-          break;
+            break;
 
           case "removeVertex":
             this.vertexMgmt.remove(vertexId);
-          break;
+            break;
 
           default:
-          break;
+            break;
         }
       },
       items: {
@@ -31896,7 +31905,6 @@ const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
 const HTML_VERTEX_FORM_ID = 'vertexForm';
-let originVertex = {};
 
 class VertexMgmt{
   constructor(props){
@@ -31904,6 +31912,12 @@ class VertexMgmt{
     this.dataContainer = props.dataContainer;
     this.vertexTypes = props.vertexTypes;
     this.bindEventForButton();
+    // Init event drag
+    this.dragRegister = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
+      .on("start", this.dragstarted)
+      .on("drag", this.dragged)
+      .on("end", this.dragended);
+    this.originVertex = null;
   }
 
   create(options){
@@ -31913,25 +31927,19 @@ class VertexMgmt{
 
     let vertexType = options.vertexType;
     // Get properties vertex from list object vertex type
-    let vertexProperties = options.data ? options.data : this.vertexTypes[vertexType];
-
+    let vertexProperties = options.data ? Object.assign({}, options.data) : Object.assign({}, this.vertexTypes[vertexType]);
     let interaction = options.interaction || __WEBPACK_IMPORTED_MODULE_1__const_index__["f" /* INTERACTION_TP */].FULL;
-
-    const dragRegister = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
-      .on("start", this.dragstarted)
-      .on("drag", this.dragged)
-      .on("end", this.dragended);
-
-    let vertexId = this.generateVertexId();
+    let vertexId = options.id? options.id : this.generateVertexId();
     let vertexInfo = {
       x: options.x,
       y: options.y,
       vertexType: vertexType,
       interaction: interaction,
-      name: options.name || "Vertex Name",
-      description: options.description || "Vertex Description",
+      name: options.name || "Name",
+      description: options.description || "Description",
       data: vertexProperties,
-      id: vertexId
+      id: vertexId,
+      // mainScope: this,
     };
     this.dataContainer.vertex.push(vertexInfo);
 
@@ -31970,12 +31978,16 @@ class VertexMgmt{
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", vertexId)
-      .attr("class", "groupVertex");
+      .attr("class", "groupVertex")
+      .on("mouseover",function(){
+        let sel = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this);
+        sel.moveToFront();
+      });
 
     group.append("rect")
       .attr("width", groupVertexWidth)
       .attr("height", vertexHeight)
-      .style("fill", "white")
+      .style("fill", "white");
 
     group.append("foreignObject")
       .attr("width", groupVertexWidth)
@@ -31991,7 +32003,12 @@ class VertexMgmt{
       `);
 
     // Call event drag for all object vertex exit.
-    this.svgSelector.selectAll(".groupVertex").call(dragRegister).data(this.dataContainer.vertex);
+    this.initEventDrag();
+  }
+
+  initEventDrag(){
+    // Call event drag for all object vertex exit.
+    this.svgSelector.selectAll(".groupVertex").call(this.dragRegister).data(this.dataContainer.vertex);
   }
 
   dragstarted(d) {
@@ -32013,6 +32030,7 @@ class VertexMgmt{
 
   dragended(d) {
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this).classed("active", false);
+    // Get main scope store in object.
   }
 
   // Vertex ID = 'vertex' + Date.now()
@@ -32023,8 +32041,6 @@ class VertexMgmt{
   // Remove element by ID
   remove(vertexId) {
     // Remove from DOM
-    let foreignObject = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).select("foreignObject");
-    console.log(foreignObject);
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).remove();
     // Remove from data container
     let data = $.grep(this.dataContainer.vertex, (e) => {
@@ -32040,7 +32056,7 @@ class VertexMgmt{
       { return e.id === vertexId; }
     );
     if(vertexObj.length == 1){
-      let info = vertexObj[0];
+      let info = Object.assign({}, vertexObj[0]);
       let options = {
         x: info.x + spaceAddVertex,
         y: info.y + spaceAddVertex,
@@ -32055,20 +32071,27 @@ class VertexMgmt{
   }
 
   // Edit vertex infos
-  editVertex(vertexId) {
+  edit(vertexId) {
     // Remove from DOM
     let vertexObj = $.grep(this.dataContainer.vertex, (e) =>
       { return e.id === vertexId; }
     );
     if(vertexObj.length == 1){
-      let vertexInfo = vertexObj[0];
+      let vertexInfo = Object.assign({}, vertexObj[0]);
       this.openPopupVertexInfo(vertexInfo);
     }
   }
 
+  update(vertexInfo){
+    // Remove old
+    this.remove(vertexInfo.id);
+    // Redraw with old id
+    this.create(vertexInfo);
+  }
+
   openPopupVertexInfo(vertexInfo){
     // Use in function updateVertexInfo()
-    originVertex = vertexInfo;
+    this.originVertex = vertexInfo;
     // Append content to popup
     $(`#${HTML_OPTIONS_INTERACTION_TYPE}`).val(vertexInfo.interaction);
     $(`#vertexName`).val(vertexInfo.name);
@@ -32076,7 +32099,7 @@ class VertexMgmt{
     $(`#vertexDesc`).val(vertexInfo.description);
 
     // Generate properties vertex
-    let vertexData = vertexInfo.data;
+    let vertexData = Object.assign({}, vertexInfo.data);
     let $propertiesGroup = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
     const $rowVertexType = $('<tr>');
     const $vertexType = $('<th>').text(vertexInfo.vertexType);
@@ -32096,7 +32119,6 @@ class VertexMgmt{
       $input.attr('class', 'form-control');
       $input.val(vertexData[key]);
       $input.appendTo($td);
-
       $td.appendTo($row);
       $row.appendTo($propertiesGroup);
     }
@@ -32129,23 +32151,26 @@ class VertexMgmt{
     });
 
     // Update origin data vertex
-    originVertex.name = data.vertexName;
-    originVertex.interaction = data.vertexInteraction;
-    originVertex.description = data.vertexDesc;
+    this.originVertex.name = data.vertexName;
+    this.originVertex.interaction = data.vertexInteraction;
+    this.originVertex.description = data.vertexDesc;
     // Update data follow key in originVertex.data
-    for (const key of Object.keys(originVertex.data)) {
-      originVertex.data[key] = data[key];
+    for (const key of Object.keys(this.originVertex.data)) {
+      this.originVertex.data[key] = data[key];
     }
-    originVertex.update = true;
 
-    this.create(originVertex);
+    let dataVertex = this.dataContainer.vertex;
+    Object.assign(dataVertex[dataVertex.findIndex(el => el.id === this.originVertex.id)], this.originVertex)
+    this.update(this.originVertex);
     this.closePopVertexInfo();
   }
 
   closePopVertexInfo(){
+    this.originVertex = null;
     let options = {popupId : HTML_VERTEX_INFO_ID}
     __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__["a" /* default */].metClosePopup(options);
   }
+
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (VertexMgmt);
