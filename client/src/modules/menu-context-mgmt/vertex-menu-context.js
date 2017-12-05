@@ -18,19 +18,19 @@ class VertexMenuContext{
         switch (key)
         {
           case "editVertex":
-            this.vertexMgmt.editVertex(vertexId);
-          break;
+            this.vertexMgmt.edit(vertexId);
+            break;
 
           case "copyVertex":
             this.vertexMgmt.copy(vertexId);
-          break;
+            break;
 
           case "removeVertex":
             this.vertexMgmt.remove(vertexId);
-          break;
+            break;
 
           default:
-          break;
+            break;
         }
       },
       items: {
