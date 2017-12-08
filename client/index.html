@@ -23,12 +23,19 @@
 <body>
 <div id="algetaContainer" class="algetaContainer" style="height: 690px">
 </div>
-<div class="container" style="width: 100% !important; border: 1px solid; height: 115px;">
+<div class="container" style="width: 100% !important; border: 1px solid; height: 115px;" id="uploadFile">
   <form class="form-horizontal" style="margin: 15px 0;">
+
     <div class="form-group">
-      <label class="control-label col-sm-2" for="exampleInputFile">File input</label>
+      <label class="control-label col-sm-2">File Input</label>
       <div class="col-sm-5">
-        <input type="file" class="form-control" id="inputFile" name="inputFile">
+        <div class="input-group my-group">
+          <select id="fileType" class="selectpicker form-control">
+            <option value="1" selected>Vertex Type Definition</option>
+            <option value="2">Graph Data Structure</option>
+          </select>
+          <input type="file" class="form-control" id="inputFile" name="inputFile">
+        </div>
       </div>
     </div>
     <div class="form-group">
@@ -37,8 +44,8 @@
         <div class="input-group">
           <input type="text" class="form-control" name="outFile" id="outFile" placeholder="Enter file name">
           <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="button">Download</button>
-                </span>
+                <button class="btn btn-secondary" type="button">Download</button>
+              </span>
         </div>
       </div>
     </div>
@@ -99,6 +106,41 @@
   </div>
 </div>
 <!-- Vertex Info Popup (E) -->
+
+<!-- Edge Edit Line Style Pop (S) -->
+<div id="editEdgeType" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="web-dialog modal-content">
+      <div class="dialog-title">
+        <span class="title">Edit Edge Type</span>
+      </div>
+
+      <div class="dialog-wrapper">
+        <div class="dialog-button-top">
+          <div class="row text-right">
+            <button id="edgeBtnConfirm" class="btn-etc">OK</button>
+            <button id="edgeBtnCancel" class="btn-etc">Cancel</button>
+          </div>
+        </div>
+        <form id="edgeForm" action="#" method="post">
+          <div class="dialog-search form-inline">
+            <div class="row">
+              <div class="col-md-6" style="padding-right: 5px;">
+                <label class="control-label">Line Type</label>
+                <select class="form-control" name="edgeLineType" id="edgeLineType"></select>
+              </div>
+              <div class="col-md-6" style="padding-left: 5px;">
+                <label class="control-label">Arrow</label>
+                <select class="form-control" name="edgeArrowFlag" id="edgeArrowFlag"></select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edge Edit Types Pop (E) -->
 </body>
 <script type="text/javascript" src="../dist/bundle.js"></script>
 </html>

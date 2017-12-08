@@ -1,16 +1,13 @@
-import * as d3 from 'd3';
-
 class VertexMenuContext{
   constructor(props){
     this.selector = props.selector;
     this.vertexMgmt = props.vertexMgmt;
-    this.boundaryMgmt = props.boundaryMgmt;
     this.dataContainer = props.dataContainer;
     this.initVertexMenu();
   }
 
   initVertexMenu(){
-    // Context menu for Screen
+    // Context menu for Vertex
     $.contextMenu({
       selector: this.selector,
       callback: (key, options) => {
@@ -19,24 +16,29 @@ class VertexMenuContext{
         {
           case "editVertex":
             this.vertexMgmt.edit(vertexId);
-            break;
+          break;
 
           case "copyVertex":
             this.vertexMgmt.copy(vertexId);
-            break;
+          break;
 
           case "removeVertex":
             this.vertexMgmt.remove(vertexId);
-            break;
+          break;
+
+          case "createEdge":
+            this.vertexMgmt.setOnCreateEdge(vertexId);
+          break;
 
           default:
-            break;
+          break;
         }
       },
       items: {
         "editVertex": {name: "Edit Vertex Info", icon: "fa-pencil-square-o"},
         "copyVertex": {name: "Copy", icon: "fa-files-o"},
         "removeVertex": {name: "Delete", icon: "fa-times"},
+        "createEdge": {name: "Create Connect", icon: "fa-times"},
       },
       events: {
         show: (opt) => {
