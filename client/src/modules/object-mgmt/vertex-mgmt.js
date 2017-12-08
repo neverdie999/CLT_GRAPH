@@ -21,7 +21,10 @@ class VertexMgmt{
     this.svgSelector = props.svgSelector;
     this.dataContainer = props.dataContainer;
     this.vertexTypes = props.vertexTypes;
-    this.bindEventForButton();
+    this.edgeMgmt = props.edgeMgmt;
+
+    this.bindEventForPopButton();
+
     // Init event drag
     this.dragRegister = d3.drag()
       .on("start", this.dragstarted)
@@ -89,10 +92,13 @@ class VertexMgmt{
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", vertexId)
       .attr("class", "groupVertex")
-      .on("mouseover",function(){
-        let sel = d3.select(this);
-        sel.moveToFront();
+      .on("click", (obj) => {
+        this.checkCreateConnect(obj);
       });
+      // .on("mouseover",function(){
+      //   var sel = d3.select(this);
+      //   sel.moveToFront();
+      // });
 
     group.append("rect")
       .attr("width", groupVertexWidth)
@@ -143,9 +149,9 @@ class VertexMgmt{
     // Get main scope store in object.
   }
 
-  // Vertex ID = 'vertex' + Date.now()
+  // Vertex ID = 'V' + Date.now()
   generateVertexId() {
-    return `vertex${Date.now()}`;
+    return `V${Date.now()}`;
   }
 
   // Remove element by ID
@@ -162,9 +168,8 @@ class VertexMgmt{
 
   // Copy element has ID
   copy(vertexId) {
-    let vertexObj = $.grep(this.dataContainer.vertex, (e) =>
-      { return e.id === vertexId; }
-    );
+    let vertexObj = this.getVertexInfoById(vertexId);
+
     if(vertexObj.length == 1){
       let info = Object.assign({}, vertexObj[0]);
       let options = {
@@ -182,17 +187,14 @@ class VertexMgmt{
 
   // Edit vertex infos
   edit(vertexId) {
-    // Remove from DOM
-    let vertexObj = $.grep(this.dataContainer.vertex, (e) =>
-      { return e.id === vertexId; }
-    );
+    let vertexObj = this.getVertexInfoById(vertexId);
     if(vertexObj.length == 1){
       let vertexInfo = Object.assign({}, vertexObj[0]);
       this.openPopupVertexInfo(vertexInfo);
     }
   }
 
-  update(vertexInfo){
+  update(vertexInfo) {
     // Remove old
     this.remove(vertexInfo.id);
     // Redraw with old id
@@ -237,7 +239,7 @@ class VertexMgmt{
     PopUtils.metSetShowPopup(options);
   }
 
-  bindEventForButton() {
+  bindEventForPopButton() {
     // Append content to vertex popup
     let $group = $(`#${HTML_OPTIONS_INTERACTION_TYPE}`);
     INTERACTION_TP_LST.forEach((elm) => {
@@ -251,6 +253,7 @@ class VertexMgmt{
     $("#vertexBtnCancel").click(e => {
       this.closePopVertexInfo();
     });
+
   }
 
   updateVertexInfo() {
@@ -281,6 +284,32 @@ class VertexMgmt{
     PopUtils.metClosePopup(options);
   }
 
+  /**
+   * Edge function
+   */
+
+  setOnCreateEdge(vertexId) {
+    let vertexObj = this.getVertexInfoById(vertexId);
+    window.creatingEdge = true;
+    window.removingEdge = false;
+    window.criterionNode = vertexObj[0];
+  }
+
+  checkCreateConnect(target){
+    if(window.creatingEdge){
+      // console.log(window.criterionNode, target);
+      let options = {source: window.criterionNode, target: target};
+      this.edgeMgmt.create(options);
+    }
+  }
+
+  getVertexInfoById(vertexId) {
+    let vertexObj = $.grep(this.dataContainer.vertex, (e) =>
+      { return e.id === vertexId; }
+    );
+
+    return vertexObj;
+  }
 };
 
 export default VertexMgmt;
