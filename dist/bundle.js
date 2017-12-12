@@ -32133,15 +32133,16 @@ class VertexMgmt{
       .on("click", (obj) => {
         this.checkCreateConnect(obj);
       });
-      // .on("mouseover",function(){
-      //   var sel = d3.select(this);
-      //   sel.moveToFront();
-      // });
+    // .on("mouseover",function(){
+    //   var sel = d3.select(this);
+    //   sel.moveToFront();
+    // });
 
-    group.append("rect")
-      .attr("width", groupVertexWidth)
-      .attr("height", vertexHeight)
-      .style("fill", "white");
+    // May be no need for vertex.
+    // group.append("rect")
+    //   .attr("width", groupVertexWidth)
+    //   .attr("height", vertexHeight)
+    //   .style("fill", "white");
 
     group.append("foreignObject")
       .attr("width", groupVertexWidth)
@@ -32149,6 +32150,7 @@ class VertexMgmt{
       .append("xhtml:div")
       .attr("class", "vertex_content")
       .style("font-size", "13px")
+      .style("background", "white")
       .html(`
         <p class="header_name">${vertexInfo.name}</p>
         <div class="vertex_data">
@@ -32331,6 +32333,7 @@ class VertexMgmt{
     window.creatingEdge = true;
     window.removingEdge = false;
     window.criterionNode = vertexObj[0];
+    // console.log($(`#${vertexId}`)[0].getBoundingClientRect().width);
   }
 
   checkCreateConnect(target){
@@ -32519,11 +32522,16 @@ class EdgeMgmt{
     this.dataContainer = props.dataContainer;
     this.bindEventForPopButton();
     this.originEdge = null;
+    // Init event drag
+    this.dragRegister = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
+      .on("start", this.dragstarted)
+      .on("drag", this.dragged)
+      .on("end", this.dragended);
   }
 
   create(options = {}) {
-    let source = options.source;
-    let target = options.target;
+    let source = Object.assign({}, options.source);
+    let target = Object.assign({}, options.target);;
     let type = options.type;
     if (source == target) {
       alert("Connect loop is not allowed.");
@@ -32536,7 +32544,7 @@ class EdgeMgmt{
       id: edgeId,
       source: source,
       target: target,
-      note: ["Origin Note", "Mid Note", "Destination Note"], // Default note for Edge.
+      note: {originNote: '', middleNote: '', destNote: ''}, // Default note for Edge.
       connect: [],
       style: {line:"solid", arrow: "Y"} // Default style is line solid with arrow at end.
     };
@@ -32549,6 +32557,42 @@ class EdgeMgmt{
       .attr("id", edgeId)
       .attr('fill', 'none')
       .attr("marker-end", "url(#arrow)"); // Make arrow at end path
+
+    let originNote = this.svgSelector.append("text")
+      .style("font-size", "12px")
+      .attr("x", 5)   //Move the text from the start angle of the arc
+      .attr("dy", -5); //Move the text down
+    let middleNote = this.svgSelector.append("text")
+      .style("font-size", "12px")
+      .attr("dy", -5); //Move the text down
+    let destNote = this.svgSelector.append("text")
+      .style("font-size", "12px")
+      .attr("x", -5)   //Move the text from the start angle of the arc
+      .attr("dy", -5); //Move the text down
+
+    originNote.append("textPath")
+      .style("text-anchor","start")
+      .attr("fill","#000")
+      .attr("id", `originNote${edgeId}`)
+      .attr("xlink:href", `#${edgeId}`)
+      .attr("startOffset","0%")
+      .text('');
+
+    middleNote.append("textPath")
+      .style("text-anchor","middle")
+      .attr("fill","#000")
+      .attr("id", `middleNote${edgeId}`)
+      .attr("xlink:href", `#${edgeId}`)
+      .attr("startOffset","50%")
+      .text('');
+
+    destNote.append("textPath")
+      .style("text-anchor","end")
+      .attr("fill","#000")
+      .attr("id", `destNote${edgeId}`)
+      .attr("xlink:href", `#${edgeId}`)
+      .attr("startOffset","100%")
+      .text('');
 
     window.creatingEdge = false;
     window.removingEdge = false;
@@ -32596,9 +32640,12 @@ class EdgeMgmt{
     this.originEdge = null;
   }
 
+  /**
+   * Remove edge by id
+   * @param edgeId
+   */
   remove(edgeId) {
     // Remove from DOM
-    console.log(__WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${edgeId}`));
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${edgeId}`).remove();
     // Remove from data container
     let data = $.grep(this.dataContainer.edge, (e) => {
@@ -32608,11 +32655,24 @@ class EdgeMgmt{
     this.dataContainer.edge = data;
   }
 
+  /**
+   * Check connect exit between source and target
+   * @param source
+   * @param target
+   */
   existEdge(source, target){
 
   }
 
+  /**
+   * Create string path
+   * @param src
+   * @param tar
+   * @returns {string}
+   */
   createPath(src, tar){
+    src.x = src.x + 150;
+    src.y = src.y;
     let diff = {
       x: tar.x - src.x,
       y: tar.y - src.y
@@ -32628,10 +32688,19 @@ class EdgeMgmt{
   };
 
   // Edge ID = 'E' + Date.now()
+  /**
+   * Generate edge id
+   * @returns {string}
+   */
   generateEdgeId() {
     return `E${Date.now()}`;
   }
 
+  /**
+   * Get edge info by id
+   * @param edgeId
+   * @returns {*}
+   */
   getEdgeInfoById(edgeId) {
     let edgeObj = $.grep(this.dataContainer.edge, (e) =>
       { return e.id === edgeId; }
@@ -32640,6 +32709,9 @@ class EdgeMgmt{
     return edgeObj;
   }
 
+  /**
+   * Update line type of edge
+   */
   updateLineType() {
     let edgeId = this.originEdge.id;
     let lineType = $(`#${OPTIONS_EDGE_LINE_TYPE}`).val();
@@ -32655,6 +32727,45 @@ class EdgeMgmt{
       .attr('marker-end', arrowFlag === 'Y' ? 'url(#arrow)' : '');
 
     this.closePopEdgeType();
+  }
+
+  /**
+   * Get edge notes by id
+   * @param edgeId
+   * @returns {*}
+   */
+  getEdgeNotes(edgeId) {
+    // Get edge info by ID
+    let edgeObj = this.getEdgeInfoById(edgeId)[0];
+    return edgeObj.note;
+  }
+
+  /**
+   * Set data for edge note
+   * @param edgeId
+   * @param notes
+   */
+  setEdgeNotes(edgeId, notes) {
+    let edgeObj = this.getEdgeInfoById(edgeId)[0];
+    if(!edgeObj)
+      return;
+    edgeObj.note = notes;
+    this.updateContentNotes(edgeId, notes);
+  }
+
+  /**
+   *
+   * @param edgeId
+   * @param notes
+   * Update content note of edge
+   */
+  updateContentNotes(edgeId, notes){
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#originNote${edgeId}`)
+      .text(notes.originNote);
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#middleNote${edgeId}`)
+      .text(notes.middleNote);
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#destNote${edgeId}`)
+      .text(notes.destNote);
   }
 }
 
@@ -32676,6 +32787,7 @@ class EdgeMenuContext{
 
   initEdgeMenu(){
     // Context menu for Edge
+    let edgeMgmt = this.edgeMgmt;
     $.contextMenu({
       selector: this.selector,
       callback: (key, options) => {
@@ -32695,18 +32807,18 @@ class EdgeMenuContext{
         }
       },
       items: {
-        area1: {
+        originNote: {
           name: "Origin Note",
           type: 'text',
           value: "",
           placeholder: "Origin Note"
         },
-        area2: {
+        middleNote: {
           name: "Middle Note",
           type: 'text',
           value: ""
         },
-        area3: {
+        destNote: {
           name: "Destination Note",
           type: 'text',
           value: ""
@@ -32715,21 +32827,26 @@ class EdgeMenuContext{
         "removeEdge": {name: "Delete", icon: "fa-times"},
       },
       events: {
-        show: function(opt) {
-          // this is the trigger element
-          var $this = this;
-          // import states from data store
-          $.contextMenu.setInputValues(opt, $this.data());
-          // this basically fills the input commands from an object
-          // like {name: "foo", yesno: true, radio: "3", &hellip;}
+        show: (opt) => {
+          // Get edge notes
+          let edgeId = opt.$trigger.attr('id');
+          let data = this.edgeMgmt.getEdgeNotes(edgeId)
+          $.contextMenu.setInputValues(opt, data);
         },
         hide: function(opt) {
           // this is the trigger element
-          var $this = this;
-          // export states to data store
+          let $this = this;
           $.contextMenu.getInputValues(opt, $this.data());
-          // this basically dumps the input commands' values to an object
-          // like {name: "foo", yesno: true, radio: "3", &hellip;}
+
+          // Get edge notes
+          let data = $this.data();
+          let notes = {
+            originNote: data.originNote,
+            middleNote: data.middleNote,
+            destNote: data.destNote
+          };
+          let edgeId = opt.$trigger.attr('id');
+          edgeMgmt.setEdgeNotes(edgeId, notes);
         }
       }
     });
@@ -32779,7 +32896,7 @@ exports = module.exports = __webpack_require__(802)(undefined);
 
 
 // module
-exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px 5px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .vertex-type {\n      height: 26px;\n      text-align: center; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border: 1px solid #336699;\n    border-collapse: collapse;\n    border-spacing: 0 0.5em; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper select {\n    height: 25px;\n    margin: 0 4px 0 0;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper input[type=\"radio\"] {\n    margin-top: 6px; }\n\n.my-group .form-control {\n  width: 50%; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1; }\n  .edge:hover {\n    stroke: #2795EE; }\n  .edge:focus {\n    stroke: #2795EE; }\n\n.solid {\n  stroke: solid; }\n\n.dash {\n  stroke-dasharray: 4; }\n", ""]);
+exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px 5px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .vertex-type {\n      height: 26px;\n      text-align: center; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border: 1px solid #336699;\n    border-collapse: collapse;\n    border-spacing: 0 0.5em; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper select {\n    height: 25px;\n    margin: 0 4px 0 0;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper input[type=\"radio\"] {\n    margin-top: 6px; }\n\n.my-group .form-control {\n  width: 50%; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE; }\n  .edge:focus {\n    stroke: #2795EE; }\n\n.solid {\n  stroke: solid; }\n\n.dash {\n  stroke-dasharray: 4; }\n", ""]);
 
 // exports
 

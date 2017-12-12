@@ -16,11 +16,16 @@ class EdgeMgmt{
     this.dataContainer = props.dataContainer;
     this.bindEventForPopButton();
     this.originEdge = null;
+    // Init event drag
+    this.dragRegister = d3.drag()
+      .on("start", this.dragstarted)
+      .on("drag", this.dragged)
+      .on("end", this.dragended);
   }
 
   create(options = {}) {
-    let source = options.source;
-    let target = options.target;
+    let source = Object.assign({}, options.source);
+    let target = Object.assign({}, options.target);;
     let type = options.type;
     if (source == target) {
       alert("Connect loop is not allowed.");
@@ -33,7 +38,7 @@ class EdgeMgmt{
       id: edgeId,
       source: source,
       target: target,
-      note: ["Origin Note", "Mid Note", "Destination Note"], // Default note for Edge.
+      note: {originNote: '', middleNote: '', destNote: ''}, // Default note for Edge.
       connect: [],
       style: {line:"solid", arrow: "Y"} // Default style is line solid with arrow at end.
     };
@@ -46,6 +51,42 @@ class EdgeMgmt{
       .attr("id", edgeId)
       .attr('fill', 'none')
       .attr("marker-end", "url(#arrow)"); // Make arrow at end path
+
+    let originNote = this.svgSelector.append("text")
+      .style("font-size", "12px")
+      .attr("x", 5)   //Move the text from the start angle of the arc
+      .attr("dy", -5); //Move the text down
+    let middleNote = this.svgSelector.append("text")
+      .style("font-size", "12px")
+      .attr("dy", -5); //Move the text down
+    let destNote = this.svgSelector.append("text")
+      .style("font-size", "12px")
+      .attr("x", -5)   //Move the text from the start angle of the arc
+      .attr("dy", -5); //Move the text down
+
+    originNote.append("textPath")
+      .style("text-anchor","start")
+      .attr("fill","#000")
+      .attr("id", `originNote${edgeId}`)
+      .attr("xlink:href", `#${edgeId}`)
+      .attr("startOffset","0%")
+      .text('');
+
+    middleNote.append("textPath")
+      .style("text-anchor","middle")
+      .attr("fill","#000")
+      .attr("id", `middleNote${edgeId}`)
+      .attr("xlink:href", `#${edgeId}`)
+      .attr("startOffset","50%")
+      .text('');
+
+    destNote.append("textPath")
+      .style("text-anchor","end")
+      .attr("fill","#000")
+      .attr("id", `destNote${edgeId}`)
+      .attr("xlink:href", `#${edgeId}`)
+      .attr("startOffset","100%")
+      .text('');
 
     window.creatingEdge = false;
     window.removingEdge = false;
@@ -93,9 +134,12 @@ class EdgeMgmt{
     this.originEdge = null;
   }
 
+  /**
+   * Remove edge by id
+   * @param edgeId
+   */
   remove(edgeId) {
     // Remove from DOM
-    console.log(d3.select(`#${edgeId}`));
     d3.select(`#${edgeId}`).remove();
     // Remove from data container
     let data = $.grep(this.dataContainer.edge, (e) => {
@@ -105,11 +149,24 @@ class EdgeMgmt{
     this.dataContainer.edge = data;
   }
 
+  /**
+   * Check connect exit between source and target
+   * @param source
+   * @param target
+   */
   existEdge(source, target){
 
   }
 
+  /**
+   * Create string path
+   * @param src
+   * @param tar
+   * @returns {string}
+   */
   createPath(src, tar){
+    src.x = src.x + 150;
+    src.y = src.y;
     let diff = {
       x: tar.x - src.x,
       y: tar.y - src.y
@@ -125,10 +182,19 @@ class EdgeMgmt{
   };
 
   // Edge ID = 'E' + Date.now()
+  /**
+   * Generate edge id
+   * @returns {string}
+   */
   generateEdgeId() {
     return `E${Date.now()}`;
   }
 
+  /**
+   * Get edge info by id
+   * @param edgeId
+   * @returns {*}
+   */
   getEdgeInfoById(edgeId) {
     let edgeObj = $.grep(this.dataContainer.edge, (e) =>
       { return e.id === edgeId; }
@@ -137,6 +203,9 @@ class EdgeMgmt{
     return edgeObj;
   }
 
+  /**
+   * Update line type of edge
+   */
   updateLineType() {
     let edgeId = this.originEdge.id;
     let lineType = $(`#${OPTIONS_EDGE_LINE_TYPE}`).val();
@@ -152,6 +221,45 @@ class EdgeMgmt{
       .attr('marker-end', arrowFlag === 'Y' ? 'url(#arrow)' : '');
 
     this.closePopEdgeType();
+  }
+
+  /**
+   * Get edge notes by id
+   * @param edgeId
+   * @returns {*}
+   */
+  getEdgeNotes(edgeId) {
+    // Get edge info by ID
+    let edgeObj = this.getEdgeInfoById(edgeId)[0];
+    return edgeObj.note;
+  }
+
+  /**
+   * Set data for edge note
+   * @param edgeId
+   * @param notes
+   */
+  setEdgeNotes(edgeId, notes) {
+    let edgeObj = this.getEdgeInfoById(edgeId)[0];
+    if(!edgeObj)
+      return;
+    edgeObj.note = notes;
+    this.updateContentNotes(edgeId, notes);
+  }
+
+  /**
+   *
+   * @param edgeId
+   * @param notes
+   * Update content note of edge
+   */
+  updateContentNotes(edgeId, notes){
+    d3.select(`#originNote${edgeId}`)
+      .text(notes.originNote);
+    d3.select(`#middleNote${edgeId}`)
+      .text(notes.middleNote);
+    d3.select(`#destNote${edgeId}`)
+      .text(notes.destNote);
   }
 }
 

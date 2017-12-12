@@ -1,6 +1,8 @@
 .edge{
   stroke: black;
   stroke-width: 1;
+  visibility: visible;
+  cursor: crosshair;
   &:hover {
     stroke: #2795EE;
   }

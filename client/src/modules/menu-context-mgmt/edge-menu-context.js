@@ -8,6 +8,7 @@ class EdgeMenuContext{
 
   initEdgeMenu(){
     // Context menu for Edge
+    let edgeMgmt = this.edgeMgmt;
     $.contextMenu({
       selector: this.selector,
       callback: (key, options) => {
@@ -27,18 +28,18 @@ class EdgeMenuContext{
         }
       },
       items: {
-        area1: {
+        originNote: {
           name: "Origin Note",
           type: 'text',
           value: "",
           placeholder: "Origin Note"
         },
-        area2: {
+        middleNote: {
           name: "Middle Note",
           type: 'text',
           value: ""
         },
-        area3: {
+        destNote: {
           name: "Destination Note",
           type: 'text',
           value: ""
@@ -47,21 +48,26 @@ class EdgeMenuContext{
         "removeEdge": {name: "Delete", icon: "fa-times"},
       },
       events: {
-        show: function(opt) {
-          // this is the trigger element
-          var $this = this;
-          // import states from data store
-          $.contextMenu.setInputValues(opt, $this.data());
-          // this basically fills the input commands from an object
-          // like {name: "foo", yesno: true, radio: "3", &hellip;}
+        show: (opt) => {
+          // Get edge notes
+          let edgeId = opt.$trigger.attr('id');
+          let data = this.edgeMgmt.getEdgeNotes(edgeId)
+          $.contextMenu.setInputValues(opt, data);
         },
         hide: function(opt) {
           // this is the trigger element
-          var $this = this;
-          // export states to data store
+          let $this = this;
           $.contextMenu.getInputValues(opt, $this.data());
-          // this basically dumps the input commands' values to an object
-          // like {name: "foo", yesno: true, radio: "3", &hellip;}
+
+          // Get edge notes
+          let data = $this.data();
+          let notes = {
+            originNote: data.originNote,
+            middleNote: data.middleNote,
+            destNote: data.destNote
+          };
+          let edgeId = opt.$trigger.attr('id');
+          edgeMgmt.setEdgeNotes(edgeId, notes);
         }
       }
     });

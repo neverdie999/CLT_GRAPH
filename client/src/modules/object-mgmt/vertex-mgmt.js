@@ -95,15 +95,16 @@ class VertexMgmt{
       .on("click", (obj) => {
         this.checkCreateConnect(obj);
       });
-      // .on("mouseover",function(){
-      //   var sel = d3.select(this);
-      //   sel.moveToFront();
-      // });
+    // .on("mouseover",function(){
+    //   var sel = d3.select(this);
+    //   sel.moveToFront();
+    // });
 
-    group.append("rect")
-      .attr("width", groupVertexWidth)
-      .attr("height", vertexHeight)
-      .style("fill", "white");
+    // May be no need for vertex.
+    // group.append("rect")
+    //   .attr("width", groupVertexWidth)
+    //   .attr("height", vertexHeight)
+    //   .style("fill", "white");
 
     group.append("foreignObject")
       .attr("width", groupVertexWidth)
@@ -111,6 +112,7 @@ class VertexMgmt{
       .append("xhtml:div")
       .attr("class", "vertex_content")
       .style("font-size", "13px")
+      .style("background", "white")
       .html(`
         <p class="header_name">${vertexInfo.name}</p>
         <div class="vertex_data">
@@ -293,6 +295,7 @@ class VertexMgmt{
     window.creatingEdge = true;
     window.removingEdge = false;
     window.criterionNode = vertexObj[0];
+    // console.log($(`#${vertexId}`)[0].getBoundingClientRect().width);
   }
 
   checkCreateConnect(target){
