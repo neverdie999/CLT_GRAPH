@@ -23,16 +23,29 @@ class EdgeMgmt{
       .on("end", this.dragended);
   }
 
+  /**
+   *
+   * @param options
+   * source: object, required {x: 1, y: 2, vertexId: 'V***', prop: 'spd'}
+   * target: object, required {x: 1, y: 2, vertexId: 'V***', prop: 'spd'}
+   * note: object, option {originNote: 'src', middleNote: 'to', destNote: 'des'}
+   * style: object, option {line: 'solid', arrow: 'Y'} | line: solid, dash; arrow: Y, N
+   * id: string, option E*********
+   * Ex
+   */
   create(options = {}) {
     let source = Object.assign({}, options.source);
-    let target = Object.assign({}, options.target);;
+    let target = Object.assign({}, options.target);
     let type = options.type;
+    let edgeId = options.id ? options.id : this.generateEdgeId();
+    // Default style is line solid with arrow at end.
+    let style = options.style ? options.style : {line:"solid", arrow: "Y"}
+
     if (source == target) {
       alert("Connect loop is not allowed.");
       return;
     }
 
-    let edgeId = this.generateEdgeId();
     // Push edge info to store.
     let edgeInfo = {
       id: edgeId,
@@ -40,7 +53,7 @@ class EdgeMgmt{
       target: target,
       note: {originNote: '', middleNote: '', destNote: ''}, // Default note for Edge.
       connect: [],
-      style: {line:"solid", arrow: "Y"} // Default style is line solid with arrow at end.
+      style: style
     };
 
     this.dataContainer.edge.push(edgeInfo);
@@ -65,27 +78,27 @@ class EdgeMgmt{
       .attr("dy", -5); //Move the text down
 
     originNote.append("textPath")
-      .style("text-anchor","start")
-      .attr("fill","#000")
+      .style("text-anchor", "start")
+      .attr("fill", "#000")
       .attr("id", `originNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
-      .attr("startOffset","0%")
+      .attr("startOffset", "0%")
       .text('');
 
     middleNote.append("textPath")
-      .style("text-anchor","middle")
-      .attr("fill","#000")
+      .style("text-anchor", "middle")
+      .attr("fill", "#000")
       .attr("id", `middleNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
-      .attr("startOffset","50%")
+      .attr("startOffset", "50%")
       .text('');
 
     destNote.append("textPath")
-      .style("text-anchor","end")
-      .attr("fill","#000")
+      .style("text-anchor", "end")
+      .attr("fill", "#000")
       .attr("id", `destNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
-      .attr("startOffset","100%")
+      .attr("startOffset", "100%")
       .text('');
 
     window.creatingEdge = false;
@@ -93,13 +106,10 @@ class EdgeMgmt{
     window.criterionNode = null;
   }
 
-  editType(edgeId) {
-    // Get edge info by ID
-    let edgeObj = this.getEdgeInfoById(edgeId);
-    this.originEdge = edgeObj[0];
-    this.openPopEdgeType(edgeObj[0]);
-  }
-
+  /**
+   * Bind event and init data
+   * for control on popup edit line type
+   */
   bindEventForPopButton() {
     // Append content to edge popup
     let $line = $(`#${OPTIONS_EDGE_LINE_TYPE}`);
@@ -120,7 +130,15 @@ class EdgeMgmt{
     });
   }
 
-  openPopEdgeType(edgeInfo) {
+  /**
+   * Open popup edit line type
+   * @param edgeId
+   */
+  openPopEditType(edgeId) {
+    // Get edge info by ID
+    let edgeObj = this.getEdgeInfoById(edgeId);
+    this.originEdge = edgeObj[0];
+    let edgeInfo = edgeObj[0];
     $(`#${OPTIONS_EDGE_LINE_TYPE}`).val(edgeInfo.style.line);
     $(`#${OPTIONS_EDGE_ARROW_FLAG}`).val(edgeInfo.style.arrow);
 
@@ -128,6 +146,9 @@ class EdgeMgmt{
     PopUtils.metSetShowPopup(options);
   }
 
+  /**
+   * Close popup edit line type
+   */
   closePopEdgeType() {
     let options = {popupId : HTML_EDGE_TYPE_ID}
     PopUtils.metClosePopup(options);
@@ -138,7 +159,7 @@ class EdgeMgmt{
    * Remove edge by id
    * @param edgeId
    */
-  remove(edgeId) {
+  removeEdge(edgeId) {
     // Remove from DOM
     d3.select(`#${edgeId}`).remove();
     // Remove from data container
@@ -154,7 +175,7 @@ class EdgeMgmt{
    * @param source
    * @param target
    */
-  existEdge(source, target){
+  checkExistEdge(source, target){
 
   }
 
@@ -165,8 +186,6 @@ class EdgeMgmt{
    * @returns {string}
    */
   createPath(src, tar){
-    src.x = src.x + 150;
-    src.y = src.y;
     let diff = {
       x: tar.x - src.x,
       y: tar.y - src.y
@@ -174,7 +193,7 @@ class EdgeMgmt{
 
     let pathStr = 'M' + src.x + ',' + src.y + ' ';
     pathStr += 'C';
-    pathStr += src.x + diff.x / 3 * 2 + ',' + src.y + ' ';
+    pathStr += src.x + diff.x / 3 + ',' + src.y + ' ';
     pathStr += src.x + diff.x / 3 + ',' + tar.y + ' ';
     pathStr += tar.x + ',' + tar.y;
 
@@ -244,22 +263,72 @@ class EdgeMgmt{
     if(!edgeObj)
       return;
     edgeObj.note = notes;
-    this.updateContentNotes(edgeId, notes);
-  }
 
-  /**
-   *
-   * @param edgeId
-   * @param notes
-   * Update content note of edge
-   */
-  updateContentNotes(edgeId, notes){
+    // Update notes on view
     d3.select(`#originNote${edgeId}`)
       .text(notes.originNote);
     d3.select(`#middleNote${edgeId}`)
       .text(notes.middleNote);
     d3.select(`#destNote${edgeId}`)
       .text(notes.destNote);
+  }
+
+  /**
+   * Find all path (edge, connect) with source from this vertex
+   * @param vertexId: string, required
+   */
+  findEdgeStartFromVertex(vertexId) {
+    if(!vertexId)
+      return [];
+
+    return $.grep(this.dataContainer.edge, (e) =>
+      { return e.source.vertexId === vertexId; }
+    );
+
+    return srcPaths;
+  }
+
+  /**
+   * Find all path (edge, connect) with target at this vertex
+   * @param vertexId: string, required
+   */
+  findEdgeConnectToVertex(vertexId) {
+    if(!vertexId)
+      return [];
+
+    return $.grep(this.dataContainer.edge, (e) =>
+      { return e.target.vertexId === vertexId; }
+    );
+  }
+
+  /**
+   * Update attribute d of path (connect)
+   * @param edgeId
+   * @param options: object
+   */
+  updateAttributeNS(edgeId, options = {}){
+    if(!edgeId)
+      return;
+    let edgeInfo = this.getEdgeInfoById(edgeId)[0];
+    let source = edgeInfo.source;
+    let target = edgeInfo.target;
+    if(options.source){
+      // Update coordinate source
+      source = options.source;
+      edgeInfo.source.x = options.source.x;
+      edgeInfo.source.y = options.source.y;
+    }
+    if(options.target){
+      // Update coordinate target
+      target = options.target;
+      edgeInfo.target.x = options.target.x;
+      edgeInfo.target.y = options.target.y;
+    }
+
+    let pathStr = this.createPath(source, target);
+    // Get DOM and update attribute
+    d3.select(`#${edgeId}`)
+      .attr('d', pathStr);
   }
 }
 

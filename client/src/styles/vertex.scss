@@ -14,7 +14,7 @@
   text-align: center;
   border-bottom: 1px black solid;
   background: #E1D5E7;
-  font-weight: 550;
+  font-weight: 600;
 }
 
 .vertex_data {
@@ -29,7 +29,7 @@
   line-height: 25px;
 }
 
-.vertex_data div .property{
+.vertex_data div .key{
   width: 52px;
   text-align: right;
 }
@@ -41,6 +41,7 @@
 }
 
 .interaction_full, .interaction_left, .interaction_right{
+  height: 25px;
   cursor:pointer;
 }
 
@@ -63,3 +64,34 @@
   border-radius:0.5em;
   content:"";
 }
+
+.boundary{
+  cursor:pointer;
+  border:solid 1px #652a82;
+  padding: 8px;
+}
+
+.header_boundary {
+  background: #E1D5E7;
+  border:solid 1px #652a82;
+  border-bottom:none;
+  margin: 0;
+  padding: 8px 0px;
+  text-align: center;
+  font-weight: 600;
+  float:left;
+}
+
+.boundary_right {
+  border:solid 1px #652a82;
+  border-left:none;
+  margin: 0;
+  padding: 0px;
+  text-align: center;
+  font-weight: 600;
+  float:right;
+  width:20px;
+  height:20px;
+}
+
+

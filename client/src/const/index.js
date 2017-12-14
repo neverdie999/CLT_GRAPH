@@ -1,6 +1,7 @@
 export const HTML_ALGETA_CONTAINER_CLASS = 'algetaContainer';
 export const HTML_ALGETA_CONTAINER_ID = 'algetaContainer';
 export const HTML_VERTEX_CONTAINER_CLASS = 'groupVertex';
+export const HTML_BOUNDARY_CONTAINER_CLASS = 'groupBoundary';
 export const HTML_EDGE_CLASS = 'edge';
 
 // Graph size
@@ -38,3 +39,9 @@ export const EDGE_ARROW_FLG = [
   {value: 'Y', name: 'Yes'},
   {value: 'N', name: 'No'}
 ]
+
+// Type of point connect
+export const TYPE_POINT = {
+  OUTPUT: 'O',
+  INPUT: 'I'
+};
