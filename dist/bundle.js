@@ -32679,7 +32679,7 @@ class BoundaryMgmt{
     this.vertexTypes = props.vertexTypes;
     this.edgeMgmt = props.edgeMgmt;
 
-    this.bindEventForPopButton();
+    // this.bindEventForPopButton();
 
     // Init event drag
     this.dragRegister = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
@@ -32706,7 +32706,7 @@ class BoundaryMgmt{
       id: vertexId,
       // mainScope: this,
     };
-    this.dataContainer.vertex.push(vertexInfo);
+    this.dataContainer.boundary.push(vertexInfo);
 
     // Height = height header + number properties * 26
     let htmlContent = '';
@@ -32759,7 +32759,7 @@ class BoundaryMgmt{
 
   initEventDrag(){
     // Call event drag for all object vertex exit.
-    this.svgSelector.selectAll(".groupBoundary").call(this.dragRegister).data(this.dataContainer.vertex);
+    this.svgSelector.selectAll(".groupBoundary").call(this.dragRegister).data(this.dataContainer.boundary);
   }
 
   dragstarted(d) {
@@ -32794,157 +32794,157 @@ class BoundaryMgmt{
     // Remove from DOM
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).remove();
     // Remove from data container
-    let data = $.grep(this.dataContainer.vertex, (e) => {
+    let data = $.grep(this.dataContainer.boundary, (e) => {
       return e.id != vertexId;
     });
 
-    this.dataContainer.vertex = data;
+    this.dataContainer.boundary = data;
   }
-
-  // Copy element has ID
-  copy(vertexId) {
-    let vertexObj = this.getVertexInfoById(vertexId);
-
-    if(vertexObj.length == 1){
-      let info = Object.assign({}, vertexObj[0]);
-      let options = {
-        x: info.x + spaceAddVertex,
-        y: info.y + spaceAddVertex,
-        interaction: info.interaction,
-        name: info.name,
-        description: info.description,
-        vertexType: info.vertexType,
-        data: info.data
-      };
-      this.create(options);
-    }
-  }
-
-  // Edit vertex infos
-  edit(vertexId) {
-    let vertexObj = this.getVertexInfoById(vertexId);
-    if(vertexObj.length == 1){
-      let vertexInfo = Object.assign({}, vertexObj[0]);
-      this.openPopupVertexInfo(vertexInfo);
-    }
-  }
-
-  update(vertexInfo) {
-    // Remove old
-    this.remove(vertexInfo.id);
-    // Redraw with old id
-    this.create(vertexInfo);
-  }
-
-  openPopupVertexInfo(vertexInfo){
-    // Use in function updateVertexInfo()
-    this.originVertex = vertexInfo;
-    // Append content to popup
-    $(`#${HTML_OPTIONS_INTERACTION_TYPE}`).val(vertexInfo.interaction);
-    $(`#vertexName`).val(vertexInfo.name);
-    $(`#vertexId`).val(vertexInfo.id);
-    $(`#vertexDesc`).val(vertexInfo.description);
-
-    // Generate properties vertex
-    let vertexData = Object.assign({}, vertexInfo.data);
-    let $propertiesGroup = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
-    const $rowVertexType = $('<tr>');
-    const $vertexType = $('<th>').text(vertexInfo.vertexType);
-    $vertexType.attr('colspan', 2);
-    $vertexType.attr('class', 'vertex-type');
-    $vertexType.appendTo($rowVertexType);
-    $rowVertexType.appendTo($propertiesGroup);
-    for (const key of Object.keys(vertexData)) {
-      const $row = $('<tr>');
-      const $th = $('<th>').text(key).appendTo($row);
-      const $td = $('<td>');
-
-      const $input = $('<input>');
-      $input.attr('type', 'text');
-      $input.attr('id', key);
-      $input.attr('name', key);
-      $input.attr('class', 'form-control');
-      $input.val(vertexData[key]);
-      $input.appendTo($td);
-      $td.appendTo($row);
-      $row.appendTo($propertiesGroup);
-    }
-
-    let options = {popupId : HTML_VERTEX_INFO_ID, position: 'center', width: 430}
-    __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
-  }
-
-  bindEventForPopButton() {
-    // Append content to vertex popup
-    let $group = $(`#${HTML_OPTIONS_INTERACTION_TYPE}`);
-    __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* INTERACTION_TP_LST */].forEach((elm) => {
-      const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($group);
-    });
-
-    $("#vertexBtnConfirm").click(e => {
-      this.updateVertexInfo();
-    });
-
-    $("#vertexBtnCancel").click(e => {
-      this.closePopVertexInfo();
-    });
-
-  }
-
-  updateVertexInfo() {
-    let formdata = $(`#${HTML_VERTEX_FORM_ID}`).serializeArray();
-    let data = {};
-    $(formdata).each(function(index, obj){
-      data[obj.name] = obj.value;
-    });
-
-    // Update origin data vertex
-    this.originVertex.name = data.vertexName;
-    this.originVertex.interaction = data.vertexInteraction;
-    this.originVertex.description = data.vertexDesc;
-    // Update data follow key in originVertex.data
-    for (const key of Object.keys(this.originVertex.data)) {
-      this.originVertex.data[key] = data[key];
-    }
-
-    let dataVertex = this.dataContainer.vertex;
-    Object.assign(dataVertex[dataVertex.findIndex(el => el.id === this.originVertex.id)], this.originVertex)
-    this.update(this.originVertex);
-    this.closePopVertexInfo();
-  }
-
-  closePopVertexInfo(){
-    this.originVertex = null;
-    let options = {popupId : HTML_VERTEX_INFO_ID}
-    __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__["a" /* default */].metClosePopup(options);
-  }
-
-  /**
-   * Edge function
-   */
-
-  setOnCreateEdge(vertexId) {
-    let vertexObj = this.getVertexInfoById(vertexId);
-    window.creatingEdge = true;
-    window.removingEdge = false;
-    window.criterionNode = vertexObj[0];
-  }
-
-  checkCreateConnect(target){
-    if(window.creatingEdge){
-      // console.log(window.criterionNode, target);
-      let options = {source: window.criterionNode, target: target};
-      this.edgeMgmt.create(options);
-    }
-  }
-
-  getVertexInfoById(vertexId) {
-    let vertexObj = $.grep(this.dataContainer.vertex, (e) =>
-      { return e.id === vertexId; }
-    );
-
-    return vertexObj;
-  }
+  //
+  // // Copy element has ID
+  // copy(vertexId) {
+  //   let vertexObj = this.getVertexInfoById(vertexId);
+  //
+  //   if(vertexObj.length == 1){
+  //     let info = Object.assign({}, vertexObj[0]);
+  //     let options = {
+  //       x: info.x + spaceAddVertex,
+  //       y: info.y + spaceAddVertex,
+  //       interaction: info.interaction,
+  //       name: info.name,
+  //       description: info.description,
+  //       vertexType: info.vertexType,
+  //       data: info.data
+  //     };
+  //     this.create(options);
+  //   }
+  // }
+  //
+  // // Edit vertex infos
+  // edit(vertexId) {
+  //   let vertexObj = this.getVertexInfoById(vertexId);
+  //   if(vertexObj.length == 1){
+  //     let vertexInfo = Object.assign({}, vertexObj[0]);
+  //     this.openPopupVertexInfo(vertexInfo);
+  //   }
+  // }
+  //
+  // update(vertexInfo) {
+  //   // Remove old
+  //   this.remove(vertexInfo.id);
+  //   // Redraw with old id
+  //   this.create(vertexInfo);
+  // }
+  //
+  // openPopupVertexInfo(vertexInfo){
+  //   // Use in function updateVertexInfo()
+  //   this.originVertex = vertexInfo;
+  //   // Append content to popup
+  //   $(`#${HTML_OPTIONS_INTERACTION_TYPE}`).val(vertexInfo.interaction);
+  //   $(`#vertexName`).val(vertexInfo.name);
+  //   $(`#vertexId`).val(vertexInfo.id);
+  //   $(`#vertexDesc`).val(vertexInfo.description);
+  //
+  //   // Generate properties vertex
+  //   let vertexData = Object.assign({}, vertexInfo.data);
+  //   let $propertiesGroup = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
+  //   const $rowVertexType = $('<tr>');
+  //   const $vertexType = $('<th>').text(vertexInfo.vertexType);
+  //   $vertexType.attr('colspan', 2);
+  //   $vertexType.attr('class', 'vertex-type');
+  //   $vertexType.appendTo($rowVertexType);
+  //   $rowVertexType.appendTo($propertiesGroup);
+  //   for (const key of Object.keys(vertexData)) {
+  //     const $row = $('<tr>');
+  //     const $th = $('<th>').text(key).appendTo($row);
+  //     const $td = $('<td>');
+  //
+  //     const $input = $('<input>');
+  //     $input.attr('type', 'text');
+  //     $input.attr('id', key);
+  //     $input.attr('name', key);
+  //     $input.attr('class', 'form-control');
+  //     $input.val(vertexData[key]);
+  //     $input.appendTo($td);
+  //     $td.appendTo($row);
+  //     $row.appendTo($propertiesGroup);
+  //   }
+  //
+  //   let options = {popupId : HTML_VERTEX_INFO_ID, position: 'center', width: 430}
+  //   PopUtils.metSetShowPopup(options);
+  // }
+  //
+  // bindEventForPopButton() {
+  //   // Append content to vertex popup
+  //   let $group = $(`#${HTML_OPTIONS_INTERACTION_TYPE}`);
+  //   INTERACTION_TP_LST.forEach((elm) => {
+  //     const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($group);
+  //   });
+  //
+  //   $("#vertexBtnConfirm").click(e => {
+  //     this.updateVertexInfo();
+  //   });
+  //
+  //   $("#vertexBtnCancel").click(e => {
+  //     this.closePopVertexInfo();
+  //   });
+  //
+  // }
+  //
+  // updateVertexInfo() {
+  //   let formdata = $(`#${HTML_VERTEX_FORM_ID}`).serializeArray();
+  //   let data = {};
+  //   $(formdata).each(function(index, obj){
+  //     data[obj.name] = obj.value;
+  //   });
+  //
+  //   // Update origin data vertex
+  //   this.originVertex.name = data.vertexName;
+  //   this.originVertex.interaction = data.vertexInteraction;
+  //   this.originVertex.description = data.vertexDesc;
+  //   // Update data follow key in originVertex.data
+  //   for (const key of Object.keys(this.originVertex.data)) {
+  //     this.originVertex.data[key] = data[key];
+  //   }
+  //
+  //   let dataVertex = this.dataContainer.vertex;
+  //   Object.assign(dataVertex[dataVertex.findIndex(el => el.id === this.originVertex.id)], this.originVertex)
+  //   this.update(this.originVertex);
+  //   this.closePopVertexInfo();
+  // }
+  //
+  // closePopVertexInfo(){
+  //   this.originVertex = null;
+  //   let options = {popupId : HTML_VERTEX_INFO_ID}
+  //   PopUtils.metClosePopup(options);
+  // }
+  //
+  // /**
+  //  * Edge function
+  //  */
+  //
+  // setOnCreateEdge(vertexId) {
+  //   let vertexObj = this.getVertexInfoById(vertexId);
+  //   window.creatingEdge = true;
+  //   window.removingEdge = false;
+  //   window.criterionNode = vertexObj[0];
+  // }
+  //
+  // checkCreateConnect(target){
+  //   if(window.creatingEdge){
+  //     // console.log(window.criterionNode, target);
+  //     let options = {source: window.criterionNode, target: target};
+  //     this.edgeMgmt.create(options);
+  //   }
+  // }
+  //
+  // getVertexInfoById(vertexId) {
+  //   let vertexObj = $.grep(this.dataContainer.vertex, (e) =>
+  //     { return e.id === vertexId; }
+  //   );
+  //
+  //   return vertexObj;
+  // }
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (BoundaryMgmt);
