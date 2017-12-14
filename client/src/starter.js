@@ -1,5 +1,6 @@
 import MainMenuContext from './modules/menu-context-mgmt/main-menu-context';
 import VertexMenuContext from './modules/menu-context-mgmt/vertex-menu-context';
+import BoundaryMenuContext from './modules/menu-context-mgmt/boundary-menu-context';
 import VertexMgmt from './modules/object-mgmt/vertex-mgmt';
 import BoundaryMgmt from './modules/object-mgmt/boundary-mgmt';
 import FileMgmt from './modules/file-mgmt/file-mgmt';
@@ -11,6 +12,7 @@ import {
   HTML_ALGETA_CONTAINER_CLASS,
   HTML_ALGETA_CONTAINER_ID,
   HTML_VERTEX_CONTAINER_CLASS,
+  HTML_BOUNDARY_CONTAINER_CLASS,
   HTML_EDGE_CLASS,
   GRAPH_WIDTH,
   GRAPH_HEIGHT,
@@ -24,7 +26,7 @@ const nodesData = {
 };
 
 window.creatingEdge = false;
-window.removingEdge = false;
+// window.removingEdge = false;
 window.criterionNode = null;
 
 const vertexTypes = {
@@ -36,11 +38,11 @@ const vertexTypes = {
     "spd": 1
   },
   "Troll": {
-    "name":"Troll",
-    "hp": 300,
-    "atk": "P30",
-    "def": "L0",
-    "spd": 1.1
+    "date":"Troll",
+    "day": 300,
+    "hour": "P30",
+    "min": "L0",
+    "sec": 1.1
   }
 };
 
@@ -78,7 +80,9 @@ class Starter {
      */
     this.boundaryMgmt = new BoundaryMgmt({
       svgSelector : this.svgSelector,
-      dataContainer: nodesData
+      dataContainer: nodesData,
+      vertexTypes: vertexTypes,
+      edgeMgmt: this.edgeMgmt
     });
 
     /**
@@ -114,7 +118,17 @@ class Starter {
     this.vertexMenuContext = new VertexMenuContext({
       selector: `.${HTML_VERTEX_CONTAINER_CLASS}`,
       dataContainer: nodesData,
+      vertexTypes: vertexTypes,
       vertexMgmt: this.vertextMgmt
+    });
+
+    /**
+     * Init vertex menu context
+     */
+    this.boundaryMenuContext = new BoundaryMenuContext({
+      selector: `.${HTML_BOUNDARY_CONTAINER_CLASS}`,
+      dataContainer: nodesData,
+      boundaryMgmt: this.boundaryMgmt
     });
 
     /**
@@ -134,6 +148,7 @@ class Starter {
    */
   reloadMenuVertex(data){
     this.mainMenuContext.vertexTypes = data;
+    this.vertextMgmt.vertexTypes = data;
     this.vertextMgmt.vertexTypes = data;
   }
 

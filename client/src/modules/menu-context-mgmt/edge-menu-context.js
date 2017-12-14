@@ -15,12 +15,12 @@ class EdgeMenuContext{
         let edgeId = options.$trigger.attr('id');
         switch (key)
         {
-          case "editLineType":
-            this.edgeMgmt.editType(edgeId);
+          case "openPopupEditType":
+            this.edgeMgmt.openPopEditType(edgeId);
             break;
 
           case "removeEdge":
-            this.edgeMgmt.remove(edgeId);
+            this.edgeMgmt.removeEdge(edgeId);
             break;
 
           default:
@@ -44,7 +44,7 @@ class EdgeMenuContext{
           type: 'text',
           value: ""
         },
-        "editLineType": {name: "Edit line style", icon: "fa-pencil-square-o"},
+        "openPopupEditType": {name: "Edit line style", icon: "fa-pencil-square-o"},
         "removeEdge": {name: "Delete", icon: "fa-times"},
       },
       events: {
