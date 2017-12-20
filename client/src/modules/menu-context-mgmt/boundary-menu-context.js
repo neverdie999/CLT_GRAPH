@@ -11,23 +11,23 @@ class BoundaryMenuContext{
     $.contextMenu({
       selector: this.selector,
       callback: (key, options) => {
-        let vertexId = options.$trigger.attr('id');
+        let boundaryId = options.$trigger.attr('id');
         switch (key)
         {
           case "editVertex":
-            this.boundaryMgmt.edit(vertexId);
+            this.boundaryMgmt.edit(boundaryId);
           break;
 
           case "copyVertex":
-            this.boundaryMgmt.copy(vertexId);
+            this.boundaryMgmt.copy(boundaryId);
           break;
 
-          case "removeVertex":
-            this.boundaryMgmt.remove(vertexId);
+          case "removeBoundary":
+            this.boundaryMgmt.removeBoundary(boundaryId);
           break;
 
           case "createEdge":
-            this.boundaryMgmt.setOnCreateEdge(vertexId);
+            this.boundaryMgmt.setOnCreateEdge(boundaryId);
           break;
 
           default:
@@ -35,28 +35,12 @@ class BoundaryMenuContext{
         }
       },
       items: {
-        "editVertex": {name: "Edit Boundary Info", icon: "fa-pencil-square-o"},
-        "removeVertex": {name: "Delete", icon: "fa-times"},
-        "copyVertex": {name: "Copy All", icon: "fa-files-o"},
-        "createEdge": {name: "Delete All", icon: "fa-times"},
-      },
-      events: {
-        show: (opt) => {
-            opt["x"] = event.x;
-            opt["y"] = event.y;
-        }
+        "editBoundary": {name: "Edit Boundary Info", icon: "fa-pencil-square-o"},
+        "removeBoundary": {name: "Delete", icon: "fa-times"},
+        "copyAllBoundary": {name: "Copy All", icon: "fa-files-o"},
+        "deleteAllBoundary": {name: "Delete All", icon: "fa-times"},
       }
     });
-  }
-
-  clearAll(){
-    // Delete all element inside SVG
-    d3.select("svg").selectAll("*").remove();
-
-    // Clear all data cotainer for vertex, boundary, edge
-    this.dataContainer.vertex = [];
-    this.dataContainer.boundary = [];
-    this.dataContainer.edge = [];
   }
 }
 

@@ -85,6 +85,7 @@
 .boundary_right {
   border:solid 1px #652a82;
   border-left:none;
+  background: white;
   margin: 0;
   padding: 0px;
   text-align: center;
@@ -92,6 +93,14 @@
   float:right;
   width:20px;
   height:20px;
+}
+
+.boundary_data div {
+  height: 25px;
+  border-bottom: 1px solid black;
+  display: inline-flex;
+  width: 100%;
+  line-height: 25px;
 }
 
 

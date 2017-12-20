@@ -24,26 +24,35 @@
 </div>
 <div class="container" style="width: 100% !important; border: 1px solid; height: 115px;" id="uploadFile">
   <form class="form-horizontal" style="margin: 15px 0;">
-
     <div class="form-group">
       <label class="control-label col-sm-2">File Input</label>
-      <div class="col-sm-5">
+      <div class="col-sm-4">
         <div class="input-group my-group">
           <select id="fileType" class="selectpicker form-control">
-            <option value="1" selected>Vertex Type Definition</option>
-            <option value="2">Graph Data Structure</option>
+            <option value="VERTEX_TYPE" selected>Vertex Type Definition</option>
+            <option value="GRPH_DATA">Graph Data Structure</option>
           </select>
           <input type="file" class="form-control" id="inputFile" name="inputFile">
         </div>
       </div>
+
+      <label class="control-label col-sm-1" style="width: 70px">Mode</label>
+      <div class="col-sm-4">
+        <label class="radio-inline">
+          <input type="radio" name="graphMode" id="editGraphMode" checked value="E">Edit Graph
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="graphMode" id="showGraphMode" value="S">Show Graph
+        </label>
+      </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2" for="exampleInputFile">Save File</label>
-      <div class="col-sm-5">
+      <div class="col-sm-6">
         <div class="input-group">
           <input type="text" class="form-control" name="outFile" id="outFile" placeholder="Enter file name">
           <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button">Download</button>
+                <button class="btn btn-secondary" type="button" id="btnExportFile">Download</button>
               </span>
         </div>
       </div>

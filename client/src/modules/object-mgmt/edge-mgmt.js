@@ -4,6 +4,7 @@ import {
   EDGE_LINE_TP,
   EDGE_ARROW_FLG
 } from '../../const/index';
+import _ from "lodash";
 
 const HTML_EDGE_TYPE_ID = 'editEdgeType';
 const OPTIONS_EDGE_LINE_TYPE = 'edgeLineType';
@@ -14,6 +15,7 @@ class EdgeMgmt{
   constructor(props) {
     this.svgSelector = props.svgSelector;
     this.dataContainer = props.dataContainer;
+    this.objectUtils = props.objectUtils;
     this.bindEventForPopButton();
     this.originEdge = null;
     // Init event drag
@@ -37,22 +39,23 @@ class EdgeMgmt{
     let source = Object.assign({}, options.source);
     let target = Object.assign({}, options.target);
     let type = options.type;
-    let edgeId = options.id ? options.id : this.generateEdgeId();
+    let edgeId = options.id ? options.id : this.objectUtils.generateObjectId('E');
     // Default style is line solid with arrow at end.
-    let style = options.style ? options.style : {line:"solid", arrow: "Y"}
+    let style = options.style ? options.style : {line:"solid", arrow: "Y"};
+    let note = options.note ? options.note : {originNote: '', middleNote: '', destNote: ''}; // Default note for Edge.
 
-    if (source == target) {
-      alert("Connect loop is not allowed.");
-      return;
-    }
+    // if (_.isEqual(source, target)) {
+    //   alert("Connect internal is not allowed.");
+    //   return;
+    // }
 
     // Push edge info to store.
     let edgeInfo = {
       id: edgeId,
       source: source,
       target: target,
-      note: {originNote: '', middleNote: '', destNote: ''}, // Default note for Edge.
-      connect: [],
+      note: note,
+      // connect: [],
       style: style
     };
 
@@ -83,7 +86,7 @@ class EdgeMgmt{
       .attr("id", `originNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
       .attr("startOffset", "0%")
-      .text('');
+      .text(note.originNote);
 
     middleNote.append("textPath")
       .style("text-anchor", "middle")
@@ -91,7 +94,7 @@ class EdgeMgmt{
       .attr("id", `middleNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
       .attr("startOffset", "50%")
-      .text('');
+      .text(note.middleNote);
 
     destNote.append("textPath")
       .style("text-anchor", "end")
@@ -99,7 +102,7 @@ class EdgeMgmt{
       .attr("id", `destNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
       .attr("startOffset", "100%")
-      .text('');
+      .text(note.destNote);
 
     window.creatingEdge = false;
     window.removingEdge = false;
@@ -137,8 +140,8 @@ class EdgeMgmt{
   openPopEditType(edgeId) {
     // Get edge info by ID
     let edgeObj = this.getEdgeInfoById(edgeId);
-    this.originEdge = edgeObj[0];
-    let edgeInfo = edgeObj[0];
+    this.originEdge = edgeObj;
+    let edgeInfo = edgeObj;
     $(`#${OPTIONS_EDGE_LINE_TYPE}`).val(edgeInfo.style.line);
     $(`#${OPTIONS_EDGE_ARROW_FLAG}`).val(edgeInfo.style.arrow);
 
@@ -200,28 +203,6 @@ class EdgeMgmt{
     return pathStr;
   };
 
-  // Edge ID = 'E' + Date.now()
-  /**
-   * Generate edge id
-   * @returns {string}
-   */
-  generateEdgeId() {
-    return `E${Date.now()}`;
-  }
-
-  /**
-   * Get edge info by id
-   * @param edgeId
-   * @returns {*}
-   */
-  getEdgeInfoById(edgeId) {
-    let edgeObj = $.grep(this.dataContainer.edge, (e) =>
-      { return e.id === edgeId; }
-    );
-
-    return edgeObj;
-  }
-
   /**
    * Update line type of edge
    */
@@ -249,7 +230,7 @@ class EdgeMgmt{
    */
   getEdgeNotes(edgeId) {
     // Get edge info by ID
-    let edgeObj = this.getEdgeInfoById(edgeId)[0];
+    let edgeObj = this.getEdgeInfoById(edgeId);
     return edgeObj.note;
   }
 
@@ -259,7 +240,7 @@ class EdgeMgmt{
    * @param notes
    */
   setEdgeNotes(edgeId, notes) {
-    let edgeObj = this.getEdgeInfoById(edgeId)[0];
+    let edgeObj = this.getEdgeInfoById(edgeId);
     if(!edgeObj)
       return;
     edgeObj.note = notes;
@@ -274,34 +255,6 @@ class EdgeMgmt{
   }
 
   /**
-   * Find all path (edge, connect) with source from this vertex
-   * @param vertexId: string, required
-   */
-  findEdgeStartFromVertex(vertexId) {
-    if(!vertexId)
-      return [];
-
-    return $.grep(this.dataContainer.edge, (e) =>
-      { return e.source.vertexId === vertexId; }
-    );
-
-    return srcPaths;
-  }
-
-  /**
-   * Find all path (edge, connect) with target at this vertex
-   * @param vertexId: string, required
-   */
-  findEdgeConnectToVertex(vertexId) {
-    if(!vertexId)
-      return [];
-
-    return $.grep(this.dataContainer.edge, (e) =>
-      { return e.target.vertexId === vertexId; }
-    );
-  }
-
-  /**
    * Update attribute d of path (connect)
    * @param edgeId
    * @param options: object
@@ -309,7 +262,7 @@ class EdgeMgmt{
   updateAttributeNS(edgeId, options = {}){
     if(!edgeId)
       return;
-    let edgeInfo = this.getEdgeInfoById(edgeId)[0];
+    let edgeInfo = this.getEdgeInfoById(edgeId);
     let source = edgeInfo.source;
     let target = edgeInfo.target;
     if(options.source){
@@ -329,6 +282,15 @@ class EdgeMgmt{
     // Get DOM and update attribute
     d3.select(`#${edgeId}`)
       .attr('d', pathStr);
+  }
+
+  /**
+   * Get edge info by id
+   * @param edgeId
+   * @returns {*}
+   */
+  getEdgeInfoById(edgeId) {
+    return _.find(this.dataContainer.edge, (e) => { return e.id === edgeId; });
   }
 }
 

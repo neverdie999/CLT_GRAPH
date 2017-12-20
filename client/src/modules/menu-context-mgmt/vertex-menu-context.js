@@ -3,12 +3,10 @@ class VertexMenuContext{
     this.selector = props.selector;
     this.vertexMgmt = props.vertexMgmt;
     this.dataContainer = props.dataContainer;
-    this.vertexTypes = props.vertexTypes;
     this.initVertexMenu();
   }
 
   initVertexMenu(){
-    // Context menu for Vertex
     $.contextMenu({
       selector: this.selector,
       build: ($trigger, e) => {
@@ -45,27 +43,29 @@ class VertexMenuContext{
 
   initItemOnFlagCreateEdge($trigger){
     let originItems = {
-      "editVertex": {name: "Edit Vertex Info", icon: "fa-pencil-square-o"},
-      "copyVertex": {name: "Copy", icon: "fa-files-o"},
-      "removeVertex": {name: "Delete", icon: "fa-times"},
+      "editVertex": {name: "Edit Vertex Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
+      "copyVertex": {name: "Copy", icon: "fa-files-o", disabled: window.disabledCommand},
+      "removeVertex": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
       "connectFrom": {
         name: "Create Edge",
         icon: "fa-times",
-        items: this.loadItems($trigger.attr('id'))
+        items: this.loadItems($trigger.attr('id')),
+        disabled: window.disabledCommand
       },
-      "cancelCreateEdge": {name: "Cancel Edge", icon: "fa-times"},
+      "cancelCreateEdge": {name: "Cancel Edge", icon: "fa-times", disabled: window.disabledCommand},
     };
 
     let connectItems = {
-      "editVertex": {name: "Edit Vertex Info", icon: "fa-pencil-square-o"},
-      "copyVertex": {name: "Copy", icon: "fa-files-o"},
-      "removeVertex": {name: "Delete", icon: "fa-times"},
+      "editVertex": {name: "Edit Vertex Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
+      "copyVertex": {name: "Copy", icon: "fa-files-o", disabled: window.disabledCommand},
+      "removeVertex": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
       "connectTo": {
         name: "Connect To",
         icon: "fa-times",
-        items: this.loadItems($trigger.attr('id'), false)
+        items: this.loadItems($trigger.attr('id'), false),
+        disabled: window.disabledCommand
       },
-      "cancelCreateEdge": {name: "Cancel Edge", icon: "fa-times"},
+      "cancelCreateEdge": {name: "Cancel Edge", icon: "fa-times", disabled: window.disabledCommand}
     };
     return !window.creatingEdge ? originItems : connectItems;
   }
@@ -89,21 +89,26 @@ class VertexMenuContext{
           this.vertexMgmt.setConnectTo(vertexId);
         }
       }
-    }
+    };
     // Get properties of vertex
-    let vertexObj = this.vertexMgmt.getVertexInfoById(vertexId)[0];
-    let propVertexes = this.vertexTypes[vertexObj.vertexType];
+    let vertexObj = this.vertexMgmt.getVertexInfoById(vertexId);
 
-    for (const key of Object.keys(propVertexes)) {
-      subItems[`${key}`] = {
-        name: `${key}`,
-        icon: "fa-window-maximize",
-        callback: (key, opt) => {
-          let prop = opt.$selected.text();
-          if(source){
-            this.vertexMgmt.setConnectFrom(vertexId, prop);
-          }else{
-            this.vertexMgmt.setConnectTo(vertexId, prop);
+    // When mode show that don't have vertex type.
+    if(window.vertexTypes){
+      let propVertexes = window.vertexTypes[vertexObj.vertexType];
+      if(!propVertexes)
+        return;
+      for (const key of Object.keys(propVertexes)) {
+        subItems[`${key}`] = {
+          name: `${key}`,
+          icon: "fa-window-maximize",
+          callback: (key, opt) => {
+            let prop = opt.$selected.text();
+            if(source){
+              this.vertexMgmt.setConnectFrom(vertexId, prop);
+            }else{
+              this.vertexMgmt.setConnectTo(vertexId, prop);
+            }
           }
         }
       }
