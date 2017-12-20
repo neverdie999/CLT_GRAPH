@@ -6,7 +6,7 @@ class MainMenuContext{
     this.vertexMgmt = props.vertexMgmt;
     this.boundaryMgmt = props.boundaryMgmt;
     this.dataContainer = props.dataContainer;
-    this.vertexTypes = props.vertexTypes;
+    this.mainMgmt = props.mainMgmt;
     this.initMainMenu();
   }
 
@@ -14,6 +14,7 @@ class MainMenuContext{
     // Context menu for Screen
     $.contextMenu({
       selector: this.selector,
+      autoHide: true,
       build: ($trigger, e) => {
         return {
           callback: (key, options) => {
@@ -22,7 +23,7 @@ class MainMenuContext{
               case "clearAll": this.clearAll();
                 break;
 
-              case "createBoundary": this.boundaryMgmt.create(options);
+              case "createBoundary": this.boundaryMgmt.createBoundary(options);
                 break;
 
               default:
@@ -34,24 +35,27 @@ class MainMenuContext{
               name: "Create Vertex",
               icon: "fa-window-maximize",
               items: this.loadItems(),
+              disabled: window.disabledCommand
             },
             "sep1": "-",
-            "createBoundary": {name: "Create Boundary", icon: "fa-object-group"},
+            "createBoundary": {name: "Create Boundary", icon: "fa-object-group", disabled: window.disabledCommand},
             "sep2": "-",
-            "autoAlign": {name: "Auto Align", icon: "fa-sort-amount-desc"},
+            "autoAlign": {name: "Auto Align", icon: "fa-sort-amount-desc", disabled: window.disabledCommand},
             "sep3": "-",
-            "showReduced": {name: "Show Reduced", icon: "fa-link"},
+            "showReduced": {name: "Show Reduced", icon: "fa-link", disabled: window.disabledCommand},
             "sep4": "-",
-            "clearAll": {name: "Clear All", icon: "fa-times"},
+            "clearAll": {name: "Clear All", icon: "fa-times", disabled: window.disabledCommand},
             "sep5": "-",
-            "undo": {name: "Undo", icon: "fa-undo"},
+            "undo": {name: "Undo", icon: "fa-undo", disabled: window.disabledCommand},
             "sep6": "-",
-            "redo": {name: "Redo", icon: "fa-repeat"},
+            "redo": {name: "Redo", icon: "fa-repeat", disabled: window.disabledCommand},
           },
           events: {
             show: (opt) => {
-              opt["x"] = event.x;
-              opt["y"] = event.y;
+              if(event){
+                opt["x"] = event.x;
+                opt["y"] = event.y;
+              }
             }
           }
         };
@@ -60,25 +64,20 @@ class MainMenuContext{
   }
 
   clearAll(){
-    // Delete all element inside SVG
-    d3.select("svg").selectAll("*").remove();
-
-    // Clear all data cotainer for vertex, boundary, edge
-    this.dataContainer.vertex = [];
-    this.dataContainer.boundary = [];
-    this.dataContainer.edge = [];
+    this.mainMgmt.clearAll();
   }
 
   loadItems() {
     const subItems = {};
-
-    for (const key of Object.keys(this.vertexTypes)) {
-      subItems[`${key}`] = {
-        name: `${key}`,
-        icon: "fa-window-maximize",
-        callback: (key, opt) => {
-          opt.vertexType = opt.$selected.text()
-          this.vertexMgmt.create(opt);
+    if(window.vertexTypes){
+      for (const key of Object.keys(window.vertexTypes)) {
+        subItems[`${key}`] = {
+          name: `${key}`,
+          icon: "fa-window-maximize",
+          callback: (key, opt) => {
+            opt.vertexType = opt.$selected.text()
+            this.vertexMgmt.create(opt);
+          }
         }
       }
     }

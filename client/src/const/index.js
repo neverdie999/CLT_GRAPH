@@ -45,3 +45,18 @@ export const TYPE_POINT = {
   OUTPUT: 'O',
   INPUT: 'I'
 };
+
+// The attributes size of vertex
+export const VERTEX_ATTR_SIZE = {
+  HEADER_HEIGHT: 38,
+  PROP_HEIGHT: 26,
+  GROUP_WIDTH: 150,
+  SPACE_COPY: 10, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
+}
+
+// Global variable
+window.creatingEdge = false; // Define state creation connect (edge)
+window.sourceNode = null; // Define source node for create connect
+window.disabledCommand = false; // Use for only mode (Disable all command on menu context)
+window.disabledMenu = true; // Not show menu context
+window.vertexTypes = null; // Vertex types use in current graph

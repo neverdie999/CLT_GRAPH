@@ -3,15 +3,13 @@ import {
   SCREEN_SIZES,
   INTERACTION_TP,
   INTERACTION_TP_LST,
-  TYPE_POINT
+  TYPE_POINT,
+  VERTEX_ATTR_SIZE
 } from '../../const/index';
+import _ from "lodash";
 
 import PopUtils from '../../common/utilities/popup.ult';
 
-const headerVertexHeight = 38;
-const propertyVertexHeight = 26;
-const groupVertexWidth = 150;
-const spaceAddVertex = 10; // When copy vertex then new coordinate = old coordinate + spaceAddVertex
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
@@ -21,8 +19,8 @@ class VertexMgmt{
   constructor(props){
     this.svgSelector = props.svgSelector;
     this.dataContainer = props.dataContainer;
-    this.vertexTypes = props.vertexTypes;
     this.edgeMgmt = props.edgeMgmt;
+    this.objectUtils = props.objectUtils;
 
     this.bindEventForPopButton();
 
@@ -32,7 +30,6 @@ class VertexMgmt{
       .on("drag", this.dragged)
       .on("end", this.dragended);
     this.originVertex = null;
-    this.scope = this;
   }
 
   /**
@@ -46,15 +43,16 @@ class VertexMgmt{
    * Ex
    */
   create(options){
-
     if(!options.vertexType)
       return;
 
     let vertexType = options.vertexType;
     // Get properties vertex from list object vertex type
-    let vertexProperties = options.data ? Object.assign({}, options.data) : Object.assign({}, this.vertexTypes[vertexType]);
+    let vertexProperties = options.data ? Object.assign({}, options.data) : Object.assign({}, window.vertexTypes[vertexType]);
     let interaction = options.interaction || INTERACTION_TP.FULL;
-    let vertexId = options.id? options.id : this.generateVertexId();
+    let vertexId = options.id? options.id : this.objectUtils.generateObjectId('V');
+    let mainScope = this;
+
     let vertexInfo = {
       x: options.x,
       y: options.y,
@@ -64,48 +62,47 @@ class VertexMgmt{
       description: options.description || "Description",
       data: vertexProperties,
       id: vertexId,
-      mainScope: this,
+      mainScope: mainScope,
     };
     this.dataContainer.vertex.push(vertexInfo);
-
-    // Vertex property have height is 25px
-    // Height = height header + number properties * 26
-
 
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", vertexId)
       .attr("class", "groupVertex")
-      .on("click", (obj) => {
+      .on("mousedown", function() {
+        let sel = d3.select(this);
+        let vertexId = this.id;
+        sel.moveToFront();
+        // Bring data to top
+        mainScope.moveDataToLast(vertexId);
       });
-      // .on("mouseover",function(){
-      //   var sel = d3.select(this);
+      // .on("mouseover", function() {
+      //   let sel = d3.select(this);
+      //   let vertexId = this.id;
       //   sel.moveToFront();
+      //   // Bring data to top
+      //   mainScope.moveDataToLast(vertexId);
       // });
 
-    // May be no need for vertex.
-    // group.append("rect")
-    //   .attr("width", groupVertexWidth)
-    //   .attr("height", vertexHeight)
-    //   .style("fill", "white");
     let htmlContent = '';
     let countProperty = 0;
     for (const key of Object.keys(vertexProperties)) {
       if(interaction === INTERACTION_TP.FULL){
         htmlContent += `
-          <div class="interaction_full property" prop="${key}" vertexId="${vertexId}">
+          <div class="interaction_full property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
             <label class="key">${key} : </label>
             <label class="data ${key}">${vertexProperties[key]}</label>
           </div>`;
       } else if (interaction === INTERACTION_TP.LEFT) {
         htmlContent += `
-          <div class="interaction_left property" prop="${key}" vertexId="${vertexId}">
+          <div class="interaction_left property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
             <label class="key">${key} : </label>
             <label class="data ${key}">${vertexProperties[key]}</label>
           </div>`;
       } else {
         htmlContent += `
-          <div class="interaction_right property" prop="${key}" vertexId="${vertexId}">
+          <div class="interaction_right property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
             <label class="key">${key} : </label>
             <label class="data ${key}">${vertexProperties[key]}</label>
           </div>`;
@@ -113,15 +110,21 @@ class VertexMgmt{
       countProperty ++;
     }
 
-    let vertexHeight = headerVertexHeight + propertyVertexHeight*countProperty;
+    let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT*countProperty;
+    // May be no need for vertex.
+    // group.append("rect")
+    //   .attr("width", VERTEX_ATTR_SIZE.GROUP_WIDTH)
+    //   .attr("height", vertexHeight)
+    //   .style("fill", "white");
     group.append("foreignObject")
-      .attr("width", groupVertexWidth)
+      .attr("width", VERTEX_ATTR_SIZE.GROUP_WIDTH)
       .attr("height", vertexHeight)
       .append("xhtml:div")
       .attr("class", "vertex_content")
       .style("font-size", "13px")
+      .style("background", "#ffffff")
       .html(`
-        <p class="header_name">${vertexInfo.name}</p>
+        <p class="header_name" style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px">${vertexInfo.name}</p>
         <div class="vertex_data">
           ${htmlContent}
         </div>
@@ -136,7 +139,8 @@ class VertexMgmt{
    */
   initEventDrag(){
     // Call event drag for all object vertex exit.
-    this.svgSelector.selectAll(".groupVertex").call(this.dragRegister).data(this.dataContainer.vertex);
+    this.svgSelector.selectAll(".groupVertex")
+      .data(this.dataContainer.vertex).call(this.dragRegister);
   }
 
   dragstarted(d) {
@@ -152,16 +156,15 @@ class VertexMgmt{
   dragged(d) {
     let vertexId = this.id;
     // Update poition object in this.dataContainer.boundary
-    d3.select(this)
-      .attr("x", d.x = d3.event.x)
-      .attr("y", d.y = d3.event.y);
+    d.x = d3.event.x;
+    d.y = d3.event.y;
 
     let mainScope = d.mainScope;
     let dragPos = {x: d3.event.x, y: d3.event.y}; // New position of vertex.
 
     // Update path connected to this vertex
-    let srcPaths = mainScope.edgeMgmt.findEdgeStartFromVertex(vertexId);
-    let desPaths = mainScope.edgeMgmt.findEdgeConnectToVertex(vertexId);
+    let srcPaths = mainScope.objectUtils.findEdgeStartFromVertex(vertexId);
+    let desPaths = mainScope.objectUtils.findEdgeConnectToVertex(vertexId);
 
     srcPaths.forEach(src => {
       let edgeId = src.id;
@@ -190,27 +193,26 @@ class VertexMgmt{
    * @param d
    */
   dragended(d) {
-    d3.select(this).classed("active", false);
+    // d3.select(this).classed("active", false);
   }
 
   /**
-   * Gernerate vertex id with format 'V' + Date.now()
-   * @returns {string}
+   * Remove vertex element by id
+   * @param vertexId
    */
-  generateVertexId() {
-    return `V${Date.now()}`;
-  }
-
-  // Remove element by ID
   remove(vertexId) {
     // Remove from DOM
     d3.select(`#${vertexId}`).remove();
     // Remove from data container
-    let data = $.grep(this.dataContainer.vertex, (e) => {
-      return e.id != vertexId;
+    let data = _.remove(this.dataContainer.vertex, (e) => {
+      return e.id == vertexId;
     });
 
-    this.dataContainer.vertex = data;
+    // Remove all edge relate to vertex
+    // let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
+    // relatePaths.forEach(path => {
+    //   this.edgeMgmt.removeEdge(path.id);
+    // });
   }
 
   /**
@@ -220,11 +222,11 @@ class VertexMgmt{
   copy(vertexId) {
     let vertexObj = this.getVertexInfoById(vertexId);
 
-    if(vertexObj.length == 1){
-      let info = Object.assign({}, vertexObj[0]);
+    if(vertexObj){
+      let info = Object.assign({}, vertexObj);
       let options = {
-        x: info.x + spaceAddVertex,
-        y: info.y + spaceAddVertex,
+        x: info.x + VERTEX_ATTR_SIZE.SPACE_COPY,
+        y: info.y + VERTEX_ATTR_SIZE.SPACE_COPY,
         interaction: info.interaction,
         name: info.name,
         description: info.description,
@@ -242,12 +244,16 @@ class VertexMgmt{
    */
   edit(vertexId) {
     let vertexObj = this.getVertexInfoById(vertexId);
-    if(vertexObj.length == 1){
-      let vertexInfo = Object.assign({}, vertexObj[0]);
+    if(vertexObj){
+      let vertexInfo = Object.assign({}, vertexObj);
       this.openPopupVertexInfo(vertexInfo);
     }
   }
 
+  /**
+   * Redraw vertex with new info.
+   * @param vertexInfo
+   */
   update(vertexInfo) {
     // Remove old
     this.remove(vertexInfo.id);
@@ -358,7 +364,7 @@ class VertexMgmt{
    */
   cancelCreateEdge() {
     window.creatingEdge = false;
-    window.criterionNode = null;
+    window.sourceNode = null;
   }
 
   /**
@@ -367,13 +373,11 @@ class VertexMgmt{
    * @param prop
    */
   setConnectFrom(vertexId, prop = null) {
-    // let vertexObj = this.getVertexInfoById(vertexId);
     window.creatingEdge = true;
-    // window.removingEdge = false;
     let source = this.getCoordinateProperty(vertexId, prop, TYPE_POINT.OUTPUT);
     source.vertexId = vertexId;
     source.prop = prop;
-    window.criterionNode = source;
+    window.sourceNode = source;
   }
 
   /**
@@ -383,26 +387,20 @@ class VertexMgmt{
    */
   setConnectTo(vertexId, prop = null) {
     if(window.creatingEdge){
-      // console.log(window.criterionNode, target);
       let target = this.getCoordinateProperty(vertexId, prop, TYPE_POINT.INPUT);
       target.vertexId = vertexId;
       target.prop = prop;
-      let options = {source: window.criterionNode, target: target};
+      let options = {source: window.sourceNode, target: target};
       this.createConnect(options);
     }
   }
 
   /**
-   * Get vertex info by id
-   * @param vertexId
-   * @returns {*}
+   * Call create connect from source to target
+   * @param options
    */
-  getVertexInfoById(vertexId) {
-    let vertexObj = $.grep(this.dataContainer.vertex, (e) =>
-      { return e.id === vertexId; }
-    );
-
-    return vertexObj;
+  createConnect(options) {
+    this.edgeMgmt.create(options);
   }
 
   /**
@@ -416,13 +414,15 @@ class VertexMgmt{
     if(!type)
       type = TYPE_POINT.OUTPUT;
     let vertexObj = this.getVertexInfoById(vertexId);
-    let vertexInfo = Object.assign({}, vertexObj[0]);
+    let vertexInfo = Object.assign({}, vertexObj);
     let axisX = vertexInfo.x;
     let axisY = vertexInfo.y;
 
     // If get Coordinate for vertex only
+    // if(!prop)
+    //   return {x: type === TYPE_POINT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH : axisX, y: axisY + 2 };
     if(!prop)
-      return {x: type === TYPE_POINT.OUTPUT ? axisX + groupVertexWidth : axisX, y: axisY + 2 };
+      return {x: axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH/2, y: axisY};
 
     let vertexData = vertexInfo.data;
     // Find index prop in object
@@ -431,20 +431,35 @@ class VertexMgmt{
     // y = current axis y + height header + indexProp*heightProp + 13;
     // x = if output then axis x + width vertex; if not then axis x
     // Get coordinate
-    // const headerVertexHeight = 38;
-    // const propertyVertexHeight = 26;
-    axisY = axisY + headerVertexHeight + index*propertyVertexHeight + propertyVertexHeight/2;
+    axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT + index*VERTEX_ATTR_SIZE.PROP_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT/2;
 
-    return {x: type === TYPE_POINT.OUTPUT ? axisX + groupVertexWidth : axisX, y: axisY};
+    return {x: type === TYPE_POINT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH : axisX, y: axisY};
   }
 
   /**
-   * Call create connect from source to target
-   * @param options
+   * Get vertex info by id
+   * @param vertexId
+   * @returns {*}
    */
-  createConnect(options) {
-    this.edgeMgmt.create(options);
+  getVertexInfoById(vertexId) {
+    return _.find(this.dataContainer.vertex, (e) => { return e.id === vertexId; });
   }
+
+  /**
+   * When vertex selected then move it to top
+   * Cause
+   * @param vertexId
+   */
+  moveDataToLast(vertexId) {
+    // Remove
+    let tmpVertex = this.getVertexInfoById(vertexId);
+    _.remove(this.dataContainer.vertex, (e) => {
+      return e.id == vertexId;
+    });
+
+    this.dataContainer.vertex.push(tmpVertex);
+  }
+
 };
 
 export default VertexMgmt;
