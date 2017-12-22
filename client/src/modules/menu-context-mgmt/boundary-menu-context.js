@@ -10,35 +10,39 @@ class BoundaryMenuContext{
     // Context menu for Vertex
     $.contextMenu({
       selector: this.selector,
-      callback: (key, options) => {
-        let boundaryId = options.$trigger.attr('id');
-        switch (key)
-        {
-          case "editVertex":
-            this.boundaryMgmt.edit(boundaryId);
-          break;
+      build: ($trigger, e) => {
+        return {
+          callback: (key, options) => {
+            let boundaryId = options.$trigger.attr('id');
+            switch (key)
+            {
+              case "editVertex":
+                this.boundaryMgmt.edit(boundaryId);
+                break;
 
-          case "copyVertex":
-            this.boundaryMgmt.copy(boundaryId);
-          break;
+              case "copyVertex":
+                this.boundaryMgmt.copy(boundaryId);
+                break;
 
-          case "removeBoundary":
-            this.boundaryMgmt.removeBoundary(boundaryId);
-          break;
+              case "removeBoundary":
+                this.boundaryMgmt.removeBoundary(boundaryId);
+                break;
 
-          case "createEdge":
-            this.boundaryMgmt.setOnCreateEdge(boundaryId);
-          break;
+              case "createEdge":
+                this.boundaryMgmt.setOnCreateEdge(boundaryId);
+                break;
 
-          default:
-          break;
+              default:
+                break;
+            }
+          },
+          items: {
+            "editBoundary": {name: "Edit Boundary Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
+            "removeBoundary": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
+            "copyAllBoundary": {name: "Copy All", icon: "fa-files-o", disabled: window.disabledCommand},
+            "deleteAllBoundary": {name: "Delete All", icon: "fa-times", disabled: window.disabledCommand},
+          }
         }
-      },
-      items: {
-        "editBoundary": {name: "Edit Boundary Info", icon: "fa-pencil-square-o"},
-        "removeBoundary": {name: "Delete", icon: "fa-times"},
-        "copyAllBoundary": {name: "Copy All", icon: "fa-files-o"},
-        "deleteAllBoundary": {name: "Delete All", icon: "fa-times"},
       }
     });
   }

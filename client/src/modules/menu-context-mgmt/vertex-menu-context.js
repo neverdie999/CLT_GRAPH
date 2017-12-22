@@ -52,7 +52,6 @@ class VertexMenuContext{
         items: this.loadItems($trigger.attr('id')),
         disabled: window.disabledCommand
       },
-      "cancelCreateEdge": {name: "Cancel Edge", icon: "fa-times", disabled: window.disabledCommand},
     };
 
     let connectItems = {

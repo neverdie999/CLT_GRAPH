@@ -9,6 +9,7 @@ import {
 import _ from "lodash";
 
 import PopUtils from '../../common/utilities/popup.ult';
+import {moveToFront} from '../../common/utilities/common.ult';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
@@ -70,19 +71,18 @@ class VertexMgmt{
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", vertexId)
       .attr("class", "groupVertex")
-      .on("mousedown", function() {
-        let sel = d3.select(this);
-        let vertexId = this.id;
-        sel.moveToFront();
+      .on("mouseover", (d, i, node) => {
+        let vertexId = d.id;
+        d3.select(node[0]).moveToFront();
         // Bring data to top
-        mainScope.moveDataToLast(vertexId);
+        this.moveDataToLast(vertexId);
       });
-      // .on("mouseover", function() {
-      //   let sel = d3.select(this);
-      //   let vertexId = this.id;
-      //   sel.moveToFront();
+      // .on("mouseout", (d, i, node) => {
+      //   console.log("Mouse up");
+      //   let vertexId = d.id;
+      //   d3.select(node[0]).moveToBack();
       //   // Bring data to top
-      //   mainScope.moveDataToLast(vertexId);
+      //   this.moveDataToFirst(vertexId);
       // });
 
     let htmlContent = '';
@@ -194,6 +194,26 @@ class VertexMgmt{
    */
   dragended(d) {
     // d3.select(this).classed("active", false);
+    // console.log(d);
+    // console.log(this.parentNode);
+    let tmpVertex = this;
+    // console.log(tmpVertex);
+    d3.select("svg").selectAll(".groupBoundary").each(function(d, i) {
+
+      console.log(this);
+      d3.select(this).append("circle")
+        .attr("r", 40) //get radius from targetCircle and also styles?
+        .attr("id", "circleAddedId")
+        .classed("circleAddedClass", true)
+        .attr("cx", d3.mouse(this)[0])
+        .attr("cy", d3.mouse(this)[1])
+        .style("fill", "white")
+        .style("stroke", "black")
+        .style("stroke-width", "2px");
+      console.log((d3.select(tmpVertex).node().cloneNode(true)));
+      // d3.select(this).node().appendChild(d3.select(tmpVertex).node().cloneNode(true));
+      // d3.select(tmpVertex).remove();
+    });
   }
 
   /**
@@ -446,8 +466,7 @@ class VertexMgmt{
   }
 
   /**
-   * When vertex selected then move it to top
-   * Cause
+   * When vertex selected then move it to last
    * @param vertexId
    */
   moveDataToLast(vertexId) {
@@ -458,6 +477,21 @@ class VertexMgmt{
     });
 
     this.dataContainer.vertex.push(tmpVertex);
+  }
+
+  /**
+   * When vertex selected then move it to first
+   * @param vertexId
+   */
+  moveDataToFirst(vertexId) {
+    console.log("Move to first");
+    // Remove
+    let tmpVertex = this.getVertexInfoById(vertexId);
+    _.remove(this.dataContainer.vertex, (e) => {
+      return e.id == vertexId;
+    });
+
+    this.dataContainer.vertex.unshift(tmpVertex);
   }
 
 };
