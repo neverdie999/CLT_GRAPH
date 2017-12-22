@@ -7,6 +7,7 @@ import FileMgmt from './modules/file-mgmt/file-mgmt';
 import EdgeMgmt from './modules/object-mgmt/edge-mgmt';
 import EdgeMenuContext from './modules/menu-context-mgmt/edge-menu-context';
 import ObjectUtils from  './common/utilities/object.ult';
+import MenuItemsBoundary from './modules/menu-context-mgmt/menu-items-boundary';
 
 import * as d3 from 'd3';
 import {
@@ -40,6 +41,12 @@ import './styles/index.scss';
 d3.selection.prototype.moveToFront = function() {
   return this.each(function(){
     this.parentNode.appendChild(this);
+  });
+};
+
+d3.selection.prototype.moveToBack = function() {
+  this.each(function() {
+    this.parentNode.firstChild && this.parentNode.insertBefore(this, this.parentNode.firstChild);
   });
 };
 
@@ -226,6 +233,8 @@ class Starter {
       boundaryMgmt: this.boundaryMgmt,
       mainMgmt: this
     });
+
+    // this.menuItemsBoundary = new MenuItemsBoundary();
   }
 
   /**

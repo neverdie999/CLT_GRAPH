@@ -10,6 +10,7 @@ import {HTML_BOUNDARY_CONTAINER_CLASS} from "../../const";
 
 const headerBoundaryHeight = 38;
 const groupBoundaryWidth = 180;
+const groupBoundaryHeight = 200;
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
@@ -48,12 +49,8 @@ class BoundaryMgmt{
       id: boundaryId
     };
 
-    // let htmlContent = '';
-    let vertexHeight = groupBoundaryWidth;
-    // htmlContent += `
-    //     <div class="boundary" style="width: ` + groupBoundaryWidth + `px;height: ` + groupBoundaryWidth + `px">
-    //     </div>
-    //   `;
+    let htmlContent = '';
+    let boundaryHeight = groupBoundaryWidth;
 
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
@@ -62,34 +59,21 @@ class BoundaryMgmt{
 
     group.append("foreignObject")
       .attr("width", groupBoundaryWidth)
-      .attr("height", vertexHeight)
+      .attr("height", groupBoundaryHeight)
       .append("xhtml:div")
+      .attr("class", "boundary_content")
       .style("font-size", "13px")
+      .style("background", "#ffffff")
       .html(`
-        <div class="boundary_header" style="width: ${groupBoundaryWidth + 20}px;">
-          <label class="boundary_right" id="${boundaryId}_visiable">+</label>
-          <label class="header_boundary" style="width: ${groupBoundaryWidth}px; height: ${headerBoundaryHeight}px;">${boundaryInfo.name}</label>
-        </div>
-        <div class="boundary_data">
-          <div class="boundary" style="width: ` + groupBoundaryWidth + `px;height: ` + groupBoundaryWidth + `px">
+          <div class="boundary_header" style="width: ${groupBoundaryWidth + 20}px;">
+            <label class="boundary_right" id="${boundaryId}_visiable">+</label>
+            <label class="header_boundary" style="width: ${groupBoundaryWidth}px; height: ${headerBoundaryHeight}px;">${boundaryInfo.name}</label>
           </div>
-        </div>
+          <div class="boundary_data" style="height: ${groupBoundaryHeight}px"></div>
       `);
 
-    $("#" + boundaryId + "_visiable").on("mousedown", (event) => {
-      if(event.button && event.button === 2){
-        return false;
-      }else{
-        this.initOptionBoundaryMenu("#" + boundaryId + "_visiable");
-      }
-    });
-
-    $(".boundary_data").on("contextmenu", (event) => {
-      return false;
-    });
-
     boundaryInfo.width = groupBoundaryWidth;
-    boundaryInfo.height = vertexHeight;
+    boundaryInfo.height = boundaryHeight;
     this.dataContainer.boundary.push(boundaryInfo);
 
     // Call event drag for all object vertex exit.
