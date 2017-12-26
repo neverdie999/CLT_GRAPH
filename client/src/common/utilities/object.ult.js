@@ -61,6 +61,15 @@ class ObjectUtils {
       { return e.target.vertexId === vertexId || e.source.vertexId === vertexId; }
     );
   }
+
+  /**
+   * Get vertex info by id
+   * @param vertexId
+   * @returns {*}
+   */
+  getVertexInfoById(vertexId) {
+    return _.find(this.dataContainer.vertex, (e) => { return e.id === vertexId; });
+  }
 }
 
 export default ObjectUtils;

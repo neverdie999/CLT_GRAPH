@@ -1,13 +1,13 @@
 
 .boundary{
   cursor:pointer;
-  border:solid 1px #652a82;
+  //border:solid 1px #652a82;
   padding: 8px;
 }
 
 .header_boundary {
   background: #E1D5E7;
-  border:solid 1px #652a82;
+  border-bottom:solid 1px #652a82;
   margin: 0;
   padding: 8px 0px;
   text-align: center;
@@ -29,7 +29,7 @@
 }
 
 .boundary_data{
-  border: solid 1px #652a82;
+  //border: solid 1px #652a82;
 }
 
 /* menu header via data attribute */

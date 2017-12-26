@@ -8,6 +8,7 @@ import EdgeMgmt from './modules/object-mgmt/edge-mgmt';
 import EdgeMenuContext from './modules/menu-context-mgmt/edge-menu-context';
 import ObjectUtils from  './common/utilities/object.ult';
 import MenuItemsBoundary from './modules/menu-context-mgmt/menu-items-boundary';
+import {comShowMessage} from './common/utilities/common.ult';
 
 import * as d3 from 'd3';
 import {
@@ -129,9 +130,14 @@ class Starter {
    * For main context and vertex.
    * @param data
    */
-  reloadVertexTypes(data){
+  async reloadVertexTypes(data){
     // Set global vertex types
     window.vertexTypes = data;
+    // Validate vertex type
+    let isMisMatch = await this.validateVertexTypesInGraph();
+    // Now just show message warning for user. Not stop working
+    if(isMisMatch)
+      comShowMessage("Vertex type in Vertex Type Definition and Data Graph Structure is mismatch. Please check again!");
 
     this.initContextMenuForObject();
     // window.disabledCommand = false;
@@ -141,8 +147,23 @@ class Starter {
    * Draw graph with data import by user
    * @param data
    */
-  drawGraphFromData(data){
+  async drawGraphFromData(data){
     this.clearAll();
+    // Store vertex types
+    window.vertexTypesTmp = data.vertexTypes;
+
+    // Validate content
+    let errorContent = await this.validateGraphDataStructure(data);
+    if(errorContent) {
+      comShowMessage("Data Graph Structure wrong format or invalid content!");
+      return;
+    }
+
+    // Validate vertex type
+    let isMisMatch = await this.validateVertexTypesInGraph();
+    // Now just show message warning for user. Not stop working
+    if(isMisMatch)
+      comShowMessage("Vertex type in Vertex Type Definition and Data Graph Structure is mismatch. Please check again!");
 
     // Draw vertex
     let arrVertex = data.vertex;
@@ -255,6 +276,92 @@ class Starter {
 
   removeAllDomConentMenu() {
     d3.selectAll(".context-menu-list").remove();
+  }
+
+  /**
+   * Validate Vertices in Graph Data
+   * Structure using Vertex Type Definition
+   */
+  async validateVertexTypesInGraph() {
+    let isMisMatch = false;
+    if(!window.vertexTypes || !window.vertexTypesTmp)
+    {
+      console.log("Targe or soruce is null");
+      return Promise.resolve(false);
+    }
+
+    // Compare length
+    let vertexUse = Object.keys(window.vertexTypes);
+    let vertexTmp = Object.keys(window.vertexTypesTmp);
+    if(this.checkLengthMisMatch(vertexUse, vertexTmp))
+    {
+      console.log("Length is different");
+      return Promise.resolve(true);
+    }
+
+    // Check key exit
+    let flag = await this.checkKeyMisMatch(vertexUse, vertexTmp);
+
+    if(flag){
+      console.log("Key vertex at source not exit in target");
+      return Promise.resolve(true);
+    }
+
+    // Check data key in every vertex type
+    for (let key of vertexUse) {
+      let src = Object.keys(window.vertexTypes[key]);
+      let tgt = Object.keys(window.vertexTypesTmp[key]);
+      if(this.checkLengthMisMatch(src, tgt))
+      {
+        console.log("Length of vertex element is different");
+        return Promise.resolve(true);
+      }
+
+      let misMatchKey = await this.checkKeyMisMatch(src, tgt);
+      if(misMatchKey) {
+        console.log("Key of vertex element is different");
+        return Promise.resolve(true);
+      }
+    }
+    return Promise.resolve(isMisMatch);
+  }
+
+  /**
+   * Check length of source and target is match
+   * @param src
+   * @param tgt
+   * @returns {boolean}
+   */
+  checkLengthMisMatch(src, tgt) {
+    return src.length != tgt.length ? true : false;
+  }
+
+  /**
+   * Check key of source and target is match
+   * @param src
+   * @param tgt
+   * @returns {boolean}
+   */
+  checkKeyMisMatch(src, tgt) {
+    let misMatch = false;
+    src.forEach(key => {
+      if(tgt.indexOf(key) < 0)
+      {
+        misMatch = true;
+      }
+    });
+
+    return Promise.resolve(misMatch);
+  }
+
+  /**
+   * Validate Graph Data Structure
+   * Validate content
+   */
+  validateGraphDataStructure(data) {
+    if(!data.vertex || !data.edge || !data.boundary || !data.vertexTypes) {
+      return Promise.resolve(true);
+    }
   }
 }
 

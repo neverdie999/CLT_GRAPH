@@ -63,6 +63,7 @@ class VertexMgmt{
       description: options.description || "Description",
       data: vertexProperties,
       id: vertexId,
+      parent: null,
       mainScope: mainScope,
     };
     this.dataContainer.vertex.push(vertexInfo);
@@ -154,37 +155,35 @@ class VertexMgmt{
    * @param d
    */
   dragged(d) {
-    let vertexId = this.id;
     // Update poition object in this.dataContainer.boundary
     d.x = d3.event.x;
     d.y = d3.event.y;
 
-    let mainScope = d.mainScope;
-    let dragPos = {x: d3.event.x, y: d3.event.y}; // New position of vertex.
-
     // Update path connected to this vertex
-    let srcPaths = mainScope.objectUtils.findEdgeStartFromVertex(vertexId);
-    let desPaths = mainScope.objectUtils.findEdgeConnectToVertex(vertexId);
-
-    srcPaths.forEach(src => {
-      let edgeId = src.id;
-      let prop = src.source.prop;
-      let newPos = mainScope.getCoordinateProperty(vertexId, prop, TYPE_POINT.OUTPUT);
-      let options = {source: newPos}
-      mainScope.edgeMgmt.updateAttributeNS(edgeId, options);
-    });
-
-    desPaths.forEach(des => {
-      let edgeId = des.id;
-      let prop = des.target.prop;
-      let newPos = mainScope.getCoordinateProperty(vertexId, prop, TYPE_POINT.INPUT);
-      let options = {target: newPos}
-      mainScope.edgeMgmt.updateAttributeNS(edgeId, options);
-    });
+    let vertexId = d.id;
+    let mainScope = d.mainScope;
+    mainScope.updatePoisitionPathConnnect(vertexId);
 
     // Transform group
-    d3.select(this).attr("transform", (d,i) => {
+    d3.select(`#${d.id}`).attr("transform", (d,i) => {
       return "translate(" + [ d3.event.x, d3.event.y ] + ")"
+    });
+  }
+
+  /**
+   * Set position for vertex
+   * Called in function dragBoundary (Object boundary)
+   * @param vertexId
+   * @param position
+   */
+  setVertexPosition(vertexId, position) {
+    let vertexInfo = this.getVertexInfoById(vertexId);
+    vertexInfo.x = position.x;
+    vertexInfo.y = position.y;
+    this.updatePoisitionPathConnnect(vertexId);
+
+    d3.select(`#${vertexId}`).attr("transform", (d,i) => {
+      return "translate(" + [ position.x, position.y ] + ")"
     });
   }
 
@@ -193,26 +192,31 @@ class VertexMgmt{
    * @param d
    */
   dragended(d) {
-    // d3.select(this).classed("active", false);
-    // console.log(d);
-    // console.log(this.parentNode);
-    let tmpVertex = this;
-    // console.log(tmpVertex);
-    d3.select("svg").selectAll(".groupBoundary").each(function(d, i) {
+    d3.select(this).classed("active", false);
+    let vertexInfo = d;
+    let boxVertex = d3.select(`#${vertexInfo.id}`).node().getBBox();
+    d3.select("svg").selectAll(".groupBoundary").each((d, i, node) => {
 
-      console.log(this);
-      d3.select(this).append("circle")
-        .attr("r", 40) //get radius from targetCircle and also styles?
-        .attr("id", "circleAddedId")
-        .classed("circleAddedClass", true)
-        .attr("cx", d3.mouse(this)[0])
-        .attr("cy", d3.mouse(this)[1])
-        .style("fill", "white")
-        .style("stroke", "black")
-        .style("stroke-width", "2px");
-      console.log((d3.select(tmpVertex).node().cloneNode(true)));
-      // d3.select(this).node().appendChild(d3.select(tmpVertex).node().cloneNode(true));
-      // d3.select(tmpVertex).remove();
+      // Calculate box for vertex
+      let xVertex = vertexInfo.x;
+      let yVertex = vertexInfo.y
+      let xVertexBox = xVertex + boxVertex.width;
+      let yVertexBox = yVertex + boxVertex.height;
+
+      // Calculate box for boundary
+      let boundaryId = d.id;
+      let boundaryScope = d.boundaryScope;
+      let boundaryInfo = boundaryScope.getBoundaryInfoById(boundaryId);
+      let xBoundary = boundaryInfo.x;
+      let yBoundary = boundaryInfo.y;
+      let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
+      let xBoundaryBox = xBoundary + boxBoundary.width;
+      let yBoundaryBox = yBoundary + boxBoundary.height;
+
+      // Check drop inside a boundary
+      if((xVertex >= xBoundary) && (yVertex >= yBoundary) && (xVertexBox <= xBoundaryBox) && (yVertexBox <= yBoundaryBox) ){
+        boundaryInfo.member.vertex.push(vertexInfo.id);
+      }
     });
   }
 
@@ -225,7 +229,7 @@ class VertexMgmt{
     d3.select(`#${vertexId}`).remove();
     // Remove from data container
     let data = _.remove(this.dataContainer.vertex, (e) => {
-      return e.id == vertexId;
+      return e.id === vertexId;
     });
 
     // Remove all edge relate to vertex
@@ -240,6 +244,8 @@ class VertexMgmt{
    * @param vertexId
    */
   copy(vertexId) {
+
+    // Can use clone of d3 to clone => May it faster.
     let vertexObj = this.getVertexInfoById(vertexId);
 
     if(vertexObj){
@@ -492,6 +498,31 @@ class VertexMgmt{
     });
 
     this.dataContainer.vertex.unshift(tmpVertex);
+  }
+
+  /**
+   * Find and update position connect to vertex when in move
+   * @param vertexId
+   */
+  updatePoisitionPathConnnect(vertexId) {
+    let srcPaths = this.objectUtils.findEdgeStartFromVertex(vertexId);
+    let desPaths = this.objectUtils.findEdgeConnectToVertex(vertexId);
+
+    srcPaths.forEach(src => {
+      let edgeId = src.id;
+      let prop = src.source.prop;
+      let newPos = this.getCoordinateProperty(vertexId, prop, TYPE_POINT.OUTPUT);
+      let options = {source: newPos}
+      this.edgeMgmt.updateAttributeNS(edgeId, options);
+    });
+
+    desPaths.forEach(des => {
+      let edgeId = des.id;
+      let prop = des.target.prop;
+      let newPos = this.getCoordinateProperty(vertexId, prop, TYPE_POINT.INPUT);
+      let options = {target: newPos}
+      this.edgeMgmt.updateAttributeNS(edgeId, options);
+    });
   }
 
 };
