@@ -45,8 +45,9 @@ class BoundaryMgmt{
       y: options.y,
       name: options.name || "Boundary",
       description: options.description || "Boundary Description",
-      member: ["v1", "b2"],
-      id: boundaryId
+      member: {vertex:[], boundary:["b1", "b2"]},
+      id: boundaryId,
+      boundaryScope: this
     };
 
     let htmlContent = '';
@@ -56,20 +57,23 @@ class BoundaryMgmt{
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", boundaryId)
       .attr("class", "groupBoundary")
+      .style("visibility", "visible")
+      .style("cursor", "move");
 
     group.append("foreignObject")
+      .attr("id", `${boundaryId}Content`)
       .attr("width", groupBoundaryWidth)
       .attr("height", groupBoundaryHeight)
-      .append("xhtml:div")
-      .attr("class", "boundary_content")
+      .style("border", "solid 1px #652a82")
       .style("font-size", "13px")
       .style("background", "#ffffff")
+      .append("xhtml:div")
+      .attr("class", "boundary_content")
       .html(`
           <div class="boundary_header" style="width: ${groupBoundaryWidth + 20}px;">
             <label class="boundary_right" id="${boundaryId}_visiable">+</label>
-            <label class="header_boundary" style="width: ${groupBoundaryWidth}px; height: ${headerBoundaryHeight}px;">${boundaryInfo.name}</label>
+            <label class="header_boundary" style="width: ${groupBoundaryWidth - 2}px; height: ${headerBoundaryHeight}px;">${boundaryInfo.name}</label>
           </div>
-          <div class="boundary_data" style="height: ${groupBoundaryHeight}px"></div>
       `);
 
     boundaryInfo.width = groupBoundaryWidth;
@@ -109,15 +113,20 @@ class BoundaryMgmt{
   }
 
   dragBoundary(d) {
+
+    let boundaryScope = d.boundaryScope;
     // Update poition object in this.dataContainer.boundary
-    d3.select(this)
-      .attr("x", d.x = d3.event.x)
-      .attr("y", d.y = d3.event.y);
+    d.x = d3.event.x
+    d.y = d3.event.y;
+
+    // Update position of child element
+    let vertexMembers = d.member.vertex;
+    boundaryScope.updatePositionVertex(d.id, {x: d3.event.x, y: d3.event.y});
 
     // Transform group
     d3.select(this).attr("transform", (d,i) => {
       return "translate(" + [ d3.event.x, d3.event.y ] + ")"
-    })
+    });
   }
 
   dragBoundaryEnd(d) {
@@ -133,7 +142,7 @@ class BoundaryMgmt{
     d3.select(`#${boundaryId}`).remove();
     // Remove from data container
     let data = _.remove(this.dataContainer.boundary, (e) => {
-      return e.id != boundaryId;
+      return e.id === boundaryId;
     });
 
     console.log(data);
@@ -146,6 +155,29 @@ class BoundaryMgmt{
    */
   getBoundaryInfoById(boundaryId) {
     return _.find(this.dataContainer.boundary, (e) => { return e.id === boundaryId; });
+  }
+
+  /**
+   * Calculator position for child element
+   * @param boudaryId
+   * @param position
+   */
+  updatePositionVertex(boundaryId, pos) {
+    console.log(d3.select(`#${boundaryId}`).select('foreignObject'));
+    let orderVertex = 0;
+    let heightBeforeElements = 43;
+    let marginTop = 5;
+    // Get child of boundary
+    let vetexMembers = this.getBoundaryInfoById(boundaryId).member.vertex;
+    vetexMembers.forEach(vertex => {
+      let boxVertex = d3.select(`#${vertex}`).node().getBBox();
+      let vertexInfo = this.objectUtils.getVertexInfoById(vertex);
+      let vertexScope = vertexInfo.mainScope;
+      let position = {x: pos.x + 15, y: pos.y + heightBeforeElements + marginTop*orderVertex }; // Vertex postion center of boudary
+      vertexScope.setVertexPosition(vertex, position);
+      orderVertex ++;
+      heightBeforeElements += boxVertex.height;
+    });
   }
 };
 

@@ -60,3 +60,4 @@ window.sourceNode = null; // Define source node for create connect
 window.disabledCommand = false; // Use for only mode (Disable all command on menu context)
 window.disabledMenu = true; // Not show menu context
 window.vertexTypes = null; // Vertex types use in current graph
+window.vertexTypesTmp = null; // Vertex types export in file Graph Data Structure => Used to validate

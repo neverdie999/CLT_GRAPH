@@ -103,7 +103,7 @@ class FileMgmt{
   }
 
   getContentGraphAsJson() {
-    let dataContent = {vertex: [], edge: [], boundary: [], type: {}};
+    let dataContent = {vertex: [], edge: [], boundary: [], vertexTypes: {}};
 
     // Process data to export
     this.dataContainer.vertex.forEach(node => {
@@ -112,7 +112,7 @@ class FileMgmt{
     });
     dataContent.edge = this.dataContainer.edge;
     dataContent.boundary = this.dataContainer.boundary;
-    dataContent.type = this.dataContainer.vertexTypes;
+    dataContent.vertexTypes = window.vertexTypes;
 
     return Promise.resolve(dataContent);
   }
