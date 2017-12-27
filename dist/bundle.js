@@ -2556,7 +2556,7 @@ const INTERACTION_TP = {
   LEFT: 'LEFT',
   RIGHT: 'RIGHT',
 }
-/* harmony export (immutable) */ __webpack_exports__["j"] = INTERACTION_TP;
+/* unused harmony export INTERACTION_TP */
 
 
 const INTERACTION_TP_LST = [
@@ -2564,7 +2564,7 @@ const INTERACTION_TP_LST = [
   {value: 'LEFT', name:'Left'},
   {value: 'RIGHT', name:'Right'}
 ];
-/* harmony export (immutable) */ __webpack_exports__["k"] = INTERACTION_TP_LST;
+/* unused harmony export INTERACTION_TP_LST */
 
 
 const EDGE_LINE_TP = [
@@ -2586,7 +2586,7 @@ const TYPE_POINT = {
   OUTPUT: 'O',
   INPUT: 'I'
 };
-/* harmony export (immutable) */ __webpack_exports__["l"] = TYPE_POINT;
+/* harmony export (immutable) */ __webpack_exports__["j"] = TYPE_POINT;
 
 
 // The attributes size of vertex
@@ -2596,7 +2596,7 @@ const VERTEX_ATTR_SIZE = {
   GROUP_WIDTH: 150,
   SPACE_COPY: 10, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
 }
-/* harmony export (immutable) */ __webpack_exports__["m"] = VERTEX_ATTR_SIZE;
+/* harmony export (immutable) */ __webpack_exports__["k"] = VERTEX_ATTR_SIZE;
 
 
 // Global variable
@@ -49513,7 +49513,7 @@ class BoundaryMenuContext{
 
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
-const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
+// const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
 const HTML_VERTEX_FORM_ID = 'vertexForm';
 
@@ -49551,7 +49551,7 @@ class VertexMgmt{
     let vertexType = options.vertexType;
     // Get properties vertex from list object vertex type
     let vertexProperties = options.data ? Object.assign({}, options.data) : Object.assign({}, window.vertexTypes[vertexType]);
-    let interaction = options.interaction || __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* INTERACTION_TP */].FULL;
+    // let interaction = options.interaction || INTERACTION_TP.FULL;
     let vertexId = options.id? options.id : this.objectUtils.generateObjectId('V');
     let mainScope = this;
 
@@ -49559,8 +49559,9 @@ class VertexMgmt{
       x: options.x,
       y: options.y,
       vertexType: vertexType,
-      interaction: interaction,
-      name: options.name || "Name",
+      // interaction: interaction,
+      // name: options.name || "Name", Now use vertex type as default name
+      name: options.name || vertexType,
       description: options.description || "Description",
       data: vertexProperties,
       id: vertexId,
@@ -49579,54 +49580,54 @@ class VertexMgmt{
         // Bring data to top
         this.moveDataToLast(vertexId);
       });
-      // .on("mouseout", (d, i, node) => {
-      //   console.log("Mouse up");
-      //   let vertexId = d.id;
-      //   d3.select(node[0]).moveToBack();
-      //   // Bring data to top
-      //   this.moveDataToFirst(vertexId);
-      // });
+    // .on("mouseout", (d, i, node) => {
+    //   console.log("Mouse up");
+    //   let vertexId = d.id;
+    //   d3.select(node[0]).moveToBack();
+    //   // Bring data to top
+    //   this.moveDataToFirst(vertexId);
+    // });
 
     let htmlContent = '';
     let countProperty = 0;
     for (const key of Object.keys(vertexProperties)) {
-      if(interaction === __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* INTERACTION_TP */].FULL){
-        htmlContent += `
-          <div class="interaction_full property" prop="${key}" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
-            <label class="key">${key} : </label>
-            <label class="data ${key}">${vertexProperties[key]}</label>
-          </div>`;
-      } else if (interaction === __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* INTERACTION_TP */].LEFT) {
-        htmlContent += `
-          <div class="interaction_left property" prop="${key}" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
-            <label class="key">${key} : </label>
-            <label class="data ${key}">${vertexProperties[key]}</label>
-          </div>`;
-      } else {
-        htmlContent += `
-          <div class="interaction_right property" prop="${key}" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
-            <label class="key">${key} : </label>
-            <label class="data ${key}">${vertexProperties[key]}</label>
-          </div>`;
-      }
+      // if(interaction === INTERACTION_TP.FULL){
+      htmlContent += `
+        <div class="property" prop="${key}" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
+          <label class="key">${key} : </label>
+          <label class="data ${key}">${vertexProperties[key]}</label>
+        </div>`;
+      // } else if (interaction === INTERACTION_TP.LEFT) {
+      //   htmlContent += `
+      //     <div class="interaction_left property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
+      //       <label class="key">${key} : </label>
+      //       <label class="data ${key}">${vertexProperties[key]}</label>
+      //     </div>`;
+      // } else {
+      //   htmlContent += `
+      //     <div class="interaction_right property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
+      //       <label class="key">${key} : </label>
+      //       <label class="data ${key}">${vertexProperties[key]}</label>
+      //     </div>`;
+      // }
       countProperty ++;
     }
 
-    let vertexHeight = __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT*countProperty;
+    let vertexHeight = __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT*countProperty;
     // May be no need for vertex.
     // group.append("rect")
     //   .attr("width", VERTEX_ATTR_SIZE.GROUP_WIDTH)
     //   .attr("height", vertexHeight)
     //   .style("fill", "white");
     group.append("foreignObject")
-      .attr("width", __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
+      .attr("width", __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
       .attr("height", vertexHeight)
       .append("xhtml:div")
       .attr("class", "vertex_content")
       .style("font-size", "13px")
       .style("background", "#ffffff")
       .html(`
-        <p class="header_name" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px">${vertexInfo.name}</p>
+        <p class="header_name" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px">${vertexInfo.name}</p>
         <div class="vertex_data">
           ${htmlContent}
         </div>
@@ -49752,9 +49753,9 @@ class VertexMgmt{
     if(vertexObj){
       let info = Object.assign({}, vertexObj);
       let options = {
-        x: info.x + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
-        y: info.y + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
-        interaction: info.interaction,
+        x: info.x + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
+        y: info.y + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
+        // interaction: info.interaction,
         name: info.name,
         description: info.description,
         vertexType: info.vertexType,
@@ -49796,7 +49797,7 @@ class VertexMgmt{
     // Use in function updateVertexInfo()
     this.originVertex = vertexInfo;
     // Append content to popup
-    $(`#${HTML_OPTIONS_INTERACTION_TYPE}`).val(vertexInfo.interaction);
+    // $(`#${HTML_OPTIONS_INTERACTION_TYPE}`).val(vertexInfo.interaction);
     $(`#vertexName`).val(vertexInfo.name);
     $(`#vertexId`).val(vertexInfo.id);
     $(`#vertexDesc`).val(vertexInfo.description);
@@ -49835,10 +49836,10 @@ class VertexMgmt{
    */
   bindEventForPopButton() {
     // Append content to vertex popup
-    let $group = $(`#${HTML_OPTIONS_INTERACTION_TYPE}`);
-    __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* INTERACTION_TP_LST */].forEach((elm) => {
-      const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($group);
-    });
+    // let $group = $(`#${HTML_OPTIONS_INTERACTION_TYPE}`);
+    // INTERACTION_TP_LST.forEach((elm) => {
+    //   const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($group);
+    // });
 
     $("#vertexBtnConfirm").click(e => {
       this.updateVertexInfo();
@@ -49864,7 +49865,7 @@ class VertexMgmt{
 
     // Update origin data vertex
     this.originVertex.name = data.vertexName;
-    this.originVertex.interaction = data.vertexInteraction;
+    // this.originVertex.interaction = data.vertexInteraction;
     this.originVertex.description = data.vertexDesc;
     // Update data follow key in originVertex.data
     for (const key of Object.keys(this.originVertex.data)) {
@@ -49901,7 +49902,7 @@ class VertexMgmt{
    */
   setConnectFrom(vertexId, prop = null) {
     window.creatingEdge = true;
-    let source = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].OUTPUT);
+    let source = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* TYPE_POINT */].OUTPUT);
     source.vertexId = vertexId;
     source.prop = prop;
     window.sourceNode = source;
@@ -49914,7 +49915,7 @@ class VertexMgmt{
    */
   setConnectTo(vertexId, prop = null) {
     if(window.creatingEdge){
-      let target = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].INPUT);
+      let target = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* TYPE_POINT */].INPUT);
       target.vertexId = vertexId;
       target.prop = prop;
       let options = {source: window.sourceNode, target: target};
@@ -49939,7 +49940,7 @@ class VertexMgmt{
    */
   getCoordinateProperty(vertexId, prop, type) {
     if(!type)
-      type = __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].OUTPUT;
+      type = __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* TYPE_POINT */].OUTPUT;
     let vertexObj = this.getVertexInfoById(vertexId);
     let vertexInfo = Object.assign({}, vertexObj);
     let axisX = vertexInfo.x;
@@ -49949,7 +49950,7 @@ class VertexMgmt{
     // if(!prop)
     //   return {x: type === TYPE_POINT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH : axisX, y: axisY + 2 };
     if(!prop)
-      return {x: axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH/2, y: axisY};
+      return {x: axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH/2, y: axisY};
 
     let vertexData = vertexInfo.data;
     // Find index prop in object
@@ -49958,9 +49959,9 @@ class VertexMgmt{
     // y = current axis y + height header + indexProp*heightProp + 13;
     // x = if output then axis x + width vertex; if not then axis x
     // Get coordinate
-    axisY = axisY + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index*__WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT/2;
+    axisY = axisY + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index*__WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT/2;
 
-    return {x: type === __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH : axisX, y: axisY};
+    return {x: type === __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* TYPE_POINT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH : axisX, y: axisY};
   }
 
   /**
@@ -50012,7 +50013,7 @@ class VertexMgmt{
     srcPaths.forEach(src => {
       let edgeId = src.id;
       let prop = src.source.prop;
-      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].OUTPUT);
+      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* TYPE_POINT */].OUTPUT);
       let options = {source: newPos}
       this.edgeMgmt.updateAttributeNS(edgeId, options);
     });
@@ -50020,7 +50021,7 @@ class VertexMgmt{
     desPaths.forEach(des => {
       let edgeId = des.id;
       let prop = des.target.prop;
-      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].INPUT);
+      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* TYPE_POINT */].INPUT);
       let options = {target: newPos}
       this.edgeMgmt.updateAttributeNS(edgeId, options);
     });
@@ -50991,7 +50992,7 @@ exports = module.exports = __webpack_require__(808)(undefined);
 
 
 // module
-exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px 5px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .vertex-type {\n      height: 26px;\n      text-align: center; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border: 1px solid #336699;\n    border-collapse: collapse;\n    border-spacing: 0 0.5em; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper select {\n    height: 25px;\n    margin: 0 4px 0 0;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper input[type=\"radio\"] {\n    margin-top: 6px; }\n\n.my-group .form-control {\n  width: 50%; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE; }\n  .edge:focus {\n    stroke: #2795EE; }\n\n.solid {\n  stroke: solid; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  background: #E1D5E7;\n  font-weight: 600; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 52px;\n  text-align: right; }\n\n.vertex_data div .data {\n  width: calc(100% - 55px);\n  margin-left: 7px;\n  border: none; }\n\n.interaction_full, .interaction_left, .interaction_right {\n  height: 25px;\n  cursor: pointer; }\n\n.interaction_full:before, .interaction_left:before {\n  margin-top: 8px;\n  margin-left: -8px;\n  border: solid 1px #652a82;\n  width: 0.5em;\n  height: 0.5em;\n  border-radius: 0.5em;\n  content: \"\"; }\n\n.interaction_full:after, .interaction_right:after {\n  margin-top: 8px;\n  margin-right: -8px;\n  border: solid 1px #652a82;\n  width: 0.5em;\n  height: 0.5em;\n  border-radius: 0.5em;\n  content: \"\"; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  background: #E1D5E7;\n  border-bottom: solid 1px #652a82;\n  margin: 0;\n  padding: 8px 0px;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border: solid 1px #652a82;\n  border-left: none;\n  background: white;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n", ""]);
+exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px 5px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .vertex-type {\n      height: 26px;\n      text-align: center; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border: 1px solid #336699;\n    border-collapse: collapse;\n    border-spacing: 0 0.5em; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper select {\n    height: 25px;\n    margin: 0 4px 0 0;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper input[type=\"radio\"] {\n    margin-top: 6px; }\n\n.my-group .form-control {\n  width: 50%; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE; }\n  .edge:focus {\n    stroke: #2795EE; }\n\n.solid {\n  stroke: solid; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  background: #E1D5E7;\n  font-weight: 600; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right; }\n\n.vertex_data div .data {\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  background: #E1D5E7;\n  border-bottom: solid 1px #652a82;\n  margin: 0;\n  padding: 8px 0px;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border: solid 1px #652a82;\n  border-left: none;\n  background: white;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n", ""]);
 
 // exports
 

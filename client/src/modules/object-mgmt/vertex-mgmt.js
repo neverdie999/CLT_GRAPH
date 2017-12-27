@@ -12,7 +12,7 @@ import PopUtils from '../../common/utilities/popup.ult';
 import {moveToFront} from '../../common/utilities/common.ult';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
-const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
+// const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
 const HTML_VERTEX_FORM_ID = 'vertexForm';
 
@@ -50,7 +50,7 @@ class VertexMgmt{
     let vertexType = options.vertexType;
     // Get properties vertex from list object vertex type
     let vertexProperties = options.data ? Object.assign({}, options.data) : Object.assign({}, window.vertexTypes[vertexType]);
-    let interaction = options.interaction || INTERACTION_TP.FULL;
+    // let interaction = options.interaction || INTERACTION_TP.FULL;
     let vertexId = options.id? options.id : this.objectUtils.generateObjectId('V');
     let mainScope = this;
 
@@ -58,8 +58,9 @@ class VertexMgmt{
       x: options.x,
       y: options.y,
       vertexType: vertexType,
-      interaction: interaction,
-      name: options.name || "Name",
+      // interaction: interaction,
+      // name: options.name || "Name", Now use vertex type as default name
+      name: options.name || vertexType,
       description: options.description || "Description",
       data: vertexProperties,
       id: vertexId,
@@ -78,36 +79,36 @@ class VertexMgmt{
         // Bring data to top
         this.moveDataToLast(vertexId);
       });
-      // .on("mouseout", (d, i, node) => {
-      //   console.log("Mouse up");
-      //   let vertexId = d.id;
-      //   d3.select(node[0]).moveToBack();
-      //   // Bring data to top
-      //   this.moveDataToFirst(vertexId);
-      // });
+    // .on("mouseout", (d, i, node) => {
+    //   console.log("Mouse up");
+    //   let vertexId = d.id;
+    //   d3.select(node[0]).moveToBack();
+    //   // Bring data to top
+    //   this.moveDataToFirst(vertexId);
+    // });
 
     let htmlContent = '';
     let countProperty = 0;
     for (const key of Object.keys(vertexProperties)) {
-      if(interaction === INTERACTION_TP.FULL){
-        htmlContent += `
-          <div class="interaction_full property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-            <label class="key">${key} : </label>
-            <label class="data ${key}">${vertexProperties[key]}</label>
-          </div>`;
-      } else if (interaction === INTERACTION_TP.LEFT) {
-        htmlContent += `
-          <div class="interaction_left property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-            <label class="key">${key} : </label>
-            <label class="data ${key}">${vertexProperties[key]}</label>
-          </div>`;
-      } else {
-        htmlContent += `
-          <div class="interaction_right property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-            <label class="key">${key} : </label>
-            <label class="data ${key}">${vertexProperties[key]}</label>
-          </div>`;
-      }
+      // if(interaction === INTERACTION_TP.FULL){
+      htmlContent += `
+        <div class="property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
+          <label class="key">${key} : </label>
+          <label class="data ${key}">${vertexProperties[key]}</label>
+        </div>`;
+      // } else if (interaction === INTERACTION_TP.LEFT) {
+      //   htmlContent += `
+      //     <div class="interaction_left property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
+      //       <label class="key">${key} : </label>
+      //       <label class="data ${key}">${vertexProperties[key]}</label>
+      //     </div>`;
+      // } else {
+      //   htmlContent += `
+      //     <div class="interaction_right property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
+      //       <label class="key">${key} : </label>
+      //       <label class="data ${key}">${vertexProperties[key]}</label>
+      //     </div>`;
+      // }
       countProperty ++;
     }
 
@@ -253,7 +254,7 @@ class VertexMgmt{
       let options = {
         x: info.x + VERTEX_ATTR_SIZE.SPACE_COPY,
         y: info.y + VERTEX_ATTR_SIZE.SPACE_COPY,
-        interaction: info.interaction,
+        // interaction: info.interaction,
         name: info.name,
         description: info.description,
         vertexType: info.vertexType,
@@ -295,7 +296,7 @@ class VertexMgmt{
     // Use in function updateVertexInfo()
     this.originVertex = vertexInfo;
     // Append content to popup
-    $(`#${HTML_OPTIONS_INTERACTION_TYPE}`).val(vertexInfo.interaction);
+    // $(`#${HTML_OPTIONS_INTERACTION_TYPE}`).val(vertexInfo.interaction);
     $(`#vertexName`).val(vertexInfo.name);
     $(`#vertexId`).val(vertexInfo.id);
     $(`#vertexDesc`).val(vertexInfo.description);
@@ -334,10 +335,10 @@ class VertexMgmt{
    */
   bindEventForPopButton() {
     // Append content to vertex popup
-    let $group = $(`#${HTML_OPTIONS_INTERACTION_TYPE}`);
-    INTERACTION_TP_LST.forEach((elm) => {
-      const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($group);
-    });
+    // let $group = $(`#${HTML_OPTIONS_INTERACTION_TYPE}`);
+    // INTERACTION_TP_LST.forEach((elm) => {
+    //   const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($group);
+    // });
 
     $("#vertexBtnConfirm").click(e => {
       this.updateVertexInfo();
@@ -363,7 +364,7 @@ class VertexMgmt{
 
     // Update origin data vertex
     this.originVertex.name = data.vertexName;
-    this.originVertex.interaction = data.vertexInteraction;
+    // this.originVertex.interaction = data.vertexInteraction;
     this.originVertex.description = data.vertexDesc;
     // Update data follow key in originVertex.data
     for (const key of Object.keys(this.originVertex.data)) {
