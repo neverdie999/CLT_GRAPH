@@ -110,8 +110,14 @@ class FileMgmt{
       delete node.mainScope;
       dataContent.vertex.push(node);
     });
+
     dataContent.edge = this.dataContainer.edge;
-    dataContent.boundary = this.dataContainer.boundary;
+
+    this.dataContainer.boundary.forEach(boundary => {
+      delete boundary.boundaryScope;
+      dataContent.boundary.push(boundary);
+    });
+
     dataContent.vertexTypes = window.vertexTypes;
 
     return Promise.resolve(dataContent);

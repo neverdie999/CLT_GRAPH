@@ -2606,6 +2606,7 @@ window.disabledCommand = false; // Use for only mode (Disable all command on men
 window.disabledMenu = true; // Not show menu context
 window.vertexTypes = null; // Vertex types use in current graph
 window.vertexTypesTmp = null; // Vertex types export in file Graph Data Structure => Used to validate
+window.isImportVertexTypeDefine = false; // If vertex type define was importted.
 
 
 /***/ }),
@@ -35893,12 +35894,17 @@ class Starter {
    */
   async reloadVertexTypes(data){
     // Set global vertex types
+    // The content vertex type on graph alway
+    // give to content vertex type was import from Vertex Type Defination
     window.vertexTypes = data;
+    window.isImportVertexTypeDefine = true;
+
     // Validate vertex type
     let isMisMatch = await this.validateVertexTypesInGraph();
+
     // Now just show message warning for user. Not stop working
     if(isMisMatch)
-      Object(__WEBPACK_IMPORTED_MODULE_10__common_utilities_common_ult__["a" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure is mismatch. Please check again!");
+      Object(__WEBPACK_IMPORTED_MODULE_10__common_utilities_common_ult__["a" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch. Please check again!");
 
     this.initContextMenuForObject();
     // window.disabledCommand = false;
@@ -35916,15 +35922,19 @@ class Starter {
     // Validate content
     let errorContent = await this.validateGraphDataStructure(data);
     if(errorContent) {
-      Object(__WEBPACK_IMPORTED_MODULE_10__common_utilities_common_ult__["a" /* comShowMessage */])("Data Graph Structure wrong format or invalid content!");
+      Object(__WEBPACK_IMPORTED_MODULE_10__common_utilities_common_ult__["a" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
       return;
     }
+
+    // If still not import Vertex Type Definition then reset it.
+    if(!window.isImportVertexTypeDefine)
+      window.vertexTypes = null;
 
     // Validate vertex type
     let isMisMatch = await this.validateVertexTypesInGraph();
     // Now just show message warning for user. Not stop working
     if(isMisMatch)
-      Object(__WEBPACK_IMPORTED_MODULE_10__common_utilities_common_ult__["a" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure is mismatch. Please check again!");
+      Object(__WEBPACK_IMPORTED_MODULE_10__common_utilities_common_ult__["a" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch. Please check again!");
 
     // Draw vertex
     let arrVertex = data.vertex;
@@ -35939,9 +35949,13 @@ class Starter {
     });
 
     // Draw boundary
-    for (let opt of Object.keys(data.boundary)) {
-      // this.boundaryMgmt.create(Object.assign(data.boundary[opt], data.coordinate[opt]));
-    }
+    let arrBoundary = data.boundary;
+    arrBoundary.forEach(boundary => {
+      this.boundaryMgmt.createBoundary(boundary);
+    });
+
+    if(!window.isImportVertexTypeDefine)
+      window.vertexTypes = data.vertexTypes;
 
     this.initContextMenuForObject();
     // $.contextMenu('update');
@@ -36039,12 +36053,56 @@ class Starter {
     __WEBPACK_IMPORTED_MODULE_11_d3__["d" /* selectAll */](".context-menu-list").remove();
   }
 
+
   /**
-   * Validate Vertices in Graph Data
-   * Structure using Vertex Type Definition
+   * Validate Graph Data Structure
+   * with embedded vertex type
+   * Validate content
+   */
+  async validateGraphDataStructure(data) {
+    // Validate struct data
+    if(!data.vertex || !data.edge || !data.boundary || !data.vertexTypes) {
+      return Promise.resolve(true);
+    }
+
+    // Validate embedded vertex type with vertices
+    let vertexTypes = data.vertexTypes;
+    let vertices = data.vertex;
+    for (let vertex of vertices) {
+      let vertexType = vertex.vertexType;
+      // If vertex type not exit in embedded vertex type
+      if(!vertexTypes[vertexType])
+      {
+        console.log("GraphDataStructure Vertex type in graph data not exit in embedded vertex type");
+        return Promise.resolve(true);
+      }
+
+      let keySource = Object.keys(vertex.data);
+      let keyTarget = Object.keys(vertexTypes[vertexType]);
+      // Check length key
+      if(this.checkLengthMisMatch(keySource, keyTarget))
+      {
+        console.log("GraphDataStructure length is different");
+        return Promise.resolve(true);
+      }
+
+      // Check mismatch key
+      let flag = await this.checkKeyMisMatch(keySource, keyTarget);
+
+      if(flag) {
+        console.log("GraphDataStructure Key vertex at source not exit in target");
+        return Promise.resolve(true);
+      }
+    }
+
+    return Promise.resolve(false);
+  }
+
+  /**
+   * Validate Embedded Vertex Types in Graph Data Structure
+   * with Vertex Type Definition
    */
   async validateVertexTypesInGraph() {
-    let isMisMatch = false;
     if(!window.vertexTypes || !window.vertexTypesTmp)
     {
       console.log("Targe or soruce is null");
@@ -36084,7 +36142,7 @@ class Starter {
         return Promise.resolve(true);
       }
     }
-    return Promise.resolve(isMisMatch);
+    return Promise.resolve(false);
   }
 
   /**
@@ -36113,16 +36171,6 @@ class Starter {
     });
 
     return Promise.resolve(misMatch);
-  }
-
-  /**
-   * Validate Graph Data Structure
-   * Validate content
-   */
-  validateGraphDataStructure(data) {
-    if(!data.vertex || !data.edge || !data.boundary || !data.vertexTypes) {
-      return Promise.resolve(true);
-    }
   }
 }
 
@@ -49735,10 +49783,10 @@ class VertexMgmt{
     });
 
     // Remove all edge relate to vertex
-    // let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
-    // relatePaths.forEach(path => {
-    //   this.edgeMgmt.removeEdge(path.id);
-    // });
+    let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
+    relatePaths.forEach(path => {
+      this.edgeMgmt.removeEdge(path.id);
+    });
   }
 
   /**
@@ -50078,19 +50126,6 @@ module.exports = function(module) {
 const headerBoundaryHeight = 38;
 const groupBoundaryWidth = 180;
 const groupBoundaryHeight = 200;
-const HTML_VERTEX_INFO_ID = 'vertexInfo';
-const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
-const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
-const HTML_VERTEX_FORM_ID = 'vertexForm';
-const boundaryType = {
-  "Boundary": {
-    "name":"Grunt",
-    "hp": 500,
-    "atk": "M20",
-    "def": "H2",
-    "spd": 1
-  }
-};
 
 class BoundaryMgmt{
   constructor(props){
@@ -50106,13 +50141,15 @@ class BoundaryMgmt{
   }
 
   createBoundary(options = {}){
-    let boundaryId = options.id? options.id : this.objectUtils.generateObjectId('B');
+    let boundaryId = options.id ? options.id : this.objectUtils.generateObjectId('B');
+    let memberIsVertex = options.member ? options.member.vertex : [];
+    let memberIsBoundary = options.member ? options.member.boundary : [];
     let boundaryInfo = {
       x: options.x,
       y: options.y,
       name: options.name || "Boundary",
       description: options.description || "Boundary Description",
-      member: {vertex:[], boundary:["b1", "b2"]},
+      member: {vertex: memberIsVertex , boundary: memberIsBoundary},
       id: boundaryId,
       boundaryScope: this
     };
@@ -50230,7 +50267,6 @@ class BoundaryMgmt{
    * @param position
    */
   updatePositionVertex(boundaryId, pos) {
-    console.log(__WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).select('foreignObject'));
     let orderVertex = 0;
     let heightBeforeElements = 43;
     let marginTop = 5;
@@ -50366,8 +50402,14 @@ class FileMgmt{
       delete node.mainScope;
       dataContent.vertex.push(node);
     });
+
     dataContent.edge = this.dataContainer.edge;
-    dataContent.boundary = this.dataContainer.boundary;
+
+    this.dataContainer.boundary.forEach(boundary => {
+      delete boundary.boundaryScope;
+      dataContent.boundary.push(boundary);
+    });
+
     dataContent.vertexTypes = window.vertexTypes;
 
     return Promise.resolve(dataContent);
