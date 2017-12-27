@@ -30,39 +30,37 @@
 }
 
 .vertex_data div .key{
-  width: 52px;
+  width: 85px;
   text-align: right;
 }
 
 .vertex_data div .data{
-  width: calc(100% - 55px);
-  margin-left: 7px;
+  width: calc(100% - 85px);
+  margin-left: 5px;
   border: none;
 }
 
-.interaction_full, .interaction_left, .interaction_right{
-  height: 25px;
-  cursor:pointer;
-}
-
-.interaction_full:before, .interaction_left:before{
-  margin-top: 8px;
-  margin-left: -8px;
-  border:solid 1px #652a82;
-  width:0.5em;
-  height:0.5em;
-  border-radius:0.5em;
-  content:"";
-}
-
-.interaction_full:after, .interaction_right:after{
-  margin-top: 8px;
-  margin-right: -8px;
-  border:solid 1px #652a82;
-  width:0.5em;
-  height:0.5em;
-  border-radius:0.5em;
-  content:"";
-}
-
-
+//.interaction_full, .interaction_left, .interaction_right{
+//  height: 25px;
+//  cursor:pointer;
+//}
+//
+//.interaction_full:before, .interaction_left:before{
+//  margin-top: 8px;
+//  margin-left: -8px;
+//  border:solid 1px #652a82;
+//  width:0.5em;
+//  height:0.5em;
+//  border-radius:0.5em;
+//  content:"";
+//}
+//
+//.interaction_full:after, .interaction_right:after{
+//  margin-top: 8px;
+//  margin-right: -8px;
+//  border:solid 1px #652a82;
+//  width:0.5em;
+//  height:0.5em;
+//  border-radius:0.5em;
+//  content:"";
+//}
