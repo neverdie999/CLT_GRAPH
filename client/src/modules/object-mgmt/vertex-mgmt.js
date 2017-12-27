@@ -234,10 +234,10 @@ class VertexMgmt{
     });
 
     // Remove all edge relate to vertex
-    // let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
-    // relatePaths.forEach(path => {
-    //   this.edgeMgmt.removeEdge(path.id);
-    // });
+    let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
+    relatePaths.forEach(path => {
+      this.edgeMgmt.removeEdge(path.id);
+    });
   }
 
   /**

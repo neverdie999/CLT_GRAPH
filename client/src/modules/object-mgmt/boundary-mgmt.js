@@ -11,19 +11,6 @@ import {HTML_BOUNDARY_CONTAINER_CLASS} from "../../const";
 const headerBoundaryHeight = 38;
 const groupBoundaryWidth = 180;
 const groupBoundaryHeight = 200;
-const HTML_VERTEX_INFO_ID = 'vertexInfo';
-const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
-const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
-const HTML_VERTEX_FORM_ID = 'vertexForm';
-const boundaryType = {
-  "Boundary": {
-    "name":"Grunt",
-    "hp": 500,
-    "atk": "M20",
-    "def": "H2",
-    "spd": 1
-  }
-};
 
 class BoundaryMgmt{
   constructor(props){
@@ -39,13 +26,15 @@ class BoundaryMgmt{
   }
 
   createBoundary(options = {}){
-    let boundaryId = options.id? options.id : this.objectUtils.generateObjectId('B');
+    let boundaryId = options.id ? options.id : this.objectUtils.generateObjectId('B');
+    let memberIsVertex = options.member ? options.member.vertex : [];
+    let memberIsBoundary = options.member ? options.member.boundary : [];
     let boundaryInfo = {
       x: options.x,
       y: options.y,
       name: options.name || "Boundary",
       description: options.description || "Boundary Description",
-      member: {vertex:[], boundary:["b1", "b2"]},
+      member: {vertex: memberIsVertex , boundary: memberIsBoundary},
       id: boundaryId,
       boundaryScope: this
     };
@@ -163,7 +152,6 @@ class BoundaryMgmt{
    * @param position
    */
   updatePositionVertex(boundaryId, pos) {
-    console.log(d3.select(`#${boundaryId}`).select('foreignObject'));
     let orderVertex = 0;
     let heightBeforeElements = 43;
     let marginTop = 5;

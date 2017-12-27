@@ -61,3 +61,4 @@ window.disabledCommand = false; // Use for only mode (Disable all command on men
 window.disabledMenu = true; // Not show menu context
 window.vertexTypes = null; // Vertex types use in current graph
 window.vertexTypesTmp = null; // Vertex types export in file Graph Data Structure => Used to validate
+window.isImportVertexTypeDefine = false; // If vertex type define was importted.
