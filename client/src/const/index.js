@@ -54,6 +54,13 @@ export const VERTEX_ATTR_SIZE = {
   SPACE_COPY: 10, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
 }
 
+// The attributes size of boundary
+export const BOUNDARY_ATTR_SIZE = {
+  HEADER_HEIGHT: 38,
+  BOUND_WIDTH: 180,
+  BOUND_HEIGHT: 200,
+}
+
 // Global variable
 window.creatingEdge = false; // Define state creation connect (edge)
 window.sourceNode = null; // Define source node for create connect

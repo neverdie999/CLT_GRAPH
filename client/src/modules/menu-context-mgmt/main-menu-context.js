@@ -15,6 +15,7 @@ class MainMenuContext{
     $.contextMenu({
       selector: this.selector,
       autoHide: true,
+      zIndex: 100,
       build: ($trigger, e) => {
         return {
           callback: (key, options) => {

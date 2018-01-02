@@ -1,44 +1,31 @@
 class MenuItemsBoundary{
   constructor(props){
+    this.selector = props.selector;
+    this.boundaryMgmt = props.boundaryMgmt;
+    this.vertexMgmt = props.vertexMgmt;
+    this.dataContainer = props.dataContainer;
+    this.mainMgmt = props.mainMgmt;
     this.initListItem();
   }
 
   initListItem(){
     $.contextMenu({
-      selector: '.groupBoundary',
+      selector: '.boundary_right',
       className: 'data-title',
+      zIndex: 100,
       build: ($trigger, e) => {
         return {
           callback: (key, options) => {
             let boundaryId = options.$trigger.attr('id');
-            switch (key)
-            {
-              case "editVertex":
-                this.boundaryMgmt.edit(boundaryId);
-                break;
-
-              case "copyVertex":
-                this.boundaryMgmt.copy(boundaryId);
-                break;
-
-              case "removeBoundary":
-                this.boundaryMgmt.removeBoundary(boundaryId);
-                break;
-
-              case "createEdge":
-                this.boundaryMgmt.setOnCreateEdge(boundaryId);
-                break;
-
-              default:
-                break;
-            }
           },
-          items: this.loadItems(),
+          items: this.loadItems($trigger),
           events: {
             show: function(opt) {
               $('.data-title').attr('data-menutitle', "Member Visible");
               var $this = this;
-              $.contextMenu.setInputValues(opt, $this.data());
+              let data = {yesno01: true, yesno02: true, yesno03: true, yesno04: true, yesno05: false};
+              $.contextMenu.setInputValues(opt, data);
+              console.log($this.data());
             },
             hide: function(opt) {
               var $this = this;
@@ -50,24 +37,26 @@ class MenuItemsBoundary{
     });
   }
 
-  loadItems() {
+  loadItems($trigger) {
 
-    let yesno01 = {name: "Vertex Grull", type: 'checkbox', selected: true};
-    let yesno02 = {name: "Vertex Boun", type: 'checkbox', selected: true};
-    let yesno03 = {name: "Vertex Trunt", type: 'checkbox', selected: true};
-    let yesno04 = {name: "Boundary Tank", type: 'checkbox', selected: true};
-    let yesno05 = {name: "Boundary Container", type: 'checkbox', selected: true};
+    // Get info of boundary
+    let boundaryId = $trigger.attr('id');
+    let boundaryInfo = this.boundaryMgmt.getBoundaryInfoById(boundaryId);
+    let vetexMembers = boundaryInfo.member.vertex;
+    let boundaryMembers = boundaryInfo.member.boundary;
 
-    const subItems = {
-      yesno01, yesno02, yesno03, yesno04, yesno05
-    };
-
-    // let dfd = jQuery.Deferred();
-    // setTimeout(() => {
-    //   dfd.resolve(subItems);
-    // }, 10);
-    // // set a title
-    // return dfd.promise();
+    const subItems = {};
+    if(vetexMembers.length == 0 && boundaryMembers.length == 0){
+      subItems.isHtmlItem = {type: 'html', html: '<div style="text-align: center; color: red;"><span>No item added</span></div>'};
+    }
+    vetexMembers.forEach(vertex => {
+      let vertexInfo = this.vertexMgmt.getVertexInfoById(vertex.id);
+      subItems[`${vertex.id}`] = {name: `${vertexInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.setVisibleVertex(`${vertex.id}`); }}};
+    });
+    boundaryMembers.forEach(boundary => {
+      let boundaryInfo = this.boundaryMgmt.getBoundaryInfoById(boundary.id);
+      subItems[`${boundary.id}`] = {name: `${boundaryInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.setVisibleBoundary(`${boundary.id}`); }}};
+    });
 
     return subItems;
   }

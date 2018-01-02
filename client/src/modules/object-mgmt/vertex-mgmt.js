@@ -64,7 +64,6 @@ class VertexMgmt{
       description: options.description || "Description",
       data: vertexProperties,
       id: vertexId,
-      parent: null,
       mainScope: mainScope,
     };
     this.dataContainer.vertex.push(vertexInfo);
@@ -73,19 +72,20 @@ class VertexMgmt{
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", vertexId)
       .attr("class", "groupVertex")
-      .on("mouseover", (d, i, node) => {
+      .style("cursor", "move")
+      .on("mousedown", (d, i, node) => {
         let vertexId = d.id;
         d3.select(node[0]).moveToFront();
         // Bring data to top
         this.moveDataToLast(vertexId);
       });
-    // .on("mouseout", (d, i, node) => {
-    //   console.log("Mouse up");
-    //   let vertexId = d.id;
-    //   d3.select(node[0]).moveToBack();
-    //   // Bring data to top
-    //   this.moveDataToFirst(vertexId);
-    // });
+      // .on("mouseout", (d, i, node) => {
+      //   console.log("Mouse up");
+      //   let vertexId = d.id;
+      //   d3.select(node[0]).moveToBack();
+      //   // Bring data to top
+      //   this.moveDataToFirst(vertexId);
+      // });
 
     let htmlContent = '';
     let countProperty = 0;
@@ -195,28 +195,36 @@ class VertexMgmt{
   dragended(d) {
     d3.select(this).classed("active", false);
     let vertexInfo = d;
-    let boxVertex = d3.select(`#${vertexInfo.id}`).node().getBBox();
+    // If vertex has parent then not check.
+    if(vertexInfo.parent)
+      return;
+
+    let vertexScope = d.mainScope;
+    // let boxVertex = d3.select(`#${vertexInfo.id}`).node().getBBox();
+    let boxVertex = vertexScope.objectUtils.getBBoxObjectById(vertexInfo.id);
+    // Calculate box for vertex
+    let xVertex = vertexInfo.x;
+    let yVertex = vertexInfo.y
+    let xVertexBox = xVertex + boxVertex.width;
+    let yVertexBox = yVertex + boxVertex.height;
+
     d3.select("svg").selectAll(".groupBoundary").each((d, i, node) => {
-
-      // Calculate box for vertex
-      let xVertex = vertexInfo.x;
-      let yVertex = vertexInfo.y
-      let xVertexBox = xVertex + boxVertex.width;
-      let yVertexBox = yVertex + boxVertex.height;
-
       // Calculate box for boundary
       let boundaryId = d.id;
       let boundaryScope = d.boundaryScope;
-      let boundaryInfo = boundaryScope.getBoundaryInfoById(boundaryId);
+      let boundaryInfo = boundaryScope.objectUtils.getBoundaryInfoById(boundaryId);
       let xBoundary = boundaryInfo.x;
       let yBoundary = boundaryInfo.y;
-      let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
+      // let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
+      let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
       let xBoundaryBox = xBoundary + boxBoundary.width;
       let yBoundaryBox = yBoundary + boxBoundary.height;
 
       // Check drop inside a boundary
       if((xVertex >= xBoundary) && (yVertex >= yBoundary) && (xVertexBox <= xBoundaryBox) && (yVertexBox <= yBoundaryBox) ){
-        boundaryInfo.member.vertex.push(vertexInfo.id);
+        // boundaryInfo.member.vertex.push({id: vertexInfo.id, show: true});
+        boundaryScope.addVertexMemberToBoundary(boundaryId, vertexInfo.id);
+        vertexInfo.parent = boundaryId;
       }
     });
   }
@@ -526,6 +534,22 @@ class VertexMgmt{
     });
   }
 
+  /**
+   * Add parent id (boundary) for vertex
+   * @param vertexId
+   * @param parentId
+   */
+  addParentVertex(vertexId, parentId) {
+
+  }
+
+  /**
+   * Remove parent from vertex
+   * @param vertexId
+   */
+  removeParentVertex(vertexId) {
+
+  }
 };
 
 export default VertexMgmt;

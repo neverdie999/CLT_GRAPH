@@ -9,6 +9,7 @@ class VertexMenuContext{
   initVertexMenu(){
     $.contextMenu({
       selector: this.selector,
+      zIndex: 100,
       build: ($trigger, e) => {
         return {
           callback: (key, options) => {

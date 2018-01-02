@@ -70,6 +70,24 @@ class ObjectUtils {
   getVertexInfoById(vertexId) {
     return _.find(this.dataContainer.vertex, (e) => { return e.id === vertexId; });
   }
+
+  /**
+   * Get boundary info by id
+   * @param boundaryId
+   * @returns {*}
+   */
+  getBoundaryInfoById(boundaryId) {
+    return _.find(this.dataContainer.boundary, (e) => { return e.id === boundaryId; });
+  }
+
+  /**
+   * Get BBox of object by id
+   * @param objectId
+   * @returns {*}
+   */
+  getBBoxObjectById(objectId) {
+    return d3.select(`#${objectId}`).node().getBBox();
+  }
 }
 
 export default ObjectUtils;
