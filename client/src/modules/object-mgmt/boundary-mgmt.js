@@ -1,18 +1,17 @@
 import * as d3 from 'd3';
 import {
+  HTML_BOUNDARY_CONTAINER_CLASS,
   SCREEN_SIZES,
-  INTERACTION_TP,
-  INTERACTION_TP_LST
+  BOUNDARY_ATTR_SIZE,
 } from '../../const/index';
 
 import PopUtils from '../../common/utilities/popup.ult';
-import {HTML_BOUNDARY_CONTAINER_CLASS} from "../../const";
 
 const headerBoundaryHeight = 38;
 const groupBoundaryWidth = 180;
 const groupBoundaryHeight = 200;
 
-class BoundaryMgmt{
+class BoundaryMgmt {
   constructor(props){
     this.svgSelector = props.svgSelector;
     this.dataContainer = props.dataContainer;
@@ -39,9 +38,6 @@ class BoundaryMgmt{
       boundaryScope: this
     };
 
-    let htmlContent = '';
-    let boundaryHeight = groupBoundaryWidth;
-
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", boundaryId)
@@ -49,46 +45,37 @@ class BoundaryMgmt{
       .style("visibility", "visible")
       .style("cursor", "move");
 
+    group.append("text")
+      .attr("class", "boundary_right")
+      .attr("x", 185)
+      .attr("y", 20)
+      .attr("id", boundaryId)
+      .style("cursor", "pointer")
+      .text("+")
+      .append("title")
+        .text("Right click to select member visible");
+
     group.append("foreignObject")
       .attr("id", `${boundaryId}Content`)
-      .attr("width", groupBoundaryWidth)
-      .attr("height", groupBoundaryHeight)
+      .attr("width", BOUNDARY_ATTR_SIZE.BOUND_WIDTH)
+      .attr("height", BOUNDARY_ATTR_SIZE.BOUND_HEIGHT)
       .style("border", "solid 1px #652a82")
       .style("font-size", "13px")
       .style("background", "#ffffff")
       .append("xhtml:div")
       .attr("class", "boundary_content")
       .html(`
-          <div class="boundary_header" style="width: ${groupBoundaryWidth + 20}px;">
-            <label class="boundary_right" id="${boundaryId}_visiable">+</label>
-            <label class="header_boundary" style="width: ${groupBoundaryWidth - 2}px; height: ${headerBoundaryHeight}px;">${boundaryInfo.name}</label>
+          <div class="boundary_header" style="width: ${BOUNDARY_ATTR_SIZE.BOUND_WIDTH + 20}px;">
+            <p class="header_name header_boundary" style="width: ${BOUNDARY_ATTR_SIZE.BOUND_WIDTH - 2}px; height: ${BOUNDARY_ATTR_SIZE.HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
           </div>
       `);
 
-    boundaryInfo.width = groupBoundaryWidth;
-    boundaryInfo.height = boundaryHeight;
+    boundaryInfo.width = BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
+    boundaryInfo.height = BOUNDARY_ATTR_SIZE.BOUND_HEIGHT;
     this.dataContainer.boundary.push(boundaryInfo);
 
     // Call event drag for all object vertex exit.
     this.initEventDrag();
-  }
-
-  initOptionBoundaryMenu(select){
-    $.contextMenu({
-      selector: select,
-      trigger: 'left',
-      callback: (key, options) => {
-        let m = "clicked: " + key;
-        window.console && console.log(m) || alert(m);
-      },
-      items: {
-        "edit": {name: "Edit", icon: "fa-pencil-square-o"},
-        "cut": {name: "Cut", icon: "fa-pencil-square-o"},
-        "copy": {name: "Copy", icon: "fa-pencil-square-o"},
-        "paste": {name: "Paste", icon: "fa-pencil-square-o"},
-        "delete": {name: "Delete", icon: "fa-pencil-square-o"}
-      }
-    });
   }
 
   initEventDrag(){
@@ -109,8 +96,8 @@ class BoundaryMgmt{
     d.y = d3.event.y;
 
     // Update position of child element
-    let vertexMembers = d.member.vertex;
-    boundaryScope.updatePositionVertex(d.id, {x: d3.event.x, y: d3.event.y});
+    // let vertexMembers = d.member.vertex;
+    boundaryScope.reorderPositionVertex(d.id, {x: d3.event.x, y: d3.event.y});
 
     // Transform group
     d3.select(this).attr("transform", (d,i) => {
@@ -133,8 +120,14 @@ class BoundaryMgmt{
     let data = _.remove(this.dataContainer.boundary, (e) => {
       return e.id === boundaryId;
     });
+  }
 
-    console.log(data);
+  /**
+   * Remove boundary and all elements of it
+   * Above vertex or boundary (Event child of boundary)
+   * @param boundaryId
+   */
+  removeAllBoundary(boundaryId) {
   }
 
   /**
@@ -147,25 +140,78 @@ class BoundaryMgmt{
   }
 
   /**
-   * Calculator position for child element
+   * Reorder and Calculator position for child element
    * @param boudaryId
    * @param position
    */
-  updatePositionVertex(boundaryId, pos) {
+  reorderPositionVertex(boundaryId, pos) {
     let orderVertex = 0;
     let heightBeforeElements = 43;
     let marginTop = 5;
+
     // Get child of boundary
-    let vetexMembers = this.getBoundaryInfoById(boundaryId).member.vertex;
+    let boundaryInfo = this.getBoundaryInfoById(boundaryId)
+    if(!pos) {
+
+      pos = {x: boundaryInfo.x, y: boundaryInfo.y};
+    }
+    let vetexMembers = boundaryInfo.member.vertex;
+
     vetexMembers.forEach(vertex => {
-      let boxVertex = d3.select(`#${vertex}`).node().getBBox();
-      let vertexInfo = this.objectUtils.getVertexInfoById(vertex);
+      let boxVertex = d3.select(`#${vertex.id}`).node().getBBox();
+      let vertexInfo = this.objectUtils.getVertexInfoById(vertex.id);
       let vertexScope = vertexInfo.mainScope;
+
       let position = {x: pos.x + 15, y: pos.y + heightBeforeElements + marginTop*orderVertex }; // Vertex postion center of boudary
-      vertexScope.setVertexPosition(vertex, position);
+      vertexScope.setVertexPosition(vertex.id, position);
+
       orderVertex ++;
       heightBeforeElements += boxVertex.height;
     });
+
+    $(`#${boundaryId}Content`).attr('height', heightBeforeElements + marginTop*orderVertex > 43 ? heightBeforeElements + marginTop*orderVertex: 180);
+    // $(`#${boundaryId}Content`).attr("class", 'hight_light');
+    // this.calHeightBoundary(boundaryId);
+  }
+
+  /**
+   * Set vertex member visible or not
+   * @param vertexId
+   */
+  setVisibleVertex(vertexId) {
+    console.log(vertexId);
+  }
+
+  /**
+   * Set boundary and elmenent inside visible or not
+   * @param boundaryId
+   */
+  setVisibleBoundary(boundaryId) {
+    console.log(boundaryId);
+  }
+
+  /**
+   * Calculate and set height for boundary
+   */
+  calHeightBoundary(boundaryId) {
+    // Use jquery to set height for boundary content
+    $(`#${boundaryId}Content`).attr('height', 300);
+  }
+
+  addVertexMemberToBoundary (boundaryId, vertexId) {
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    boundaryInfo.member.vertex.push({id: vertexId, show: true});
+    this.reorderPositionVertex(boundaryId);
+  }
+
+  removeVertexMemberFromBoundary (boundaryId, vertexId) {
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+
+    let data = _.remove(boundaryInfo.member.vertex, (e) => {
+      return e === vertexId;
+    });
+    this.reorderPositionVertex(boundaryId);
+    console.log(data);
   }
 };
 

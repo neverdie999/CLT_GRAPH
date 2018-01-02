@@ -11,6 +11,7 @@ class EdgeMenuContext{
     let edgeMgmt = this.edgeMgmt;
     $.contextMenu({
       selector: this.selector,
+      zIndex: 100,
       build: ($trigger, e) => {
         return {
           callback: (key, options) => {
