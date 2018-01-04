@@ -81,7 +81,8 @@ class FileMgmt{
         return;
       }
 
-      let graph = JSON.stringify(content);
+      // stringify with tabs inserted at each level
+      let graph = JSON.stringify(content, null, "\t");
       let blob = new Blob([graph], {type: "application/json", charset: "utf-8"});
 
       if (navigator.msSaveBlob) {

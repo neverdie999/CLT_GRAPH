@@ -268,7 +268,17 @@ class Starter {
       mainMgmt: this
     });
 
-    // this.menuItemsBoundary = new MenuItemsBoundary();
+    /**
+     * Init Menu Items for Boundary
+     * @type {MenuItemsBoundary}
+     */
+    this.menuItemsBoundary = new MenuItemsBoundary({
+      selector: `.${HTML_ALGETA_CONTAINER_CLASS}`,
+      dataContainer: this.dataContainer,
+      boundaryMgmt: this.boundaryMgmt,
+      vertexMgmt: this.vertextMgmt,
+      mainMgmt: this
+    });
   }
 
   /**
