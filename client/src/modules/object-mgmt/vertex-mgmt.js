@@ -53,6 +53,7 @@ class VertexMgmt{
     // let interaction = options.interaction || INTERACTION_TP.FULL;
     let vertexId = options.id? options.id : this.objectUtils.generateObjectId('V');
     let mainScope = this;
+    let parent = options.parent || null;
 
     let vertexInfo = {
       x: options.x,
@@ -65,6 +66,7 @@ class VertexMgmt{
       data: vertexProperties,
       id: vertexId,
       mainScope: mainScope,
+      parent: parent
     };
     this.dataContainer.vertex.push(vertexInfo);
 
@@ -156,6 +158,9 @@ class VertexMgmt{
    * @param d
    */
   dragged(d) {
+    // Prevent drag when it in a group (boundary)
+    if(d.parent)
+      return;
     // Update poition object in this.dataContainer.boundary
     d.x = d3.event.x;
     d.y = d3.event.y;
@@ -168,23 +173,6 @@ class VertexMgmt{
     // Transform group
     d3.select(`#${d.id}`).attr("transform", (d,i) => {
       return "translate(" + [ d3.event.x, d3.event.y ] + ")"
-    });
-  }
-
-  /**
-   * Set position for vertex
-   * Called in function dragBoundary (Object boundary)
-   * @param vertexId
-   * @param position
-   */
-  setVertexPosition(vertexId, position) {
-    let vertexInfo = this.getVertexInfoById(vertexId);
-    vertexInfo.x = position.x;
-    vertexInfo.y = position.y;
-    this.updatePoisitionPathConnnect(vertexId);
-
-    d3.select(`#${vertexId}`).attr("transform", (d,i) => {
-      return "translate(" + [ position.x, position.y ] + ")"
     });
   }
 
@@ -223,9 +211,27 @@ class VertexMgmt{
       // Check drop inside a boundary
       if((xVertex >= xBoundary) && (yVertex >= yBoundary) && (xVertexBox <= xBoundaryBox) && (yVertexBox <= yBoundaryBox) ){
         // boundaryInfo.member.vertex.push({id: vertexInfo.id, show: true});
-        boundaryScope.addVertexMemberToBoundary(boundaryId, vertexInfo.id);
+        let member = {id: vertexInfo.id, type: "V", show: true};
+        boundaryScope.addMemberToBoundary(boundaryId, member);
         vertexInfo.parent = boundaryId;
       }
+    });
+  }
+
+  /**
+   * Set position for vertex
+   * Called in function dragBoundary (Object boundary)
+   * @param vertexId
+   * @param position
+   */
+  setVertexPosition(vertexId, position) {
+    let vertexInfo = this.getVertexInfoById(vertexId);
+    vertexInfo.x = position.x;
+    vertexInfo.y = position.y;
+    this.updatePoisitionPathConnnect(vertexId);
+
+    d3.select(`#${vertexId}`).attr("transform", (d,i) => {
+      return "translate(" + [ position.x, position.y ] + ")"
     });
   }
 

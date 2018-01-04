@@ -17,20 +17,16 @@ class BoundaryMenuContext{
             let boundaryId = options.$trigger.attr('id');
             switch (key)
             {
-              case "editVertex":
-                this.boundaryMgmt.edit(boundaryId);
-                break;
-
-              case "copyVertex":
-                this.boundaryMgmt.copy(boundaryId);
-                break;
-
               case "removeBoundary":
                 this.boundaryMgmt.removeBoundary(boundaryId);
                 break;
 
-              case "createEdge":
-                this.boundaryMgmt.setOnCreateEdge(boundaryId);
+              case "deleteAllBoundary":
+                this.boundaryMgmt.deleteAllBoundary(boundaryId);
+                break;
+
+              case "editInfoBoundary":
+                this.boundaryMgmt.editInfoBoundary(boundaryId);
                 break;
 
               default:
@@ -38,7 +34,7 @@ class BoundaryMenuContext{
             }
           },
           items: {
-            "editBoundary": {name: "Edit Boundary Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
+            "editInfoBoundary": {name: "Edit Boundary Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
             "removeBoundary": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
             "copyAllBoundary": {name: "Copy All", icon: "fa-files-o", disabled: window.disabledCommand},
             "deleteAllBoundary": {name: "Delete All", icon: "fa-square-o", disabled: window.disabledCommand},

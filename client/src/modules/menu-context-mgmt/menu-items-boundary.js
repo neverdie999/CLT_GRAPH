@@ -13,6 +13,7 @@ class MenuItemsBoundary{
       selector: '.boundary_right',
       className: 'data-title',
       zIndex: 100,
+      // autoHide: true,
       build: ($trigger, e) => {
         return {
           callback: (key, options) => {
@@ -25,7 +26,6 @@ class MenuItemsBoundary{
               var $this = this;
               let data = {yesno01: true, yesno02: true, yesno03: true, yesno04: true, yesno05: false};
               $.contextMenu.setInputValues(opt, data);
-              console.log($this.data());
             },
             hide: function(opt) {
               var $this = this;
@@ -40,22 +40,20 @@ class MenuItemsBoundary{
   loadItems($trigger) {
 
     // Get info of boundary
-    let boundaryId = $trigger.attr('id');
+    let boundaryId = $trigger.attr('data');
     let boundaryInfo = this.boundaryMgmt.getBoundaryInfoById(boundaryId);
-    let vetexMembers = boundaryInfo.member.vertex;
+    let childs = boundaryInfo.member;
     let boundaryMembers = boundaryInfo.member.boundary;
 
     const subItems = {};
-    if(vetexMembers.length == 0 && boundaryMembers.length == 0){
-      subItems.isHtmlItem = {type: 'html', html: '<div style="text-align: center; color: red;"><span>No item added</span></div>'};
+    if(childs.length == 0){
+      subItems.isHtmlItem = {type: 'html', html: '<div style="text-align: center; color: red;"><span>No member added</span></div>'};
     }
-    vetexMembers.forEach(vertex => {
-      let vertexInfo = this.vertexMgmt.getVertexInfoById(vertex.id);
-      subItems[`${vertex.id}`] = {name: `${vertexInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.setVisibleVertex(`${vertex.id}`); }}};
-    });
-    boundaryMembers.forEach(boundary => {
-      let boundaryInfo = this.boundaryMgmt.getBoundaryInfoById(boundary.id);
-      subItems[`${boundary.id}`] = {name: `${boundaryInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.setVisibleBoundary(`${boundary.id}`); }}};
+    childs.forEach(child => {
+      let type = child.type;
+      let childId = child.id;
+      let childInfo = type === "B" ? this.boundaryMgmt.getBoundaryInfoById(childId) : this.vertexMgmt.getVertexInfoById(childId);
+      subItems[`${childId}`] = {name: `${childInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.setVisibleMember(child); }}};
     });
 
     return subItems;

@@ -36039,7 +36039,17 @@ class Starter {
       mainMgmt: this
     });
 
-    // this.menuItemsBoundary = new MenuItemsBoundary();
+    /**
+     * Init Menu Items for Boundary
+     * @type {MenuItemsBoundary}
+     */
+    this.menuItemsBoundary = new __WEBPACK_IMPORTED_MODULE_9__modules_menu_context_mgmt_menu_items_boundary__["a" /* default */]({
+      selector: `.${__WEBPACK_IMPORTED_MODULE_12__const_index__["f" /* HTML_ALGETA_CONTAINER_CLASS */]}`,
+      dataContainer: this.dataContainer,
+      boundaryMgmt: this.boundaryMgmt,
+      vertexMgmt: this.vertextMgmt,
+      mainMgmt: this
+    });
   }
 
   /**
@@ -49519,20 +49529,16 @@ class BoundaryMenuContext{
             let boundaryId = options.$trigger.attr('id');
             switch (key)
             {
-              case "editVertex":
-                this.boundaryMgmt.edit(boundaryId);
-                break;
-
-              case "copyVertex":
-                this.boundaryMgmt.copy(boundaryId);
-                break;
-
               case "removeBoundary":
                 this.boundaryMgmt.removeBoundary(boundaryId);
                 break;
 
-              case "createEdge":
-                this.boundaryMgmt.setOnCreateEdge(boundaryId);
+              case "deleteAllBoundary":
+                this.boundaryMgmt.deleteAllBoundary(boundaryId);
+                break;
+
+              case "editInfoBoundary":
+                this.boundaryMgmt.editInfoBoundary(boundaryId);
                 break;
 
               default:
@@ -49540,7 +49546,7 @@ class BoundaryMenuContext{
             }
           },
           items: {
-            "editBoundary": {name: "Edit Boundary Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
+            "editInfoBoundary": {name: "Edit Boundary Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
             "removeBoundary": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
             "copyAllBoundary": {name: "Copy All", icon: "fa-files-o", disabled: window.disabledCommand},
             "deleteAllBoundary": {name: "Delete All", icon: "fa-square-o", disabled: window.disabledCommand},
@@ -49614,6 +49620,7 @@ class VertexMgmt{
     // let interaction = options.interaction || INTERACTION_TP.FULL;
     let vertexId = options.id? options.id : this.objectUtils.generateObjectId('V');
     let mainScope = this;
+    let parent = options.parent || null;
 
     let vertexInfo = {
       x: options.x,
@@ -49626,6 +49633,7 @@ class VertexMgmt{
       data: vertexProperties,
       id: vertexId,
       mainScope: mainScope,
+      parent: parent
     };
     this.dataContainer.vertex.push(vertexInfo);
 
@@ -49717,6 +49725,9 @@ class VertexMgmt{
    * @param d
    */
   dragged(d) {
+    // Prevent drag when it in a group (boundary)
+    if(d.parent)
+      return;
     // Update poition object in this.dataContainer.boundary
     d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
     d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
@@ -49729,23 +49740,6 @@ class VertexMgmt{
     // Transform group
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${d.id}`).attr("transform", (d,i) => {
       return "translate(" + [ __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y ] + ")"
-    });
-  }
-
-  /**
-   * Set position for vertex
-   * Called in function dragBoundary (Object boundary)
-   * @param vertexId
-   * @param position
-   */
-  setVertexPosition(vertexId, position) {
-    let vertexInfo = this.getVertexInfoById(vertexId);
-    vertexInfo.x = position.x;
-    vertexInfo.y = position.y;
-    this.updatePoisitionPathConnnect(vertexId);
-
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).attr("transform", (d,i) => {
-      return "translate(" + [ position.x, position.y ] + ")"
     });
   }
 
@@ -49784,9 +49778,27 @@ class VertexMgmt{
       // Check drop inside a boundary
       if((xVertex >= xBoundary) && (yVertex >= yBoundary) && (xVertexBox <= xBoundaryBox) && (yVertexBox <= yBoundaryBox) ){
         // boundaryInfo.member.vertex.push({id: vertexInfo.id, show: true});
-        boundaryScope.addVertexMemberToBoundary(boundaryId, vertexInfo.id);
+        let member = {id: vertexInfo.id, type: "V", show: true};
+        boundaryScope.addMemberToBoundary(boundaryId, member);
         vertexInfo.parent = boundaryId;
       }
+    });
+  }
+
+  /**
+   * Set position for vertex
+   * Called in function dragBoundary (Object boundary)
+   * @param vertexId
+   * @param position
+   */
+  setVertexPosition(vertexId, position) {
+    let vertexInfo = this.getVertexInfoById(vertexId);
+    vertexInfo.x = position.x;
+    vertexInfo.y = position.y;
+    this.updatePoisitionPathConnnect(vertexId);
+
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).attr("transform", (d,i) => {
+      return "translate(" + [ position.x, position.y ] + ")"
     });
   }
 
@@ -50157,10 +50169,6 @@ module.exports = function(module) {
 
 
 
-const headerBoundaryHeight = 38;
-const groupBoundaryWidth = 180;
-const groupBoundaryHeight = 200;
-
 class BoundaryMgmt {
   constructor(props){
     this.svgSelector = props.svgSelector;
@@ -50176,16 +50184,17 @@ class BoundaryMgmt {
 
   createBoundary(options = {}){
     let boundaryId = options.id ? options.id : this.objectUtils.generateObjectId('B');
-    let memberIsVertex = options.member ? options.member.vertex : [];
-    let memberIsBoundary = options.member ? options.member.boundary : [];
+    let memeber = options.member || [];
+    let parent = options.parent || null;
     let boundaryInfo = {
       x: options.x,
       y: options.y,
       name: options.name || "Boundary",
       description: options.description || "Boundary Description",
-      member: {vertex: memberIsVertex , boundary: memberIsBoundary},
+      member: memeber,
       id: boundaryId,
-      boundaryScope: this
+      boundaryScope: this,
+      parent: parent,
     };
 
     let group = this.svgSelector.append("g")
@@ -50196,14 +50205,21 @@ class BoundaryMgmt {
       .style("cursor", "move");
 
     group.append("text")
-      .attr("class", "boundary_right")
-      .attr("x", 185)
-      .attr("y", 20)
-      .attr("id", boundaryId)
+      .attr("x", __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH + 5)
+      .attr("y", 15)
+      .text("+");
+
+    group.append("rect")
+      .attr("x", __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH)
+      .attr("class", `boundary_right ${boundaryId}Button`)
+      .attr("data", boundaryId)
+      .attr("width", 20)
+      .attr("height", 20)
+      .style("fill", "#ad8fbb")
+      .style("fill-opacity", ".5")
       .style("cursor", "pointer")
-      .text("+")
       .append("title")
-        .text("Right click to select member visible");
+      .text("Right click to select member visible");
 
     group.append("foreignObject")
       .attr("id", `${boundaryId}Content`)
@@ -50215,8 +50231,8 @@ class BoundaryMgmt {
       .append("xhtml:div")
       .attr("class", "boundary_content")
       .html(`
-          <div class="boundary_header" style="width: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH + 20}px;">
-            <p class="header_name header_boundary" style="width: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH - 2}px; height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
+          <div class="boundary_header">
+            <p class="header_name header_boundary" style="width: 100%; height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
           </div>
       `);
 
@@ -50247,7 +50263,8 @@ class BoundaryMgmt {
 
     // Update position of child element
     // let vertexMembers = d.member.vertex;
-    boundaryScope.reorderPositionVertex(d.id, {x: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, y: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y});
+    if(d.member.length > 0)
+      boundaryScope.reorderPositionMember(d.id, {x: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, y: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y});
 
     // Transform group
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this).attr("transform", (d,i) => {
@@ -50257,6 +50274,46 @@ class BoundaryMgmt {
 
   dragBoundaryEnd(d) {
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this).classed("active", false);
+    return;
+
+
+    let originInfo = d;
+    // If boundary has parent then not check.
+    if(originInfo.parent)
+      return;
+
+    let originScope = d.boundaryScope;
+    // let boxVertex = d3.select(`#${vertexInfo.id}`).node().getBBox();
+    let boxOrigin = originScope.objectUtils.getBBoxObjectById(originInfo.id);
+    // Calculate box for vertex
+    let xOrigin = originInfo.x;
+    let yOrigin = originInfo.y
+    let xOriginBox = xOrigin + boxOrigin.width;
+    let yOriginBox = yOrigin + boxOrigin.height;
+
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]("svg").selectAll(".groupBoundary").each((d, i, node) => {
+      if(!d.parent && d.id != originInfo.id){
+        // Calculate box for boundary
+        let boundaryId = d.id;
+        let boundaryScope = d.boundaryScope;
+        let boundaryInfo = boundaryScope.objectUtils.getBoundaryInfoById(boundaryId);
+        let xBoundary = boundaryInfo.x;
+        let yBoundary = boundaryInfo.y;
+        // let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
+        let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
+        let xBoundaryBox = xBoundary + boxBoundary.width;
+        let yBoundaryBox = yBoundary + boxBoundary.height;
+
+        // Check drop inside a boundary
+        // if((xOrigin >= xBoundary) && (yOrigin >= yBoundary) && (xOriginBox <= xBoundaryBox) && (yOriginBox <= yBoundaryBox) ){
+        if((yOrigin >= yBoundary) && (yOriginBox <= yBoundaryBox)){
+        // boundaryInfo.member.vertex.push({id: vertexInfo.id, show: true});
+          let member = {id: originInfo.id, type: "B", show: true};
+          boundaryScope.addMemberToBoundary(boundaryId, member);
+          originInfo.parent = boundaryId;
+        }
+      }
+    });
   }
 
   /**
@@ -50266,6 +50323,10 @@ class BoundaryMgmt {
   removeBoundary(boundaryId) {
     // Remove from DOM
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).remove();
+
+    // Reset child parent
+    this.resetParentForChildBoundary(boundaryId);
+
     // Remove from data container
     let data = _.remove(this.dataContainer.boundary, (e) => {
       return e.id === boundaryId;
@@ -50273,11 +50334,21 @@ class BoundaryMgmt {
   }
 
   /**
-   * Remove boundary and all elements of it
+   * Delete boundary and all elements of it
    * Above vertex or boundary (Event child of boundary)
    * @param boundaryId
    */
-  removeAllBoundary(boundaryId) {
+  deleteAllBoundary(boundaryId) {
+    // Remove from DOM
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).remove();
+
+    // Remove child of boundary
+    this.removeChildBoundary(boundaryId);
+
+    // Remove from data container
+    let data = _.remove(this.dataContainer.boundary, (e) => {
+      return e.id === boundaryId;
+    });
   }
 
   /**
@@ -50294,74 +50365,142 @@ class BoundaryMgmt {
    * @param boudaryId
    * @param position
    */
-  reorderPositionVertex(boundaryId, pos) {
-    let orderVertex = 0;
+  reorderPositionMember(boundaryId, pos) {
+    let orderObject = 0;
     let heightBeforeElements = 43;
     let marginTop = 5;
 
     // Get child of boundary
-    let boundaryInfo = this.getBoundaryInfoById(boundaryId)
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId)
     if(!pos) {
-
       pos = {x: boundaryInfo.x, y: boundaryInfo.y};
     }
-    let vetexMembers = boundaryInfo.member.vertex;
+    let boundaryMembers = boundaryInfo.member;
 
-    vetexMembers.forEach(vertex => {
-      let boxVertex = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertex.id}`).node().getBBox();
-      let vertexInfo = this.objectUtils.getVertexInfoById(vertex.id);
-      let vertexScope = vertexInfo.mainScope;
+    boundaryMembers.forEach(member => {
+      let objectId = member.id;
+      let boxObject = this.objectUtils.getBBoxObjectById(objectId);
+      let position = {x: pos.x + 15, y: pos.y + heightBeforeElements + marginTop*orderObject }; // Vertex postion center of boudary
+      if(member.type === "V"){
+        let vertexInfo = this.objectUtils.getVertexInfoById(objectId);
+        let vertexScope = vertexInfo.mainScope;
+        vertexScope.setVertexPosition(objectId, position);
+      } else {
+        this.setBoundaryPosition(objectId, position);
+      }
 
-      let position = {x: pos.x + 15, y: pos.y + heightBeforeElements + marginTop*orderVertex }; // Vertex postion center of boudary
-      vertexScope.setVertexPosition(vertex.id, position);
-
-      orderVertex ++;
-      heightBeforeElements += boxVertex.height;
+      orderObject ++;
+      heightBeforeElements += boxObject.height;
     });
 
-    $(`#${boundaryId}Content`).attr('height', heightBeforeElements + marginTop*orderVertex > 43 ? heightBeforeElements + marginTop*orderVertex: 180);
-    // $(`#${boundaryId}Content`).attr("class", 'hight_light');
-    // this.calHeightBoundary(boundaryId);
+    let boundaryHeight = heightBeforeElements + marginTop*orderObject;
+    this.setHeightBoundary(boundaryId, boundaryHeight)
   }
 
   /**
-   * Set vertex member visible or not
-   * @param vertexId
+   * Set member visible or not
+   * @param child
    */
-  setVisibleVertex(vertexId) {
-    console.log(vertexId);
+  setVisibleMember(child) {
+    console.log(child);
   }
 
   /**
-   * Set boundary and elmenent inside visible or not
+   * Set height for boundary
+   */
+  setHeightBoundary(boundaryId, height) {
+    // Use jquery to set height for boundary content
+    $(`#${boundaryId}Content`).attr('height', height > 43 ? height : 180);
+  }
+
+  /**
+   * Add memebr to boundary
+   * @param boundaryId
+   * @param child
+   * Member format
+   * {id: '', type: [V, B], show: true}
+   */
+  addMemberToBoundary (boundaryId, child) {
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    boundaryInfo.member.push(child);
+    this.reorderPositionMember(boundaryId);
+  }
+
+  /**
+   * Remove member from boundary
+   * @param boundaryId
+   * @param objectId
+   */
+  removeMemberFromBoundary (boundaryId, objectId) {
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+
+    let data = _.remove(boundaryInfo.member, (e) => {
+      return e.id === objectId;
+    });
+    this.reorderPositionVertex(boundaryId);
+  }
+
+  /**
+   * Set position for vertex
+   * Called in function dragBoundary (Object boundary)
+   * @param vertexId
+   * @param position
+   */
+  setBoundaryPosition(boundaryId, position) {
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    boundaryInfo.x = position.x;
+    boundaryInfo.y = position.y;
+    // this.updatePoisitionPathConnnect(vertexId);
+
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).attr("transform", (d,i) => {
+      return "translate(" + [ position.x, position.y ] + ")"
+    });
+
+    this.reorderPositionMember(boundaryId, position)
+  }
+
+  /**
+   * Reset parent for child boundary when it deleted
    * @param boundaryId
    */
-  setVisibleBoundary(boundaryId) {
-    console.log(boundaryId);
+  resetParentForChildBoundary(boundaryId) {
+    // Get child of boundary
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId)
+    let boundaryMembers = boundaryInfo.member;
+
+    boundaryMembers.forEach(member => {
+      let objectId = member.id;
+      if(member.type === "V"){
+        let vertexInfo = this.objectUtils.getVertexInfoById(objectId);
+        vertexInfo.parent = null;
+      } else {
+        let boundaryInfo = this.objectUtils.getBoundaryInfoById(objectId)
+        boundaryInfo.parent = null;
+      }
+    });
   }
 
   /**
-   * Calculate and set height for boundary
+   * Remove child boundary
+   * @param boundaryId
    */
-  calHeightBoundary(boundaryId) {
-    // Use jquery to set height for boundary content
-    $(`#${boundaryId}Content`).attr('height', 300);
-  }
+  removeChildBoundary(boundaryId) {
+// Get child of boundary
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId)
+    let boundaryMembers = boundaryInfo.member;
 
-  addVertexMemberToBoundary (boundaryId, vertexId) {
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    boundaryInfo.member.vertex.push({id: vertexId, show: true});
-    this.reorderPositionVertex(boundaryId);
-  }
-
-  removeVertexMemberFromBoundary (boundaryId, vertexId) {
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-
-    let data = _.remove(boundaryInfo.member.vertex, (e) => {
-      return e === vertexId;
+    boundaryMembers.forEach(member => {
+      let objectId = member.id;
+      if(member.type === "V"){
+        let vertexInfo = this.objectUtils.getVertexInfoById(objectId);
+        let vertexScope = vertexInfo.mainScope;
+        // Remove all child vertex
+        vertexScope.remove(objectId);
+      } else {
+        // Remove all child boundary
+        this.deleteAllBoundary(objectId);
+      }
     });
-    this.reorderPositionVertex(boundaryId);
-    console.log(data);
   }
 };
 
@@ -50454,7 +50593,8 @@ class FileMgmt{
         return;
       }
 
-      let graph = JSON.stringify(content);
+      // stringify with tabs inserted at each level
+      let graph = JSON.stringify(content, null, "\t");
       let blob = new Blob([graph], {type: "application/json", charset: "utf-8"});
 
       if (navigator.msSaveBlob) {
@@ -51031,6 +51171,7 @@ class MenuItemsBoundary{
       selector: '.boundary_right',
       className: 'data-title',
       zIndex: 100,
+      // autoHide: true,
       build: ($trigger, e) => {
         return {
           callback: (key, options) => {
@@ -51043,7 +51184,6 @@ class MenuItemsBoundary{
               var $this = this;
               let data = {yesno01: true, yesno02: true, yesno03: true, yesno04: true, yesno05: false};
               $.contextMenu.setInputValues(opt, data);
-              console.log($this.data());
             },
             hide: function(opt) {
               var $this = this;
@@ -51058,29 +51198,27 @@ class MenuItemsBoundary{
   loadItems($trigger) {
 
     // Get info of boundary
-    let boundaryId = $trigger.attr('id');
+    let boundaryId = $trigger.attr('data');
     let boundaryInfo = this.boundaryMgmt.getBoundaryInfoById(boundaryId);
-    let vetexMembers = boundaryInfo.member.vertex;
+    let childs = boundaryInfo.member;
     let boundaryMembers = boundaryInfo.member.boundary;
 
     const subItems = {};
-    if(vetexMembers.length == 0 && boundaryMembers.length == 0){
-      subItems.isHtmlItem = {type: 'html', html: '<div style="text-align: center; color: red;"><span>No item added</span></div>'};
+    if(childs.length == 0){
+      subItems.isHtmlItem = {type: 'html', html: '<div style="text-align: center; color: red;"><span>No member added</span></div>'};
     }
-    vetexMembers.forEach(vertex => {
-      let vertexInfo = this.vertexMgmt.getVertexInfoById(vertex.id);
-      subItems[`${vertex.id}`] = {name: `${vertexInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.setVisibleVertex(`${vertex.id}`); }}};
-    });
-    boundaryMembers.forEach(boundary => {
-      let boundaryInfo = this.boundaryMgmt.getBoundaryInfoById(boundary.id);
-      subItems[`${boundary.id}`] = {name: `${boundaryInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.setVisibleBoundary(`${boundary.id}`); }}};
+    childs.forEach(child => {
+      let type = child.type;
+      let childId = child.id;
+      let childInfo = type === "B" ? this.boundaryMgmt.getBoundaryInfoById(childId) : this.vertexMgmt.getVertexInfoById(childId);
+      subItems[`${childId}`] = {name: `${childInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.setVisibleMember(child); }}};
     });
 
     return subItems;
   }
 }
 
-/* unused harmony default export */ var _unused_webpack_default_export = (MenuItemsBoundary);
+/* harmony default export */ __webpack_exports__["a"] = (MenuItemsBoundary);
 
 
 /***/ }),
