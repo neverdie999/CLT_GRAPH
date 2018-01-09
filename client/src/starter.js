@@ -174,6 +174,12 @@ class Starter {
     if(isMisMatch)
       comShowMessage("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch. Please check again!");
 
+    // Draw boundary
+    let arrBoundary = data.boundary;
+    arrBoundary.forEach(boundary => {
+      this.boundaryMgmt.createBoundary(boundary);
+    });
+
     // Draw vertex
     let arrVertex = data.vertex;
     arrVertex.forEach(vertex => {
@@ -184,12 +190,6 @@ class Starter {
     let arrEdge = data.edge;
     arrEdge.forEach(edge => {
       this.edgeMgmt.create(edge);
-    });
-
-    // Draw boundary
-    let arrBoundary = data.boundary;
-    arrBoundary.forEach(boundary => {
-      this.boundaryMgmt.createBoundary(boundary);
     });
 
     if(!window.isImportVertexTypeDefine)

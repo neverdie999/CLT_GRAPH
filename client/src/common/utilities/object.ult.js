@@ -2,7 +2,8 @@ import * as d3 from 'd3';
 import _ from "lodash";
 import {
   TYPE_POINT,
-  VERTEX_ATTR_SIZE
+  VERTEX_ATTR_SIZE,
+  BOUNDARY_ATTR_SIZE
 } from '../../const/index';
 
 class ObjectUtils {
@@ -87,6 +88,55 @@ class ObjectUtils {
    */
   getBBoxObjectById(objectId) {
     return d3.select(`#${objectId}`).node().getBBox();
+  }
+
+  /**
+   * Reset the boundary change height when drag vertices that
+   * height larger than boundary
+   */
+  resetSizeBoundary() {
+    d3.select("svg").selectAll(".groupBoundary").each((d, i, node) => {
+      let orderObject = 0;
+      let heightBeforeElements = 43;
+      let marginTop = 5;
+      let widthBoundary = BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
+      let boundaryId = d.id;
+      let boundaryScope = d.boundaryScope;
+      let boundaryMembers = d.member;
+
+      boundaryMembers.forEach(member => {
+        let objectId = member.id;
+        let boxObject = this.getBBoxObjectById(objectId);
+        orderObject ++;
+        heightBeforeElements += boxObject.height;
+        if(boxObject.width > BOUNDARY_ATTR_SIZE.BOUND_WIDTH)
+          widthBoundary = boxObject.width;
+      });
+
+      let boundaryHeight = heightBeforeElements + marginTop*orderObject;
+      boundaryScope.setHeightBoundary(boundaryId, boundaryHeight);
+      boundaryScope.setWidthBoundary(boundaryId, widthBoundary);
+    });
+  }
+
+  /**
+   * Clone vertex info by id
+   * @param vertexId
+   */
+  cloneVertexInfoById(vertexId) {
+    const obj = this.getVertexInfoById(vertexId);
+    // Clone and return
+    return Object.assign({}, obj);
+  }
+
+  /**
+   * Clone boundary info by id
+   * @param boundaryId
+   */
+  cloneBoundaryInfoById(boundaryId) {
+    const obj = this.getBoundaryInfoById(boundaryId);
+    // Clone and return
+    return Object.assign({}, obj);
   }
 }
 

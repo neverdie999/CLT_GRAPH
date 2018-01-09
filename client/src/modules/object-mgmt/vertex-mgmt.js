@@ -167,8 +167,23 @@ class VertexMgmt{
 
     // Update path connected to this vertex
     let vertexId = d.id;
+    let vertexInfo = d;
     let mainScope = d.mainScope;
     mainScope.updatePoisitionPathConnnect(vertexId);
+
+    let boxVertex = mainScope.objectUtils.getBBoxObjectById(vertexInfo.id);
+    // Calculate box for vertex
+    let vertexWidth = boxVertex.width;
+    let vertexHeight = boxVertex.height;
+
+    // Set height boundary that less than height vertex
+    d3.select("svg").selectAll(".groupBoundary").each((d, i, node) => {
+      let boundaryId = d.id;
+      let boundaryScope = d.boundaryScope;
+      let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
+      if(vertexHeight > boxBoundary.height)
+        boundaryScope.setHeightBoundary(boundaryId, vertexHeight + 43);
+    });
 
     // Transform group
     d3.select(`#${d.id}`).attr("transform", (d,i) => {
@@ -216,6 +231,8 @@ class VertexMgmt{
         vertexInfo.parent = boundaryId;
       }
     });
+
+    vertexScope.objectUtils.resetSizeBoundary();
   }
 
   /**

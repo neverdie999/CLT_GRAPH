@@ -29,6 +29,9 @@ class BoundaryMenuContext{
                 this.boundaryMgmt.editInfoBoundary(boundaryId);
                 break;
 
+              case "copyAllBoundary":
+                this.boundaryMgmt.copyAllBoundary(boundaryId);
+
               default:
                 break;
             }
