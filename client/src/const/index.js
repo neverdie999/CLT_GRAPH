@@ -57,7 +57,7 @@ export const VERTEX_ATTR_SIZE = {
 // The attributes size of boundary
 export const BOUNDARY_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
-  BOUND_WIDTH: 180,
+  BOUND_WIDTH: 160,
   BOUND_HEIGHT: 200,
 }
 
