@@ -94,10 +94,10 @@ class ObjectUtils {
    * Reset the boundary change height when drag vertices that
    * height larger than boundary
    */
-  resetSizeBoundary() {
+  resetSizeAllBoundary() {
     d3.select("svg").selectAll(".groupBoundary").each((d, i, node) => {
       let orderObject = 0;
-      let heightBeforeElements = 43;
+      let heightBeforeElements = 42;
       let marginTop = 5;
       let widthBoundary = BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
       let boundaryId = d.id;
@@ -105,12 +105,14 @@ class ObjectUtils {
       let boundaryMembers = d.member;
 
       boundaryMembers.forEach(member => {
-        let objectId = member.id;
-        let boxObject = this.getBBoxObjectById(objectId);
-        orderObject ++;
-        heightBeforeElements += boxObject.height;
-        if(boxObject.width > BOUNDARY_ATTR_SIZE.BOUND_WIDTH)
-          widthBoundary = boxObject.width;
+        if(member.show) {
+          let objectId = member.id;
+          let boxObject = this.getBBoxObjectById(objectId);
+          orderObject ++;
+          heightBeforeElements += boxObject.height;
+          if(boxObject.width > widthBoundary)
+            widthBoundary = boxObject.width + (member.type === "B" ? 10: 0);
+        }
       });
 
       let boundaryHeight = heightBeforeElements + marginTop*orderObject;
@@ -137,6 +139,22 @@ class ObjectUtils {
     const obj = this.getBoundaryInfoById(boundaryId);
     // Clone and return
     return Object.assign({}, obj);
+  }
+
+  /**
+   * Update status for child boundary
+   * child match with childId
+   * @param boundaryId
+   * @param childId
+   * @param status
+   */
+  setBoundaryMemberStatus(boundaryId, childId, status) {
+    let boundaryInfo = this.getBoundaryInfoById(boundaryId);
+    let members = boundaryInfo.member;
+    let select =  _.find(members, (e) => { return e.id === childId; });
+    if(select) {
+      select.show = status;
+    }
   }
 }
 

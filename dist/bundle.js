@@ -49537,8 +49537,8 @@ class BoundaryMenuContext{
                 this.boundaryMgmt.deleteAllBoundary(boundaryId);
                 break;
 
-              case "editInfoBoundary":
-                this.boundaryMgmt.editInfoBoundary(boundaryId);
+              case "makeEditBoundaryInfo":
+                this.boundaryMgmt.makeEditBoundaryInfo(boundaryId);
                 break;
 
               case "copyAllBoundary":
@@ -49549,7 +49549,7 @@ class BoundaryMenuContext{
             }
           },
           items: {
-            "editInfoBoundary": {name: "Edit Boundary Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
+            "makeEditBoundaryInfo": {name: "Edit Boundary Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
             "removeBoundary": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
             "copyAllBoundary": {name: "Copy All", icon: "fa-files-o", disabled: window.disabledCommand},
             "deleteAllBoundary": {name: "Delete All", icon: "fa-square-o", disabled: window.disabledCommand},
@@ -49651,13 +49651,13 @@ class VertexMgmt{
         // Bring data to top
         this.moveDataToLast(vertexId);
       });
-      // .on("mouseout", (d, i, node) => {
-      //   console.log("Mouse up");
-      //   let vertexId = d.id;
-      //   d3.select(node[0]).moveToBack();
-      //   // Bring data to top
-      //   this.moveDataToFirst(vertexId);
-      // });
+    // .on("mouseout", (d, i, node) => {
+    //   console.log("Mouse up");
+    //   let vertexId = d.id;
+    //   d3.select(node[0]).moveToBack();
+    //   // Bring data to top
+    //   this.moveDataToFirst(vertexId);
+    // });
 
     let htmlContent = '';
     let countProperty = 0;
@@ -49751,7 +49751,7 @@ class VertexMgmt{
       let boundaryId = d.id;
       let boundaryScope = d.boundaryScope;
       let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
-      if(vertexHeight > boxBoundary.height)
+      if(vertexHeight > boxBoundary.height && !d.parent)
         boundaryScope.setHeightBoundary(boundaryId, vertexHeight + 43);
     });
 
@@ -49782,27 +49782,29 @@ class VertexMgmt{
     let yVertexBox = yVertex + boxVertex.height;
 
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]("svg").selectAll(".groupBoundary").each((d, i, node) => {
-      // Calculate box for boundary
-      let boundaryId = d.id;
-      let boundaryScope = d.boundaryScope;
-      let boundaryInfo = boundaryScope.objectUtils.getBoundaryInfoById(boundaryId);
-      let xBoundary = boundaryInfo.x;
-      let yBoundary = boundaryInfo.y;
-      // let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
-      let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
-      let xBoundaryBox = xBoundary + boxBoundary.width;
-      let yBoundaryBox = yBoundary + boxBoundary.height;
+      if(!d.parent) {
+        // Calculate box for boundary
+        let boundaryId = d.id;
+        let boundaryScope = d.boundaryScope;
+        let boundaryInfo = boundaryScope.objectUtils.getBoundaryInfoById(boundaryId);
+        let xBoundary = boundaryInfo.x;
+        let yBoundary = boundaryInfo.y;
+        // let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
+        let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
+        let xBoundaryBox = xBoundary + boxBoundary.width;
+        let yBoundaryBox = yBoundary + boxBoundary.height;
 
-      // Check drop inside a boundary
-      if((xVertex >= xBoundary) && (yVertex >= yBoundary) && (xVertexBox <= xBoundaryBox) && (yVertexBox <= yBoundaryBox) ){
-        // boundaryInfo.member.vertex.push({id: vertexInfo.id, show: true});
-        let member = {id: vertexInfo.id, type: "V", show: true};
-        boundaryScope.addMemberToBoundary(boundaryId, member);
-        vertexInfo.parent = boundaryId;
+        // Check drop inside a boundary
+        if((xVertex >= xBoundary) && (yVertex >= yBoundary) && (xVertexBox <= xBoundaryBox) && (yVertexBox <= yBoundaryBox) ){
+          // boundaryInfo.member.vertex.push({id: vertexInfo.id, show: true});
+          let member = {id: vertexInfo.id, type: "V", show: true};
+          boundaryScope.addMemberToBoundary(boundaryId, member);
+          vertexInfo.parent = boundaryId;
+        }
       }
     });
 
-    vertexScope.objectUtils.resetSizeBoundary();
+    vertexScope.objectUtils.resetSizeAllBoundary();
   }
 
   /**
@@ -50260,7 +50262,7 @@ class BoundaryMgmt {
       .attr("class", "boundary_content")
       .html(`
           <div class="boundary_header">
-            <p class="header_name header_boundary" style="width: 100%; height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
+            <p id="${boundaryId}Header" class="header_name header_boundary" style="width: 100%; height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
           </div>
       `);
 
@@ -50353,7 +50355,7 @@ class BoundaryMgmt {
       }
     });
 
-    originScope.objectUtils.resetSizeBoundary();
+    originScope.objectUtils.resetSizeAllBoundary();
   }
 
   /**
@@ -50405,29 +50407,7 @@ class BoundaryMgmt {
     boundaryClone.x = boundaryClone.x + 5;
     boundaryClone.y = boundaryClone.y + 5;
     await this.createBoundary(boundaryClone);
-
-    cloneMembers.forEach(member => {
-      let objectId = member.id;
-      if(member.type === "V") {
-        let vertexObj = this.objectUtils.cloneVertexInfoById(objectId);
-        let vertexId = this.objectUtils.generateObjectId("V");
-        vertexObj.id = vertexId;
-        vertexObj.parent = boundaryCloneId;
-        let child = {id: vertexId, type: "V", show: true};
-        let scope = vertexObj.mainScope;
-        scope.create(vertexObj);
-        this.addMemberToBoundary(boundaryCloneId, child);
-      } else {
-        let boundaryObj = this.objectUtils.cloneBoundaryInfoById(objectId);
-        let cloneId = boundaryObj.id;
-        let boundaryId = this.objectUtils.generateObjectId("B");
-        boundaryObj.id = boundaryId;
-        boundaryObj.parent = boundaryCloneId;
-        let child = {id: boundaryId, type: "B", show: true};
-        this.createBoundary(boundaryObj);
-        this.addMemberToBoundary(boundaryCloneId, child);
-      }
-    });
+    this.cloneChildBoundary(boundaryCloneId, cloneMembers);
   }
 
   /**
@@ -50446,7 +50426,8 @@ class BoundaryMgmt {
    */
   reorderPositionMember(boundaryId, pos) {
     let orderObject = 0;
-    let heightBeforeElements = 43;
+    let heightBeforeElements = 42;
+    let widthBoundary = __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
     let marginTop = 5;
 
     // Get child of boundary
@@ -50457,31 +50438,65 @@ class BoundaryMgmt {
     let boundaryMembers = boundaryInfo.member;
 
     boundaryMembers.forEach(member => {
-      let objectId = member.id;
-      let boxObject = this.objectUtils.getBBoxObjectById(objectId);
-      let position = {x: pos.x + 5, y: pos.y + heightBeforeElements + marginTop*orderObject }; // Vertex postion center of boudary
-      if(member.type === "V"){
-        let vertexInfo = this.objectUtils.getVertexInfoById(objectId);
-        let vertexScope = vertexInfo.mainScope;
-        vertexScope.setVertexPosition(objectId, position);
-      } else {
-        this.setBoundaryPosition(objectId, position);
-      }
+      if(member.show){
+        let objectId = member.id;
+        let boxObject = this.objectUtils.getBBoxObjectById(objectId);
+        let position = {x: pos.x + 5, y: pos.y + heightBeforeElements + marginTop*orderObject }; // Vertex postion center of boudary
+        if(member.type === "V"){
+          let vertexInfo = this.objectUtils.getVertexInfoById(objectId);
+          let vertexScope = vertexInfo.mainScope;
+          vertexScope.setVertexPosition(objectId, position);
+        } else {
+          this.setBoundaryPosition(objectId, position);
+        }
 
-      orderObject ++;
-      heightBeforeElements += boxObject.height;
+        orderObject ++;
+        heightBeforeElements += boxObject.height;
+        if(boxObject.width > widthBoundary)
+          widthBoundary = boxObject.width + (member.type === "B" ? 10: 0);
+      }
     });
 
     let boundaryHeight = heightBeforeElements + marginTop*orderObject;
     this.setHeightBoundary(boundaryId, boundaryHeight);
+    this.setWidthBoundary(boundaryId, widthBoundary);
   }
 
   /**
-   * Set member visible or not
+   * Selecte member show or hidden
    * @param child
    */
-  setVisibleMember(child) {
-    console.log(child);
+  selectMemberVisible(boundaryId, child, status) {
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${child.id}`).classed('hidden-object', !status);
+    // Update status member boundary
+    let boundaryObj = this.objectUtils.getBoundaryInfoById(boundaryId);
+    this.objectUtils.setBoundaryMemberStatus(boundaryId, child.id, status)
+    if (child.type === "B")
+      this.setObjectShowHide(child.id, status);
+
+    this.reorderPositionMember(boundaryId);
+    if (boundaryObj.parent)
+      this.reorderPositionMember(boundaryObj.parent);
+  }
+  /**
+   * When unslect/select a boundary (in nested boundary) then set it hidden/show
+   * and set all child hidden/show
+   * and resize boundary
+   * @param object
+   * @param status
+   */
+  setObjectShowHide(boundaryId, status) {
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).classed('hidden-object', !status);
+    // Loop child
+    let boundaryObj = this.objectUtils.getBoundaryInfoById(boundaryId);
+    let members = boundaryObj.member;
+    members.forEach(member => {
+      this.objectUtils.setBoundaryMemberStatus(boundaryId, member.id, status)
+      __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${member.id}`).classed('hidden-object', !status);
+      if(member.type === "B")
+        this.setObjectShowHide(member.id, status);
+    });
+    this.reorderPositionMember(boundaryId);
   }
 
   /**
@@ -50588,7 +50603,7 @@ class BoundaryMgmt {
    * @param boundaryId
    */
   removeChildBoundary(boundaryId) {
-// Get child of boundary
+    // Get child of boundary
     let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId)
     let boundaryMembers = boundaryInfo.member;
 
@@ -50606,8 +50621,103 @@ class BoundaryMgmt {
     });
   }
 
-  cloneChildBoundary(boundaryId) {
+  /**
+   * Clone all child boundary, above child of child boundary
+   * boundaryCloneId, cloneMembers
+   */
+  cloneChildBoundary(boundaryCloneId, cloneMembers = []) {
+    cloneMembers.forEach(member => {
+      let objectId = member.id;
+      if (member.type === "V") {
+        let vertexObj = this.objectUtils.cloneVertexInfoById(objectId);
+        let vertexId = this.objectUtils.generateObjectId("V");
+        vertexObj.id = vertexId;
+        vertexObj.parent = boundaryCloneId;
+        let child = {id: vertexId, type: "V", show: true};
+        let scope = vertexObj.mainScope;
+        scope.create(vertexObj);
+        this.addMemberToBoundary(boundaryCloneId, child);
+      } else {
+        let boundaryObj = this.objectUtils.cloneBoundaryInfoById(objectId);
+        let cloneId = boundaryObj.id;
+        let members = boundaryObj.member.slice();
+        let boundaryId = this.objectUtils.generateObjectId("B");
+        boundaryObj.id = boundaryId;
+        boundaryObj.parent = boundaryCloneId;
+        boundaryObj.member = [];
+        let child = {id: boundaryId, type: "B", show: true};
+        this.createBoundary(boundaryObj);
+        this.addMemberToBoundary(boundaryCloneId, child);
+        this.cloneChildBoundary(boundaryId, members);
+      }
+    });
+  }
 
+  /**
+   * Make controls to edit boundary info
+   * @param boundaryId
+   */
+  makeEditBoundaryInfo (boundaryId) {
+    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    let parent = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]('svg').select(`#${boundaryId}`);
+    let scope = boundaryInfo.boundaryScope;
+    let form = parent.append("foreignObject")
+      .attr("id", `${boundaryId}Name`)
+      .attr("y", 8)
+      .attr("x", 5);
+    let input = form
+      .attr("width", boundaryInfo.width - 10)
+      .attr("height", 20)
+      .append("xhtml:form")
+      .append("input")
+      .attr("maxlength", 20)
+      .attr("class", "input-header-boundary")
+      .attr("value", function() {
+        this.focus();
+        return boundaryInfo.name;
+      })
+      .attr("style", `width: ${boundaryInfo.width - 10}px`)
+      .on("blur", function() {
+        let newName = input.node().value;
+        if(newName){
+          scope.setBoundaryName(boundaryId, newName);
+        }
+
+        parent.select(`#${boundaryId}Name`).remove();
+      })
+      .on("keypress", function() {
+        // IE fix
+        if (!__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */])
+          __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */] = window.event;
+
+        var e = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */];
+        if (e.keyCode == 13)
+        {
+          if (typeof(e.cancelBubble) !== 'undefined') // IE
+            e.cancelBubble = true;
+          if (e.stopPropagation)
+            e.stopPropagation();
+          e.preventDefault();
+
+          let newName = input.node().value;
+          if(newName){
+            scope.setBoundaryName(boundaryId, newName);
+          }
+
+          parent.select(`#${boundaryId}Name`).remove();
+        }
+      });
+  }
+
+  /**
+   * Set boundary info
+   * @param boundaryId
+   * @param boundaryId, info
+   */
+  setBoundaryName (boundaryId, name) {
+    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    boundaryInfo.name = name;
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}Header`).text(name);
   }
 };
 
@@ -50726,18 +50836,21 @@ class FileMgmt{
     let dataContent = {vertex: [], edge: [], boundary: [], vertexTypes: {}};
 
     // Process data to export
-    this.dataContainer.vertex.forEach(node => {
+    // Need clone data cause case user export
+    // later continue edit then lost parent scope
+    let cloneVertex = this.dataContainer.vertex.map(node => Object.assign({}, node));
+    let cloneEdge = this.dataContainer.edge.map(edge => Object.assign({}, edge));
+    let cloneBoundary = this.dataContainer.boundary.map(boundary => Object.assign({}, boundary));
+    cloneVertex.forEach(node => {
       delete node.mainScope;
       dataContent.vertex.push(node);
     });
 
-    dataContent.edge = this.dataContainer.edge;
-
-    this.dataContainer.boundary.forEach(boundary => {
+    dataContent.edge = cloneEdge;
+    cloneBoundary.forEach(boundary => {
       delete boundary.boundaryScope;
       dataContent.boundary.push(boundary);
     });
-
     dataContent.vertexTypes = window.vertexTypes;
 
     return Promise.resolve(dataContent);
@@ -51258,10 +51371,10 @@ class ObjectUtils {
    * Reset the boundary change height when drag vertices that
    * height larger than boundary
    */
-  resetSizeBoundary() {
+  resetSizeAllBoundary() {
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]("svg").selectAll(".groupBoundary").each((d, i, node) => {
       let orderObject = 0;
-      let heightBeforeElements = 43;
+      let heightBeforeElements = 42;
       let marginTop = 5;
       let widthBoundary = __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
       let boundaryId = d.id;
@@ -51269,12 +51382,14 @@ class ObjectUtils {
       let boundaryMembers = d.member;
 
       boundaryMembers.forEach(member => {
-        let objectId = member.id;
-        let boxObject = this.getBBoxObjectById(objectId);
-        orderObject ++;
-        heightBeforeElements += boxObject.height;
-        if(boxObject.width > __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH)
-          widthBoundary = boxObject.width;
+        if(member.show) {
+          let objectId = member.id;
+          let boxObject = this.getBBoxObjectById(objectId);
+          orderObject ++;
+          heightBeforeElements += boxObject.height;
+          if(boxObject.width > widthBoundary)
+            widthBoundary = boxObject.width + (member.type === "B" ? 10: 0);
+        }
       });
 
       let boundaryHeight = heightBeforeElements + marginTop*orderObject;
@@ -51302,6 +51417,22 @@ class ObjectUtils {
     // Clone and return
     return Object.assign({}, obj);
   }
+
+  /**
+   * Update status for child boundary
+   * child match with childId
+   * @param boundaryId
+   * @param childId
+   * @param status
+   */
+  setBoundaryMemberStatus(boundaryId, childId, status) {
+    let boundaryInfo = this.getBoundaryInfoById(boundaryId);
+    let members = boundaryInfo.member;
+    let select =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(members, (e) => { return e.id === childId; });
+    if(select) {
+      select.show = status;
+    }
+  }
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (ObjectUtils);
@@ -51319,6 +51450,7 @@ class MenuItemsBoundary{
     this.vertexMgmt = props.vertexMgmt;
     this.dataContainer = props.dataContainer;
     this.mainMgmt = props.mainMgmt;
+    this.dataShow = {};
     this.initListItem();
   }
 
@@ -51335,15 +51467,17 @@ class MenuItemsBoundary{
           },
           items: this.loadItems($trigger),
           events: {
-            show: function(opt) {
+            show: (opt) => {
               $('.data-title').attr('data-menutitle', "Member Visible");
-              var $this = this;
+              let $this = this;
               let data = {yesno01: true, yesno02: true, yesno03: true, yesno04: true, yesno05: false};
-              $.contextMenu.setInputValues(opt, data);
+
+              $.contextMenu.setInputValues(opt, this.dataShow);
             },
-            hide: function(opt) {
-              var $this = this;
-              $.contextMenu.getInputValues(opt, $this.data());
+            hide: (opt) => {
+              // var $this = this;
+              // $.contextMenu.getInputValues(opt, $this.data());
+              // console.log($this.data());
             }
           }
         }
@@ -51352,24 +51486,24 @@ class MenuItemsBoundary{
   }
 
   loadItems($trigger) {
-
-    // Get info of boundary
+    this.dataShow = {};
+    // Get info of boundarys
     let boundaryId = $trigger.attr('data');
     let boundaryInfo = this.boundaryMgmt.getBoundaryInfoById(boundaryId);
     let childs = boundaryInfo.member;
-    let boundaryMembers = boundaryInfo.member.boundary;
 
     const subItems = {};
     if(childs.length == 0){
       subItems.isHtmlItem = {type: 'html', html: '<div style="text-align: center; color: red;"><span>No member added</span></div>'};
     }
+
     childs.forEach(child => {
       let type = child.type;
       let childId = child.id;
       let childInfo = type === "B" ? this.boundaryMgmt.getBoundaryInfoById(childId) : this.vertexMgmt.getVertexInfoById(childId);
-      subItems[`${childId}`] = {name: `${childInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.setVisibleMember(child); }}};
+      subItems[`${childId}`] = {name: `${childInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.selectMemberVisible(boundaryId, child, e.target.checked); }}};
+      this.dataShow[`${childId}`] = child.show;
     });
-
     return subItems;
   }
 }
@@ -51417,7 +51551,7 @@ exports = module.exports = __webpack_require__(808)(undefined);
 
 
 // module
-exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px 5px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .vertex-type {\n      height: 26px;\n      text-align: center; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border: 1px solid #336699;\n    border-collapse: collapse;\n    border-spacing: 0 0.5em; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper select {\n    height: 25px;\n    margin: 0 4px 0 0;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper input[type=\"radio\"] {\n    margin-top: 6px; }\n\n.my-group .form-control {\n  width: 50%; }\n\nlabel {\n  font-weight: 300 !important; }\n\n.font-weight-700 {\n  font-weight: 700 !important; }\n\n.hight_light {\n  border: solid 1px #ac2925 !important; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE; }\n  .edge:focus {\n    stroke: #2795EE; }\n\n.solid {\n  stroke: solid; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  background: #E1D5E7;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right;\n  font-weight: 300; }\n\n.vertex_data div .data {\n  font-weight: 300;\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  background: #E1D5E7;\n  border-bottom: solid 1px #652a82;\n  margin: 0;\n  padding: 8px 0px;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border: solid 1px #652a82;\n  border-left: none;\n  background: white;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n", ""]);
+exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px 5px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .vertex-type {\n      height: 26px;\n      text-align: center; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border: 1px solid #336699;\n    border-collapse: collapse;\n    border-spacing: 0 0.5em; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper select {\n    height: 25px;\n    margin: 0 4px 0 0;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper input[type=\"radio\"] {\n    margin-top: 6px; }\n\n.my-group .form-control {\n  width: 50%; }\n\nlabel {\n  font-weight: 300 !important; }\n\n.font-weight-700 {\n  font-weight: 700 !important; }\n\n.hight_light {\n  border: solid 1px #ac2925 !important; }\n\n.hidden-object {\n  display: none; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE; }\n  .edge:focus {\n    stroke: #2795EE; }\n\n.solid {\n  stroke: solid; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  background: #E1D5E7;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right;\n  font-weight: 300; }\n\n.vertex_data div .data {\n  font-weight: 300;\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  background: #E1D5E7;\n  border-bottom: solid 1px #652a82;\n  margin: 0;\n  padding: 8px 0px;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border: solid 1px #652a82;\n  border-left: none;\n  background: white;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #E1D5E7;\n  border: none; }\n", ""]);
 
 // exports
 
