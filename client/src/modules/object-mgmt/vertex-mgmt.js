@@ -81,13 +81,13 @@ class VertexMgmt{
         // Bring data to top
         this.moveDataToLast(vertexId);
       });
-      // .on("mouseout", (d, i, node) => {
-      //   console.log("Mouse up");
-      //   let vertexId = d.id;
-      //   d3.select(node[0]).moveToBack();
-      //   // Bring data to top
-      //   this.moveDataToFirst(vertexId);
-      // });
+    // .on("mouseout", (d, i, node) => {
+    //   console.log("Mouse up");
+    //   let vertexId = d.id;
+    //   d3.select(node[0]).moveToBack();
+    //   // Bring data to top
+    //   this.moveDataToFirst(vertexId);
+    // });
 
     let htmlContent = '';
     let countProperty = 0;
@@ -181,7 +181,7 @@ class VertexMgmt{
       let boundaryId = d.id;
       let boundaryScope = d.boundaryScope;
       let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
-      if(vertexHeight > boxBoundary.height)
+      if(vertexHeight > boxBoundary.height && !d.parent)
         boundaryScope.setHeightBoundary(boundaryId, vertexHeight + 43);
     });
 
@@ -212,27 +212,29 @@ class VertexMgmt{
     let yVertexBox = yVertex + boxVertex.height;
 
     d3.select("svg").selectAll(".groupBoundary").each((d, i, node) => {
-      // Calculate box for boundary
-      let boundaryId = d.id;
-      let boundaryScope = d.boundaryScope;
-      let boundaryInfo = boundaryScope.objectUtils.getBoundaryInfoById(boundaryId);
-      let xBoundary = boundaryInfo.x;
-      let yBoundary = boundaryInfo.y;
-      // let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
-      let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
-      let xBoundaryBox = xBoundary + boxBoundary.width;
-      let yBoundaryBox = yBoundary + boxBoundary.height;
+      if(!d.parent) {
+        // Calculate box for boundary
+        let boundaryId = d.id;
+        let boundaryScope = d.boundaryScope;
+        let boundaryInfo = boundaryScope.objectUtils.getBoundaryInfoById(boundaryId);
+        let xBoundary = boundaryInfo.x;
+        let yBoundary = boundaryInfo.y;
+        // let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
+        let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
+        let xBoundaryBox = xBoundary + boxBoundary.width;
+        let yBoundaryBox = yBoundary + boxBoundary.height;
 
-      // Check drop inside a boundary
-      if((xVertex >= xBoundary) && (yVertex >= yBoundary) && (xVertexBox <= xBoundaryBox) && (yVertexBox <= yBoundaryBox) ){
-        // boundaryInfo.member.vertex.push({id: vertexInfo.id, show: true});
-        let member = {id: vertexInfo.id, type: "V", show: true};
-        boundaryScope.addMemberToBoundary(boundaryId, member);
-        vertexInfo.parent = boundaryId;
+        // Check drop inside a boundary
+        if((xVertex >= xBoundary) && (yVertex >= yBoundary) && (xVertexBox <= xBoundaryBox) && (yVertexBox <= yBoundaryBox) ){
+          // boundaryInfo.member.vertex.push({id: vertexInfo.id, show: true});
+          let member = {id: vertexInfo.id, type: "V", show: true};
+          boundaryScope.addMemberToBoundary(boundaryId, member);
+          vertexInfo.parent = boundaryId;
+        }
       }
     });
 
-    vertexScope.objectUtils.resetSizeBoundary();
+    vertexScope.objectUtils.resetSizeAllBoundary();
   }
 
   /**

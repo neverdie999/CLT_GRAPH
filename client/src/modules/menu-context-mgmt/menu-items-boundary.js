@@ -5,6 +5,7 @@ class MenuItemsBoundary{
     this.vertexMgmt = props.vertexMgmt;
     this.dataContainer = props.dataContainer;
     this.mainMgmt = props.mainMgmt;
+    this.dataShow = {};
     this.initListItem();
   }
 
@@ -21,15 +22,17 @@ class MenuItemsBoundary{
           },
           items: this.loadItems($trigger),
           events: {
-            show: function(opt) {
+            show: (opt) => {
               $('.data-title').attr('data-menutitle', "Member Visible");
-              var $this = this;
+              let $this = this;
               let data = {yesno01: true, yesno02: true, yesno03: true, yesno04: true, yesno05: false};
-              $.contextMenu.setInputValues(opt, data);
+
+              $.contextMenu.setInputValues(opt, this.dataShow);
             },
-            hide: function(opt) {
-              var $this = this;
-              $.contextMenu.getInputValues(opt, $this.data());
+            hide: (opt) => {
+              // var $this = this;
+              // $.contextMenu.getInputValues(opt, $this.data());
+              // console.log($this.data());
             }
           }
         }
@@ -38,24 +41,24 @@ class MenuItemsBoundary{
   }
 
   loadItems($trigger) {
-
-    // Get info of boundary
+    this.dataShow = {};
+    // Get info of boundarys
     let boundaryId = $trigger.attr('data');
     let boundaryInfo = this.boundaryMgmt.getBoundaryInfoById(boundaryId);
     let childs = boundaryInfo.member;
-    let boundaryMembers = boundaryInfo.member.boundary;
 
     const subItems = {};
     if(childs.length == 0){
       subItems.isHtmlItem = {type: 'html', html: '<div style="text-align: center; color: red;"><span>No member added</span></div>'};
     }
+
     childs.forEach(child => {
       let type = child.type;
       let childId = child.id;
       let childInfo = type === "B" ? this.boundaryMgmt.getBoundaryInfoById(childId) : this.vertexMgmt.getVertexInfoById(childId);
-      subItems[`${childId}`] = {name: `${childInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.setVisibleMember(child); }}};
+      subItems[`${childId}`] = {name: `${childInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.selectMemberVisible(boundaryId, child, e.target.checked); }}};
+      this.dataShow[`${childId}`] = child.show;
     });
-
     return subItems;
   }
 }
