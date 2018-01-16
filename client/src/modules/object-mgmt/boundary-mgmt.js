@@ -419,7 +419,7 @@ class BoundaryMgmt {
    * @param boundaryId
    */
   removeChildBoundary(boundaryId) {
-    // Get child of boundary
+  // Get child of boundary
     let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId)
     let boundaryMembers = boundaryInfo.member;
 

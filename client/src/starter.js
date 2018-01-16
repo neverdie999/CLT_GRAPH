@@ -22,23 +22,6 @@ import {
 } from './const/index';
 import './styles/index.scss';
 
-// const vertexTypes = {
-//   "Grunt": {
-//     "name":"Grunt",
-//     "hp": 500,
-//     "atk": "M20",
-//     "def": "H2",
-//     "spd": 1
-//   },
-//   "Troll": {
-//     "date":"Troll",
-//     "day": 300,
-//     "hour": "P30",
-//     "min": "L0",
-//     "sec": 1.1
-//   }
-// };
-
 d3.selection.prototype.moveToFront = function() {
   return this.each(function(){
     this.parentNode.appendChild(this);

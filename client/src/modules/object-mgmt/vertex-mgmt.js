@@ -81,13 +81,13 @@ class VertexMgmt{
         // Bring data to top
         this.moveDataToLast(vertexId);
       });
-    // .on("mouseout", (d, i, node) => {
-    //   console.log("Mouse up");
-    //   let vertexId = d.id;
-    //   d3.select(node[0]).moveToBack();
-    //   // Bring data to top
-    //   this.moveDataToFirst(vertexId);
-    // });
+      // .on("mouseout", (d, i, node) => {
+      //   console.log("Mouse up");
+      //   let vertexId = d.id;
+      //   d3.select(node[0]).moveToBack();
+      //   // Bring data to top
+      //   this.moveDataToFirst(vertexId);
+      // });
 
     let htmlContent = '';
     let countProperty = 0;
