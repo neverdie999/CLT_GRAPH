@@ -35793,23 +35793,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-// const vertexTypes = {
-//   "Grunt": {
-//     "name":"Grunt",
-//     "hp": 500,
-//     "atk": "M20",
-//     "def": "H2",
-//     "spd": 1
-//   },
-//   "Troll": {
-//     "date":"Troll",
-//     "day": 300,
-//     "hour": "P30",
-//     "min": "L0",
-//     "sec": 1.1
-//   }
-// };
-
 __WEBPACK_IMPORTED_MODULE_11_d3__["e" /* selection */].prototype.moveToFront = function() {
   return this.each(function(){
     this.parentNode.appendChild(this);
@@ -49651,13 +49634,13 @@ class VertexMgmt{
         // Bring data to top
         this.moveDataToLast(vertexId);
       });
-    // .on("mouseout", (d, i, node) => {
-    //   console.log("Mouse up");
-    //   let vertexId = d.id;
-    //   d3.select(node[0]).moveToBack();
-    //   // Bring data to top
-    //   this.moveDataToFirst(vertexId);
-    // });
+      // .on("mouseout", (d, i, node) => {
+      //   console.log("Mouse up");
+      //   let vertexId = d.id;
+      //   d3.select(node[0]).moveToBack();
+      //   // Bring data to top
+      //   this.moveDataToFirst(vertexId);
+      // });
 
     let htmlContent = '';
     let countProperty = 0;
@@ -50603,7 +50586,7 @@ class BoundaryMgmt {
    * @param boundaryId
    */
   removeChildBoundary(boundaryId) {
-    // Get child of boundary
+  // Get child of boundary
     let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId)
     let boundaryMembers = boundaryInfo.member;
 
