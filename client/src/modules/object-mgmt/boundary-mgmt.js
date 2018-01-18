@@ -6,6 +6,7 @@ import {
 } from '../../const/index';
 
 import PopUtils from '../../common/utilities/popup.ult';
+import {generateObjectId} from '../../common/utilities/common.ult';
 
 class BoundaryMgmt {
   constructor(props){
@@ -21,7 +22,7 @@ class BoundaryMgmt {
   }
 
   async createBoundary(options = {}){
-    let boundaryId = options.id ? options.id : this.objectUtils.generateObjectId('B');
+    let boundaryId = options.id ? options.id : generateObjectId('B');
     let memeber = options.member || [];
     let parent = options.parent || null;
     let height = options.height || BOUNDARY_ATTR_SIZE.BOUND_HEIGHT;
@@ -98,47 +99,44 @@ class BoundaryMgmt {
 
   dragBoundary(d) {
 
-    let boundaryScope = d.boundaryScope;
     // Update poition object in this.dataContainer.boundary
     d.x = d3.event.x;
     d.y = d3.event.y;
-
-
-    // Update position of child element
-    // let vertexMembers = d.member.vertex;
-    if(d.member.length > 0)
-      boundaryScope.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
-
-    // Resize boundary
-    let originId = d.id;
-    let originBox = boundaryScope.objectUtils.getBBoxObjectById(originId);
-    let originWidth = originBox.width;
-    let originHeight = originBox.height;
-
-    d3.select("svg").selectAll(".groupBoundary").each((d, i, node) => {
-      if(d.id != originId && !d.parent){
-        let scope = d.boundaryScope;
-        let boundaryId = d.id;
-        let boxBoundary = scope.objectUtils.getBBoxObjectById(boundaryId);
-        if(originHeight >= boxBoundary.height)
-          scope.setHeightBoundary(boundaryId, originHeight + 43);
-        if(originWidth >= boxBoundary.width)
-          scope.setWidthBoundary(boundaryId, originWidth + 15);
-      }
-    });
-
     // Transform group
     d3.select(this).attr("transform", (d,i) => {
       return "translate(" + [ d3.event.x, d3.event.y ] + ")"
     });
+
+    // Update position of child element
+    // let vertexMembers = d.member.vertex;
+    let boundaryScope = d.boundaryScope;
+    if(d.member.length > 0)
+      boundaryScope.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
+
+    if(!d.parent){
+      // Resize boundary
+      let originId = d.id;
+      let originBox = boundaryScope.objectUtils.getBBoxObjectById(originId);
+      let originWidth = originBox.width;
+      let originHeight = originBox.height;
+
+      d3.select("svg").selectAll(".groupBoundary").each((d, i, node) => {
+        if(d.id != originId && !d.parent){
+          let scope = d.boundaryScope;
+          let boundaryId = d.id;
+          let boxBoundary = scope.objectUtils.getBBoxObjectById(boundaryId);
+          if(originHeight >= boxBoundary.height)
+            scope.setHeightBoundary(boundaryId, originHeight + 43);
+          if(originWidth >= boxBoundary.width)
+            scope.setWidthBoundary(boundaryId, originWidth + 15);
+        }
+      });
+    }
   }
 
   dragBoundaryEnd(d) {
     d3.select(this).classed("active", false);
     let originInfo = d;
-    // If boundary has parent then not check.
-    if(originInfo.parent)
-      return;
 
     let originScope = d.boundaryScope;
     // let boxVertex = d3.select(`#${vertexInfo.id}`).node().getBBox();
@@ -148,28 +146,46 @@ class BoundaryMgmt {
     let yOrigin = originInfo.y
     let xOriginBox = xOrigin + boxOrigin.width;
     let yOriginBox = yOrigin + boxOrigin.height;
+    if(originInfo.parent) {
+      // Check drag outside
+      let boundaryInfo = originScope.objectUtils.getBoundaryInfoById(originInfo.parent);
+      let boundaryId = boundaryInfo.id;
+      let boundaryScope = boundaryInfo.boundaryScope;
+      let xBoundary = boundaryInfo.x;
+      let yBoundary = boundaryInfo.y;
+      let boxBoundary = originScope.objectUtils.getBBoxObjectById(boundaryId);
+      let xBoundaryBox = xBoundary + boxBoundary.width;
+      let yBoundaryBox = yBoundary + boxBoundary.height;
 
-    d3.select("svg").selectAll(".groupBoundary").each((d, i, node) => {
-      if(!d.parent && d.id != originInfo.id){
-        // Calculate box for boundary
-        let boundaryId = d.id;
-        let boundaryScope = d.boundaryScope;
-        let boundaryInfo = boundaryScope.objectUtils.getBoundaryInfoById(boundaryId);
-        let xBoundary = boundaryInfo.x;
-        let yBoundary = boundaryInfo.y;
-        // let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
-        let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
-        let xBoundaryBox = xBoundary + boxBoundary.width;
-        let yBoundaryBox = yBoundary + boxBoundary.height;
-
-        // Check drop inside a boundary
-        if((xOrigin >= xBoundary) && (yOrigin >= yBoundary) && (xOriginBox <= xBoundaryBox) && (yOriginBox <= yBoundaryBox) ){
-          let member = {id: originInfo.id, type: "B", show: true};
-          boundaryScope.addMemberToBoundary(boundaryId, member);
-          originInfo.parent = boundaryId;
-        }
+      // Check drop inside a boundary
+      if((xOrigin < xBoundary) || (yOrigin < yBoundary) || (xOriginBox > xBoundaryBox) || (yOriginBox > yBoundaryBox) ){
+        let member = {id: vertexInfo.id, type: "V", show: true};
+        originScope.removeMemberFromBoundary(boundaryId, originInfo.id);
+        originInfo.parent = null;
       }
-    });
+    } else {
+      d3.select("svg").selectAll(".groupBoundary").each((d, i, node) => {
+        if(!d.parent && d.id != originInfo.id){
+          // Calculate box for boundary
+          let boundaryId = d.id;
+          let boundaryScope = d.boundaryScope;
+          let boundaryInfo = boundaryScope.objectUtils.getBoundaryInfoById(boundaryId);
+          let xBoundary = boundaryInfo.x;
+          let yBoundary = boundaryInfo.y;
+          // let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
+          let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
+          let xBoundaryBox = xBoundary + boxBoundary.width;
+          let yBoundaryBox = yBoundary + boxBoundary.height;
+
+          // Check drop inside a boundary
+          if((xOrigin >= xBoundary) && (yOrigin >= yBoundary) && (xOriginBox <= xBoundaryBox) && (yOriginBox <= yBoundaryBox) ){
+            let member = {id: originInfo.id, type: "B", show: true};
+            boundaryScope.addMemberToBoundary(boundaryId, member);
+            originInfo.parent = boundaryId;
+          }
+        }
+      });
+    }
 
     originScope.objectUtils.resetSizeAllBoundary();
   }
@@ -179,6 +195,10 @@ class BoundaryMgmt {
    * @param boundaryId
    */
   removeBoundary(boundaryId) {
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+
+    if(boundaryInfo.parent)
+      this.removeMemberFromBoundary(boundaryInfo.parent, boundaryId);
     // Remove from DOM
     d3.select(`#${boundaryId}`).remove();
 
@@ -197,12 +217,16 @@ class BoundaryMgmt {
    * @param boundaryId
    */
   deleteAllBoundary(boundaryId) {
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+
+    if(!d3.select(`#${boundaryInfo.parent}`).empty())
+      this.removeMemberFromBoundary(boundaryInfo.parent, boundaryId);
+
     // Remove from DOM
     d3.select(`#${boundaryId}`).remove();
-
     // Remove child of boundary
     this.removeChildBoundary(boundaryId);
-
+    // this.removeBoundary(boundaryId);
     // Remove from data container
     let data = _.remove(this.dataContainer.boundary, (e) => {
       return e.id === boundaryId;
@@ -215,7 +239,7 @@ class BoundaryMgmt {
    * @param boundaryId
    */
   async copyAllBoundary(boundaryId) {
-    let boundaryCloneId = this.objectUtils.generateObjectId("B");
+    let boundaryCloneId = generateObjectId("B");
     let boundaryClone = this.objectUtils.cloneBoundaryInfoById(boundaryId);
     let cloneMembers = boundaryClone.member.slice();
     boundaryClone.member = [];
@@ -257,7 +281,7 @@ class BoundaryMgmt {
       if(member.show){
         let objectId = member.id;
         let boxObject = this.objectUtils.getBBoxObjectById(objectId);
-        let position = {x: pos.x + 5, y: pos.y + heightBeforeElements + marginTop*orderObject }; // Vertex postion center of boudary
+        let position = {x: pos.x + 5, y: pos.y + heightBeforeElements + marginTop*orderObject }; // Vertex postion center of boundary
         if(member.type === "V"){
           let vertexInfo = this.objectUtils.getVertexInfoById(objectId);
           let vertexScope = vertexInfo.mainScope;
@@ -292,7 +316,8 @@ class BoundaryMgmt {
 
     this.reorderPositionMember(boundaryId);
     if (boundaryObj.parent)
-      this.reorderPositionMember(boundaryObj.parent);
+    // this.reorderPositionMember(boundaryObj.parent);
+      this.resizeParentBoundary(boundaryObj.parent);
   }
   /**
    * When unslect/select a boundary (in nested boundary) then set it hidden/show
@@ -312,7 +337,35 @@ class BoundaryMgmt {
       if(member.type === "B")
         this.setObjectShowHide(member.id, status);
     });
-    this.reorderPositionMember(boundaryId);
+    // this.reorderPositionMember(boundaryId);
+    this.resizeParentBoundary(boundaryId);
+  }
+
+  resizeParentBoundary(boundaryId) {
+    let orderObject = 0;
+    let heightBeforeElements = 42;
+    let marginTop = 5;
+    let widthBoundary = BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    let boundaryScope = boundaryInfo.boundaryScope;
+    let boundaryMembers = boundaryInfo.member;
+
+    boundaryMembers.forEach(member => {
+      if(member.show) {
+        let objectId = member.id;
+        let boxObject = this.objectUtils.getBBoxObjectById(objectId);
+        orderObject ++;
+        heightBeforeElements += boxObject.height;
+        if(boxObject.width > widthBoundary)
+          widthBoundary = boxObject.width + (member.type === "B" ? 10: 0);
+      }
+    });
+
+    let boundaryHeight = heightBeforeElements + marginTop*orderObject;
+    boundaryScope.setHeightBoundary(boundaryId, boundaryHeight);
+    boundaryScope.setWidthBoundary(boundaryId, widthBoundary);
+    if(boundaryInfo.parent)
+      this.resizeParentBoundary(boundaryInfo.parent);
   }
 
   /**
@@ -358,6 +411,7 @@ class BoundaryMgmt {
     let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
     boundaryInfo.member.push(child);
     this.reorderPositionMember(boundaryId);
+    this.resizeParentBoundary(boundaryId);
   }
 
   /**
@@ -365,13 +419,14 @@ class BoundaryMgmt {
    * @param boundaryId
    * @param objectId
    */
-  removeMemberFromBoundary (boundaryId, objectId) {
+  removeMemberFromBoundary(boundaryId, objectId) {
     let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
 
     let data = _.remove(boundaryInfo.member, (e) => {
       return e.id === objectId;
     });
-    this.reorderPositionVertex(boundaryId);
+    this.reorderPositionMember(boundaryId);
+    this.resizeParentBoundary(boundaryId);
   }
 
   /**
@@ -384,13 +439,12 @@ class BoundaryMgmt {
     let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
     boundaryInfo.x = position.x;
     boundaryInfo.y = position.y;
-    // this.updatePoisitionPathConnnect(vertexId);
 
     d3.select(`#${boundaryId}`).attr("transform", (d,i) => {
       return "translate(" + [ position.x, position.y ] + ")"
     });
 
-    this.reorderPositionMember(boundaryId, position)
+    this.reorderPositionMember(boundaryId, position);
   }
 
   /**
@@ -419,7 +473,7 @@ class BoundaryMgmt {
    * @param boundaryId
    */
   removeChildBoundary(boundaryId) {
-  // Get child of boundary
+    // Get child of boundary
     let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId)
     let boundaryMembers = boundaryInfo.member;
 
@@ -429,7 +483,7 @@ class BoundaryMgmt {
         let vertexInfo = this.objectUtils.getVertexInfoById(objectId);
         let vertexScope = vertexInfo.mainScope;
         // Remove all child vertex
-        vertexScope.remove(objectId);
+        vertexScope.removeVertexCallFromBoundary(objectId);
       } else {
         // Remove all child boundary
         this.deleteAllBoundary(objectId);
@@ -442,12 +496,14 @@ class BoundaryMgmt {
    * boundaryCloneId, cloneMembers
    */
   cloneChildBoundary(boundaryCloneId, cloneMembers = []) {
-    cloneMembers.forEach(member => {
+    for(let i = 0; i < cloneMembers.length; i++){
+      const member = cloneMembers[i];
       let objectId = member.id;
       if (member.type === "V") {
         let vertexObj = this.objectUtils.cloneVertexInfoById(objectId);
-        let vertexId = this.objectUtils.generateObjectId("V");
+        let vertexId = generateObjectId("V");
         vertexObj.id = vertexId;
+        console.log(`======${vertexId}=========`);
         vertexObj.parent = boundaryCloneId;
         let child = {id: vertexId, type: "V", show: true};
         let scope = vertexObj.mainScope;
@@ -457,7 +513,7 @@ class BoundaryMgmt {
         let boundaryObj = this.objectUtils.cloneBoundaryInfoById(objectId);
         let cloneId = boundaryObj.id;
         let members = boundaryObj.member.slice();
-        let boundaryId = this.objectUtils.generateObjectId("B");
+        let boundaryId = generateObjectId("B");
         boundaryObj.id = boundaryId;
         boundaryObj.parent = boundaryCloneId;
         boundaryObj.member = [];
@@ -466,7 +522,7 @@ class BoundaryMgmt {
         this.addMemberToBoundary(boundaryCloneId, child);
         this.cloneChildBoundary(boundaryId, members);
       }
-    });
+    }
   }
 
   /**

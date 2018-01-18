@@ -104,7 +104,7 @@ class FileMgmt{
   }
 
   getContentGraphAsJson() {
-    let dataContent = {vertex: [], edge: [], boundary: [], vertexTypes: {}};
+    let dataContent = {vertex: [], edge: [], boundary: [], position: [], vertexTypes: {}};
 
     // Process data to export
     // Need clone data cause case user export
@@ -112,16 +112,41 @@ class FileMgmt{
     let cloneVertex = this.dataContainer.vertex.map(node => Object.assign({}, node));
     let cloneEdge = this.dataContainer.edge.map(edge => Object.assign({}, edge));
     let cloneBoundary = this.dataContainer.boundary.map(boundary => Object.assign({}, boundary));
+
     cloneVertex.forEach(node => {
       delete node.mainScope;
+
+      let pos = new Object({
+          "id": node.id,
+          "x": node.x,
+          "y": node.y
+      });
+
+      delete node.x;
+      delete node.y;
+
       dataContent.vertex.push(node);
+      dataContent.position.push(pos);
     });
 
     dataContent.edge = cloneEdge;
+
     cloneBoundary.forEach(boundary => {
       delete boundary.boundaryScope;
+
+      let pos = new Object({
+        "id": boundary.id,
+        "x": boundary.x,
+        "y": boundary.y
+      });
+
+      delete boundary.x;
+      delete boundary.y;
+
       dataContent.boundary.push(boundary);
+      dataContent.position.push(pos);
     });
+
     dataContent.vertexTypes = window.vertexTypes;
 
     return Promise.resolve(dataContent);

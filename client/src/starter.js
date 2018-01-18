@@ -160,12 +160,22 @@ class Starter {
     // Draw boundary
     let arrBoundary = data.boundary;
     arrBoundary.forEach(boundary => {
+      let pos = data.position.find(element => {
+        return element.id === boundary.id;
+      });
+      boundary.x = pos.x;
+      boundary.y = pos.y;
       this.boundaryMgmt.createBoundary(boundary);
     });
 
     // Draw vertex
     let arrVertex = data.vertex;
     arrVertex.forEach(vertex => {
+      let pos = data.position.find(element => {
+        return element.id === vertex.id;
+      });
+      vertex.x = pos.x;
+      vertex.y = pos.y;
       this.vertextMgmt.create(vertex);
     });
 
@@ -292,7 +302,7 @@ class Starter {
    */
   async validateGraphDataStructure(data) {
     // Validate struct data
-    if(!data.vertex || !data.edge || !data.boundary || !data.vertexTypes) {
+    if(!data.vertex || !data.edge || !data.boundary || !data.position || !data.vertexTypes) {
       return Promise.resolve(true);
     }
 

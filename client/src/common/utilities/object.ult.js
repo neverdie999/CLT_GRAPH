@@ -20,7 +20,8 @@ class ObjectUtils {
    * @returns {string}
    */
   generateObjectId(prefix = 'V') {
-    return `${prefix}${Date.now()}`;
+    let date = new Date();
+    return `${prefix}${date.getTime()}`;
   }
 
   /**
