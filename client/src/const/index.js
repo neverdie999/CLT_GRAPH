@@ -51,7 +51,7 @@ export const VERTEX_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
   PROP_HEIGHT: 26,
   GROUP_WIDTH: 150,
-  SPACE_COPY: 10, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
+  SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
 }
 
 // The attributes size of boundary

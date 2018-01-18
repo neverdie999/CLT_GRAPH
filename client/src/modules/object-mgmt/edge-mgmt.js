@@ -5,6 +5,7 @@ import {
   EDGE_ARROW_FLG
 } from '../../const/index';
 import _ from "lodash";
+import {generateObjectId} from '../../common/utilities/common.ult';
 
 const HTML_EDGE_TYPE_ID = 'editEdgeType';
 const OPTIONS_EDGE_LINE_TYPE = 'edgeLineType';
@@ -39,7 +40,7 @@ class EdgeMgmt{
     let source = Object.assign({}, options.source);
     let target = Object.assign({}, options.target);
     let type = options.type;
-    let edgeId = options.id ? options.id : this.objectUtils.generateObjectId('E');
+    let edgeId = options.id ? options.id : generateObjectId('E');
     // Default style is line solid with arrow at end.
     let style = options.style ? options.style : {line:"solid", arrow: "Y"};
     let note = options.note ? options.note : {originNote: '', middleNote: '', destNote: ''}; // Default note for Edge.
