@@ -2,17 +2,18 @@ import * as d3 from 'd3';
 import PopUtils from '../../common/utilities/popup.ult';
 import {
   EDGE_LINE_TP,
-  EDGE_ARROW_FLG
+  EDGE_ARROW_FLG,
+  HTML_EDGE_CONTAINER_CLASS,
 } from '../../const/index';
 import _ from "lodash";
-import {generateObjectId} from '../../common/utilities/common.ult';
+import {generateObjectId, comShowMessage} from '../../common/utilities/common.ult';
 
 const HTML_EDGE_TYPE_ID = 'editEdgeType';
 const OPTIONS_EDGE_LINE_TYPE = 'edgeLineType';
 const OPTIONS_EDGE_ARROW_FLAG = 'edgeArrowFlag';
 const HTML_EDGE_FORM_ID = 'edgeForm';
 
-class EdgeMgmt{
+class Edge{
   constructor(props) {
     this.svgSelector = props.svgSelector;
     this.dataContainer = props.dataContainer;
@@ -36,7 +37,7 @@ class EdgeMgmt{
    * id: string, option E*********
    * Ex
    */
-  create(options = {}) {
+  createEdge(options = {}) {
     let source = Object.assign({}, options.source);
     let target = Object.assign({}, options.target);
     let type = options.type;
@@ -46,7 +47,7 @@ class EdgeMgmt{
     let note = options.note ? options.note : {originNote: '', middleNote: '', destNote: ''}; // Default note for Edge.
 
     // if (_.isEqual(source, target)) {
-    //   alert("Connect internal is not allowed.");
+    //   comShowMessage("Connect internal is not allowed.");
     //   return;
     // }
 
@@ -56,7 +57,6 @@ class EdgeMgmt{
       source: source,
       target: target,
       note: note,
-      // connect: [],
       style: style
     };
 
@@ -64,7 +64,7 @@ class EdgeMgmt{
     let pathStr = this.createPath(source, target);
     let line = this.svgSelector.append("path")
       .attr('d', pathStr)
-      .attr("class", "edge solid") // Default line type is solid
+      .attr("class", `${HTML_EDGE_CONTAINER_CLASS} edge solid`) // Default line type is solid
       .attr("id", edgeId)
       .attr('fill', 'none')
       .attr("marker-end", "url(#arrow)"); // Make arrow at end path
@@ -140,7 +140,7 @@ class EdgeMgmt{
    */
   openPopEditType(edgeId) {
     // Get edge info by ID
-    let edgeObj = this.getEdgeInfoById(edgeId);
+    let edgeObj = this.objectUtils.getEdgeInfoById(edgeId);
     this.originEdge = edgeObj;
     let edgeInfo = edgeObj;
     $(`#${OPTIONS_EDGE_LINE_TYPE}`).val(edgeInfo.style.line);
@@ -218,7 +218,7 @@ class EdgeMgmt{
     Object.assign(dataEdge[dataEdge.findIndex(el => el.id === this.originEdge.id)], this.originEdge)
 
     d3.select(`#${edgeId}`)
-      .attr('class', `edge ${lineType}`)
+      .attr('class', `${HTML_EDGE_CONTAINER_CLASS} edge ${lineType}`)
       .attr('marker-end', arrowFlag === 'Y' ? 'url(#arrow)' : '');
 
     this.closePopEdgeType();
@@ -231,7 +231,7 @@ class EdgeMgmt{
    */
   getEdgeNotes(edgeId) {
     // Get edge info by ID
-    let edgeObj = this.getEdgeInfoById(edgeId);
+    let edgeObj = this.objectUtils.getEdgeInfoById(edgeId);
     return edgeObj.note;
   }
 
@@ -241,7 +241,7 @@ class EdgeMgmt{
    * @param notes
    */
   setEdgeNotes(edgeId, notes) {
-    let edgeObj = this.getEdgeInfoById(edgeId);
+    let edgeObj = this.objectUtils.getEdgeInfoById(edgeId);
     if(!edgeObj)
       return;
     edgeObj.note = notes;
@@ -260,10 +260,10 @@ class EdgeMgmt{
    * @param edgeId
    * @param options: object
    */
-  updateAttributeNS(edgeId, options = {}){
+  updatePathConnect(edgeId, options = {}){
     if(!edgeId)
       return;
-    let edgeInfo = this.getEdgeInfoById(edgeId);
+    let edgeInfo = this.objectUtils.getEdgeInfoById(edgeId);
     let source = edgeInfo.source;
     let target = edgeInfo.target;
     if(options.source){
@@ -281,18 +281,8 @@ class EdgeMgmt{
 
     let pathStr = this.createPath(source, target);
     // Get DOM and update attribute
-    d3.select(`#${edgeId}`)
-      .attr('d', pathStr);
-  }
-
-  /**
-   * Get edge info by id
-   * @param edgeId
-   * @returns {*}
-   */
-  getEdgeInfoById(edgeId) {
-    return _.find(this.dataContainer.edge, (e) => { return e.id === edgeId; });
+    d3.select(`#${edgeId}`).attr('d', pathStr);
   }
 }
 
-export default EdgeMgmt;
+export default Edge;

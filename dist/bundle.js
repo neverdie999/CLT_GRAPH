@@ -228,7 +228,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var store = __webpack_require__(85)('wks');
-var uid = __webpack_require__(44);
+var uid = __webpack_require__(45);
 var Symbol = __webpack_require__(3).Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
@@ -302,11 +302,11 @@ module.exports = function (it) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_creator__ = __webpack_require__(144);
 /* unused harmony reexport creator */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_local__ = __webpack_require__(531);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_local__ = __webpack_require__(532);
 /* unused harmony reexport local */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_matcher__ = __webpack_require__(231);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__src_matcher__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_mouse__ = __webpack_require__(532);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_mouse__ = __webpack_require__(533);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__src_mouse__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_namespace__ = __webpack_require__(145);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__src_namespace__["a"]; });
@@ -314,9 +314,9 @@ module.exports = function (it) {
 /* unused harmony reexport namespaces */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_point__ = __webpack_require__(99);
 /* unused harmony reexport clientPoint */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_select__ = __webpack_require__(533);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_select__ = __webpack_require__(534);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_7__src_select__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_selectAll__ = __webpack_require__(561);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_selectAll__ = __webpack_require__(562);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_8__src_selectAll__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_selection_index__ = __webpack_require__(25);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_9__src_selection_index__["b"]; });
@@ -326,9 +326,9 @@ module.exports = function (it) {
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_11__src_selectorAll__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_selection_style__ = __webpack_require__(235);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_12__src_selection_style__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_touch__ = __webpack_require__(562);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_touch__ = __webpack_require__(563);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_13__src_touch__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_touches__ = __webpack_require__(563);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_touches__ = __webpack_require__(564);
 /* unused harmony reexport touches */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_window__ = __webpack_require__(150);
 /* unused harmony reexport window */
@@ -449,49 +449,49 @@ function newInterval(floori, offseti, count, field) {
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__src_bisect__["a"]; });
 /* unused harmony reexport bisectRight */
 /* unused harmony reexport bisectLeft */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_ascending__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_ascending__ = __webpack_require__(65);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__src_ascending__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_bisector__ = __webpack_require__(220);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__src_bisector__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_cross__ = __webpack_require__(507);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_cross__ = __webpack_require__(508);
 /* unused harmony reexport cross */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_descending__ = __webpack_require__(508);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_descending__ = __webpack_require__(509);
 /* unused harmony reexport descending */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_deviation__ = __webpack_require__(222);
 /* unused harmony reexport deviation */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_extent__ = __webpack_require__(224);
 /* unused harmony reexport extent */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_histogram__ = __webpack_require__(509);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_histogram__ = __webpack_require__(510);
 /* unused harmony reexport histogram */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_threshold_freedmanDiaconis__ = __webpack_require__(512);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_threshold_freedmanDiaconis__ = __webpack_require__(513);
 /* unused harmony reexport thresholdFreedmanDiaconis */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_threshold_scott__ = __webpack_require__(513);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_threshold_scott__ = __webpack_require__(514);
 /* unused harmony reexport thresholdScott */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_threshold_sturges__ = __webpack_require__(228);
 /* unused harmony reexport thresholdSturges */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_max__ = __webpack_require__(514);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_max__ = __webpack_require__(515);
 /* unused harmony reexport max */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_mean__ = __webpack_require__(515);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_mean__ = __webpack_require__(516);
 /* unused harmony reexport mean */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_median__ = __webpack_require__(516);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_median__ = __webpack_require__(517);
 /* unused harmony reexport median */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_merge__ = __webpack_require__(517);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_merge__ = __webpack_require__(518);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_14__src_merge__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_min__ = __webpack_require__(229);
 /* unused harmony reexport min */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_pairs__ = __webpack_require__(221);
 /* unused harmony reexport pairs */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__src_permute__ = __webpack_require__(518);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__src_permute__ = __webpack_require__(519);
 /* unused harmony reexport permute */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__src_quantile__ = __webpack_require__(142);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_18__src_quantile__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__src_range__ = __webpack_require__(226);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_19__src_range__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__src_scan__ = __webpack_require__(519);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__src_scan__ = __webpack_require__(520);
 /* unused harmony reexport scan */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__src_shuffle__ = __webpack_require__(520);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__src_shuffle__ = __webpack_require__(521);
 /* unused harmony reexport shuffle */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__src_sum__ = __webpack_require__(521);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__src_sum__ = __webpack_require__(522);
 /* unused harmony reexport sum */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__src_ticks__ = __webpack_require__(227);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_23__src_ticks__["a"]; });
@@ -501,7 +501,7 @@ function newInterval(floori, offseti, count, field) {
 /* unused harmony reexport transpose */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__src_variance__ = __webpack_require__(223);
 /* unused harmony reexport variance */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__src_zip__ = __webpack_require__(522);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__src_zip__ = __webpack_require__(523);
 /* unused harmony reexport zip */
 
 
@@ -547,7 +547,7 @@ module.exports = function (it, key) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP = __webpack_require__(8);
-var createDesc = __webpack_require__(43);
+var createDesc = __webpack_require__(44);
 module.exports = __webpack_require__(7) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
 } : function (object, key, value) {
@@ -563,7 +563,7 @@ module.exports = __webpack_require__(7) ? function (object, key, value) {
 var global = __webpack_require__(3);
 var hide = __webpack_require__(16);
 var has = __webpack_require__(15);
-var SRC = __webpack_require__(44)('src');
+var SRC = __webpack_require__(45)('src');
 var TO_STRING = 'toString';
 var $toString = Function[TO_STRING];
 var TPL = ('' + $toString).split(TO_STRING);
@@ -635,7 +635,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var pIE = __webpack_require__(70);
-var createDesc = __webpack_require__(43);
+var createDesc = __webpack_require__(44);
 var toIObject = __webpack_require__(19);
 var toPrimitive = __webpack_require__(29);
 var has = __webpack_require__(15);
@@ -731,35 +731,35 @@ module.exports = function (method, arg) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return root; });
 /* harmony export (immutable) */ __webpack_exports__["a"] = Selection;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__select__ = __webpack_require__(534);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__selectAll__ = __webpack_require__(535);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__filter__ = __webpack_require__(536);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__data__ = __webpack_require__(537);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__select__ = __webpack_require__(535);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__selectAll__ = __webpack_require__(536);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__filter__ = __webpack_require__(537);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__data__ = __webpack_require__(538);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__enter__ = __webpack_require__(233);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__exit__ = __webpack_require__(539);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__merge__ = __webpack_require__(540);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__order__ = __webpack_require__(541);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__sort__ = __webpack_require__(542);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__call__ = __webpack_require__(543);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__nodes__ = __webpack_require__(544);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__node__ = __webpack_require__(545);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__size__ = __webpack_require__(546);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__empty__ = __webpack_require__(547);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__each__ = __webpack_require__(548);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__attr__ = __webpack_require__(549);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__exit__ = __webpack_require__(540);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__merge__ = __webpack_require__(541);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__order__ = __webpack_require__(542);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__sort__ = __webpack_require__(543);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__call__ = __webpack_require__(544);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__nodes__ = __webpack_require__(545);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__node__ = __webpack_require__(546);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__size__ = __webpack_require__(547);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__empty__ = __webpack_require__(548);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__each__ = __webpack_require__(549);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__attr__ = __webpack_require__(550);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__style__ = __webpack_require__(235);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__property__ = __webpack_require__(550);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__classed__ = __webpack_require__(551);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__text__ = __webpack_require__(552);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__html__ = __webpack_require__(553);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__raise__ = __webpack_require__(554);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lower__ = __webpack_require__(555);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__append__ = __webpack_require__(556);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__insert__ = __webpack_require__(557);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__remove__ = __webpack_require__(558);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__datum__ = __webpack_require__(559);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__property__ = __webpack_require__(551);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__classed__ = __webpack_require__(552);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__text__ = __webpack_require__(553);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__html__ = __webpack_require__(554);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__raise__ = __webpack_require__(555);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lower__ = __webpack_require__(556);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__append__ = __webpack_require__(557);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__insert__ = __webpack_require__(558);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__remove__ = __webpack_require__(559);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__datum__ = __webpack_require__(560);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__on__ = __webpack_require__(148);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__dispatch__ = __webpack_require__(560);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__dispatch__ = __webpack_require__(561);
 
 
 
@@ -856,31 +856,31 @@ Selection.prototype = selection.prototype = {
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_5__src_number__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_object__ = __webpack_require__(244);
 /* unused harmony reexport interpolateObject */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_round__ = __webpack_require__(568);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_round__ = __webpack_require__(569);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_7__src_round__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_string__ = __webpack_require__(245);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_8__src_string__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_transform_index__ = __webpack_require__(569);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_transform_index__ = __webpack_require__(570);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_9__src_transform_index__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_9__src_transform_index__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_zoom__ = __webpack_require__(572);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_zoom__ = __webpack_require__(573);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_10__src_zoom__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_rgb__ = __webpack_require__(239);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_11__src_rgb__["a"]; });
 /* unused harmony reexport interpolateRgbBasis */
 /* unused harmony reexport interpolateRgbBasisClosed */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_hsl__ = __webpack_require__(573);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_hsl__ = __webpack_require__(574);
 /* unused harmony reexport interpolateHsl */
 /* unused harmony reexport interpolateHslLong */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_lab__ = __webpack_require__(574);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_lab__ = __webpack_require__(575);
 /* unused harmony reexport interpolateLab */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_hcl__ = __webpack_require__(575);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_hcl__ = __webpack_require__(576);
 /* unused harmony reexport interpolateHcl */
 /* unused harmony reexport interpolateHclLong */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_cubehelix__ = __webpack_require__(576);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_cubehelix__ = __webpack_require__(577);
 /* unused harmony reexport interpolateCubehelix */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_15__src_cubehelix__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_quantize__ = __webpack_require__(577);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_quantize__ = __webpack_require__(578);
 /* unused harmony reexport quantize */
 
 
@@ -1199,10 +1199,10 @@ module.exports = function (TYPE, $create) {
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["e"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["g"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["f"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_lab__ = __webpack_require__(566);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_lab__ = __webpack_require__(567);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__ = __webpack_require__(567);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__ = __webpack_require__(568);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__["a"]; });
 
 
@@ -1225,7 +1225,7 @@ module.exports = function (TYPE, $create) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__rotation__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__transform__ = __webpack_require__(106);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__fit__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__resample__ = __webpack_require__(671);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__resample__ = __webpack_require__(672);
 
 
 
@@ -1366,40 +1366,40 @@ function projectionMutator(projectAt) {
 "use strict";
 
 if (__webpack_require__(7)) {
-  var LIBRARY = __webpack_require__(45);
+  var LIBRARY = __webpack_require__(46);
   var global = __webpack_require__(3);
   var fails = __webpack_require__(4);
   var $export = __webpack_require__(0);
   var $typed = __webpack_require__(95);
   var $buffer = __webpack_require__(141);
   var ctx = __webpack_require__(22);
-  var anInstance = __webpack_require__(51);
-  var propertyDesc = __webpack_require__(43);
+  var anInstance = __webpack_require__(52);
+  var propertyDesc = __webpack_require__(44);
   var hide = __webpack_require__(16);
-  var redefineAll = __webpack_require__(53);
+  var redefineAll = __webpack_require__(54);
   var toInteger = __webpack_require__(31);
   var toLength = __webpack_require__(9);
   var toIndex = __webpack_require__(211);
-  var toAbsoluteIndex = __webpack_require__(47);
+  var toAbsoluteIndex = __webpack_require__(48);
   var toPrimitive = __webpack_require__(29);
   var has = __webpack_require__(15);
   var classof = __webpack_require__(71);
   var isObject = __webpack_require__(5);
   var toObject = __webpack_require__(10);
   var isArrayIter = __webpack_require__(132);
-  var create = __webpack_require__(48);
+  var create = __webpack_require__(49);
   var getPrototypeOf = __webpack_require__(21);
-  var gOPN = __webpack_require__(49).f;
+  var gOPN = __webpack_require__(50).f;
   var getIterFn = __webpack_require__(134);
-  var uid = __webpack_require__(44);
+  var uid = __webpack_require__(45);
   var wks = __webpack_require__(6);
   var createArrayMethod = __webpack_require__(33);
   var createArrayIncludes = __webpack_require__(86);
   var speciesConstructor = __webpack_require__(93);
   var ArrayIterators = __webpack_require__(137);
-  var Iterators = __webpack_require__(62);
+  var Iterators = __webpack_require__(63);
   var $iterDetect = __webpack_require__(90);
-  var setSpecies = __webpack_require__(50);
+  var setSpecies = __webpack_require__(51);
   var arrayFill = __webpack_require__(136);
   var arrayCopyWithin = __webpack_require__(201);
   var $DP = __webpack_require__(8);
@@ -1924,7 +1924,7 @@ var durationWeek = 6048e5;
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var META = __webpack_require__(44)('meta');
+var META = __webpack_require__(45)('meta');
 var isObject = __webpack_require__(5);
 var has = __webpack_require__(15);
 var setDesc = __webpack_require__(8).f;
@@ -1997,26 +1997,129 @@ module.exports = function (key) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__build_package__ = __webpack_require__(507);
+/* unused harmony reexport version */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_array__ = __webpack_require__(14);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_axis__ = __webpack_require__(524);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_brush__ = __webpack_require__(528);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_d3_chord__ = __webpack_require__(614);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_d3_collection__ = __webpack_require__(74);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_d3_color__ = __webpack_require__(34);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_d3_dispatch__ = __webpack_require__(55);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_d3_drag__ = __webpack_require__(143);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_8_d3_drag__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_d3_dsv__ = __webpack_require__(158);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_d3_ease__ = __webpack_require__(248);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_d3_force__ = __webpack_require__(627);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_d3_format__ = __webpack_require__(163);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_d3_geo__ = __webpack_require__(657);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_d3_hierarchy__ = __webpack_require__(685);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_d3_interpolate__ = __webpack_require__(26);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_d3_path__ = __webpack_require__(56);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_d3_polygon__ = __webpack_require__(707);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_d3_quadtree__ = __webpack_require__(161);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_d3_queue__ = __webpack_require__(714);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_d3_random__ = __webpack_require__(717);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_d3_request__ = __webpack_require__(722);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_d3_scale__ = __webpack_require__(729);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_d3_selection__ = __webpack_require__(11);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["b"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["f"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["g"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["h"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_d3_shape__ = __webpack_require__(762);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_d3_time__ = __webpack_require__(110);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_d3_time_format__ = __webpack_require__(175);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_d3_timer__ = __webpack_require__(101);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_d3_transition__ = __webpack_require__(155);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29_d3_voronoi__ = __webpack_require__(787);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30_d3_zoom__ = __webpack_require__(792);
+/* unused harmony namespace reexport */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = Transition;
 /* unused harmony export default */
 /* harmony export (immutable) */ __webpack_exports__["b"] = newId;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__attr__ = __webpack_require__(583);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__attrTween__ = __webpack_require__(584);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__delay__ = __webpack_require__(585);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__duration__ = __webpack_require__(586);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ease__ = __webpack_require__(587);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__filter__ = __webpack_require__(588);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__merge__ = __webpack_require__(589);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__on__ = __webpack_require__(590);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__remove__ = __webpack_require__(591);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__select__ = __webpack_require__(592);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__selectAll__ = __webpack_require__(593);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__selection__ = __webpack_require__(594);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__style__ = __webpack_require__(595);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__styleTween__ = __webpack_require__(596);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__text__ = __webpack_require__(597);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__transition__ = __webpack_require__(598);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__attr__ = __webpack_require__(584);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__attrTween__ = __webpack_require__(585);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__delay__ = __webpack_require__(586);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__duration__ = __webpack_require__(587);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ease__ = __webpack_require__(588);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__filter__ = __webpack_require__(589);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__merge__ = __webpack_require__(590);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__on__ = __webpack_require__(591);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__remove__ = __webpack_require__(592);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__select__ = __webpack_require__(593);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__selectAll__ = __webpack_require__(594);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__selection__ = __webpack_require__(595);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__style__ = __webpack_require__(596);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__styleTween__ = __webpack_require__(597);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__text__ = __webpack_require__(598);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__transition__ = __webpack_require__(599);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__tween__ = __webpack_require__(102);
 
 
@@ -2085,7 +2188,7 @@ Transition.prototype = transition.prototype = {
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2094,7 +2197,7 @@ function noop() {}
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = function (bitmap, value) {
@@ -2108,7 +2211,7 @@ module.exports = function (bitmap, value) {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports) {
 
 var id = 0;
@@ -2119,14 +2222,14 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = false;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
@@ -2139,7 +2242,7 @@ module.exports = Object.keys || function keys(O) {
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(31);
@@ -2152,7 +2255,7 @@ module.exports = function (index, length) {
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
@@ -2199,7 +2302,7 @@ module.exports = Object.create || function create(O, Properties) {
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
@@ -2212,7 +2315,7 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2232,7 +2335,7 @@ module.exports = function (KEY) {
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports = function (it, Constructor, name, forbiddenField) {
@@ -2243,7 +2346,7 @@ module.exports = function (it, Constructor, name, forbiddenField) {
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ctx = __webpack_require__(22);
@@ -2274,7 +2377,7 @@ exports.RETURN = RETURN;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var redefine = __webpack_require__(17);
@@ -2285,114 +2388,11 @@ module.exports = function (target, src, safe) {
 
 
 /***/ }),
-/* 54 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__build_package__ = __webpack_require__(506);
-/* unused harmony reexport version */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_array__ = __webpack_require__(14);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_axis__ = __webpack_require__(523);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_brush__ = __webpack_require__(527);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_d3_chord__ = __webpack_require__(613);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_d3_collection__ = __webpack_require__(74);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_d3_color__ = __webpack_require__(34);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_d3_dispatch__ = __webpack_require__(55);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_d3_drag__ = __webpack_require__(143);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_8_d3_drag__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_d3_dsv__ = __webpack_require__(158);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_d3_ease__ = __webpack_require__(248);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_d3_force__ = __webpack_require__(626);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_d3_format__ = __webpack_require__(163);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_d3_geo__ = __webpack_require__(656);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_d3_hierarchy__ = __webpack_require__(684);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_d3_interpolate__ = __webpack_require__(26);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_d3_path__ = __webpack_require__(56);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_d3_polygon__ = __webpack_require__(706);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_d3_quadtree__ = __webpack_require__(161);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_d3_queue__ = __webpack_require__(713);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_d3_random__ = __webpack_require__(716);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_d3_request__ = __webpack_require__(721);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_d3_scale__ = __webpack_require__(728);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_d3_selection__ = __webpack_require__(11);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["b"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["f"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["g"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_23_d3_selection__["h"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_d3_shape__ = __webpack_require__(761);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_d3_time__ = __webpack_require__(110);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_d3_time_format__ = __webpack_require__(175);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_d3_timer__ = __webpack_require__(101);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_d3_transition__ = __webpack_require__(155);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29_d3_voronoi__ = __webpack_require__(786);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30_d3_zoom__ = __webpack_require__(791);
-/* unused harmony namespace reexport */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***/ }),
 /* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_dispatch__ = __webpack_require__(529);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_dispatch__ = __webpack_require__(530);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src_dispatch__["a"]; });
 
 
@@ -2402,7 +2402,7 @@ module.exports = function (target, src, safe) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_path__ = __webpack_require__(618);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_path__ = __webpack_require__(619);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src_path__["a"]; });
 
 
@@ -2510,152 +2510,6 @@ var slice = array.slice;
 
 /***/ }),
 /* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var def = __webpack_require__(8).f;
-var has = __webpack_require__(15);
-var TAG = __webpack_require__(6)('toStringTag');
-
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
-};
-
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__(0);
-var defined = __webpack_require__(30);
-var fails = __webpack_require__(4);
-var spaces = __webpack_require__(122);
-var space = '[' + spaces + ']';
-var non = '\u200b\u0085';
-var ltrim = RegExp('^' + space + space + '*');
-var rtrim = RegExp(space + space + '*$');
-
-var exporter = function (KEY, exec, ALIAS) {
-  var exp = {};
-  var FORCE = fails(function () {
-    return !!spaces[KEY]() || non[KEY]() != non;
-  });
-  var fn = exp[KEY] = FORCE ? exec(trim) : spaces[KEY];
-  if (ALIAS) exp[ALIAS] = fn;
-  $export($export.P + $export.F * FORCE, 'String', exp);
-};
-
-// 1 -> String#trimLeft
-// 2 -> String#trimRight
-// 3 -> String#trim
-var trim = exporter.trim = function (string, TYPE) {
-  string = String(defined(string));
-  if (TYPE & 1) string = string.replace(ltrim, '');
-  if (TYPE & 2) string = string.replace(rtrim, '');
-  return string;
-};
-
-module.exports = exporter;
-
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(5);
-module.exports = function (it, TYPE) {
-  if (!isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
-  return it;
-};
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(a, b) {
-  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-});
-
-
-/***/ }),
-/* 65 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(x) {
-  return function() {
-    return x;
-  };
-});
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-// Adds floating point numbers with twice the normal precision.
-// Reference: J. R. Shewchuk, Adaptive Precision Floating-Point Arithmetic and
-// Fast Robust Geometric Predicates, Discrete & Computational Geometry 18(3)
-// 305–363 (1997).
-// Code adapted from GeographicLib by Charles F. F. Karney,
-// http://geographiclib.sourceforge.net/
-
-/* harmony default export */ __webpack_exports__["a"] = (function() {
-  return new Adder;
-});
-
-function Adder() {
-  this.reset();
-}
-
-Adder.prototype = {
-  constructor: Adder,
-  reset: function() {
-    this.s = // rounded value
-    this.t = 0; // exact error
-  },
-  add: function(y) {
-    add(temp, y, this.t);
-    add(this, temp.s, this.s);
-    if (this.s) this.t += temp.t;
-    else this.s = temp.t;
-  },
-  valueOf: function() {
-    return this.s;
-  }
-};
-
-var temp = new Adder;
-
-function add(adder, a, b) {
-  var x = adder.s = a + b,
-      bv = x - a,
-      av = x - bv;
-  adder.t = (a - av) + (b - bv);
-}
-
-
-/***/ }),
-/* 67 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function() {
-  return Math.random();
-});
-
-
-/***/ }),
-/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2671,8 +2525,8 @@ const HTML_VERTEX_CONTAINER_CLASS = 'groupVertex';
 const HTML_BOUNDARY_CONTAINER_CLASS = 'groupBoundary';
 /* harmony export (immutable) */ __webpack_exports__["h"] = HTML_BOUNDARY_CONTAINER_CLASS;
 
-const HTML_EDGE_CLASS = 'edge';
-/* harmony export (immutable) */ __webpack_exports__["i"] = HTML_EDGE_CLASS;
+const HTML_EDGE_CONTAINER_CLASS = 'groupEdge';
+/* harmony export (immutable) */ __webpack_exports__["i"] = HTML_EDGE_CONTAINER_CLASS;
 
 
 // Graph size
@@ -2762,6 +2616,152 @@ window.disabledMenu = true; // Not show menu context
 window.vertexTypes = null; // Vertex types use in current graph
 window.vertexTypesTmp = null; // Vertex types export in file Graph Data Structure => Used to validate
 window.isImportVertexTypeDefine = false; // If vertex type define was importted.
+
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var def = __webpack_require__(8).f;
+var has = __webpack_require__(15);
+var TAG = __webpack_require__(6)('toStringTag');
+
+module.exports = function (it, tag, stat) {
+  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+};
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export = __webpack_require__(0);
+var defined = __webpack_require__(30);
+var fails = __webpack_require__(4);
+var spaces = __webpack_require__(122);
+var space = '[' + spaces + ']';
+var non = '\u200b\u0085';
+var ltrim = RegExp('^' + space + space + '*');
+var rtrim = RegExp(space + space + '*$');
+
+var exporter = function (KEY, exec, ALIAS) {
+  var exp = {};
+  var FORCE = fails(function () {
+    return !!spaces[KEY]() || non[KEY]() != non;
+  });
+  var fn = exp[KEY] = FORCE ? exec(trim) : spaces[KEY];
+  if (ALIAS) exp[ALIAS] = fn;
+  $export($export.P + $export.F * FORCE, 'String', exp);
+};
+
+// 1 -> String#trimLeft
+// 2 -> String#trimRight
+// 3 -> String#trim
+var trim = exporter.trim = function (string, TYPE) {
+  string = String(defined(string));
+  if (TYPE & 1) string = string.replace(ltrim, '');
+  if (TYPE & 2) string = string.replace(rtrim, '');
+  return string;
+};
+
+module.exports = exporter;
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports) {
+
+module.exports = {};
+
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(5);
+module.exports = function (it, TYPE) {
+  if (!isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
+  return it;
+};
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(a, b) {
+  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+});
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(x) {
+  return function() {
+    return x;
+  };
+});
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// Adds floating point numbers with twice the normal precision.
+// Reference: J. R. Shewchuk, Adaptive Precision Floating-Point Arithmetic and
+// Fast Robust Geometric Predicates, Discrete & Computational Geometry 18(3)
+// 305–363 (1997).
+// Code adapted from GeographicLib by Charles F. F. Karney,
+// http://geographiclib.sourceforge.net/
+
+/* harmony default export */ __webpack_exports__["a"] = (function() {
+  return new Adder;
+});
+
+function Adder() {
+  this.reset();
+}
+
+Adder.prototype = {
+  constructor: Adder,
+  reset: function() {
+    this.s = // rounded value
+    this.t = 0; // exact error
+  },
+  add: function(y) {
+    add(temp, y, this.t);
+    add(this, temp.s, this.s);
+    if (this.s) this.t += temp.t;
+    else this.s = temp.t;
+  },
+  valueOf: function() {
+    return this.s;
+  }
+};
+
+var temp = new Adder;
+
+function add(adder, a, b) {
+  var x = adder.s = a + b,
+      bv = x - a,
+      av = x - bv;
+  adder.t = (a - av) + (b - bv);
+}
+
+
+/***/ }),
+/* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function() {
+  return Math.random();
+});
 
 
 /***/ }),
@@ -2867,17 +2867,17 @@ function nogamma(a, b) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_nest__ = __webpack_require__(619);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_nest__ = __webpack_require__(620);
 /* unused harmony reexport nest */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_set__ = __webpack_require__(620);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_set__ = __webpack_require__(621);
 /* unused harmony reexport set */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_map__ = __webpack_require__(157);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__src_map__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_keys__ = __webpack_require__(621);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_keys__ = __webpack_require__(622);
 /* unused harmony reexport keys */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_values__ = __webpack_require__(622);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_values__ = __webpack_require__(623);
 /* unused harmony reexport values */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_entries__ = __webpack_require__(623);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_entries__ = __webpack_require__(624);
 /* unused harmony reexport entries */
 
 
@@ -3000,7 +3000,7 @@ function azimuthalInvert(angle) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_array__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_interpolate__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__continuous__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tickFormat__ = __webpack_require__(731);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tickFormat__ = __webpack_require__(732);
 
 
 
@@ -3164,7 +3164,7 @@ function asin(x) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return circles; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return edges; });
 /* harmony export (immutable) */ __webpack_exports__["d"] = Diagram;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Beach__ = __webpack_require__(790);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Beach__ = __webpack_require__(791);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Cell__ = __webpack_require__(297);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Circle__ = __webpack_require__(298);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Edge__ = __webpack_require__(182);
@@ -3320,7 +3320,7 @@ Diagram.prototype = {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = comShowMessage;
 /* harmony export (immutable) */ __webpack_exports__["b"] = generateObjectId;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(41);
 
 
 /**
@@ -3366,7 +3366,7 @@ module.exports = function (key) {
 // true  -> Array#includes
 var toIObject = __webpack_require__(19);
 var toLength = __webpack_require__(9);
-var toAbsoluteIndex = __webpack_require__(47);
+var toAbsoluteIndex = __webpack_require__(48);
 module.exports = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
     var O = toIObject($this);
@@ -3526,14 +3526,14 @@ module.exports = function (O, D) {
 var global = __webpack_require__(3);
 var $export = __webpack_require__(0);
 var redefine = __webpack_require__(17);
-var redefineAll = __webpack_require__(53);
+var redefineAll = __webpack_require__(54);
 var meta = __webpack_require__(39);
-var forOf = __webpack_require__(52);
-var anInstance = __webpack_require__(51);
+var forOf = __webpack_require__(53);
+var anInstance = __webpack_require__(52);
 var isObject = __webpack_require__(5);
 var fails = __webpack_require__(4);
 var $iterDetect = __webpack_require__(90);
-var setToStringTag = __webpack_require__(60);
+var setToStringTag = __webpack_require__(61);
 var inheritIfRequired = __webpack_require__(123);
 
 module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
@@ -3615,7 +3615,7 @@ module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
 
 var global = __webpack_require__(3);
 var hide = __webpack_require__(16);
-var uid = __webpack_require__(44);
+var uid = __webpack_require__(45);
 var TYPED = uid('typed_array');
 var VIEW = uid('view');
 var ABV = !!(global.ArrayBuffer && global.DataView);
@@ -3650,7 +3650,7 @@ module.exports = {
 "use strict";
 
 // Forced replacement prototype accessors methods
-module.exports = __webpack_require__(45) || !__webpack_require__(4)(function () {
+module.exports = __webpack_require__(46) || !__webpack_require__(4)(function () {
   var K = Math.random();
   // In FF throws only define methods
   // eslint-disable-next-line no-undef, no-useless-call
@@ -3688,7 +3688,7 @@ module.exports = function (COLLECTION) {
 var $export = __webpack_require__(0);
 var aFunction = __webpack_require__(12);
 var ctx = __webpack_require__(22);
-var forOf = __webpack_require__(52);
+var forOf = __webpack_require__(53);
 
 module.exports = function (COLLECTION) {
   $export($export.S, COLLECTION, { from: function from(source /* , mapFn, thisArg */) {
@@ -3754,9 +3754,9 @@ module.exports = function (COLLECTION) {
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src_timer__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__src_timer__["c"]; });
 /* unused harmony reexport timerFlush */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_timeout__ = __webpack_require__(580);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_timeout__ = __webpack_require__(581);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__src_timeout__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_interval__ = __webpack_require__(581);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_interval__ = __webpack_require__(582);
 /* unused harmony reexport interval */
 
 
@@ -3962,7 +3962,7 @@ function rotationPhiGamma(deltaPhi, deltaGamma) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = clipRectangle;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__math__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__buffer__ = __webpack_require__(260);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line__ = __webpack_require__(661);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line__ = __webpack_require__(662);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__rejoin__ = __webpack_require__(261);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_d3_array__ = __webpack_require__(14);
 
@@ -4343,26 +4343,26 @@ function continuous(deinterpolate, reinterpolate) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_interval__ = __webpack_require__(13);
 /* unused harmony reexport timeInterval */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_millisecond__ = __webpack_require__(737);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_millisecond__ = __webpack_require__(738);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__src_millisecond__["a"]; });
 /* unused harmony reexport timeMilliseconds */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return __WEBPACK_IMPORTED_MODULE_1__src_millisecond__["a"]; });
 /* unused harmony reexport utcMilliseconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_second__ = __webpack_require__(738);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_second__ = __webpack_require__(739);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_2__src_second__["a"]; });
 /* unused harmony reexport timeSeconds */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return __WEBPACK_IMPORTED_MODULE_2__src_second__["a"]; });
 /* unused harmony reexport utcSeconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_minute__ = __webpack_require__(739);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_minute__ = __webpack_require__(740);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__src_minute__["a"]; });
 /* unused harmony reexport timeMinutes */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_hour__ = __webpack_require__(740);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_hour__ = __webpack_require__(741);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_4__src_hour__["a"]; });
 /* unused harmony reexport timeHours */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_day__ = __webpack_require__(741);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_day__ = __webpack_require__(742);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_5__src_day__["a"]; });
 /* unused harmony reexport timeDays */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_week__ = __webpack_require__(742);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_week__ = __webpack_require__(743);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_6__src_week__["b"]; });
 /* unused harmony reexport timeWeeks */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_6__src_week__["b"]; });
@@ -4379,22 +4379,22 @@ function continuous(deinterpolate, reinterpolate) {
 /* unused harmony reexport timeFridays */
 /* unused harmony reexport timeSaturday */
 /* unused harmony reexport timeSaturdays */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_month__ = __webpack_require__(743);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_month__ = __webpack_require__(744);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_7__src_month__["a"]; });
 /* unused harmony reexport timeMonths */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_year__ = __webpack_require__(744);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_year__ = __webpack_require__(745);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_8__src_year__["a"]; });
 /* unused harmony reexport timeYears */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_utcMinute__ = __webpack_require__(745);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_utcMinute__ = __webpack_require__(746);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return __WEBPACK_IMPORTED_MODULE_9__src_utcMinute__["a"]; });
 /* unused harmony reexport utcMinutes */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_utcHour__ = __webpack_require__(746);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_utcHour__ = __webpack_require__(747);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return __WEBPACK_IMPORTED_MODULE_10__src_utcHour__["a"]; });
 /* unused harmony reexport utcHours */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_utcDay__ = __webpack_require__(747);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_utcDay__ = __webpack_require__(748);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_11__src_utcDay__["a"]; });
 /* unused harmony reexport utcDays */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_utcWeek__ = __webpack_require__(748);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_utcWeek__ = __webpack_require__(749);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_12__src_utcWeek__["b"]; });
 /* unused harmony reexport utcWeeks */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_12__src_utcWeek__["b"]; });
@@ -4411,10 +4411,10 @@ function continuous(deinterpolate, reinterpolate) {
 /* unused harmony reexport utcFridays */
 /* unused harmony reexport utcSaturday */
 /* unused harmony reexport utcSaturdays */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_utcMonth__ = __webpack_require__(749);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_utcMonth__ = __webpack_require__(750);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return __WEBPACK_IMPORTED_MODULE_13__src_utcMonth__["a"]; });
 /* unused harmony reexport utcMonths */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_utcYear__ = __webpack_require__(750);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_utcYear__ = __webpack_require__(751);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return __WEBPACK_IMPORTED_MODULE_14__src_utcYear__["a"]; });
 /* unused harmony reexport utcYears */
 
@@ -4670,7 +4670,7 @@ module.exports = function (it) {
 
 var global = __webpack_require__(3);
 var core = __webpack_require__(28);
-var LIBRARY = __webpack_require__(45);
+var LIBRARY = __webpack_require__(46);
 var wksExt = __webpack_require__(186);
 var defineProperty = __webpack_require__(8).f;
 module.exports = function (name) {
@@ -4684,7 +4684,7 @@ module.exports = function (name) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var shared = __webpack_require__(85)('keys');
-var uid = __webpack_require__(44);
+var uid = __webpack_require__(45);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
@@ -4837,14 +4837,14 @@ module.exports = function (TO_STRING) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(45);
+var LIBRARY = __webpack_require__(46);
 var $export = __webpack_require__(0);
 var redefine = __webpack_require__(17);
 var hide = __webpack_require__(16);
 var has = __webpack_require__(15);
-var Iterators = __webpack_require__(62);
+var Iterators = __webpack_require__(63);
 var $iterCreate = __webpack_require__(129);
-var setToStringTag = __webpack_require__(60);
+var setToStringTag = __webpack_require__(61);
 var getPrototypeOf = __webpack_require__(21);
 var ITERATOR = __webpack_require__(6)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
@@ -4914,9 +4914,9 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 
 "use strict";
 
-var create = __webpack_require__(48);
-var descriptor = __webpack_require__(43);
-var setToStringTag = __webpack_require__(60);
+var create = __webpack_require__(49);
+var descriptor = __webpack_require__(44);
+var setToStringTag = __webpack_require__(61);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
@@ -4965,7 +4965,7 @@ module.exports = function (KEY) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
-var Iterators = __webpack_require__(62);
+var Iterators = __webpack_require__(63);
 var ITERATOR = __webpack_require__(6)('iterator');
 var ArrayProto = Array.prototype;
 
@@ -4981,7 +4981,7 @@ module.exports = function (it) {
 "use strict";
 
 var $defineProperty = __webpack_require__(8);
-var createDesc = __webpack_require__(43);
+var createDesc = __webpack_require__(44);
 
 module.exports = function (object, index, value) {
   if (index in object) $defineProperty.f(object, index, createDesc(0, value));
@@ -4995,7 +4995,7 @@ module.exports = function (object, index, value) {
 
 var classof = __webpack_require__(71);
 var ITERATOR = __webpack_require__(6)('iterator');
-var Iterators = __webpack_require__(62);
+var Iterators = __webpack_require__(63);
 module.exports = __webpack_require__(28).getIteratorMethod = function (it) {
   if (it != undefined) return it[ITERATOR]
     || it['@@iterator']
@@ -5023,7 +5023,7 @@ module.exports = function (original, length) {
 // 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
 
 var toObject = __webpack_require__(10);
-var toAbsoluteIndex = __webpack_require__(47);
+var toAbsoluteIndex = __webpack_require__(48);
 var toLength = __webpack_require__(9);
 module.exports = function fill(value /* , start = 0, end = @length */) {
   var O = toObject(this);
@@ -5045,7 +5045,7 @@ module.exports = function fill(value /* , start = 0, end = @length */) {
 
 var addToUnscopables = __webpack_require__(40);
 var step = __webpack_require__(202);
-var Iterators = __webpack_require__(62);
+var Iterators = __webpack_require__(63);
 var toIObject = __webpack_require__(19);
 
 // 22.1.3.4 Array.prototype.entries()
@@ -5275,19 +5275,19 @@ module.exports.f = function (C) {
 
 var global = __webpack_require__(3);
 var DESCRIPTORS = __webpack_require__(7);
-var LIBRARY = __webpack_require__(45);
+var LIBRARY = __webpack_require__(46);
 var $typed = __webpack_require__(95);
 var hide = __webpack_require__(16);
-var redefineAll = __webpack_require__(53);
+var redefineAll = __webpack_require__(54);
 var fails = __webpack_require__(4);
-var anInstance = __webpack_require__(51);
+var anInstance = __webpack_require__(52);
 var toInteger = __webpack_require__(31);
 var toLength = __webpack_require__(9);
 var toIndex = __webpack_require__(211);
-var gOPN = __webpack_require__(49).f;
+var gOPN = __webpack_require__(50).f;
 var dP = __webpack_require__(8).f;
 var arrayFill = __webpack_require__(136);
-var setToStringTag = __webpack_require__(60);
+var setToStringTag = __webpack_require__(61);
 var ARRAY_BUFFER = 'ArrayBuffer';
 var DATA_VIEW = 'DataView';
 var PROTOTYPE = 'prototype';
@@ -5577,7 +5577,7 @@ exports[DATA_VIEW] = $DataView;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_drag__ = __webpack_require__(530);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_drag__ = __webpack_require__(531);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src_drag__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_nodrag__ = __webpack_require__(236);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__src_nodrag__["a"]; });
@@ -6241,10 +6241,10 @@ function basis(t1, v0, v1, v2, v3) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_selection_index__ = __webpack_require__(578);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_transition_index__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_selection_index__ = __webpack_require__(579);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_transition_index__ = __webpack_require__(42);
 /* unused harmony reexport transition */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_active__ = __webpack_require__(609);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_active__ = __webpack_require__(610);
 /* unused harmony reexport active */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_interrupt__ = __webpack_require__(246);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_3__src_interrupt__["a"]; });
@@ -6465,12 +6465,12 @@ function map(object, f) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_dsv__ = __webpack_require__(159);
 /* unused harmony reexport dsvFormat */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_csv__ = __webpack_require__(624);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_csv__ = __webpack_require__(625);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__src_csv__["a"]; });
 /* unused harmony reexport csvParseRows */
 /* unused harmony reexport csvFormat */
 /* unused harmony reexport csvFormatRows */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_tsv__ = __webpack_require__(625);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_tsv__ = __webpack_require__(626);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__src_tsv__["a"]; });
 /* unused harmony reexport tsvParseRows */
 /* unused harmony reexport tsvFormat */
@@ -6629,7 +6629,7 @@ function inferColumns(rows) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_quadtree__ = __webpack_require__(629);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_quadtree__ = __webpack_require__(630);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src_quadtree__["a"]; });
 
 
@@ -6653,7 +6653,7 @@ function inferColumns(rows) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_defaultLocale__ = __webpack_require__(647);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_defaultLocale__ = __webpack_require__(648);
 /* unused harmony reexport formatDefaultLocale */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src_defaultLocale__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__src_defaultLocale__["b"]; });
@@ -6661,11 +6661,11 @@ function inferColumns(rows) {
 /* unused harmony reexport formatLocale */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_formatSpecifier__ = __webpack_require__(252);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__src_formatSpecifier__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_precisionFixed__ = __webpack_require__(653);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_precisionFixed__ = __webpack_require__(654);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__src_precisionFixed__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_precisionPrefix__ = __webpack_require__(654);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_precisionPrefix__ = __webpack_require__(655);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__src_precisionPrefix__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_precisionRound__ = __webpack_require__(655);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_precisionRound__ = __webpack_require__(656);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_5__src_precisionRound__["a"]; });
 
 
@@ -6714,7 +6714,7 @@ function inferColumns(rows) {
 /* unused harmony export conicEqualAreaRaw */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__math__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__conic__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__cylindricalEqualArea__ = __webpack_require__(672);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__cylindricalEqualArea__ = __webpack_require__(673);
 
 
 
@@ -6904,17 +6904,17 @@ function mercatorProjection(project) {
 /* unused harmony export default */
 /* harmony export (immutable) */ __webpack_exports__["b"] = computeHeight;
 /* harmony export (immutable) */ __webpack_exports__["a"] = Node;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__count__ = __webpack_require__(686);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__each__ = __webpack_require__(687);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__eachBefore__ = __webpack_require__(688);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__eachAfter__ = __webpack_require__(689);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sum__ = __webpack_require__(690);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__sort__ = __webpack_require__(691);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__path__ = __webpack_require__(692);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ancestors__ = __webpack_require__(693);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__descendants__ = __webpack_require__(694);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__leaves__ = __webpack_require__(695);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__links__ = __webpack_require__(696);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__count__ = __webpack_require__(687);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__each__ = __webpack_require__(688);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__eachBefore__ = __webpack_require__(689);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__eachAfter__ = __webpack_require__(690);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sum__ = __webpack_require__(691);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__sort__ = __webpack_require__(692);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__path__ = __webpack_require__(693);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ancestors__ = __webpack_require__(694);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__descendants__ = __webpack_require__(695);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__leaves__ = __webpack_require__(696);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__links__ = __webpack_require__(697);
 
 
 
@@ -7277,7 +7277,7 @@ function hasResponse(xhr) {
 /* unused harmony reexport timeFormatLocale */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_isoFormat__ = __webpack_require__(282);
 /* unused harmony reexport isoFormat */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_isoParse__ = __webpack_require__(751);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_isoParse__ = __webpack_require__(752);
 /* unused harmony reexport isoParse */
 
 
@@ -25041,7 +25041,7 @@ function clipEdges(x0, y0, x1, y1) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(115), __webpack_require__(799)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(115), __webpack_require__(797)(module)))
 
 /***/ }),
 /* 184 */
@@ -25133,7 +25133,7 @@ module.exports = function (object, names) {
 
 var dP = __webpack_require__(8);
 var anObject = __webpack_require__(2);
-var getKeys = __webpack_require__(46);
+var getKeys = __webpack_require__(47);
 
 module.exports = __webpack_require__(7) ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
@@ -25152,7 +25152,7 @@ module.exports = __webpack_require__(7) ? Object.defineProperties : function def
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 var toIObject = __webpack_require__(19);
-var gOPN = __webpack_require__(49).f;
+var gOPN = __webpack_require__(50).f;
 var toString = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
@@ -25178,7 +25178,7 @@ module.exports.f = function getOwnPropertyNames(it) {
 "use strict";
 
 // 19.1.2.1 Object.assign(target, source, ...)
-var getKeys = __webpack_require__(46);
+var getKeys = __webpack_require__(47);
 var gOPS = __webpack_require__(87);
 var pIE = __webpack_require__(70);
 var toObject = __webpack_require__(10);
@@ -25271,7 +25271,7 @@ module.exports = function (fn, args, that) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var $parseInt = __webpack_require__(3).parseInt;
-var $trim = __webpack_require__(61).trim;
+var $trim = __webpack_require__(62).trim;
 var ws = __webpack_require__(122);
 var hex = /^[-+]?0[xX]/;
 
@@ -25286,7 +25286,7 @@ module.exports = $parseInt(ws + '08') !== 8 || $parseInt(ws + '0x16') !== 22 ? f
 /***/ (function(module, exports, __webpack_require__) {
 
 var $parseFloat = __webpack_require__(3).parseFloat;
-var $trim = __webpack_require__(61).trim;
+var $trim = __webpack_require__(62).trim;
 
 module.exports = 1 / $parseFloat(__webpack_require__(122) + '-0') !== -Infinity ? function parseFloat(str) {
   var string = $trim(String(str), 3);
@@ -25417,7 +25417,7 @@ module.exports = function (that, callbackfn, aLen, memo, isRight) {
 // 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
 
 var toObject = __webpack_require__(10);
-var toAbsoluteIndex = __webpack_require__(47);
+var toAbsoluteIndex = __webpack_require__(48);
 var toLength = __webpack_require__(9);
 
 module.exports = [].copyWithin || function copyWithin(target /* = 0 */, start /* = 0, end = @length */) {
@@ -25500,7 +25500,7 @@ module.exports = function (C, x) {
 "use strict";
 
 var strong = __webpack_require__(207);
-var validate = __webpack_require__(63);
+var validate = __webpack_require__(64);
 var MAP = 'Map';
 
 // 23.1 Map Objects
@@ -25526,17 +25526,17 @@ module.exports = __webpack_require__(94)(MAP, function (get) {
 "use strict";
 
 var dP = __webpack_require__(8).f;
-var create = __webpack_require__(48);
-var redefineAll = __webpack_require__(53);
+var create = __webpack_require__(49);
+var redefineAll = __webpack_require__(54);
 var ctx = __webpack_require__(22);
-var anInstance = __webpack_require__(51);
-var forOf = __webpack_require__(52);
+var anInstance = __webpack_require__(52);
+var forOf = __webpack_require__(53);
 var $iterDefine = __webpack_require__(128);
 var step = __webpack_require__(202);
-var setSpecies = __webpack_require__(50);
+var setSpecies = __webpack_require__(51);
 var DESCRIPTORS = __webpack_require__(7);
 var fastKey = __webpack_require__(39).fastKey;
-var validate = __webpack_require__(63);
+var validate = __webpack_require__(64);
 var SIZE = DESCRIPTORS ? '_s' : 'size';
 
 var getEntry = function (that, key) {
@@ -25677,7 +25677,7 @@ module.exports = {
 "use strict";
 
 var strong = __webpack_require__(207);
-var validate = __webpack_require__(63);
+var validate = __webpack_require__(64);
 var SET = 'Set';
 
 // 23.2 Set Objects
@@ -25704,7 +25704,7 @@ var assign = __webpack_require__(190);
 var weak = __webpack_require__(210);
 var isObject = __webpack_require__(5);
 var fails = __webpack_require__(4);
-var validate = __webpack_require__(63);
+var validate = __webpack_require__(64);
 var WEAK_MAP = 'WeakMap';
 var getWeak = meta.getWeak;
 var isExtensible = Object.isExtensible;
@@ -25763,15 +25763,15 @@ if (fails(function () { return new $WeakMap().set((Object.freeze || Object)(tmp)
 
 "use strict";
 
-var redefineAll = __webpack_require__(53);
+var redefineAll = __webpack_require__(54);
 var getWeak = __webpack_require__(39).getWeak;
 var anObject = __webpack_require__(2);
 var isObject = __webpack_require__(5);
-var anInstance = __webpack_require__(51);
-var forOf = __webpack_require__(52);
+var anInstance = __webpack_require__(52);
+var forOf = __webpack_require__(53);
 var createArrayMethod = __webpack_require__(33);
 var $has = __webpack_require__(15);
-var validate = __webpack_require__(63);
+var validate = __webpack_require__(64);
 var arrayFind = createArrayMethod(5);
 var arrayFindIndex = createArrayMethod(6);
 var id = 0;
@@ -25870,7 +25870,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // all object keys, includes non-enumerable and symbols
-var gOPN = __webpack_require__(49);
+var gOPN = __webpack_require__(50);
 var gOPS = __webpack_require__(87);
 var anObject = __webpack_require__(2);
 var Reflect = __webpack_require__(3).Reflect;
@@ -25953,7 +25953,7 @@ module.exports = function (that, maxLength, fillString, left) {
 /* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getKeys = __webpack_require__(46);
+var getKeys = __webpack_require__(47);
 var toIObject = __webpack_require__(19);
 var isEnum = __webpack_require__(70).f;
 module.exports = function (isEntries) {
@@ -25990,7 +25990,7 @@ module.exports = function (NAME) {
 /* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var forOf = __webpack_require__(52);
+var forOf = __webpack_require__(53);
 
 module.exports = function (iter, ITERATOR) {
   var result = [];
@@ -26030,7 +26030,7 @@ module.exports = Math.scale || function scale(x, inLow, inHigh, outLow, outHigh)
 "use strict";
 /* unused harmony export bisectRight */
 /* unused harmony export bisectLeft */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bisector__ = __webpack_require__(220);
 
 
@@ -26046,7 +26046,7 @@ var bisectLeft = ascendingBisect.left;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(65);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function(compare) {
@@ -26863,49 +26863,49 @@ function one(b) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_linear__ = __webpack_require__(599);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_linear__ = __webpack_require__(600);
 /* unused harmony reexport easeLinear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_quad__ = __webpack_require__(600);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_quad__ = __webpack_require__(601);
 /* unused harmony reexport easeQuad */
 /* unused harmony reexport easeQuadIn */
 /* unused harmony reexport easeQuadOut */
 /* unused harmony reexport easeQuadInOut */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_cubic__ = __webpack_require__(601);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_cubic__ = __webpack_require__(602);
 /* unused harmony reexport easeCubic */
 /* unused harmony reexport easeCubicIn */
 /* unused harmony reexport easeCubicOut */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__src_cubic__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_poly__ = __webpack_require__(602);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_poly__ = __webpack_require__(603);
 /* unused harmony reexport easePoly */
 /* unused harmony reexport easePolyIn */
 /* unused harmony reexport easePolyOut */
 /* unused harmony reexport easePolyInOut */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_sin__ = __webpack_require__(603);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_sin__ = __webpack_require__(604);
 /* unused harmony reexport easeSin */
 /* unused harmony reexport easeSinIn */
 /* unused harmony reexport easeSinOut */
 /* unused harmony reexport easeSinInOut */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_exp__ = __webpack_require__(604);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_exp__ = __webpack_require__(605);
 /* unused harmony reexport easeExp */
 /* unused harmony reexport easeExpIn */
 /* unused harmony reexport easeExpOut */
 /* unused harmony reexport easeExpInOut */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_circle__ = __webpack_require__(605);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_circle__ = __webpack_require__(606);
 /* unused harmony reexport easeCircle */
 /* unused harmony reexport easeCircleIn */
 /* unused harmony reexport easeCircleOut */
 /* unused harmony reexport easeCircleInOut */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_bounce__ = __webpack_require__(606);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_bounce__ = __webpack_require__(607);
 /* unused harmony reexport easeBounce */
 /* unused harmony reexport easeBounceIn */
 /* unused harmony reexport easeBounceOut */
 /* unused harmony reexport easeBounceInOut */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_back__ = __webpack_require__(607);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_back__ = __webpack_require__(608);
 /* unused harmony reexport easeBack */
 /* unused harmony reexport easeBackIn */
 /* unused harmony reexport easeBackOut */
 /* unused harmony reexport easeBackInOut */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_elastic__ = __webpack_require__(608);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_elastic__ = __webpack_require__(609);
 /* unused harmony reexport easeElastic */
 /* unused harmony reexport easeElasticIn */
 /* unused harmony reexport easeElasticOut */
@@ -27111,12 +27111,12 @@ var initialRadius = 10,
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__exponent__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__formatGroup__ = __webpack_require__(648);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__formatNumerals__ = __webpack_require__(649);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__formatGroup__ = __webpack_require__(649);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__formatNumerals__ = __webpack_require__(650);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__formatSpecifier__ = __webpack_require__(252);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__formatTypes__ = __webpack_require__(253);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__formatPrefixAuto__ = __webpack_require__(254);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__identity__ = __webpack_require__(652);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__identity__ = __webpack_require__(653);
 
 
 
@@ -27317,9 +27317,9 @@ FormatSpecifier.prototype.toString = function() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formatDefault__ = __webpack_require__(650);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formatDefault__ = __webpack_require__(651);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__formatPrefixAuto__ = __webpack_require__(254);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__formatRounded__ = __webpack_require__(651);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__formatRounded__ = __webpack_require__(652);
 
 
 
@@ -27374,9 +27374,9 @@ var prefixExponent;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return areaRingSum; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return areaStream; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stream__ = __webpack_require__(57);
 
 
@@ -27461,7 +27461,7 @@ function areaPoint(lambda, phi) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = circleStream;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cartesian__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constant__ = __webpack_require__(659);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constant__ = __webpack_require__(660);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__rotation__ = __webpack_require__(104);
 
@@ -27806,7 +27806,7 @@ function compareIntersection(a, b) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__noop__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__noop__ = __webpack_require__(43);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function() {
@@ -27960,7 +27960,7 @@ function link(array) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cartesian__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(1);
 
@@ -28250,9 +28250,9 @@ var coordinates = [null, null],
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stream__ = __webpack_require__(57);
 
 
@@ -28314,7 +28314,7 @@ function lengthPoint(lambda, phi) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__noop__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__noop__ = __webpack_require__(43);
 
 
 var x0 = Infinity,
@@ -28513,7 +28513,7 @@ function packEnclose(circles) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(698);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(699);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function(circles) {
@@ -28669,7 +28669,7 @@ function constantZero() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(68);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ((function sourceRandomNormal(source) {
@@ -28705,7 +28705,7 @@ function constantZero() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(68);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ((function sourceRandomIrwinHall(source) {
@@ -30704,8 +30704,8 @@ var redefine = __webpack_require__(17);
 var META = __webpack_require__(39).KEY;
 var $fails = __webpack_require__(4);
 var shared = __webpack_require__(85);
-var setToStringTag = __webpack_require__(60);
-var uid = __webpack_require__(44);
+var setToStringTag = __webpack_require__(61);
+var uid = __webpack_require__(45);
 var wks = __webpack_require__(6);
 var wksExt = __webpack_require__(186);
 var wksDefine = __webpack_require__(117);
@@ -30714,12 +30714,12 @@ var isArray = __webpack_require__(88);
 var anObject = __webpack_require__(2);
 var toIObject = __webpack_require__(19);
 var toPrimitive = __webpack_require__(29);
-var createDesc = __webpack_require__(43);
-var _create = __webpack_require__(48);
+var createDesc = __webpack_require__(44);
+var _create = __webpack_require__(49);
 var gOPNExt = __webpack_require__(189);
 var $GOPD = __webpack_require__(20);
 var $DP = __webpack_require__(8);
-var $keys = __webpack_require__(46);
+var $keys = __webpack_require__(47);
 var gOPD = $GOPD.f;
 var dP = $DP.f;
 var gOPN = gOPNExt.f;
@@ -30842,11 +30842,11 @@ if (!USE_NATIVE) {
 
   $GOPD.f = $getOwnPropertyDescriptor;
   $DP.f = $defineProperty;
-  __webpack_require__(49).f = gOPNExt.f = $getOwnPropertyNames;
+  __webpack_require__(50).f = gOPNExt.f = $getOwnPropertyNames;
   __webpack_require__(70).f = $propertyIsEnumerable;
   __webpack_require__(87).f = $getOwnPropertySymbols;
 
-  if (DESCRIPTORS && !__webpack_require__(45)) {
+  if (DESCRIPTORS && !__webpack_require__(46)) {
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
@@ -30935,7 +30935,7 @@ setToStringTag(global.JSON, 'JSON', true);
 /***/ (function(module, exports, __webpack_require__) {
 
 // all enumerable object keys, includes symbols
-var getKeys = __webpack_require__(46);
+var getKeys = __webpack_require__(47);
 var gOPS = __webpack_require__(87);
 var pIE = __webpack_require__(70);
 module.exports = function (it) {
@@ -30957,7 +30957,7 @@ module.exports = function (it) {
 
 var $export = __webpack_require__(0);
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-$export($export.S, 'Object', { create: __webpack_require__(48) });
+$export($export.S, 'Object', { create: __webpack_require__(49) });
 
 
 /***/ }),
@@ -31014,7 +31014,7 @@ __webpack_require__(32)('getPrototypeOf', function () {
 
 // 19.1.2.14 Object.keys(O)
 var toObject = __webpack_require__(10);
-var $keys = __webpack_require__(46);
+var $keys = __webpack_require__(47);
 
 __webpack_require__(32)('keys', function () {
   return function keys(it) {
@@ -31260,16 +31260,16 @@ var cof = __webpack_require__(23);
 var inheritIfRequired = __webpack_require__(123);
 var toPrimitive = __webpack_require__(29);
 var fails = __webpack_require__(4);
-var gOPN = __webpack_require__(49).f;
+var gOPN = __webpack_require__(50).f;
 var gOPD = __webpack_require__(20).f;
 var dP = __webpack_require__(8).f;
-var $trim = __webpack_require__(61).trim;
+var $trim = __webpack_require__(62).trim;
 var NUMBER = 'Number';
 var $Number = global[NUMBER];
 var Base = $Number;
 var proto = $Number.prototype;
 // Opera ~12 has broken Object#toString
-var BROKEN_COF = cof(__webpack_require__(48)(proto)) == NUMBER;
+var BROKEN_COF = cof(__webpack_require__(49)(proto)) == NUMBER;
 var TRIM = 'trim' in String.prototype;
 
 // 7.1.3 ToNumber(argument)
@@ -31857,7 +31857,7 @@ $export($export.S, 'Math', {
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
-var toAbsoluteIndex = __webpack_require__(47);
+var toAbsoluteIndex = __webpack_require__(48);
 var fromCharCode = String.fromCharCode;
 var $fromCodePoint = String.fromCodePoint;
 
@@ -31912,7 +31912,7 @@ $export($export.S, 'String', {
 "use strict";
 
 // 21.1.3.25 String.prototype.trim()
-__webpack_require__(61)('trim', function ($trim) {
+__webpack_require__(62)('trim', function ($trim) {
   return function trim() {
     return $trim(this, 3);
   };
@@ -32456,7 +32456,7 @@ $export($export.P + $export.F * (__webpack_require__(69) != Object || !__webpack
 var $export = __webpack_require__(0);
 var html = __webpack_require__(120);
 var cof = __webpack_require__(23);
-var toAbsoluteIndex = __webpack_require__(47);
+var toAbsoluteIndex = __webpack_require__(48);
 var toLength = __webpack_require__(9);
 var arraySlice = [].slice;
 
@@ -32775,7 +32775,7 @@ __webpack_require__(40)(KEY);
 /* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(50)('Array');
+__webpack_require__(51)('Array');
 
 
 /***/ }),
@@ -32785,7 +32785,7 @@ __webpack_require__(50)('Array');
 var global = __webpack_require__(3);
 var inheritIfRequired = __webpack_require__(123);
 var dP = __webpack_require__(8).f;
-var gOPN = __webpack_require__(49).f;
+var gOPN = __webpack_require__(50).f;
 var isRegExp = __webpack_require__(89);
 var $flags = __webpack_require__(91);
 var $RegExp = global.RegExp;
@@ -32824,7 +32824,7 @@ if (__webpack_require__(7) && (!CORRECT_NEW || __webpack_require__(4)(function (
   __webpack_require__(17)(global, 'RegExp', $RegExp);
 }
 
-__webpack_require__(50)('RegExp');
+__webpack_require__(51)('RegExp');
 
 
 /***/ }),
@@ -32992,15 +32992,15 @@ __webpack_require__(92)('split', 2, function (defined, SPLIT, $split) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(45);
+var LIBRARY = __webpack_require__(46);
 var global = __webpack_require__(3);
 var ctx = __webpack_require__(22);
 var classof = __webpack_require__(71);
 var $export = __webpack_require__(0);
 var isObject = __webpack_require__(5);
 var aFunction = __webpack_require__(12);
-var anInstance = __webpack_require__(51);
-var forOf = __webpack_require__(52);
+var anInstance = __webpack_require__(52);
+var forOf = __webpack_require__(53);
 var speciesConstructor = __webpack_require__(93);
 var task = __webpack_require__(138).set;
 var microtask = __webpack_require__(139)();
@@ -33176,7 +33176,7 @@ if (!USE_NATIVE) {
     this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
     this._n = false;          // <- notify
   };
-  Internal.prototype = __webpack_require__(53)($Promise.prototype, {
+  Internal.prototype = __webpack_require__(54)($Promise.prototype, {
     // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
     then: function then(onFulfilled, onRejected) {
       var reaction = newPromiseCapability(speciesConstructor(this, $Promise));
@@ -33207,8 +33207,8 @@ if (!USE_NATIVE) {
 }
 
 $export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
-__webpack_require__(60)($Promise, PROMISE);
-__webpack_require__(50)(PROMISE);
+__webpack_require__(61)($Promise, PROMISE);
+__webpack_require__(51)(PROMISE);
 Wrapper = __webpack_require__(28)[PROMISE];
 
 // statics
@@ -33280,7 +33280,7 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(90)(function
 "use strict";
 
 var weak = __webpack_require__(210);
-var validate = __webpack_require__(63);
+var validate = __webpack_require__(64);
 var WEAK_SET = 'WeakSet';
 
 // 23.4 WeakSet Objects
@@ -33304,7 +33304,7 @@ var $export = __webpack_require__(0);
 var $typed = __webpack_require__(95);
 var buffer = __webpack_require__(141);
 var anObject = __webpack_require__(2);
-var toAbsoluteIndex = __webpack_require__(47);
+var toAbsoluteIndex = __webpack_require__(48);
 var toLength = __webpack_require__(9);
 var isObject = __webpack_require__(5);
 var ArrayBuffer = __webpack_require__(3).ArrayBuffer;
@@ -33344,7 +33344,7 @@ $export($export.P + $export.U + $export.F * __webpack_require__(4)(function () {
   }
 });
 
-__webpack_require__(50)(ARRAY_BUFFER);
+__webpack_require__(51)(ARRAY_BUFFER);
 
 
 /***/ }),
@@ -33484,7 +33484,7 @@ $export($export.S + $export.F * !__webpack_require__(4)(function () {
 
 // 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
 var $export = __webpack_require__(0);
-var create = __webpack_require__(48);
+var create = __webpack_require__(49);
 var aFunction = __webpack_require__(12);
 var anObject = __webpack_require__(2);
 var isObject = __webpack_require__(5);
@@ -33742,7 +33742,7 @@ var gOPD = __webpack_require__(20);
 var getPrototypeOf = __webpack_require__(21);
 var has = __webpack_require__(15);
 var $export = __webpack_require__(0);
-var createDesc = __webpack_require__(43);
+var createDesc = __webpack_require__(44);
 var anObject = __webpack_require__(2);
 var isObject = __webpack_require__(5);
 
@@ -33924,7 +33924,7 @@ $export($export.P, 'String', {
 "use strict";
 
 // https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-__webpack_require__(61)('trimLeft', function ($trim) {
+__webpack_require__(62)('trimLeft', function ($trim) {
   return function trimLeft() {
     return $trim(this, 1);
   };
@@ -33938,7 +33938,7 @@ __webpack_require__(61)('trimLeft', function ($trim) {
 "use strict";
 
 // https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-__webpack_require__(61)('trimRight', function ($trim) {
+__webpack_require__(62)('trimRight', function ($trim) {
   return function trimRight() {
     return $trim(this, 2);
   };
@@ -34690,10 +34690,10 @@ var microtask = __webpack_require__(139)();
 var OBSERVABLE = __webpack_require__(6)('observable');
 var aFunction = __webpack_require__(12);
 var anObject = __webpack_require__(2);
-var anInstance = __webpack_require__(51);
-var redefineAll = __webpack_require__(53);
+var anInstance = __webpack_require__(52);
+var redefineAll = __webpack_require__(54);
 var hide = __webpack_require__(16);
-var forOf = __webpack_require__(52);
+var forOf = __webpack_require__(53);
 var RETURN = forOf.RETURN;
 
 var getMethod = function (fn) {
@@ -34879,7 +34879,7 @@ hide($Observable.prototype, OBSERVABLE, function () { return this; });
 
 $export($export.G, { Observable: $Observable });
 
-__webpack_require__(50)('Observable');
+__webpack_require__(51)('Observable');
 
 
 /***/ }),
@@ -34925,11 +34925,11 @@ $export($export.G + $export.B, {
 /***/ (function(module, exports, __webpack_require__) {
 
 var $iterators = __webpack_require__(137);
-var getKeys = __webpack_require__(46);
+var getKeys = __webpack_require__(47);
 var redefine = __webpack_require__(17);
 var global = __webpack_require__(3);
 var hide = __webpack_require__(16);
-var Iterators = __webpack_require__(62);
+var Iterators = __webpack_require__(63);
 var wks = __webpack_require__(6);
 var ITERATOR = wks('iterator');
 var TO_STRING_TAG = wks('toStringTag');
@@ -35775,21 +35775,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_menu_context_mgmt_main_menu_context__ = __webpack_require__(505);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_menu_context_mgmt_vertex_menu_context__ = __webpack_require__(796);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_menu_context_mgmt_boundary_menu_context__ = __webpack_require__(797);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_object_mgmt_vertex_mgmt__ = __webpack_require__(798);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_object_mgmt_boundary_mgmt__ = __webpack_require__(800);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_file_mgmt_file_mgmt__ = __webpack_require__(801);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_object_mgmt_edge_mgmt__ = __webpack_require__(802);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_menu_context_mgmt_edge_menu_context__ = __webpack_require__(803);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_utilities_object_ult__ = __webpack_require__(804);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modules_menu_context_mgmt_menu_items_boundary__ = __webpack_require__(805);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__common_utilities_common_ult__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_d3__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__const_index__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__styles_index_scss__ = __webpack_require__(806);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__styles_index_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_main_mgmt_main_mgmt__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_object_ult__ = __webpack_require__(806);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__const_index__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_index_scss__ = __webpack_require__(807);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__styles_index_scss__);
 
 
 
@@ -35797,22 +35788,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
-
-
-
-
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_11_d3__["e" /* selection */].prototype.moveToFront = function() {
+__WEBPACK_IMPORTED_MODULE_2_d3__["e" /* selection */].prototype.moveToFront = function() {
   return this.each(function(){
     this.parentNode.appendChild(this);
   });
 };
 
-__WEBPACK_IMPORTED_MODULE_11_d3__["e" /* selection */].prototype.moveToBack = function() {
+__WEBPACK_IMPORTED_MODULE_2_d3__["e" /* selection */].prototype.moveToBack = function() {
   this.each(function() {
     this.parentNode.firstChild && this.parentNode.insertBefore(this, this.parentNode.firstChild);
   });
@@ -35820,160 +35802,124 @@ __WEBPACK_IMPORTED_MODULE_11_d3__["e" /* selection */].prototype.moveToBack = fu
 
 class Starter {
   constructor() {
+    this.initialize();
+  }
+
+  initialize(){
     this.dataContainer = {
       vertex: [],
       boundary: [],
       edge: [],
       vertexTypes: {},
     };
-    this.initialize();
-  }
 
-  initialize(){
-    //Create SVG element
-    this.svgSelector = __WEBPACK_IMPORTED_MODULE_11_d3__["c" /* select */](`#${__WEBPACK_IMPORTED_MODULE_12__const_index__["g" /* HTML_ALGETA_CONTAINER_ID */]}`)
+    this.svgSelector = __WEBPACK_IMPORTED_MODULE_2_d3__["c" /* select */](`#${__WEBPACK_IMPORTED_MODULE_3__const_index__["g" /* HTML_ALGETA_CONTAINER_ID */]}`)
       .append("svg")
       .attr("class","svg")
-      .attr("height", __WEBPACK_IMPORTED_MODULE_12__const_index__["d" /* GRAPH_HEIGHT */])
-      .attr("width", __WEBPACK_IMPORTED_MODULE_12__const_index__["e" /* GRAPH_WIDTH */]);
+      .attr("height", __WEBPACK_IMPORTED_MODULE_3__const_index__["d" /* GRAPH_HEIGHT */])
+      .attr("width", __WEBPACK_IMPORTED_MODULE_3__const_index__["e" /* GRAPH_WIDTH */]);
 
+    /**
+     * Init Object Utils
+     * @type {ObjectUtils}
+     */
+    this.objectUtils = new __WEBPACK_IMPORTED_MODULE_1__common_utilities_object_ult__["a" /* default */]({
+      dataContainer: this.dataContainer
+    });
+
+    /**
+     * Init Main Mgmt
+     * @type {MainMgmt}
+     */
+    this.mainMgmt = new __WEBPACK_IMPORTED_MODULE_0__modules_main_mgmt_main_mgmt__["a" /* default */]({
+      svgSelector : this.svgSelector,
+      objectUtils: this.objectUtils,
+      dataContainer: this.dataContainer
+    });
+  }
+}
+
+/* unused harmony default export */ var _unused_webpack_default_export = (new Starter());
+
+
+/***/ }),
+/* 505 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__object_mgmt_vertex__ = __webpack_require__(506);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__file_mgmt_file_mgmt__ = __webpack_require__(798);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_mgmt_main_menu__ = __webpack_require__(799);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_mgmt_vertex_menu__ = __webpack_require__(800);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__object_mgmt_edge__ = __webpack_require__(801);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__menu_mgmt_edge_menu__ = __webpack_require__(802);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__object_mgmt_boundary__ = __webpack_require__(803);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__menu_mgmt_boundary_menu__ = __webpack_require__(804);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__menu_mgmt_boundary_menu_items__ = __webpack_require__(805);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_d3__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__const_index__ = __webpack_require__(60);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class MainMgmt {
+  constructor(props) {
+    this.svgSelector = props.svgSelector;
+    this.objectUtils = props.objectUtils;
+    this.dataContainer = props.dataContainer;
     this.initMarkerArrow();
 
     /**
      * Init file mgmt
      */
-    new __WEBPACK_IMPORTED_MODULE_5__modules_file_mgmt_file_mgmt__["a" /* default */]({
+    new __WEBPACK_IMPORTED_MODULE_1__file_mgmt_file_mgmt__["a" /* default */]({
       mainMgmt: this,
       dataContainer: this.dataContainer
-    });
-
-    /**
-     * Init object ultils
-     */
-    this.objectUtils = new __WEBPACK_IMPORTED_MODULE_8__common_utilities_object_ult__["a" /* default */]({
-      svgSelector : this.svgSelector,
-      dataContainer: this.dataContainer
-    });
-
-    this.initObjectsMgmt();
-  }
-
-  /**
-   * Init object mgmt: vertex, edge, boundary
-   */
-  initObjectsMgmt() {
-    /**
-     * Init boundary mgmt
-     */
-    this.boundaryMgmt = new __WEBPACK_IMPORTED_MODULE_4__modules_object_mgmt_boundary_mgmt__["a" /* default */]({
-      svgSelector : this.svgSelector,
-      dataContainer: this.dataContainer,
-      objectUtils: this.objectUtils
-    });
-
-    /**
-     * Init edge mgmt
-     */
-    this.edgeMgmt = new __WEBPACK_IMPORTED_MODULE_6__modules_object_mgmt_edge_mgmt__["a" /* default */]({
-      svgSelector : this.svgSelector,
-      dataContainer: this.dataContainer,
-      objectUtils: this.objectUtils
     });
 
     /**
      * Init Vertex Mgmt
      * @type {VertexMgmt}
      */
-    this.vertextMgmt = new __WEBPACK_IMPORTED_MODULE_3__modules_object_mgmt_vertex_mgmt__["a" /* default */]({
+    this.vertex = new __WEBPACK_IMPORTED_MODULE_0__object_mgmt_vertex__["a" /* default */]({
       svgSelector : this.svgSelector,
       dataContainer: this.dataContainer,
-      edgeMgmt: this.edgeMgmt,
-      objectUtils: this.objectUtils
-    });
-  }
-
-  /**
-   * Reload data vertex types when user import
-   * For main context and vertex.
-   * @param data
-   */
-  async reloadVertexTypes(data){
-    // Set global vertex types
-    // The content vertex type on graph alway
-    // give to content vertex type was import from Vertex Type Defination
-    window.vertexTypes = data;
-    window.isImportVertexTypeDefine = true;
-
-    // Validate vertex type
-    let isMisMatch = await this.validateVertexTypesInGraph();
-
-    // Now just show message warning for user. Not stop working
-    if(isMisMatch)
-      Object(__WEBPACK_IMPORTED_MODULE_10__common_utilities_common_ult__["a" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch. Please check again!");
-
-    this.initContextMenuForObject();
-    // window.disabledCommand = false;
-  }
-
-  /**
-   * Draw graph with data import by user
-   * @param data
-   */
-  async drawGraphFromData(data){
-    this.clearAll();
-    // Store vertex types
-    window.vertexTypesTmp = data.vertexTypes;
-
-    // Validate content
-    let errorContent = await this.validateGraphDataStructure(data);
-    if(errorContent) {
-      Object(__WEBPACK_IMPORTED_MODULE_10__common_utilities_common_ult__["a" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
-      return;
-    }
-
-    // If still not import Vertex Type Definition then reset it.
-    if(!window.isImportVertexTypeDefine)
-      window.vertexTypes = null;
-
-    // Validate vertex type
-    let isMisMatch = await this.validateVertexTypesInGraph();
-    // Now just show message warning for user. Not stop working
-    if(isMisMatch)
-      Object(__WEBPACK_IMPORTED_MODULE_10__common_utilities_common_ult__["a" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch. Please check again!");
-
-    // Draw boundary
-    let arrBoundary = data.boundary;
-    arrBoundary.forEach(boundary => {
-      let pos = data.position.find(element => {
-        return element.id === boundary.id;
-      });
-      boundary.x = pos.x;
-      boundary.y = pos.y;
-      this.boundaryMgmt.createBoundary(boundary);
+      objectUtils: this.objectUtils,
+      mainMgmt: this
     });
 
-    // Draw vertex
-    let arrVertex = data.vertex;
-    arrVertex.forEach(vertex => {
-      let pos = data.position.find(element => {
-        return element.id === vertex.id;
-      });
-      vertex.x = pos.x;
-      vertex.y = pos.y;
-      this.vertextMgmt.create(vertex);
+    /**
+     * Init Edge Mgmt
+     * @type {EdgeMgmt}
+     */
+    this.edge = new __WEBPACK_IMPORTED_MODULE_4__object_mgmt_edge__["a" /* default */]({
+      svgSelector : this.svgSelector,
+      dataContainer: this.dataContainer,
+      objectUtils: this.objectUtils,
+      mainMgmt: this
     });
 
-    // Draw edge
-    let arrEdge = data.edge;
-    arrEdge.forEach(edge => {
-      this.edgeMgmt.create(edge);
+    /**
+     * Init Boundary Mgmt
+     * @type {BoundaryMgmt}
+     */
+    this.boundary = new __WEBPACK_IMPORTED_MODULE_6__object_mgmt_boundary__["a" /* default */]({
+      svgSelector : this.svgSelector,
+      dataContainer: this.dataContainer,
+      objectUtils: this.objectUtils,
+      mainMgmt: this
     });
-
-    if(!window.isImportVertexTypeDefine)
-      window.vertexTypes = data.vertexTypes;
-
-    this.initContextMenuForObject();
-    // $.contextMenu('update');
   }
 
   /**
@@ -35994,90 +35940,98 @@ class Starter {
   }
 
   /**
-   * Init context menu on object
-   * When read file vertex type
-   * And when read file graph data
+   * Reload data vertex types when user import
+   * For main context and vertex.
+   * @param data
    */
-  initContextMenuForObject() {
-    this.removeAllDomConentMenu();
+  async reloadVertexTypes(data){
+    // Set global vertex types
+    // The content vertex type on graph alway
+    // give to content vertex type was import from Vertex Type Defination
+    window.vertexTypes = data;
+    window.isImportVertexTypeDefine = true;
 
-    /**
-     * Init edge menu context
-     */
-    this.edgeMenuContext = new __WEBPACK_IMPORTED_MODULE_7__modules_menu_context_mgmt_edge_menu_context__["a" /* default */]({
-      selector: `.${__WEBPACK_IMPORTED_MODULE_12__const_index__["i" /* HTML_EDGE_CLASS */]}`,
-      dataContainer: this.dataContainer,
-      edgeMgmt: this.edgeMgmt
-    });
+    // Validate vertex type
+    let isMisMatch = await this.validateVertexTypesInGraph();
 
+    // Now just show message warning for user. Not stop working
+    if(isMisMatch)
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["a" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
+        "\n Please check again!");
 
-
-    /**
-     * Init Vertex Menu Context
-     * @type {VertexMenuContext}
-     */
-    this.vertexMenuContext = new __WEBPACK_IMPORTED_MODULE_1__modules_menu_context_mgmt_vertex_menu_context__["a" /* default */]({
-      selector: `.${__WEBPACK_IMPORTED_MODULE_12__const_index__["j" /* HTML_VERTEX_CONTAINER_CLASS */]}`,
-      dataContainer: this.dataContainer,
-      vertexMgmt: this.vertextMgmt
-    });
-
-
-    /**
-     * Init Boundary Menu Context
-     * @type {BoundaryMenuContext}
-     */
-    this.boundaryMenuContext = new __WEBPACK_IMPORTED_MODULE_2__modules_menu_context_mgmt_boundary_menu_context__["a" /* default */]({
-      selector: `.${__WEBPACK_IMPORTED_MODULE_12__const_index__["h" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`,
-      dataContainer: this.dataContainer,
-      boundaryMgmt: this.boundaryMgmt
-    });
-
-    /**
-     * Init Main Menu Context
-     * @type {MainMenuContext}
-     */
-    this.mainMenuContext = new __WEBPACK_IMPORTED_MODULE_0__modules_menu_context_mgmt_main_menu_context__["a" /* default */]({
-      selector: `.${__WEBPACK_IMPORTED_MODULE_12__const_index__["f" /* HTML_ALGETA_CONTAINER_CLASS */]}`,
-      dataContainer: this.dataContainer,
-      vertexMgmt: this.vertextMgmt,
-      boundaryMgmt: this.boundaryMgmt,
-      mainMgmt: this
-    });
-
-    /**
-     * Init Menu Items for Boundary
-     * @type {MenuItemsBoundary}
-     */
-    this.menuItemsBoundary = new __WEBPACK_IMPORTED_MODULE_9__modules_menu_context_mgmt_menu_items_boundary__["a" /* default */]({
-      selector: `.${__WEBPACK_IMPORTED_MODULE_12__const_index__["f" /* HTML_ALGETA_CONTAINER_CLASS */]}`,
-      dataContainer: this.dataContainer,
-      boundaryMgmt: this.boundaryMgmt,
-      vertexMgmt: this.vertextMgmt,
-      mainMgmt: this
-    });
+    // Init main menu and menu for objects
+    this.initMenuContext();
   }
 
   /**
-   * Clear all element on graph
-   * And reinit marker def
+   * Draw graph with data import by user
+   * @param data
    */
-  clearAll(){
-    // Delete all element inside SVG
-    __WEBPACK_IMPORTED_MODULE_11_d3__["c" /* select */]("svg").selectAll("*").remove();
+  async drawGraphFromData(data){
+    this.clearAll();
+    // Store vertex types
+    window.vertexTypesTmp = data.vertexTypes;
 
-    // Clear all data cotainer for vertex, boundary, edge
-    this.dataContainer.vertex = [];
-    this.dataContainer.boundary = [];
-    this.dataContainer.edge = [];
+    // Validate content
+    let errorContent = await this.validateGraphDataStructure(data);
+    if(errorContent) {
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["a" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
+      return;
+    }
 
-    this.initMarkerArrow();
+    // If still not import Vertex Type Definition then reset it.
+    if(!window.isImportVertexTypeDefine)
+      window.vertexTypes = null;
+
+    // Validate vertex type
+    let isMisMatch = await this.validateVertexTypesInGraph();
+    // Now just show message warning for user. Not stop working
+    if(isMisMatch)
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["a" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
+        "\n Please check again!");
+
+    // Draw boundary
+    let arrBoundary = data.boundary;
+    arrBoundary.forEach(boundary => {
+      let pos = data.position.find(element => {
+        return element.id === boundary.id;
+      });
+      boundary.x = pos.x;
+      boundary.y = pos.y;
+      this.boundary.createBoundary(boundary);
+    });
+
+    // Draw vertex
+    let arrVertex = data.vertex;
+    arrVertex.forEach(vertex => {
+      let pos = data.position.find(element => {
+        return element.id === vertex.id;
+      });
+      vertex.x = pos.x;
+      vertex.y = pos.y;
+      this.vertex.createVertex(vertex);
+    });
+
+    // Draw edge
+    let arrEdge = data.edge;
+    arrEdge.forEach(edge => {
+      this.edge.createEdge(edge);
+    });
+
+    // Rescan child of boundary to reset size
+    arrBoundary.forEach(boundary => {
+      const members = boundary.member;
+      members.forEach( mem => {
+        if(!mem.show)
+          this.boundary.selectMemberVisible(boundary.id, mem, true);
+      });
+    });
+
+    if(!window.isImportVertexTypeDefine)
+      window.vertexTypes = data.vertexTypes;
+
+    this.initMenuContext();
   }
-
-  removeAllDomConentMenu() {
-    __WEBPACK_IMPORTED_MODULE_11_d3__["d" /* selectAll */](".context-menu-list").remove();
-  }
-
 
   /**
    * Validate Graph Data Structure
@@ -36197,115 +36151,637 @@ class Starter {
 
     return Promise.resolve(misMatch);
   }
-}
 
-/* unused harmony default export */ var _unused_webpack_default_export = (new Starter());
+  /**
+   * Init context menu on object
+   * When read file vertex type
+   * Or when read file graph data
+   */
+  initMenuContext() {
+    // Remove old menu dom if exit
+    __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* selectAll */](".context-menu-list").remove();
 
+    // Main menu
+    this.mainMenu = new __WEBPACK_IMPORTED_MODULE_2__menu_mgmt_main_menu__["a" /* default */]({
+      selector: `.${__WEBPACK_IMPORTED_MODULE_11__const_index__["f" /* HTML_ALGETA_CONTAINER_CLASS */]}`,
+      mainMgmt: this
+    });
 
-/***/ }),
-/* 505 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+    // Vertex menu
+    this.vertexMenu = new __WEBPACK_IMPORTED_MODULE_3__menu_mgmt_vertex_menu__["a" /* default */]({
+      selector: `.${__WEBPACK_IMPORTED_MODULE_11__const_index__["j" /* HTML_VERTEX_CONTAINER_CLASS */]}`,
+      vertex: this.vertex,
+      objectUtils: this.objectUtils
+    });
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(54);
+    // Vertex menu
+    this.edgeMenu = new __WEBPACK_IMPORTED_MODULE_5__menu_mgmt_edge_menu__["a" /* default */]({
+      selector: `.${__WEBPACK_IMPORTED_MODULE_11__const_index__["i" /* HTML_EDGE_CONTAINER_CLASS */]}`,
+      edge: this.edge,
+    });
 
+    // Boundary menu
+    this.boundaryMenu = new __WEBPACK_IMPORTED_MODULE_7__menu_mgmt_boundary_menu__["a" /* default */]({
+      selector: `.${__WEBPACK_IMPORTED_MODULE_11__const_index__["h" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`,
+      boundary: this.boundary,
+    });
 
-class MainMenuContext{
-  constructor(props){
-    this.selector = props.selector;
-    this.vertexMgmt = props.vertexMgmt;
-    this.boundaryMgmt = props.boundaryMgmt;
-    this.dataContainer = props.dataContainer;
-    this.mainMgmt = props.mainMgmt;
-    this.initMainMenu();
+    // Boundary Menu Items
+    this.boundaryMenuItems = new __WEBPACK_IMPORTED_MODULE_8__menu_mgmt_boundary_menu_items__["a" /* default */]({
+      selector: `.${__WEBPACK_IMPORTED_MODULE_11__const_index__["h" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`,
+      boundary: this.boundary,
+      objectUtils: this.objectUtils
+    });
   }
 
-  initMainMenu(){
-    // Context menu for Screen
-    $.contextMenu({
-      selector: this.selector,
-      autoHide: true,
-      zIndex: 100,
-      build: ($trigger, e) => {
-        return {
-          callback: (key, options) => {
-            switch (key)
-            {
-              case "clearAll": this.clearAll();
-                break;
+  /* Mein menu operation (S) */
+  createVertex(opt) {
+    this.vertex.createVertex(opt);
+  }
 
-              case "createBoundary": this.boundaryMgmt.createBoundary(options);
-                break;
+  createEdge(opt) {
+    this.edge.createEdge(opt);
+  }
 
-              default:
-                break;
-            }
-          },
-          items: {
-            "createVertex":{
-              name: "Create Vertex",
-              icon: "fa-window-maximize",
-              items: this.loadItems(),
-              disabled: window.disabledCommand
-            },
-            "sep1": "-",
-            "createBoundary": {name: "Create Boundary", icon: "fa-object-group", disabled: window.disabledCommand},
-            "sep2": "-",
-            "autoAlign": {name: "Auto Align", icon: "fa-sort-amount-desc", disabled: window.disabledCommand},
-            "sep3": "-",
-            "showReduced": {name: "Show Reduced", icon: "fa-link", disabled: window.disabledCommand},
-            "sep4": "-",
-            "clearAll": {name: "Clear All", icon: "fa-times", disabled: window.disabledCommand},
-            "sep5": "-",
-            "undo": {name: "Undo", icon: "fa-undo", disabled: window.disabledCommand},
-            "sep6": "-",
-            "redo": {name: "Redo", icon: "fa-repeat", disabled: window.disabledCommand},
-          },
-          events: {
-            show: (opt) => {
-              if(event){
-                opt["x"] = event.x;
-                opt["y"] = event.y;
-              }
-            }
-          }
-        };
+  createBoundary(opt) {
+    this.boundary.createBoundary(opt);
+  }
+
+  updatePathConnect(edgeId, opt) {
+    this.edge.updatePathConnect(edgeId, opt);
+  }
+
+  // When a vertex|boundary move
+  // Resize if any boundary with size smaller than vertex|boundary size
+  reSizeBoundaryAsObjectDragged(infos) {
+    // Get box object
+    const {height, width} = this.objectUtils.getBBoxObject(infos.id);
+
+    __WEBPACK_IMPORTED_MODULE_10_d3__["c" /* select */]("svg").selectAll(`.${__WEBPACK_IMPORTED_MODULE_11__const_index__["h" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`).each((d, i, node) => {
+      if(d.id != infos.id && !d.parent){
+        let boundaryId = d.id;
+        let bBox = this.objectUtils.getBBoxObject(boundaryId);
+        if(height >= bBox.height)
+          this.boundary.setHeightBoundary(boundaryId, height + 43);
+        if(width >= bBox.width)
+          this.boundary.setWidthBoundary(boundaryId, width + 15);
       }
     });
   }
 
-  clearAll(){
-    this.mainMgmt.clearAll();
+  // Reset the boundary change height when drag
+  resetSizeBoundary() {
+    __WEBPACK_IMPORTED_MODULE_10_d3__["c" /* select */]("svg").selectAll(`.${__WEBPACK_IMPORTED_MODULE_11__const_index__["h" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`).each((d, i, node) => {
+      let orderObject = 0;
+      let hBeforeElements = 42;
+      let wBoundary = __WEBPACK_IMPORTED_MODULE_11__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
+      let marginTop = 5;
+      let boundaryId = d.id;
+      let boundaryMembers = d.member;
+
+      boundaryMembers.forEach(member => {
+        if(member.show) {
+          let objectId = member.id;
+          const {width, height} = this.objectUtils.getBBoxObject(objectId);
+          orderObject ++;
+          hBeforeElements += height;
+          if(width > wBoundary)
+            wBoundary = width + (member.type === "B" ? 10: 0);
+        }
+      });
+
+      let hBoundary = hBeforeElements + marginTop*orderObject;
+      this.boundary.setHeightBoundary(boundaryId, hBoundary);
+      this.boundary.setWidthBoundary(boundaryId, wBoundary);
+    });
   }
 
-  loadItems() {
-    const subItems = {};
-    if(window.vertexTypes){
-      for (const key of Object.keys(window.vertexTypes)) {
-        subItems[`${key}`] = {
-          name: `${key}`,
-          icon: "fa-window-maximize",
-          callback: (key, opt) => {
-            opt.vertexType = opt.$selected.text()
-            this.vertexMgmt.create(opt);
-          }
+  // Check drag inside boundary
+  checkDragObjectInsideBoundary(srcInfos, type) {
+    // Get box object
+    const {height, width} = this.objectUtils.getBBoxObject(srcInfos.id);
+    let xSrc = srcInfos.x;
+    let ySrc = srcInfos.y;
+    let hBSrc = xSrc + width;
+    let wBSrc = ySrc + height;
+
+    __WEBPACK_IMPORTED_MODULE_10_d3__["c" /* select */]("svg").selectAll(`.${__WEBPACK_IMPORTED_MODULE_11__const_index__["h" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`).each((d, i, node) => {
+      // The condition d.id != srcInfos.id user for check inside boundary
+      // But it not affect to check inside vertex
+      if(!d.parent && d.id != srcInfos.id) {
+        // Calculate box for boundary
+        let boundaryId = d.id;
+        let xTar = d.x;
+        let yTar = d.y;
+        let bBoxTar = this.objectUtils.getBBoxObject(d.id);
+        let hBTar = xTar + bBoxTar.width;
+        let wBTar = yTar + bBoxTar.height;
+
+        // Condition drop inside a boundary
+        if((xSrc >= xTar) && (ySrc >= yTar) && (hBSrc <= hBTar) && (wBSrc <= wBTar) ){
+          let member = {id: srcInfos.id, type, show: true};
+          this.boundary.addMemberToBoundary(boundaryId, member);
+          srcInfos.parent = boundaryId;
         }
       }
-    }
-
-    let dfd = jQuery.Deferred();
-    setTimeout(() => {
-      dfd.resolve(subItems);
-    }, 10);
-    return dfd.promise();
+    });
   }
+
+  // Check drag outside parent
+  checkDragObjectOutsideBoundary(srcInfos) {
+    // Get box object
+    const {height, width} = this.objectUtils.getBBoxObject(srcInfos.id);
+    let xSrc = srcInfos.x;
+    let ySrc = srcInfos.y;
+    let hBSrc = xSrc + width;
+    let wBSrc = ySrc + height;
+
+    // Parent
+    let parentId = srcInfos.parent;
+    const {x, y} = this.objectUtils.getBoundaryInfoById(parentId);
+    let pBox = this.objectUtils.getBBoxObject(parentId);
+    let xParent = x + pBox.width;
+    let yParent = y + pBox.height;
+
+    // Check drag outside a boundary
+    if((xSrc < x) || (ySrc < y) || (hBSrc > xParent) || (wBSrc > yParent) ){
+      this.boundary.removeMemberFromBoundary(parentId, srcInfos.id);
+      srcInfos.parent = null;
+    }
+  }
+
+  // Set vertex position
+  setVertexPosition(vertexId, position) {
+    this.vertex.setVertexPosition(vertexId, position);
+  }
+
+  // Delete vertex call from removeChildElementsBoundary
+  deleteVertex(vertexId) {
+    this.vertex.deleteVertex(vertexId);
+  }
+
+  /**
+   * Clear all element on graph
+   * And reinit marker def
+   */
+  clearAll(){
+    // Delete all element inside SVG
+    __WEBPACK_IMPORTED_MODULE_10_d3__["c" /* select */]("svg").selectAll("*").remove();
+
+    // Clear all data cotainer for vertex, boundary, edge
+    this.dataContainer.vertex = [];
+    this.dataContainer.boundary = [];
+    this.dataContainer.edge = [];
+    this.initMarkerArrow();
+  }
+  /* Mein menu operation (E) */
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (MainMenuContext);
+/* harmony default export */ __webpack_exports__["a"] = (MainMgmt);
 
 
 /***/ }),
 /* 506 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__ = __webpack_require__(84);
+
+
+
+
+
+
+const HTML_VERTEX_INFO_ID = 'vertexInfo';
+const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
+const HTML_VERTEX_FORM_ID = 'vertexForm';
+
+class Vertex {
+  constructor(props){
+    this.svgSelector = props.svgSelector;
+    this.objectUtils = props.objectUtils;
+    this.dataContainer = props.dataContainer;
+    this.mainMgmt = props.mainMgmt;
+
+    this.dragRegister = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
+      .on("start", this.dragstarted(this))
+      .on("drag", this.dragged(this))
+      .on("end", this.dragended(this));
+
+    this.originVertex = null;
+    this.bindEventForPopupVertex();
+  }
+
+  /**
+   * Bind event and init data for controls on popup
+   */
+  bindEventForPopupVertex() {
+    $("#vertexBtnConfirm").click(e => {
+      this.confirmEditVertexInfo();
+    });
+
+    $("#vertexBtnCancel").click(e => {
+      this.closePopVertexInfo();
+    });
+  }
+
+  /**
+   *
+   * @param options
+   * vertexType: object, required
+   * vertexProperties: object, option
+   * interaction: string, option
+   * vertexProperties: object, option
+   * id: string, option (format V*********)
+   * Ex
+   */
+  createVertex(options){
+    if(!options.vertexType)
+      return;
+
+    let vertexType = options.vertexType;
+    // Get properties vertex from list object vertex type
+    let vertexProperties = options.data ? Object.assign({}, options.data) : Object.assign({}, window.vertexTypes[vertexType]);
+    let vertexId = options.id? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["b" /* generateObjectId */])('V');
+    let parent = options.parent || null;
+
+    let vertexInfo = {
+      x: options.x,
+      y: options.y,
+      vertexType: vertexType,
+      name: options.name || vertexType,
+      description: options.description || "Description",
+      data: vertexProperties,
+      id: vertexId,
+      parent: parent
+    };
+    this.dataContainer.vertex.push(vertexInfo);
+
+    let group = this.svgSelector.append("g")
+      .attr("transform", `translate(${options.x}, ${options.y})`)
+      .attr("id", vertexId)
+      .attr("class", `${__WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* HTML_VERTEX_CONTAINER_CLASS */]}`)
+      .style("cursor", "move");
+
+    let htmlContent = '';
+    let countProperty = 0;
+    for (const key of Object.keys(vertexProperties)) {
+      htmlContent += `
+        <div class="property" prop="${key}" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
+          <label class="key">${key} : </label>
+          <label class="data ${key}" id="${vertexId}${key}">${vertexProperties[key]}</label>
+        </div>`;
+      countProperty ++;
+    }
+
+    let vertexHeight = __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT*countProperty;
+    group.append("foreignObject")
+      .attr("width", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
+      .attr("height", vertexHeight)
+      .append("xhtml:div")
+      .attr("class", "vertex_content")
+      .style("font-size", "13px")
+      .style("background", "#ffffff")
+      .html(`
+        <p class="header_name" id="${vertexId}Name" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px">${vertexInfo.name}</p>
+        <div class="vertex_data">
+          ${htmlContent}
+        </div>
+      `);
+
+    this.initEventDrag();
+  }
+
+  /**
+   * Init event drag for all vertex
+   */
+  initEventDrag(){
+    this.svgSelector.selectAll(`.${__WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* HTML_VERTEX_CONTAINER_CLASS */]}`)
+      .data(this.dataContainer.vertex).call(this.dragRegister);
+  }
+
+  dragstarted(self) {
+    return function(d) {
+      __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.stopPropagation();
+    }
+  }
+
+  /**
+   * Handle event move vertex
+   * And update position of paths related to this vertex
+   * @param d
+   */
+  dragged(self) {
+    return function(d) {
+      // Update poition object in this.dataContainer.boundary
+      d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
+      d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
+      // Transform group
+      __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${d.id}`).attr("transform", (d,i) => {
+        return "translate(" + [ __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y ] + ")"
+      });
+
+      self.updatePathConnect(d.id);
+      // Resize boundary when vertex dragged
+      if(!d.parent)
+        self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
+    }
+  }
+
+  /**
+   * Call back when stop drag vertex
+   * @param d
+   */
+  dragended(self) {
+    return function(d) {
+      // d3.select(this).classed("active", false);
+      if(d.parent) {
+        self.mainMgmt.checkDragObjectOutsideBoundary(d);
+      } else {
+        self.mainMgmt.checkDragObjectInsideBoundary(d, "V");
+        self.mainMgmt.resetSizeBoundary();
+      }
+    }
+  }
+
+  /**
+   * Remove vertex element by id
+   * @param vertexId
+   */
+  removeVertex(vertexId) {
+    // Remove from DOM
+    let vertexInfo = this.objectUtils.getVertexInfoById(vertexId);
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).remove();
+    // Remove from data container
+    let data = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.remove(this.dataContainer.vertex, (e) => {
+      return e.id === vertexId;
+    });
+  }
+
+  /**
+   * Copy vertex selected
+   * @param vertexId
+   */
+  copyVertex(vertexId) {
+    let infos = this.objectUtils.cloneVertexInfo(vertexId);
+    let clone = {
+      x: infos.x + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
+      y: infos.y + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
+      name: infos.name,
+      description: infos.description,
+      vertexType: infos.vertexType,
+      data: infos.data
+    };
+    this.createVertex(clone);
+  }
+
+  /**
+   * Make popup edit vertex info
+   * @param vertexId
+   */
+  makePopupEditVertex(vertexId) {
+    // Use in function updateVertexInfo()
+    const vertexInfo = this.objectUtils.cloneVertexInfo(vertexId);
+    this.originVertex = vertexInfo;
+    // Append content to popup
+    $(`#vertexName`).val(vertexInfo.name);
+    $(`#vertexId`).val(vertexInfo.id);
+    $(`#vertexDesc`).val(vertexInfo.description);
+
+    // Generate properties vertex
+    let vertexData = vertexInfo.data;
+    let $propertiesGroup = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
+    const $rowVertexType = $('<tr>');
+    const $vertexType = $('<th>').text(vertexInfo.vertexType);
+    $vertexType.attr('colspan', 2);
+    $vertexType.attr('class', 'vertex-type');
+    $vertexType.appendTo($rowVertexType);
+    $rowVertexType.appendTo($propertiesGroup);
+    for (const key of Object.keys(vertexData)) {
+      const $row = $('<tr>');
+      const $th = $('<th>').text(key).appendTo($row);
+      const $td = $('<td>');
+      const $input = $('<input>');
+      $input.attr('type', 'text');
+      $input.attr('id', key);
+      $input.attr('name', key);
+      $input.attr('class', 'form-control');
+      $input.val(vertexData[key]);
+      $input.appendTo($td);
+      $td.appendTo($row);
+      $row.appendTo($propertiesGroup);
+    }
+
+    let options = {popupId : HTML_VERTEX_INFO_ID, position: 'center', width: 430}
+    __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
+  }
+
+  /**
+   * Close popup edit vertex info
+   */
+  closePopVertexInfo() {
+    this.originVertex = null;
+    let options = {popupId : HTML_VERTEX_INFO_ID}
+    __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__["a" /* default */].metClosePopup(options);
+  }
+
+  /**
+   * Get data vertex change
+   */
+  confirmEditVertexInfo() {
+    // Get data on form
+    let form = $(`#${HTML_VERTEX_FORM_ID}`).serializeArray();
+    let data = {};
+    $(form).each(function(index, obj){
+      data[obj.name] = obj.value;
+    });
+
+    // Update to origin data
+    this.originVertex.name = data.vertexName;
+    this.originVertex.description = data.vertexDesc;
+    for (const key of Object.keys(this.originVertex.data)) {
+      this.originVertex.data[key] = data[key];
+    }
+
+    this.updateVertexInfo(this.originVertex);
+    this.closePopVertexInfo();
+  }
+
+  /**
+   * Update vertex info
+   * Update value properties
+   * Update name, type, ...
+   * Update present (DOM)
+   */
+  updateVertexInfo(infos) {
+    console.log(infos);
+    const id = infos.id;
+    let vertexInfo = this.objectUtils.getVertexInfoById(id);
+    // Change name
+    vertexInfo.name = infos.name;
+    vertexInfo.description = infos.description;
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${id}Name`).text(infos.name);
+    // Update properties
+    for (const key of Object.keys(infos.data)) {
+      __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this.replaceSpecialCharacter(`${id}${key}`)).text(infos.data[key]);
+      vertexInfo.data[key] = infos.data[key];
+    }
+  }
+
+  replaceSpecialCharacter(id) {
+    return "#" + id.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" );
+  }
+
+  /**
+   * Cancle state create edge on vertex
+   */
+  cancelCreateEdge() {
+    window.creatingEdge = false;
+    window.sourceNode = null;
+  }
+
+  /**
+   * Set state connect from source
+   * @param vertexId
+   * @param prop
+   */
+  setConnectFrom(vertexId, prop = null) {
+    window.creatingEdge = true;
+    let source = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT);
+    source.vertexId = vertexId;
+    source.prop = prop;
+    window.sourceNode = source;
+  }
+
+  /**
+   * Set state connect to target
+   * @param vertexId: string, require
+   * @param prop: string, option
+   */
+  setConnectTo(vertexId, prop = null) {
+    if(window.creatingEdge){
+      let target = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].INPUT);
+      target.vertexId = vertexId;
+      target.prop = prop;
+      let options = {source: window.sourceNode, target: target};
+      this.createConnect(options);
+    }
+  }
+
+  /**
+   * Call create connect from source to target
+   * @param options
+   */
+  createConnect(options) {
+    this.mainMgmt.createEdge(options);
+  }
+
+  /**
+   * Calculate position of vertex or position of property in vertex
+   * @param vertexId: string, required
+   * @param prop: string, option, prop of vertex
+   * @param type: string, default is O (output)
+   * @returns {{x: *, y: *}}
+   */
+  getCoordinateProperty(vertexId, prop, type) {
+    if(!type)
+      type = __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT;
+    let vertexInfo = this.objectUtils.cloneVertexInfo(vertexId);
+    let axisX = vertexInfo.x;
+    let axisY = vertexInfo.y;
+
+    // If get Coordinate for vertex only
+    // if(!prop)
+    //   return {x: type === TYPE_POINT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH : axisX, y: axisY + 2 };
+    if(!prop)
+      return {x: axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH/2, y: axisY};
+
+    // Find index prop in object
+    let index = Object.keys(vertexInfo.data).indexOf(prop);
+    // Calculate coordinate of prop
+    // y = current axis y + height header + indexProp*heightProp + 13;
+    // x = if output then axis x + width vertex; if not then axis x
+    // Get coordinate
+    axisY = axisY + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index*__WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT/2;
+
+    return {x: type === __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH : axisX, y: axisY};
+  }
+
+  /**
+   * Find and update position connect to vertex when in move
+   * @param vertexId
+   */
+  updatePathConnect(vertexId) {
+    let srcPaths = this.objectUtils.findEdgeStartFromVertex(vertexId);
+    let desPaths = this.objectUtils.findEdgeConnectToVertex(vertexId);
+
+    srcPaths.forEach(src => {
+      let edgeId = src.id;
+      let prop = src.source.prop;
+      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT);
+      let options = {source: newPos}
+      this.mainMgmt.updatePathConnect(edgeId, options);
+    });
+
+    desPaths.forEach(des => {
+      let edgeId = des.id;
+      let prop = des.target.prop;
+      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].INPUT);
+      let options = {target: newPos}
+      this.mainMgmt.updatePathConnect(edgeId, options);
+    });
+  }
+
+  /**
+   * Set position for vertex
+   * Called in function dragBoundary (Object boundary)
+   * @param vertexId
+   * @param position
+   */
+  setVertexPosition(vertexId, position) {
+    const {x, y} = position;
+    let vertexInfo = this.objectUtils.getVertexInfoById(vertexId);
+    vertexInfo.x = x;
+    vertexInfo.y = y;
+    this.updatePathConnect(vertexId);
+
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).attr("transform", (d,i) => {
+      return "translate(" + [ x, y ] + ")"
+    });
+  }
+
+  /**
+   * The function called from boundary via mainMgmt
+   * In case that delete all boundary parent of vertex
+   * @param vertexId
+   */
+  deleteVertex(vertexId) {
+    // Remove from DOM
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).remove();
+    // Remove from data container
+    __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.remove(this.dataContainer.vertex, (e) => {
+      return e.id === vertexId;
+    });
+
+    // Should consider again...
+    // Remove all edge relate to vertex
+    // let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
+    // relatePaths.forEach(path => {
+    //   this.edgeMgmt.removeEdge(path.id);
+    // });
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Vertex);
+
+
+/***/ }),
+/* 507 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36342,7 +36818,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 507 */
+/* 508 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36371,7 +36847,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 508 */
+/* 509 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36381,15 +36857,15 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 509 */
+/* 510 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(225);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bisect__ = __webpack_require__(219);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constant__ = __webpack_require__(510);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constant__ = __webpack_require__(511);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__extent__ = __webpack_require__(224);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__identity__ = __webpack_require__(511);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__identity__ = __webpack_require__(512);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__range__ = __webpack_require__(226);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ticks__ = __webpack_require__(227);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__threshold_sturges__ = __webpack_require__(228);
@@ -36471,7 +36947,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 510 */
+/* 511 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36483,7 +36959,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 511 */
+/* 512 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36493,12 +36969,12 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 512 */
+/* 513 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(225);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ascending__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ascending__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__number__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__quantile__ = __webpack_require__(142);
 
@@ -36513,7 +36989,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 513 */
+/* 514 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36526,7 +37002,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 514 */
+/* 515 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36567,7 +37043,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 515 */
+/* 516 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36600,11 +37076,11 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 516 */
+/* 517 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__number__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__quantile__ = __webpack_require__(142);
 
@@ -36638,7 +37114,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 517 */
+/* 518 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36666,7 +37142,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 518 */
+/* 519 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36678,11 +37154,11 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 519 */
+/* 520 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(65);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = (function(values, compare) {
@@ -36706,7 +37182,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 520 */
+/* 521 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36727,7 +37203,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 521 */
+/* 522 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36754,7 +37230,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 522 */
+/* 523 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36767,11 +37243,11 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 523 */
+/* 524 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_axis__ = __webpack_require__(524);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_axis__ = __webpack_require__(525);
 /* unused harmony reexport axisTop */
 /* unused harmony reexport axisRight */
 /* unused harmony reexport axisBottom */
@@ -36780,7 +37256,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 
 /***/ }),
-/* 524 */
+/* 525 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36788,8 +37264,8 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 /* unused harmony export axisRight */
 /* unused harmony export axisBottom */
 /* unused harmony export axisLeft */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(525);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__identity__ = __webpack_require__(526);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(526);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__identity__ = __webpack_require__(527);
 
 
 
@@ -36967,7 +37443,7 @@ function axisLeft(scale) {
 
 
 /***/ }),
-/* 525 */
+/* 526 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36976,7 +37452,7 @@ var slice = Array.prototype.slice;
 
 
 /***/ }),
-/* 526 */
+/* 527 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36986,11 +37462,11 @@ var slice = Array.prototype.slice;
 
 
 /***/ }),
-/* 527 */
+/* 528 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_brush__ = __webpack_require__(528);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_brush__ = __webpack_require__(529);
 /* unused harmony reexport brush */
 /* unused harmony reexport brushX */
 /* unused harmony reexport brushY */
@@ -36999,7 +37475,7 @@ var slice = Array.prototype.slice;
 
 
 /***/ }),
-/* 528 */
+/* 529 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37011,9 +37487,9 @@ var slice = Array.prototype.slice;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_interpolate__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_selection__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_d3_transition__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constant__ = __webpack_require__(610);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__event__ = __webpack_require__(611);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__noevent__ = __webpack_require__(612);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constant__ = __webpack_require__(611);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__event__ = __webpack_require__(612);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__noevent__ = __webpack_require__(613);
 
 
 
@@ -37556,7 +38032,7 @@ function brush(dim) {
 
 
 /***/ }),
-/* 529 */
+/* 530 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37647,7 +38123,7 @@ function set(type, name, callback) {
 
 
 /***/ }),
-/* 530 */
+/* 531 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37655,8 +38131,8 @@ function set(type, name, callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_selection__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__nodrag__ = __webpack_require__(236);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__noevent__ = __webpack_require__(237);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constant__ = __webpack_require__(564);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__event__ = __webpack_require__(565);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constant__ = __webpack_require__(565);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__event__ = __webpack_require__(566);
 
 
 
@@ -37827,7 +38303,7 @@ function defaultTouchable() {
 
 
 /***/ }),
-/* 531 */
+/* 532 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37862,7 +38338,7 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 532 */
+/* 533 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37879,7 +38355,7 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 533 */
+/* 534 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37894,7 +38370,7 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 534 */
+/* 535 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37920,7 +38396,7 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 535 */
+/* 536 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37946,7 +38422,7 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 536 */
+/* 537 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37971,13 +38447,13 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 537 */
+/* 538 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__enter__ = __webpack_require__(233);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constant__ = __webpack_require__(538);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constant__ = __webpack_require__(539);
 
 
 
@@ -38099,7 +38575,7 @@ function bindKey(parent, group, enter, update, exit, data, key) {
 
 
 /***/ }),
-/* 538 */
+/* 539 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38111,7 +38587,7 @@ function bindKey(parent, group, enter, update, exit, data, key) {
 
 
 /***/ }),
-/* 539 */
+/* 540 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38126,7 +38602,7 @@ function bindKey(parent, group, enter, update, exit, data, key) {
 
 
 /***/ }),
-/* 540 */
+/* 541 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38152,7 +38628,7 @@ function bindKey(parent, group, enter, update, exit, data, key) {
 
 
 /***/ }),
-/* 541 */
+/* 542 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38172,7 +38648,7 @@ function bindKey(parent, group, enter, update, exit, data, key) {
 
 
 /***/ }),
-/* 542 */
+/* 543 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38204,7 +38680,7 @@ function ascending(a, b) {
 
 
 /***/ }),
-/* 543 */
+/* 544 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38217,7 +38693,7 @@ function ascending(a, b) {
 
 
 /***/ }),
-/* 544 */
+/* 545 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38229,7 +38705,7 @@ function ascending(a, b) {
 
 
 /***/ }),
-/* 545 */
+/* 546 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38247,7 +38723,7 @@ function ascending(a, b) {
 
 
 /***/ }),
-/* 546 */
+/* 547 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38259,7 +38735,7 @@ function ascending(a, b) {
 
 
 /***/ }),
-/* 547 */
+/* 548 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38269,7 +38745,7 @@ function ascending(a, b) {
 
 
 /***/ }),
-/* 548 */
+/* 549 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38286,7 +38762,7 @@ function ascending(a, b) {
 
 
 /***/ }),
-/* 549 */
+/* 550 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38351,7 +38827,7 @@ function attrFunctionNS(fullname, value) {
 
 
 /***/ }),
-/* 550 */
+/* 551 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38386,7 +38862,7 @@ function propertyFunction(name, value) {
 
 
 /***/ }),
-/* 551 */
+/* 552 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38468,7 +38944,7 @@ function classedFunction(names, value) {
 
 
 /***/ }),
-/* 552 */
+/* 553 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38500,7 +38976,7 @@ function textFunction(value) {
 
 
 /***/ }),
-/* 553 */
+/* 554 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38532,7 +39008,7 @@ function htmlFunction(value) {
 
 
 /***/ }),
-/* 554 */
+/* 555 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38546,7 +39022,7 @@ function raise() {
 
 
 /***/ }),
-/* 555 */
+/* 556 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38560,7 +39036,7 @@ function lower() {
 
 
 /***/ }),
-/* 556 */
+/* 557 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38576,7 +39052,7 @@ function lower() {
 
 
 /***/ }),
-/* 557 */
+/* 558 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38599,7 +39075,7 @@ function constantNull() {
 
 
 /***/ }),
-/* 558 */
+/* 559 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38614,7 +39090,7 @@ function remove() {
 
 
 /***/ }),
-/* 559 */
+/* 560 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38626,7 +39102,7 @@ function remove() {
 
 
 /***/ }),
-/* 560 */
+/* 561 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38668,7 +39144,7 @@ function dispatchFunction(type, params) {
 
 
 /***/ }),
-/* 561 */
+/* 562 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38683,7 +39159,7 @@ function dispatchFunction(type, params) {
 
 
 /***/ }),
-/* 562 */
+/* 563 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38706,7 +39182,7 @@ function dispatchFunction(type, params) {
 
 
 /***/ }),
-/* 563 */
+/* 564 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38727,7 +39203,7 @@ function dispatchFunction(type, params) {
 
 
 /***/ }),
-/* 564 */
+/* 565 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38739,7 +39215,7 @@ function dispatchFunction(type, params) {
 
 
 /***/ }),
-/* 565 */
+/* 566 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38764,7 +39240,7 @@ DragEvent.prototype.on = function() {
 
 
 /***/ }),
-/* 566 */
+/* 567 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38886,7 +39362,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__define__["a" /* default */])(Hcl, hcl, Objec
 
 
 /***/ }),
-/* 567 */
+/* 568 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38959,7 +39435,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__define__["a" /* default */])(Cubehelix, cube
 
 
 /***/ }),
-/* 568 */
+/* 569 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38971,14 +39447,14 @@ Object(__WEBPACK_IMPORTED_MODULE_0__define__["a" /* default */])(Cubehelix, cube
 
 
 /***/ }),
-/* 569 */
+/* 570 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return interpolateTransformCss; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return interpolateTransformSvg; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__number__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__parse__ = __webpack_require__(570);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__parse__ = __webpack_require__(571);
 
 
 
@@ -39045,13 +39521,13 @@ var interpolateTransformSvg = interpolateTransform(__WEBPACK_IMPORTED_MODULE_1__
 
 
 /***/ }),
-/* 570 */
+/* 571 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = parseCss;
 /* harmony export (immutable) */ __webpack_exports__["b"] = parseSvg;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__decompose__ = __webpack_require__(571);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__decompose__ = __webpack_require__(572);
 
 
 var cssNode,
@@ -39080,7 +39556,7 @@ function parseSvg(value) {
 
 
 /***/ }),
-/* 571 */
+/* 572 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39114,7 +39590,7 @@ var identity = {
 
 
 /***/ }),
-/* 572 */
+/* 573 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39185,7 +39661,7 @@ function tanh(x) {
 
 
 /***/ }),
-/* 573 */
+/* 574 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39216,7 +39692,7 @@ var hslLong = hsl(__WEBPACK_IMPORTED_MODULE_1__color__["a" /* default */]);
 
 
 /***/ }),
-/* 574 */
+/* 575 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39242,7 +39718,7 @@ function lab(start, end) {
 
 
 /***/ }),
-/* 575 */
+/* 576 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39273,7 +39749,7 @@ var hclLong = hcl(__WEBPACK_IMPORTED_MODULE_1__color__["a" /* default */]);
 
 
 /***/ }),
-/* 576 */
+/* 577 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39312,7 +39788,7 @@ var cubehelixLong = cubehelix(__WEBPACK_IMPORTED_MODULE_1__color__["a" /* defaul
 
 
 /***/ }),
-/* 577 */
+/* 578 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39324,13 +39800,13 @@ var cubehelixLong = cubehelix(__WEBPACK_IMPORTED_MODULE_1__color__["a" /* defaul
 
 
 /***/ }),
-/* 578 */
+/* 579 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interrupt__ = __webpack_require__(579);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__transition__ = __webpack_require__(582);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interrupt__ = __webpack_require__(580);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__transition__ = __webpack_require__(583);
 
 
 
@@ -39340,7 +39816,7 @@ __WEBPACK_IMPORTED_MODULE_0_d3_selection__["h" /* selection */].prototype.transi
 
 
 /***/ }),
-/* 579 */
+/* 580 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39355,7 +39831,7 @@ __WEBPACK_IMPORTED_MODULE_0_d3_selection__["h" /* selection */].prototype.transi
 
 
 /***/ }),
-/* 580 */
+/* 581 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39374,7 +39850,7 @@ __WEBPACK_IMPORTED_MODULE_0_d3_selection__["h" /* selection */].prototype.transi
 
 
 /***/ }),
-/* 581 */
+/* 582 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39395,11 +39871,11 @@ __WEBPACK_IMPORTED_MODULE_0_d3_selection__["h" /* selection */].prototype.transi
 
 
 /***/ }),
-/* 582 */
+/* 583 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__transition_index__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__transition_index__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transition_schedule__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_ease__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_timer__ = __webpack_require__(101);
@@ -39448,7 +39924,7 @@ function inherit(node, id) {
 
 
 /***/ }),
-/* 583 */
+/* 584 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39533,7 +40009,7 @@ function attrFunctionNS(fullname, interpolate, value) {
 
 
 /***/ }),
-/* 584 */
+/* 585 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39573,7 +40049,7 @@ function attrTween(name, value) {
 
 
 /***/ }),
-/* 585 */
+/* 586 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39604,7 +40080,7 @@ function delayConstant(id, value) {
 
 
 /***/ }),
-/* 586 */
+/* 587 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39635,7 +40111,7 @@ function durationConstant(id, value) {
 
 
 /***/ }),
-/* 587 */
+/* 588 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39659,12 +40135,12 @@ function easeConstant(id, value) {
 
 
 /***/ }),
-/* 588 */
+/* 589 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(42);
 
 
 
@@ -39684,11 +40160,11 @@ function easeConstant(id, value) {
 
 
 /***/ }),
-/* 589 */
+/* 590 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(42);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function(transition) {
@@ -39711,7 +40187,7 @@ function easeConstant(id, value) {
 
 
 /***/ }),
-/* 590 */
+/* 591 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39751,7 +40227,7 @@ function onFunction(id, name, listener) {
 
 
 /***/ }),
-/* 591 */
+/* 592 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39769,12 +40245,12 @@ function removeFunction(id) {
 
 
 /***/ }),
-/* 592 */
+/* 593 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__schedule__ = __webpack_require__(27);
 
 
@@ -39801,12 +40277,12 @@ function removeFunction(id) {
 
 
 /***/ }),
-/* 593 */
+/* 594 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__schedule__ = __webpack_require__(27);
 
 
@@ -39837,7 +40313,7 @@ function removeFunction(id) {
 
 
 /***/ }),
-/* 594 */
+/* 595 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39852,7 +40328,7 @@ var Selection = __WEBPACK_IMPORTED_MODULE_0_d3_selection__["h" /* selection */].
 
 
 /***/ }),
-/* 595 */
+/* 596 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39921,7 +40397,7 @@ function styleFunction(name, interpolate, value) {
 
 
 /***/ }),
-/* 596 */
+/* 597 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39946,7 +40422,7 @@ function styleTween(name, value, priority) {
 
 
 /***/ }),
-/* 597 */
+/* 598 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39974,11 +40450,11 @@ function textFunction(value) {
 
 
 /***/ }),
-/* 598 */
+/* 599 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__schedule__ = __webpack_require__(27);
 
 
@@ -40007,7 +40483,7 @@ function textFunction(value) {
 
 
 /***/ }),
-/* 599 */
+/* 600 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40018,7 +40494,7 @@ function linear(t) {
 
 
 /***/ }),
-/* 600 */
+/* 601 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40039,7 +40515,7 @@ function quadInOut(t) {
 
 
 /***/ }),
-/* 601 */
+/* 602 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40060,7 +40536,7 @@ function cubicInOut(t) {
 
 
 /***/ }),
-/* 602 */
+/* 603 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40107,7 +40583,7 @@ var polyInOut = (function custom(e) {
 
 
 /***/ }),
-/* 603 */
+/* 604 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40131,7 +40607,7 @@ function sinInOut(t) {
 
 
 /***/ }),
-/* 604 */
+/* 605 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40152,7 +40628,7 @@ function expInOut(t) {
 
 
 /***/ }),
-/* 605 */
+/* 606 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40173,7 +40649,7 @@ function circleInOut(t) {
 
 
 /***/ }),
-/* 606 */
+/* 607 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40205,7 +40681,7 @@ function bounceInOut(t) {
 
 
 /***/ }),
-/* 607 */
+/* 608 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40252,7 +40728,7 @@ var backInOut = (function custom(s) {
 
 
 /***/ }),
-/* 608 */
+/* 609 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40306,11 +40782,11 @@ var elasticInOut = (function custom(a, p) {
 
 
 /***/ }),
-/* 609 */
+/* 610 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__transition_index__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__transition_index__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transition_schedule__ = __webpack_require__(27);
 
 
@@ -40336,7 +40812,7 @@ var root = [null];
 
 
 /***/ }),
-/* 610 */
+/* 611 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40348,7 +40824,7 @@ var root = [null];
 
 
 /***/ }),
-/* 611 */
+/* 612 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40360,7 +40836,7 @@ var root = [null];
 
 
 /***/ }),
-/* 612 */
+/* 613 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40379,20 +40855,20 @@ function nopropagation() {
 
 
 /***/ }),
-/* 613 */
+/* 614 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_chord__ = __webpack_require__(614);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_chord__ = __webpack_require__(615);
 /* unused harmony reexport chord */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_ribbon__ = __webpack_require__(615);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_ribbon__ = __webpack_require__(616);
 /* unused harmony reexport ribbon */
 
 
 
 
 /***/ }),
-/* 614 */
+/* 615 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40522,12 +40998,12 @@ function compareValue(compare) {
 
 
 /***/ }),
-/* 615 */
+/* 616 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(616);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constant__ = __webpack_require__(617);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(617);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constant__ = __webpack_require__(618);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(249);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_path__ = __webpack_require__(56);
 
@@ -40620,7 +41096,7 @@ function defaultEndAngle(d) {
 
 
 /***/ }),
-/* 616 */
+/* 617 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40629,7 +41105,7 @@ var slice = Array.prototype.slice;
 
 
 /***/ }),
-/* 617 */
+/* 618 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40641,7 +41117,7 @@ var slice = Array.prototype.slice;
 
 
 /***/ }),
-/* 618 */
+/* 619 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40778,7 +41254,7 @@ Path.prototype = path.prototype = {
 
 
 /***/ }),
-/* 619 */
+/* 620 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40859,7 +41335,7 @@ function setMap(map, key, value) {
 
 
 /***/ }),
-/* 620 */
+/* 621 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40906,7 +41382,7 @@ function set(object, f) {
 
 
 /***/ }),
-/* 621 */
+/* 622 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40918,7 +41394,7 @@ function set(object, f) {
 
 
 /***/ }),
-/* 622 */
+/* 623 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40930,7 +41406,7 @@ function set(object, f) {
 
 
 /***/ }),
-/* 623 */
+/* 624 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40942,7 +41418,7 @@ function set(object, f) {
 
 
 /***/ }),
-/* 624 */
+/* 625 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40962,7 +41438,7 @@ var csvFormatRows = csv.formatRows;
 
 
 /***/ }),
-/* 625 */
+/* 626 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40982,25 +41458,25 @@ var tsvFormatRows = tsv.formatRows;
 
 
 /***/ }),
-/* 626 */
+/* 627 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_center__ = __webpack_require__(627);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_center__ = __webpack_require__(628);
 /* unused harmony reexport forceCenter */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_collide__ = __webpack_require__(628);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_collide__ = __webpack_require__(629);
 /* unused harmony reexport forceCollide */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_link__ = __webpack_require__(642);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_link__ = __webpack_require__(643);
 /* unused harmony reexport forceLink */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_manyBody__ = __webpack_require__(643);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_manyBody__ = __webpack_require__(644);
 /* unused harmony reexport forceManyBody */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_radial__ = __webpack_require__(644);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_radial__ = __webpack_require__(645);
 /* unused harmony reexport forceRadial */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_simulation__ = __webpack_require__(250);
 /* unused harmony reexport forceSimulation */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_x__ = __webpack_require__(645);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_x__ = __webpack_require__(646);
 /* unused harmony reexport forceX */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_y__ = __webpack_require__(646);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_y__ = __webpack_require__(647);
 /* unused harmony reexport forceY */
 
 
@@ -41013,7 +41489,7 @@ var tsvFormatRows = tsv.formatRows;
 
 
 /***/ }),
-/* 627 */
+/* 628 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41056,11 +41532,11 @@ var tsvFormatRows = tsv.formatRows;
 
 
 /***/ }),
-/* 628 */
+/* 629 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jiggle__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_quadtree__ = __webpack_require__(161);
 
@@ -41164,23 +41640,23 @@ function y(d) {
 
 
 /***/ }),
-/* 629 */
+/* 630 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = quadtree;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__add__ = __webpack_require__(630);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cover__ = __webpack_require__(631);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data__ = __webpack_require__(632);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__extent__ = __webpack_require__(633);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__find__ = __webpack_require__(634);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__remove__ = __webpack_require__(635);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__root__ = __webpack_require__(636);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__size__ = __webpack_require__(637);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__visit__ = __webpack_require__(638);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__visitAfter__ = __webpack_require__(639);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__x__ = __webpack_require__(640);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__y__ = __webpack_require__(641);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__add__ = __webpack_require__(631);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cover__ = __webpack_require__(632);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data__ = __webpack_require__(633);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__extent__ = __webpack_require__(634);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__find__ = __webpack_require__(635);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__remove__ = __webpack_require__(636);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__root__ = __webpack_require__(637);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__size__ = __webpack_require__(638);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__visit__ = __webpack_require__(639);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__visitAfter__ = __webpack_require__(640);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__x__ = __webpack_require__(641);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__y__ = __webpack_require__(642);
 
 
 
@@ -41257,7 +41733,7 @@ treeProto.y = __WEBPACK_IMPORTED_MODULE_11__y__["a" /* default */];
 
 
 /***/ }),
-/* 630 */
+/* 631 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41350,7 +41826,7 @@ function addAll(data) {
 
 
 /***/ }),
-/* 631 */
+/* 632 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41415,7 +41891,7 @@ function addAll(data) {
 
 
 /***/ }),
-/* 632 */
+/* 633 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41429,7 +41905,7 @@ function addAll(data) {
 
 
 /***/ }),
-/* 633 */
+/* 634 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41441,7 +41917,7 @@ function addAll(data) {
 
 
 /***/ }),
-/* 634 */
+/* 635 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41519,7 +41995,7 @@ function addAll(data) {
 
 
 /***/ }),
-/* 635 */
+/* 636 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41589,7 +42065,7 @@ function removeAll(data) {
 
 
 /***/ }),
-/* 636 */
+/* 637 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41599,7 +42075,7 @@ function removeAll(data) {
 
 
 /***/ }),
-/* 637 */
+/* 638 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41613,7 +42089,7 @@ function removeAll(data) {
 
 
 /***/ }),
-/* 638 */
+/* 639 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41637,7 +42113,7 @@ function removeAll(data) {
 
 
 /***/ }),
-/* 639 */
+/* 640 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41666,7 +42142,7 @@ function removeAll(data) {
 
 
 /***/ }),
-/* 640 */
+/* 641 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41681,7 +42157,7 @@ function defaultX(d) {
 
 
 /***/ }),
-/* 641 */
+/* 642 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41696,11 +42172,11 @@ function defaultY(d) {
 
 
 /***/ }),
-/* 642 */
+/* 643 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jiggle__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_collection__ = __webpack_require__(74);
 
@@ -41822,11 +42298,11 @@ function find(nodeById, nodeId) {
 
 
 /***/ }),
-/* 643 */
+/* 644 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jiggle__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_quadtree__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__simulation__ = __webpack_require__(250);
@@ -41947,11 +42423,11 @@ function find(nodeById, nodeId) {
 
 
 /***/ }),
-/* 644 */
+/* 645 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(66);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = (function(radius, x, y) {
@@ -42012,11 +42488,11 @@ function find(nodeById, nodeId) {
 
 
 /***/ }),
-/* 645 */
+/* 646 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(66);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = (function(x) {
@@ -42061,11 +42537,11 @@ function find(nodeById, nodeId) {
 
 
 /***/ }),
-/* 646 */
+/* 647 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(66);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = (function(y) {
@@ -42110,7 +42586,7 @@ function find(nodeById, nodeId) {
 
 
 /***/ }),
-/* 647 */
+/* 648 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42140,7 +42616,7 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 648 */
+/* 649 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42165,7 +42641,7 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 649 */
+/* 650 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42179,7 +42655,7 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 650 */
+/* 651 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42200,7 +42676,7 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 651 */
+/* 652 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42219,7 +42695,7 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 652 */
+/* 653 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42229,7 +42705,7 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 653 */
+/* 654 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42242,7 +42718,7 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 654 */
+/* 655 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42255,7 +42731,7 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 655 */
+/* 656 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42269,15 +42745,15 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 656 */
+/* 657 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_area__ = __webpack_require__(255);
 /* unused harmony reexport geoArea */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_bounds__ = __webpack_require__(657);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_bounds__ = __webpack_require__(658);
 /* unused harmony reexport geoBounds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_centroid__ = __webpack_require__(658);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_centroid__ = __webpack_require__(659);
 /* unused harmony reexport geoCentroid */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_circle__ = __webpack_require__(256);
 /* unused harmony reexport geoCircle */
@@ -42285,49 +42761,49 @@ function defaultLocale(definition) {
 /* unused harmony reexport geoClipAntimeridian */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_clip_circle__ = __webpack_require__(264);
 /* unused harmony reexport geoClipCircle */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_clip_extent__ = __webpack_require__(660);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_clip_extent__ = __webpack_require__(661);
 /* unused harmony reexport geoClipExtent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_clip_rectangle__ = __webpack_require__(105);
 /* unused harmony reexport geoClipRectangle */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_contains__ = __webpack_require__(662);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_contains__ = __webpack_require__(663);
 /* unused harmony reexport geoContains */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_distance__ = __webpack_require__(265);
 /* unused harmony reexport geoDistance */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_graticule__ = __webpack_require__(663);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_graticule__ = __webpack_require__(664);
 /* unused harmony reexport geoGraticule */
 /* unused harmony reexport geoGraticule10 */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_interpolate__ = __webpack_require__(664);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_interpolate__ = __webpack_require__(665);
 /* unused harmony reexport geoInterpolate */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_length__ = __webpack_require__(266);
 /* unused harmony reexport geoLength */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_path_index__ = __webpack_require__(665);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_path_index__ = __webpack_require__(666);
 /* unused harmony reexport geoPath */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_projection_albers__ = __webpack_require__(268);
 /* unused harmony reexport geoAlbers */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_projection_albersUsa__ = __webpack_require__(673);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_projection_albersUsa__ = __webpack_require__(674);
 /* unused harmony reexport geoAlbersUsa */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_projection_azimuthalEqualArea__ = __webpack_require__(674);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_projection_azimuthalEqualArea__ = __webpack_require__(675);
 /* unused harmony reexport geoAzimuthalEqualArea */
 /* unused harmony reexport geoAzimuthalEqualAreaRaw */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__src_projection_azimuthalEquidistant__ = __webpack_require__(675);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__src_projection_azimuthalEquidistant__ = __webpack_require__(676);
 /* unused harmony reexport geoAzimuthalEquidistant */
 /* unused harmony reexport geoAzimuthalEquidistantRaw */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__src_projection_conicConformal__ = __webpack_require__(676);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__src_projection_conicConformal__ = __webpack_require__(677);
 /* unused harmony reexport geoConicConformal */
 /* unused harmony reexport geoConicConformalRaw */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__src_projection_conicEqualArea__ = __webpack_require__(166);
 /* unused harmony reexport geoConicEqualArea */
 /* unused harmony reexport geoConicEqualAreaRaw */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__src_projection_conicEquidistant__ = __webpack_require__(677);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__src_projection_conicEquidistant__ = __webpack_require__(678);
 /* unused harmony reexport geoConicEquidistant */
 /* unused harmony reexport geoConicEquidistantRaw */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__src_projection_equirectangular__ = __webpack_require__(269);
 /* unused harmony reexport geoEquirectangular */
 /* unused harmony reexport geoEquirectangularRaw */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__src_projection_gnomonic__ = __webpack_require__(678);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__src_projection_gnomonic__ = __webpack_require__(679);
 /* unused harmony reexport geoGnomonic */
 /* unused harmony reexport geoGnomonicRaw */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__src_projection_identity__ = __webpack_require__(679);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__src_projection_identity__ = __webpack_require__(680);
 /* unused harmony reexport geoIdentity */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__src_projection_index__ = __webpack_require__(35);
 /* unused harmony reexport geoProjection */
@@ -42335,16 +42811,16 @@ function defaultLocale(definition) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__src_projection_mercator__ = __webpack_require__(169);
 /* unused harmony reexport geoMercator */
 /* unused harmony reexport geoMercatorRaw */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__src_projection_naturalEarth1__ = __webpack_require__(680);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__src_projection_naturalEarth1__ = __webpack_require__(681);
 /* unused harmony reexport geoNaturalEarth1 */
 /* unused harmony reexport geoNaturalEarth1Raw */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__src_projection_orthographic__ = __webpack_require__(681);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__src_projection_orthographic__ = __webpack_require__(682);
 /* unused harmony reexport geoOrthographic */
 /* unused harmony reexport geoOrthographicRaw */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__src_projection_stereographic__ = __webpack_require__(682);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__src_projection_stereographic__ = __webpack_require__(683);
 /* unused harmony reexport geoStereographic */
 /* unused harmony reexport geoStereographicRaw */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__src_projection_transverseMercator__ = __webpack_require__(683);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__src_projection_transverseMercator__ = __webpack_require__(684);
 /* unused harmony reexport geoTransverseMercator */
 /* unused harmony reexport geoTransverseMercatorRaw */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__src_rotation__ = __webpack_require__(104);
@@ -42389,11 +42865,11 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 657 */
+/* 658 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__area__ = __webpack_require__(255);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__cartesian__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__math__ = __webpack_require__(1);
@@ -42577,12 +43053,12 @@ function rangeContains(range, x) {
 
 
 /***/ }),
-/* 658 */
+/* 659 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__noop__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__noop__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stream__ = __webpack_require__(57);
 
 
@@ -42727,7 +43203,7 @@ function centroidRingPoint(lambda, phi) {
 
 
 /***/ }),
-/* 659 */
+/* 660 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42739,7 +43215,7 @@ function centroidRingPoint(lambda, phi) {
 
 
 /***/ }),
-/* 660 */
+/* 661 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42767,7 +43243,7 @@ function centroidRingPoint(lambda, phi) {
 
 
 /***/ }),
-/* 661 */
+/* 662 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42833,7 +43309,7 @@ function centroidRingPoint(lambda, phi) {
 
 
 /***/ }),
-/* 662 */
+/* 663 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42927,7 +43403,7 @@ function pointRadians(point) {
 
 
 /***/ }),
-/* 663 */
+/* 664 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43043,7 +43519,7 @@ function graticule10() {
 
 
 /***/ }),
-/* 664 */
+/* 665 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43087,18 +43563,18 @@ function graticule10() {
 
 
 /***/ }),
-/* 665 */
+/* 666 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__identity__ = __webpack_require__(165);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stream__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__area__ = __webpack_require__(666);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__area__ = __webpack_require__(667);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__bounds__ = __webpack_require__(267);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__centroid__ = __webpack_require__(667);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__context__ = __webpack_require__(668);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__measure__ = __webpack_require__(669);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__string__ = __webpack_require__(670);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__centroid__ = __webpack_require__(668);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__context__ = __webpack_require__(669);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__measure__ = __webpack_require__(670);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__string__ = __webpack_require__(671);
 
 
 
@@ -43163,13 +43639,13 @@ function graticule10() {
 
 
 /***/ }),
-/* 666 */
+/* 667 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(43);
 
 
 
@@ -43223,7 +43699,7 @@ function areaRingEnd() {
 
 
 /***/ }),
-/* 667 */
+/* 668 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43331,13 +43807,13 @@ function centroidPointRing(x, y) {
 
 
 /***/ }),
-/* 668 */
+/* 669 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = PathContext;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__noop__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__noop__ = __webpack_require__(43);
 
 
 
@@ -43386,13 +43862,13 @@ PathContext.prototype = {
 
 
 /***/ }),
-/* 669 */
+/* 670 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(43);
 
 
 
@@ -43441,7 +43917,7 @@ function lengthPoint(x, y) {
 
 
 /***/ }),
-/* 670 */
+/* 671 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43508,7 +43984,7 @@ function circle(radius) {
 
 
 /***/ }),
-/* 671 */
+/* 672 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43620,7 +44096,7 @@ function resample(project, delta2) {
 
 
 /***/ }),
-/* 672 */
+/* 673 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43644,7 +44120,7 @@ function cylindricalEqualAreaRaw(phi0) {
 
 
 /***/ }),
-/* 673 */
+/* 674 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43766,7 +44242,7 @@ function multiplex(streams) {
 
 
 /***/ }),
-/* 674 */
+/* 675 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43794,7 +44270,7 @@ azimuthalEqualAreaRaw.invert = Object(__WEBPACK_IMPORTED_MODULE_1__azimuthal__["
 
 
 /***/ }),
-/* 675 */
+/* 676 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43822,7 +44298,7 @@ azimuthalEquidistantRaw.invert = Object(__WEBPACK_IMPORTED_MODULE_1__azimuthal__
 
 
 /***/ }),
-/* 676 */
+/* 677 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43868,7 +44344,7 @@ function conicConformalRaw(y0, y1) {
 
 
 /***/ }),
-/* 677 */
+/* 678 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43908,7 +44384,7 @@ function conicEquidistantRaw(y0, y1) {
 
 
 /***/ }),
-/* 678 */
+/* 679 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43935,7 +44411,7 @@ gnomonicRaw.invert = Object(__WEBPACK_IMPORTED_MODULE_1__azimuthal__["a" /* azim
 
 
 /***/ }),
-/* 679 */
+/* 680 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44008,7 +44484,7 @@ function scaleTranslate(kx, ky, tx, ty) {
 
 
 /***/ }),
-/* 680 */
+/* 681 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44046,7 +44522,7 @@ naturalEarth1Raw.invert = function(x, y) {
 
 
 /***/ }),
-/* 681 */
+/* 682 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44072,7 +44548,7 @@ orthographicRaw.invert = Object(__WEBPACK_IMPORTED_MODULE_1__azimuthal__["a" /* 
 
 
 /***/ }),
-/* 682 */
+/* 683 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44101,7 +44577,7 @@ stereographicRaw.invert = Object(__WEBPACK_IMPORTED_MODULE_1__azimuthal__["a" /*
 
 
 /***/ }),
-/* 683 */
+/* 684 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44138,39 +44614,39 @@ transverseMercatorRaw.invert = function(x, y) {
 
 
 /***/ }),
-/* 684 */
+/* 685 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_cluster__ = __webpack_require__(685);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_cluster__ = __webpack_require__(686);
 /* unused harmony reexport cluster */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_hierarchy_index__ = __webpack_require__(170);
 /* unused harmony reexport hierarchy */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_pack_index__ = __webpack_require__(697);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_pack_index__ = __webpack_require__(698);
 /* unused harmony reexport pack */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_pack_siblings__ = __webpack_require__(270);
 /* unused harmony reexport packSiblings */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_pack_enclose__ = __webpack_require__(271);
 /* unused harmony reexport packEnclose */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_partition__ = __webpack_require__(699);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_partition__ = __webpack_require__(700);
 /* unused harmony reexport partition */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_stratify__ = __webpack_require__(700);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_stratify__ = __webpack_require__(701);
 /* unused harmony reexport stratify */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_tree__ = __webpack_require__(701);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_tree__ = __webpack_require__(702);
 /* unused harmony reexport tree */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_treemap_index__ = __webpack_require__(702);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_treemap_index__ = __webpack_require__(703);
 /* unused harmony reexport treemap */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_treemap_binary__ = __webpack_require__(703);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_treemap_binary__ = __webpack_require__(704);
 /* unused harmony reexport treemapBinary */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_treemap_dice__ = __webpack_require__(77);
 /* unused harmony reexport treemapDice */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_treemap_slice__ = __webpack_require__(107);
 /* unused harmony reexport treemapSlice */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_treemap_sliceDice__ = __webpack_require__(704);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_treemap_sliceDice__ = __webpack_require__(705);
 /* unused harmony reexport treemapSliceDice */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_treemap_squarify__ = __webpack_require__(172);
 /* unused harmony reexport treemapSquarify */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_treemap_resquarify__ = __webpack_require__(705);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_treemap_resquarify__ = __webpack_require__(706);
 /* unused harmony reexport treemapResquarify */
 
 
@@ -44190,7 +44666,7 @@ transverseMercatorRaw.invert = function(x, y) {
 
 
 /***/ }),
-/* 685 */
+/* 686 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44281,7 +44757,7 @@ function leafRight(node) {
 
 
 /***/ }),
-/* 686 */
+/* 687 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44300,7 +44776,7 @@ function count(node) {
 
 
 /***/ }),
-/* 687 */
+/* 688 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44320,7 +44796,7 @@ function count(node) {
 
 
 /***/ }),
-/* 688 */
+/* 689 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44337,7 +44813,7 @@ function count(node) {
 
 
 /***/ }),
-/* 689 */
+/* 690 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44357,7 +44833,7 @@ function count(node) {
 
 
 /***/ }),
-/* 690 */
+/* 691 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44373,7 +44849,7 @@ function count(node) {
 
 
 /***/ }),
-/* 691 */
+/* 692 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44387,7 +44863,7 @@ function count(node) {
 
 
 /***/ }),
-/* 692 */
+/* 693 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44424,7 +44900,7 @@ function leastCommonAncestor(a, b) {
 
 
 /***/ }),
-/* 693 */
+/* 694 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44438,7 +44914,7 @@ function leastCommonAncestor(a, b) {
 
 
 /***/ }),
-/* 694 */
+/* 695 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44452,7 +44928,7 @@ function leastCommonAncestor(a, b) {
 
 
 /***/ }),
-/* 695 */
+/* 696 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44468,7 +44944,7 @@ function leastCommonAncestor(a, b) {
 
 
 /***/ }),
-/* 696 */
+/* 697 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44484,7 +44960,7 @@ function leastCommonAncestor(a, b) {
 
 
 /***/ }),
-/* 697 */
+/* 698 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44573,7 +45049,7 @@ function translateChild(k) {
 
 
 /***/ }),
-/* 698 */
+/* 699 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44598,7 +45074,7 @@ function shuffle(array) {
 
 
 /***/ }),
-/* 699 */
+/* 700 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44659,7 +45135,7 @@ function shuffle(array) {
 
 
 /***/ }),
-/* 700 */
+/* 701 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44741,7 +45217,7 @@ function defaultParentId(d) {
 
 
 /***/ }),
-/* 701 */
+/* 702 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44986,7 +45462,7 @@ function treeRoot(root) {
 
 
 /***/ }),
-/* 702 */
+/* 703 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45091,7 +45567,7 @@ function treeRoot(root) {
 
 
 /***/ }),
-/* 703 */
+/* 704 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45144,7 +45620,7 @@ function treeRoot(root) {
 
 
 /***/ }),
-/* 704 */
+/* 705 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45159,7 +45635,7 @@ function treeRoot(root) {
 
 
 /***/ }),
-/* 705 */
+/* 706 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45205,19 +45681,19 @@ function treeRoot(root) {
 
 
 /***/ }),
-/* 706 */
+/* 707 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_area__ = __webpack_require__(707);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_area__ = __webpack_require__(708);
 /* unused harmony reexport polygonArea */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_centroid__ = __webpack_require__(708);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_centroid__ = __webpack_require__(709);
 /* unused harmony reexport polygonCentroid */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_hull__ = __webpack_require__(709);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_hull__ = __webpack_require__(710);
 /* unused harmony reexport polygonHull */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_contains__ = __webpack_require__(711);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_contains__ = __webpack_require__(712);
 /* unused harmony reexport polygonContains */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_length__ = __webpack_require__(712);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_length__ = __webpack_require__(713);
 /* unused harmony reexport polygonLength */
 
 
@@ -45227,7 +45703,7 @@ function treeRoot(root) {
 
 
 /***/ }),
-/* 707 */
+/* 708 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45249,7 +45725,7 @@ function treeRoot(root) {
 
 
 /***/ }),
-/* 708 */
+/* 709 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45276,11 +45752,11 @@ function treeRoot(root) {
 
 
 /***/ }),
-/* 709 */
+/* 710 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cross__ = __webpack_require__(710);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cross__ = __webpack_require__(711);
 
 
 function lexicographicOrder(a, b) {
@@ -45333,7 +45809,7 @@ function computeUpperHullIndexes(points) {
 
 
 /***/ }),
-/* 710 */
+/* 711 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45347,7 +45823,7 @@ function computeUpperHullIndexes(points) {
 
 
 /***/ }),
-/* 711 */
+/* 712 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45370,7 +45846,7 @@ function computeUpperHullIndexes(points) {
 
 
 /***/ }),
-/* 712 */
+/* 713 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45400,22 +45876,22 @@ function computeUpperHullIndexes(points) {
 
 
 /***/ }),
-/* 713 */
+/* 714 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_queue__ = __webpack_require__(714);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_queue__ = __webpack_require__(715);
 /* unused harmony reexport queue */
 
 
 
 /***/ }),
-/* 714 */
+/* 715 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(715);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(716);
 
 
 var noabort = {};
@@ -45540,7 +46016,7 @@ function queue(concurrency) {
 
 
 /***/ }),
-/* 715 */
+/* 716 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45549,21 +46025,21 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 716 */
+/* 717 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_uniform__ = __webpack_require__(717);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_uniform__ = __webpack_require__(718);
 /* unused harmony reexport randomUniform */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_normal__ = __webpack_require__(274);
 /* unused harmony reexport randomNormal */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_logNormal__ = __webpack_require__(718);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_logNormal__ = __webpack_require__(719);
 /* unused harmony reexport randomLogNormal */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_bates__ = __webpack_require__(719);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_bates__ = __webpack_require__(720);
 /* unused harmony reexport randomBates */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_irwinHall__ = __webpack_require__(275);
 /* unused harmony reexport randomIrwinHall */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_exponential__ = __webpack_require__(720);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_exponential__ = __webpack_require__(721);
 /* unused harmony reexport randomExponential */
 
 
@@ -45574,11 +46050,11 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 717 */
+/* 718 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(68);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = ((function sourceRandomUniform(source) {
@@ -45599,11 +46075,11 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 718 */
+/* 719 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__normal__ = __webpack_require__(274);
 
 
@@ -45623,11 +46099,11 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 719 */
+/* 720 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__irwinHall__ = __webpack_require__(275);
 
 
@@ -45647,11 +46123,11 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 720 */
+/* 721 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(68);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = ((function sourceRandomExponential(source) {
@@ -45668,23 +46144,23 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 721 */
+/* 722 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_request__ = __webpack_require__(173);
 /* unused harmony reexport request */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_html__ = __webpack_require__(722);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_html__ = __webpack_require__(723);
 /* unused harmony reexport html */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_json__ = __webpack_require__(723);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_json__ = __webpack_require__(724);
 /* unused harmony reexport json */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_text__ = __webpack_require__(724);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_text__ = __webpack_require__(725);
 /* unused harmony reexport text */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_xml__ = __webpack_require__(725);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_xml__ = __webpack_require__(726);
 /* unused harmony reexport xml */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_csv__ = __webpack_require__(726);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_csv__ = __webpack_require__(727);
 /* unused harmony reexport csv */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_tsv__ = __webpack_require__(727);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_tsv__ = __webpack_require__(728);
 /* unused harmony reexport tsv */
 
 
@@ -45696,7 +46172,7 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 722 */
+/* 723 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45709,7 +46185,7 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 723 */
+/* 724 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45722,7 +46198,7 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 724 */
+/* 725 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45735,7 +46211,7 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 725 */
+/* 726 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45750,7 +46226,7 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 726 */
+/* 727 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45763,7 +46239,7 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 727 */
+/* 728 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45776,55 +46252,55 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 728 */
+/* 729 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_band__ = __webpack_require__(729);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_band__ = __webpack_require__(730);
 /* unused harmony reexport scaleBand */
 /* unused harmony reexport scalePoint */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_identity__ = __webpack_require__(730);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_identity__ = __webpack_require__(731);
 /* unused harmony reexport scaleIdentity */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_linear__ = __webpack_require__(78);
 /* unused harmony reexport scaleLinear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_log__ = __webpack_require__(732);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_log__ = __webpack_require__(733);
 /* unused harmony reexport scaleLog */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_ordinal__ = __webpack_require__(277);
 /* unused harmony reexport scaleOrdinal */
 /* unused harmony reexport scaleImplicit */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_pow__ = __webpack_require__(733);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_pow__ = __webpack_require__(734);
 /* unused harmony reexport scalePow */
 /* unused harmony reexport scaleSqrt */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_quantile__ = __webpack_require__(734);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_quantile__ = __webpack_require__(735);
 /* unused harmony reexport scaleQuantile */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_quantize__ = __webpack_require__(735);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_quantize__ = __webpack_require__(736);
 /* unused harmony reexport scaleQuantize */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_threshold__ = __webpack_require__(736);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_threshold__ = __webpack_require__(737);
 /* unused harmony reexport scaleThreshold */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_time__ = __webpack_require__(280);
 /* unused harmony reexport scaleTime */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_utcTime__ = __webpack_require__(752);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_utcTime__ = __webpack_require__(753);
 /* unused harmony reexport scaleUtc */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_category10__ = __webpack_require__(753);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_category10__ = __webpack_require__(754);
 /* unused harmony reexport schemeCategory10 */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_category20b__ = __webpack_require__(754);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_category20b__ = __webpack_require__(755);
 /* unused harmony reexport schemeCategory20b */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_category20c__ = __webpack_require__(755);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_category20c__ = __webpack_require__(756);
 /* unused harmony reexport schemeCategory20c */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_category20__ = __webpack_require__(756);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_category20__ = __webpack_require__(757);
 /* unused harmony reexport schemeCategory20 */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_cubehelix__ = __webpack_require__(757);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_cubehelix__ = __webpack_require__(758);
 /* unused harmony reexport interpolateCubehelixDefault */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_rainbow__ = __webpack_require__(758);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_rainbow__ = __webpack_require__(759);
 /* unused harmony reexport interpolateRainbow */
 /* unused harmony reexport interpolateWarm */
 /* unused harmony reexport interpolateCool */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__src_viridis__ = __webpack_require__(759);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__src_viridis__ = __webpack_require__(760);
 /* unused harmony reexport interpolateViridis */
 /* unused harmony reexport interpolateMagma */
 /* unused harmony reexport interpolateInferno */
 /* unused harmony reexport interpolatePlasma */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__src_sequential__ = __webpack_require__(760);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__src_sequential__ = __webpack_require__(761);
 /* unused harmony reexport scaleSequential */
 
 
@@ -45866,7 +46342,7 @@ var slice = [].slice;
 
 
 /***/ }),
-/* 729 */
+/* 730 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45978,7 +46454,7 @@ function point() {
 
 
 /***/ }),
-/* 730 */
+/* 731 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46012,7 +46488,7 @@ function identity() {
 
 
 /***/ }),
-/* 731 */
+/* 732 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46052,7 +46528,7 @@ function identity() {
 
 
 /***/ }),
-/* 732 */
+/* 733 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46193,7 +46669,7 @@ function log() {
 
 
 /***/ }),
-/* 733 */
+/* 734 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46243,7 +46719,7 @@ function sqrt() {
 
 
 /***/ }),
-/* 734 */
+/* 735 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46304,7 +46780,7 @@ function quantile() {
 
 
 /***/ }),
-/* 735 */
+/* 736 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46361,7 +46837,7 @@ function quantize() {
 
 
 /***/ }),
-/* 736 */
+/* 737 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46404,7 +46880,7 @@ function threshold() {
 
 
 /***/ }),
-/* 737 */
+/* 738 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46439,7 +46915,7 @@ var milliseconds = millisecond.range;
 
 
 /***/ }),
-/* 738 */
+/* 739 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46464,7 +46940,7 @@ var seconds = second.range;
 
 
 /***/ }),
-/* 739 */
+/* 740 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46489,7 +46965,7 @@ var minutes = minute.range;
 
 
 /***/ }),
-/* 740 */
+/* 741 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46516,7 +46992,7 @@ var hours = hour.range;
 
 
 /***/ }),
-/* 741 */
+/* 742 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46541,7 +47017,7 @@ var days = day.range;
 
 
 /***/ }),
-/* 742 */
+/* 743 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46593,7 +47069,7 @@ var saturdays = saturday.range;
 
 
 /***/ }),
-/* 743 */
+/* 744 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46617,7 +47093,7 @@ var months = month.range;
 
 
 /***/ }),
-/* 744 */
+/* 745 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46652,7 +47128,7 @@ var years = year.range;
 
 
 /***/ }),
-/* 745 */
+/* 746 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46677,7 +47153,7 @@ var utcMinutes = utcMinute.range;
 
 
 /***/ }),
-/* 746 */
+/* 747 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46702,7 +47178,7 @@ var utcHours = utcHour.range;
 
 
 /***/ }),
-/* 747 */
+/* 748 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46727,7 +47203,7 @@ var utcDays = utcDay.range;
 
 
 /***/ }),
-/* 748 */
+/* 749 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46779,7 +47255,7 @@ var utcSaturdays = utcSaturday.range;
 
 
 /***/ }),
-/* 749 */
+/* 750 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46803,7 +47279,7 @@ var utcMonths = utcMonth.range;
 
 
 /***/ }),
-/* 750 */
+/* 751 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46838,7 +47314,7 @@ var utcYears = utcYear.range;
 
 
 /***/ }),
-/* 751 */
+/* 752 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46860,7 +47336,7 @@ var parseIso = +new Date("2000-01-01T00:00:00.000Z")
 
 
 /***/ }),
-/* 752 */
+/* 753 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46877,7 +47353,7 @@ var parseIso = +new Date("2000-01-01T00:00:00.000Z")
 
 
 /***/ }),
-/* 753 */
+/* 754 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46888,7 +47364,7 @@ var parseIso = +new Date("2000-01-01T00:00:00.000Z")
 
 
 /***/ }),
-/* 754 */
+/* 755 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46899,7 +47375,7 @@ var parseIso = +new Date("2000-01-01T00:00:00.000Z")
 
 
 /***/ }),
-/* 755 */
+/* 756 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46910,7 +47386,7 @@ var parseIso = +new Date("2000-01-01T00:00:00.000Z")
 
 
 /***/ }),
-/* 756 */
+/* 757 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46921,7 +47397,7 @@ var parseIso = +new Date("2000-01-01T00:00:00.000Z")
 
 
 /***/ }),
-/* 757 */
+/* 758 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46934,7 +47410,7 @@ var parseIso = +new Date("2000-01-01T00:00:00.000Z")
 
 
 /***/ }),
-/* 758 */
+/* 759 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46962,7 +47438,7 @@ var rainbow = Object(__WEBPACK_IMPORTED_MODULE_0_d3_color__["b" /* cubehelix */]
 
 
 /***/ }),
-/* 759 */
+/* 760 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46989,7 +47465,7 @@ var plasma = ramp(Object(__WEBPACK_IMPORTED_MODULE_0__colors__["a" /* default */
 
 
 /***/ }),
-/* 760 */
+/* 761 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47028,19 +47504,19 @@ function sequential(interpolator) {
 
 
 /***/ }),
-/* 761 */
+/* 762 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_arc__ = __webpack_require__(762);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_arc__ = __webpack_require__(763);
 /* unused harmony reexport arc */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_area__ = __webpack_require__(283);
 /* unused harmony reexport area */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_line__ = __webpack_require__(177);
 /* unused harmony reexport line */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_pie__ = __webpack_require__(763);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_pie__ = __webpack_require__(764);
 /* unused harmony reexport pie */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_areaRadial__ = __webpack_require__(766);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_areaRadial__ = __webpack_require__(767);
 /* unused harmony reexport areaRadial */
 /* unused harmony reexport radialArea */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_lineRadial__ = __webpack_require__(285);
@@ -47048,11 +47524,11 @@ function sequential(interpolator) {
 /* unused harmony reexport radialLine */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_pointRadial__ = __webpack_require__(286);
 /* unused harmony reexport pointRadial */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_link_index__ = __webpack_require__(767);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_link_index__ = __webpack_require__(768);
 /* unused harmony reexport linkHorizontal */
 /* unused harmony reexport linkVertical */
 /* unused harmony reexport linkRadial */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_symbol__ = __webpack_require__(768);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_symbol__ = __webpack_require__(769);
 /* unused harmony reexport symbol */
 /* unused harmony reexport symbols */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_symbol_circle__ = __webpack_require__(288);
@@ -47069,13 +47545,13 @@ function sequential(interpolator) {
 /* unused harmony reexport symbolTriangle */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_symbol_wye__ = __webpack_require__(294);
 /* unused harmony reexport symbolWye */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_curve_basisClosed__ = __webpack_require__(769);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_curve_basisClosed__ = __webpack_require__(770);
 /* unused harmony reexport curveBasisClosed */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__src_curve_basisOpen__ = __webpack_require__(770);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__src_curve_basisOpen__ = __webpack_require__(771);
 /* unused harmony reexport curveBasisOpen */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__src_curve_basis__ = __webpack_require__(113);
 /* unused harmony reexport curveBasis */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__src_curve_bundle__ = __webpack_require__(771);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__src_curve_bundle__ = __webpack_require__(772);
 /* unused harmony reexport curveBundle */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__src_curve_cardinalClosed__ = __webpack_require__(295);
 /* unused harmony reexport curveCardinalClosed */
@@ -47083,46 +47559,46 @@ function sequential(interpolator) {
 /* unused harmony reexport curveCardinalOpen */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__src_curve_cardinal__ = __webpack_require__(114);
 /* unused harmony reexport curveCardinal */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__src_curve_catmullRomClosed__ = __webpack_require__(772);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__src_curve_catmullRomClosed__ = __webpack_require__(773);
 /* unused harmony reexport curveCatmullRomClosed */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__src_curve_catmullRomOpen__ = __webpack_require__(773);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__src_curve_catmullRomOpen__ = __webpack_require__(774);
 /* unused harmony reexport curveCatmullRomOpen */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__src_curve_catmullRom__ = __webpack_require__(179);
 /* unused harmony reexport curveCatmullRom */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__src_curve_linearClosed__ = __webpack_require__(774);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__src_curve_linearClosed__ = __webpack_require__(775);
 /* unused harmony reexport curveLinearClosed */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__src_curve_linear__ = __webpack_require__(111);
 /* unused harmony reexport curveLinear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__src_curve_monotone__ = __webpack_require__(775);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__src_curve_monotone__ = __webpack_require__(776);
 /* unused harmony reexport curveMonotoneX */
 /* unused harmony reexport curveMonotoneY */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__src_curve_natural__ = __webpack_require__(776);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__src_curve_natural__ = __webpack_require__(777);
 /* unused harmony reexport curveNatural */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__src_curve_step__ = __webpack_require__(777);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__src_curve_step__ = __webpack_require__(778);
 /* unused harmony reexport curveStep */
 /* unused harmony reexport curveStepAfter */
 /* unused harmony reexport curveStepBefore */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__src_stack__ = __webpack_require__(778);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__src_stack__ = __webpack_require__(779);
 /* unused harmony reexport stack */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__src_offset_expand__ = __webpack_require__(779);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__src_offset_expand__ = __webpack_require__(780);
 /* unused harmony reexport stackOffsetExpand */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__src_offset_diverging__ = __webpack_require__(780);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__src_offset_diverging__ = __webpack_require__(781);
 /* unused harmony reexport stackOffsetDiverging */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__src_offset_none__ = __webpack_require__(81);
 /* unused harmony reexport stackOffsetNone */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__src_offset_silhouette__ = __webpack_require__(781);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__src_offset_silhouette__ = __webpack_require__(782);
 /* unused harmony reexport stackOffsetSilhouette */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__src_offset_wiggle__ = __webpack_require__(782);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__src_offset_wiggle__ = __webpack_require__(783);
 /* unused harmony reexport stackOffsetWiggle */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__src_order_ascending__ = __webpack_require__(180);
 /* unused harmony reexport stackOrderAscending */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__src_order_descending__ = __webpack_require__(783);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__src_order_descending__ = __webpack_require__(784);
 /* unused harmony reexport stackOrderDescending */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__src_order_insideOut__ = __webpack_require__(784);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__src_order_insideOut__ = __webpack_require__(785);
 /* unused harmony reexport stackOrderInsideOut */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__src_order_none__ = __webpack_require__(82);
 /* unused harmony reexport stackOrderNone */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__src_order_reverse__ = __webpack_require__(785);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__src_order_reverse__ = __webpack_require__(786);
 /* unused harmony reexport stackOrderReverse */
 
 
@@ -47172,7 +47648,7 @@ function sequential(interpolator) {
 
 
 /***/ }),
-/* 762 */
+/* 763 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47441,13 +47917,13 @@ function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
 
 
 /***/ }),
-/* 763 */
+/* 764 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__descending__ = __webpack_require__(764);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__identity__ = __webpack_require__(765);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__descending__ = __webpack_require__(765);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__identity__ = __webpack_require__(766);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__math__ = __webpack_require__(80);
 
 
@@ -47531,7 +48007,7 @@ function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
 
 
 /***/ }),
-/* 764 */
+/* 765 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47541,7 +48017,7 @@ function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
 
 
 /***/ }),
-/* 765 */
+/* 766 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47551,7 +48027,7 @@ function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
 
 
 /***/ }),
-/* 766 */
+/* 767 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47590,7 +48066,7 @@ function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
 
 
 /***/ }),
-/* 767 */
+/* 768 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47689,7 +48165,7 @@ function linkRadial() {
 
 
 /***/ }),
-/* 768 */
+/* 769 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47752,7 +48228,7 @@ var symbols = [
 
 
 /***/ }),
-/* 769 */
+/* 770 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47813,7 +48289,7 @@ BasisClosed.prototype = {
 
 
 /***/ }),
-/* 770 */
+/* 771 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47860,7 +48336,7 @@ BasisOpen.prototype = {
 
 
 /***/ }),
-/* 771 */
+/* 772 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47924,7 +48400,7 @@ Bundle.prototype = {
 
 
 /***/ }),
-/* 772 */
+/* 773 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48008,7 +48484,7 @@ CatmullRomClosed.prototype = {
 
 
 /***/ }),
-/* 773 */
+/* 774 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48079,7 +48555,7 @@ CatmullRomOpen.prototype = {
 
 
 /***/ }),
-/* 774 */
+/* 775 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48112,7 +48588,7 @@ LinearClosed.prototype = {
 
 
 /***/ }),
-/* 775 */
+/* 776 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48225,7 +48701,7 @@ function monotoneY(context) {
 
 
 /***/ }),
-/* 776 */
+/* 777 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48297,7 +48773,7 @@ function controlPoints(x) {
 
 
 /***/ }),
-/* 777 */
+/* 778 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48359,7 +48835,7 @@ function stepAfter(context) {
 
 
 /***/ }),
-/* 778 */
+/* 779 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48427,7 +48903,7 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 779 */
+/* 780 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48445,7 +48921,7 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 780 */
+/* 781 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48466,7 +48942,7 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 781 */
+/* 782 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48484,7 +48960,7 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 782 */
+/* 783 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48516,7 +48992,7 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 783 */
+/* 784 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48529,7 +49005,7 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 784 */
+/* 785 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48565,7 +49041,7 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 785 */
+/* 786 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48578,22 +49054,22 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 786 */
+/* 787 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_voronoi__ = __webpack_require__(787);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_voronoi__ = __webpack_require__(788);
 /* unused harmony reexport voronoi */
 
 
 
 /***/ }),
-/* 787 */
+/* 788 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(788);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__point__ = __webpack_require__(789);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(789);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__point__ = __webpack_require__(790);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Diagram__ = __webpack_require__(83);
 
 
@@ -48646,7 +49122,7 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 788 */
+/* 789 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48658,7 +49134,7 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 789 */
+/* 790 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48674,7 +49150,7 @@ function y(d) {
 
 
 /***/ }),
-/* 790 */
+/* 791 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48881,11 +49357,11 @@ function rightBreakPoint(arc, directrix) {
 
 
 /***/ }),
-/* 791 */
+/* 792 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_zoom__ = __webpack_require__(792);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_zoom__ = __webpack_require__(793);
 /* unused harmony reexport zoom */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_transform__ = __webpack_require__(299);
 /* unused harmony reexport zoomTransform */
@@ -48895,7 +49371,7 @@ function rightBreakPoint(arc, directrix) {
 
 
 /***/ }),
-/* 792 */
+/* 793 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48904,10 +49380,10 @@ function rightBreakPoint(arc, directrix) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_interpolate__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_selection__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_d3_transition__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constant__ = __webpack_require__(793);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__event__ = __webpack_require__(794);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constant__ = __webpack_require__(794);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__event__ = __webpack_require__(795);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__transform__ = __webpack_require__(299);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__noevent__ = __webpack_require__(795);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__noevent__ = __webpack_require__(796);
 
 
 
@@ -49336,7 +49812,7 @@ function defaultConstrain(transform, extent, translateExtent) {
 
 
 /***/ }),
-/* 793 */
+/* 794 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49348,7 +49824,7 @@ function defaultConstrain(transform, extent, translateExtent) {
 
 
 /***/ }),
-/* 794 */
+/* 795 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49361,7 +49837,7 @@ function ZoomEvent(target, type, transform) {
 
 
 /***/ }),
-/* 795 */
+/* 796 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49380,807 +49856,7 @@ function nopropagation() {
 
 
 /***/ }),
-/* 796 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-class VertexMenuContext{
-  constructor(props){
-    this.selector = props.selector;
-    this.vertexMgmt = props.vertexMgmt;
-    this.dataContainer = props.dataContainer;
-    this.initVertexMenu();
-  }
-
-  initVertexMenu(){
-    $.contextMenu({
-      selector: this.selector,
-      zIndex: 100,
-      build: ($trigger, e) => {
-        return {
-          callback: (key, options) => {
-            let vertexId = options.$trigger.attr('id');
-            switch (key)
-            {
-              case "editVertex":
-                this.vertexMgmt.edit(vertexId);
-                break;
-
-              case "copyVertex":
-                this.vertexMgmt.copy(vertexId);
-                break;
-
-              case "removeVertex":
-                this.vertexMgmt.remove(vertexId);
-                break;
-
-              case "cancelCreateEdge":
-                this.vertexMgmt.cancelCreateEdge();
-                break;
-
-              default:
-                break;
-            }
-          },
-          items: this.initItemOnFlagCreateEdge($trigger)
-        }
-      }
-    });
-  }
-
-  initItemOnFlagCreateEdge($trigger){
-    let originItems = {
-      "editVertex": {name: "Edit Vertex Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
-      "copyVertex": {name: "Copy", icon: "fa-files-o", disabled: window.disabledCommand},
-      "removeVertex": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
-      "connectFrom": {
-        name: "Create Edge",
-        icon: "fa-times",
-        items: this.loadItems($trigger.attr('id')),
-        disabled: window.disabledCommand
-      },
-    };
-
-    let connectItems = {
-      "editVertex": {name: "Edit Vertex Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
-      "copyVertex": {name: "Copy", icon: "fa-files-o", disabled: window.disabledCommand},
-      "removeVertex": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
-      "connectTo": {
-        name: "Connect To",
-        icon: "fa-times",
-        items: this.loadItems($trigger.attr('id'), false),
-        disabled: window.disabledCommand
-      },
-      "cancelCreateEdge": {name: "Cancel Edge", icon: "fa-times", disabled: window.disabledCommand}
-    };
-    return !window.creatingEdge ? originItems : connectItems;
-  }
-
-  /**
-   * If source true mean create connect, if false or null then mean selected to connect
-   * @param vertexId
-   * @param source
-   * @returns {*}
-   */
-  loadItems(vertexId, source = true) {
-    const subItems = {};
-    // Set menu hard code
-    subItems['vertex'] = {
-      name: 'Vertex',
-      icon: "fa-window-maximize",
-      callback: (key, opt) => {
-        if(source){
-          this.vertexMgmt.setConnectFrom(vertexId);
-        }else{
-          this.vertexMgmt.setConnectTo(vertexId);
-        }
-      }
-    };
-    // Get properties of vertex
-    let vertexObj = this.vertexMgmt.getVertexInfoById(vertexId);
-
-    // When mode show that don't have vertex type.
-    if(window.vertexTypes){
-      let propVertexes = window.vertexTypes[vertexObj.vertexType];
-      if(!propVertexes)
-        return;
-      for (const key of Object.keys(propVertexes)) {
-        subItems[`${key}`] = {
-          name: `${key}`,
-          icon: "fa-window-maximize",
-          callback: (key, opt) => {
-            let prop = opt.$selected.text();
-            if(source){
-              this.vertexMgmt.setConnectFrom(vertexId, prop);
-            }else{
-              this.vertexMgmt.setConnectTo(vertexId, prop);
-            }
-          }
-        }
-      }
-    }
-
-    let dfd = jQuery.Deferred();
-    setTimeout(() => {
-      dfd.resolve(subItems);
-    }, 10);
-    return dfd.promise();
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (VertexMenuContext);
-
-
-/***/ }),
 /* 797 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-class BoundaryMenuContext{
-  constructor(props){
-    this.selector = props.selector;
-    this.boundaryMgmt = props.boundaryMgmt;
-    this.dataContainer = props.dataContainer;
-    this.initBoundaryMenu();
-  }
-
-  initBoundaryMenu(){
-    // Context menu for Vertex
-    $.contextMenu({
-      selector: this.selector,
-      zIndex: 100,
-      build: ($trigger, e) => {
-        return {
-          callback: (key, options) => {
-            let boundaryId = options.$trigger.attr('id');
-            switch (key)
-            {
-              case "removeBoundary":
-                this.boundaryMgmt.removeBoundary(boundaryId);
-                break;
-
-              case "deleteAllBoundary":
-                this.boundaryMgmt.deleteAllBoundary(boundaryId);
-                break;
-
-              case "makeEditBoundaryInfo":
-                this.boundaryMgmt.makeEditBoundaryInfo(boundaryId);
-                break;
-
-              case "copyAllBoundary":
-                this.boundaryMgmt.copyAllBoundary(boundaryId);
-
-              default:
-                break;
-            }
-          },
-          items: {
-            "makeEditBoundaryInfo": {name: "Edit Boundary Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
-            "removeBoundary": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
-            "copyAllBoundary": {name: "Copy All", icon: "fa-files-o", disabled: window.disabledCommand},
-            "deleteAllBoundary": {name: "Delete All", icon: "fa-square-o", disabled: window.disabledCommand},
-          }
-        }
-      }
-    });
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (BoundaryMenuContext);
-
-
-/***/ }),
-/* 798 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(183);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__ = __webpack_require__(184);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__ = __webpack_require__(84);
-
-
-
-
-
-
-
-const HTML_VERTEX_INFO_ID = 'vertexInfo';
-// const HTML_OPTIONS_INTERACTION_TYPE = 'vertexInteraction';
-const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
-const HTML_VERTEX_FORM_ID = 'vertexForm';
-
-class VertexMgmt{
-  constructor(props){
-    this.svgSelector = props.svgSelector;
-    this.dataContainer = props.dataContainer;
-    this.edgeMgmt = props.edgeMgmt;
-    this.objectUtils = props.objectUtils;
-
-    this.bindEventForPopButton();
-
-    // Init event drag
-    this.dragRegister = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
-      .on("start", this.dragstarted)
-      .on("drag", this.dragged)
-      .on("end", this.dragended);
-    this.originVertex = null;
-  }
-
-  /**
-   *
-   * @param options
-   * vertexType: object, required
-   * vertexProperties: object, option
-   * interaction: string, option
-   * vertexProperties: object, option
-   * id: string, option (format V*********)
-   * Ex
-   */
-  create(options){
-    if(!options.vertexType)
-      return;
-
-    let vertexType = options.vertexType;
-    // Get properties vertex from list object vertex type
-    let vertexProperties = options.data ? Object.assign({}, options.data) : Object.assign({}, window.vertexTypes[vertexType]);
-    // let interaction = options.interaction || INTERACTION_TP.FULL;
-    let vertexId = options.id? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["b" /* generateObjectId */])('V');
-    let mainScope = this;
-    let parent = options.parent || null;
-
-    let vertexInfo = {
-      x: options.x,
-      y: options.y,
-      vertexType: vertexType,
-      // interaction: interaction,
-      // name: options.name || "Name", Now use vertex type as default name
-      name: options.name || vertexType,
-      description: options.description || "Description",
-      data: vertexProperties,
-      id: vertexId,
-      mainScope: mainScope,
-      parent: parent
-    };
-    this.dataContainer.vertex.push(vertexInfo);
-
-    let group = this.svgSelector.append("g")
-      .attr("transform", `translate(${options.x}, ${options.y})`)
-      .attr("id", vertexId)
-      .attr("class", "groupVertex")
-      .style("cursor", "move");
-      // .on("mousedown", (d, i, node) => {
-      //   let vertexId = d.id;
-      //   d3.select(node[0]).moveToFront();
-      //   // Bring data to top
-      //   this.moveDataToLast(vertexId);
-      // });
-      // .on("mouseout", (d, i, node) => {
-      //   console.log("Mouse up");
-      //   let vertexId = d.id;
-      //   d3.select(node[0]).moveToBack();
-      //   // Bring data to top
-      //   this.moveDataToFirst(vertexId);
-      // });
-
-    let htmlContent = '';
-    let countProperty = 0;
-    for (const key of Object.keys(vertexProperties)) {
-      // if(interaction === INTERACTION_TP.FULL){
-      htmlContent += `
-        <div class="property" prop="${key}" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
-          <label class="key">${key} : </label>
-          <label class="data ${key}">${vertexProperties[key]}</label>
-        </div>`;
-      // } else if (interaction === INTERACTION_TP.LEFT) {
-      //   htmlContent += `
-      //     <div class="interaction_left property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-      //       <label class="key">${key} : </label>
-      //       <label class="data ${key}">${vertexProperties[key]}</label>
-      //     </div>`;
-      // } else {
-      //   htmlContent += `
-      //     <div class="interaction_right property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-      //       <label class="key">${key} : </label>
-      //       <label class="data ${key}">${vertexProperties[key]}</label>
-      //     </div>`;
-      // }
-      countProperty ++;
-    }
-
-    let vertexHeight = __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT*countProperty;
-    // May be no need for vertex.
-    // group.append("rect")
-    //   .attr("width", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-    //   .attr("height", vertexHeight)
-    //   .style("fill", "white");
-    group.append("foreignObject")
-      .attr("width", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
-      .attr("height", vertexHeight)
-      .append("xhtml:div")
-      .attr("class", "vertex_content")
-      .style("font-size", "13px")
-      .style("background", "#ffffff")
-      .html(`
-        <p class="header_name" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px">${vertexInfo.name}</p>
-        <div class="vertex_data">
-          ${htmlContent}
-        </div>
-      `);
-
-    // Call event drag for all object vertex exit.
-    this.initEventDrag();
-  }
-
-  /**
-   * Init event drag for all vertex
-   */
-  initEventDrag(){
-    // Call event drag for all object vertex exit.
-    this.svgSelector.selectAll(".groupVertex")
-      .data(this.dataContainer.vertex).call(this.dragRegister);
-  }
-
-  dragstarted(d) {
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this).classed("active", true);
-    __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.stopPropagation();
-  }
-
-  /**
-   * Handle event move vertex
-   * And update position of paths related to this vertex
-   * @param d
-   */
-  dragged(d) {
-    // Update poition object in this.dataContainer.boundary
-    d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
-    d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
-
-    // Update path connected to this vertex
-    let vertexId = d.id;
-    let vertexInfo = d;
-    let mainScope = d.mainScope;
-    mainScope.updatePoisitionPathConnnect(vertexId);
-
-    // Transform group
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${d.id}`).attr("transform", (d,i) => {
-      return "translate(" + [ __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y ] + ")"
-    });
-
-    let boxVertex = mainScope.objectUtils.getBBoxObjectById(vertexInfo.id);
-    // Calculate box for vertex
-    let vertexWidth = boxVertex.width;
-    let vertexHeight = boxVertex.height;
-
-    // Set height boundary that less than height vertex
-    if(!d.parent){
-      __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]("svg").selectAll(".groupBoundary").each((d, i, node) => {
-        let boundaryId = d.id;
-        let boundaryScope = d.boundaryScope;
-        let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
-        if(vertexHeight > boxBoundary.height && !d.parent)
-          boundaryScope.setHeightBoundary(boundaryId, vertexHeight + 43);
-      });
-    }
-  }
-
-  /**
-   * Call back when stop drag vertex
-   * @param d
-   */
-  dragended(d) {
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this).classed("active", false);
-    let vertexInfo = d;
-    // If vertex has parent then not check.
-    let vertexScope = d.mainScope;
-    // let boxVertex = d3.select(`#${vertexInfo.id}`).node().getBBox();
-    let boxVertex = vertexScope.objectUtils.getBBoxObjectById(vertexInfo.id);
-    // Calculate box for vertex
-    let xVertex = vertexInfo.x;
-    let yVertex = vertexInfo.y
-    let xVertexBox = xVertex + boxVertex.width;
-    let yVertexBox = yVertex + boxVertex.height;
-
-    if(vertexInfo.parent) {
-      // Check drag outside
-      let boundaryInfo = vertexScope.objectUtils.getBoundaryInfoById(vertexInfo.parent);
-      let boundaryId = boundaryInfo.id;
-      let boundaryScope = boundaryInfo.boundaryScope;
-      let xBoundary = boundaryInfo.x;
-      let yBoundary = boundaryInfo.y;
-      let boxBoundary = vertexScope.objectUtils.getBBoxObjectById(boundaryId);
-      let xBoundaryBox = xBoundary + boxBoundary.width;
-      let yBoundaryBox = yBoundary + boxBoundary.height;
-
-      // Check drop inside a boundary
-      if((xVertex < xBoundary) || (yVertex < yBoundary) || (xVertexBox > xBoundaryBox) || (yVertexBox > yBoundaryBox) ){
-        boundaryScope.removeMemberFromBoundary(boundaryId, vertexInfo.id);
-        vertexInfo.parent = null;
-      }
-    } else {
-      __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]("svg").selectAll(".groupBoundary").each((d, i, node) => {
-        if(!d.parent) {
-          // Calculate box for boundary
-          let boundaryId = d.id;
-          let boundaryScope = d.boundaryScope;
-          let boundaryInfo = boundaryScope.objectUtils.getBoundaryInfoById(boundaryId);
-          let xBoundary = boundaryInfo.x;
-          let yBoundary = boundaryInfo.y;
-          let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
-          let xBoundaryBox = xBoundary + boxBoundary.width;
-          let yBoundaryBox = yBoundary + boxBoundary.height;
-
-          // Check drop inside a boundary
-          if((xVertex >= xBoundary) && (yVertex >= yBoundary) && (xVertexBox <= xBoundaryBox) && (yVertexBox <= yBoundaryBox) ){
-            let member = {id: vertexInfo.id, type: "V", show: true};
-            boundaryScope.addMemberToBoundary(boundaryId, member);
-            vertexInfo.parent = boundaryId;
-          }
-        }
-      });
-      vertexScope.objectUtils.resetSizeAllBoundary();
-    }
-  }
-
-  /**
-   * Set position for vertex
-   * Called in function dragBoundary (Object boundary)
-   * @param vertexId
-   * @param position
-   */
-  setVertexPosition(vertexId, position) {
-    let vertexInfo = this.getVertexInfoById(vertexId);
-    vertexInfo.x = position.x;
-    vertexInfo.y = position.y;
-    this.updatePoisitionPathConnnect(vertexId);
-
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).attr("transform", (d,i) => {
-      return "translate(" + [ position.x, position.y ] + ")"
-    });
-  }
-
-  /**
-   * Remove vertex element by id
-   * @param vertexId
-   */
-  remove(vertexId) {
-    // Remove from DOM
-    let vertexInfo = this.objectUtils.getVertexInfoById(vertexId);
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).remove();
-    // Remove from data container
-    let data = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.remove(this.dataContainer.vertex, (e) => {
-      return e.id === vertexId;
-    });
-
-    // Remove all edge relate to vertex
-    let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
-    relatePaths.forEach(path => {
-      this.edgeMgmt.removeEdge(path.id);
-    });
-
-    // Remove from parent
-    if(vertexInfo.parent){
-      let boundaryInfo = this.objectUtils.getBoundaryInfoById(vertexInfo.parent);
-      let boundaryScope = boundaryInfo.boundaryScope;
-      boundaryScope.removeMemberFromBoundary(boundaryInfo.id, vertexInfo.id);
-    }
-  }
-
-  /**
-   * Remove vertex element by id
-   * @param vertexId
-   */
-  removeVertexCallFromBoundary(vertexId) {
-    // Remove from DOM
-    let vertexInfo = this.objectUtils.getVertexInfoById(vertexId);
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexId}`).remove();
-    // Remove from data container
-    let data = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.remove(this.dataContainer.vertex, (e) => {
-      return e.id === vertexId;
-    });
-
-    // Remove all edge relate to vertex
-    let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
-    relatePaths.forEach(path => {
-      this.edgeMgmt.removeEdge(path.id);
-    });
-  }
-
-  /**
-   * Copy vertex selected, only vertex on above connect (paths)
-   * @param vertexId
-   */
-  copy(vertexId) {
-
-    // Can use clone of d3 to clone => May it faster.
-    let vertexObj = this.getVertexInfoById(vertexId);
-
-    if(vertexObj){
-      let info = Object.assign({}, vertexObj);
-      let options = {
-        x: info.x + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
-        y: info.y + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
-        // interaction: info.interaction,
-        name: info.name,
-        description: info.description,
-        vertexType: info.vertexType,
-        data: info.data
-      };
-      this.create(options);
-    }
-  }
-
-  /**
-   * Handle event select menu Edit on
-   * context menu Vertex
-   * @param vertexId
-   */
-  edit(vertexId) {
-    let vertexObj = this.getVertexInfoById(vertexId);
-    if(vertexObj){
-      let vertexInfo = Object.assign({}, vertexObj);
-      this.openPopupVertexInfo(vertexInfo);
-    }
-  }
-
-  /**
-   * Redraw vertex with new info.
-   * @param vertexInfo
-   */
-  update(vertexInfo) {
-    // Remove old
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${vertexInfo.id}`).remove();
-    // Redraw with old id
-    this.create(vertexInfo);
-  }
-
-  /**
-   * Open popup vertex info
-   * @param vertexInfo
-   */
-  openPopupVertexInfo(vertexInfo){
-    // Use in function updateVertexInfo()
-    this.originVertex = vertexInfo;
-    // Append content to popup
-    // $(`#${HTML_OPTIONS_INTERACTION_TYPE}`).val(vertexInfo.interaction);
-    $(`#vertexName`).val(vertexInfo.name);
-    $(`#vertexId`).val(vertexInfo.id);
-    $(`#vertexDesc`).val(vertexInfo.description);
-
-    // Generate properties vertex
-    let vertexData = Object.assign({}, vertexInfo.data);
-    let $propertiesGroup = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
-    const $rowVertexType = $('<tr>');
-    const $vertexType = $('<th>').text(vertexInfo.vertexType);
-    $vertexType.attr('colspan', 2);
-    $vertexType.attr('class', 'vertex-type');
-    $vertexType.appendTo($rowVertexType);
-    $rowVertexType.appendTo($propertiesGroup);
-    for (const key of Object.keys(vertexData)) {
-      const $row = $('<tr>');
-      const $th = $('<th>').text(key).appendTo($row);
-      const $td = $('<td>');
-
-      const $input = $('<input>');
-      $input.attr('type', 'text');
-      $input.attr('id', key);
-      $input.attr('name', key);
-      $input.attr('class', 'form-control');
-      $input.val(vertexData[key]);
-      $input.appendTo($td);
-      $td.appendTo($row);
-      $row.appendTo($propertiesGroup);
-    }
-
-    let options = {popupId : HTML_VERTEX_INFO_ID, position: 'center', width: 430}
-    __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
-  }
-
-  /**
-   * Bind event and init data for controls on popup
-   */
-  bindEventForPopButton() {
-    // Append content to vertex popup
-    // let $group = $(`#${HTML_OPTIONS_INTERACTION_TYPE}`);
-    // INTERACTION_TP_LST.forEach((elm) => {
-    //   const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($group);
-    // });
-
-    $("#vertexBtnConfirm").click(e => {
-      this.updateVertexInfo();
-    });
-
-    $("#vertexBtnCancel").click(e => {
-      this.closePopVertexInfo();
-    });
-
-  }
-
-  /**
-   * Update vertex info
-   * Update value properties
-   * Update name, type, ...
-   */
-  updateVertexInfo() {
-    let formdata = $(`#${HTML_VERTEX_FORM_ID}`).serializeArray();
-    let data = {};
-    $(formdata).each(function(index, obj){
-      data[obj.name] = obj.value;
-    });
-
-    // Update origin data vertex
-    this.originVertex.name = data.vertexName;
-    // this.originVertex.interaction = data.vertexInteraction;
-    this.originVertex.description = data.vertexDesc;
-    // Update data follow key in originVertex.data
-    for (const key of Object.keys(this.originVertex.data)) {
-      this.originVertex.data[key] = data[key];
-    }
-
-    let dataVertex = this.dataContainer.vertex;
-    Object.assign(dataVertex[dataVertex.findIndex(el => el.id === this.originVertex.id)], this.originVertex)
-    this.update(this.originVertex);
-    this.closePopVertexInfo();
-  }
-
-  /**
-   * Close popup edit vertex info
-   */
-  closePopVertexInfo(){
-    this.originVertex = null;
-    let options = {popupId : HTML_VERTEX_INFO_ID}
-    __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__["a" /* default */].metClosePopup(options);
-  }
-
-  /**
-   * Cancle state create edge on vertex
-   */
-  cancelCreateEdge() {
-    window.creatingEdge = false;
-    window.sourceNode = null;
-  }
-
-  /**
-   * Set state connect from source
-   * @param vertexId
-   * @param prop
-   */
-  setConnectFrom(vertexId, prop = null) {
-    window.creatingEdge = true;
-    let source = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT);
-    source.vertexId = vertexId;
-    source.prop = prop;
-    window.sourceNode = source;
-  }
-
-  /**
-   * Set state connect to target
-   * @param vertexId: string, require
-   * @param prop: string, option
-   */
-  setConnectTo(vertexId, prop = null) {
-    if(window.creatingEdge){
-      let target = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].INPUT);
-      target.vertexId = vertexId;
-      target.prop = prop;
-      let options = {source: window.sourceNode, target: target};
-      this.createConnect(options);
-    }
-  }
-
-  /**
-   * Call create connect from source to target
-   * @param options
-   */
-  createConnect(options) {
-    this.edgeMgmt.create(options);
-  }
-
-  /**
-   * Calculate position of vertex or position of property in vertex
-   * @param vertexId: string, required
-   * @param prop: string, option, prop of vertex
-   * @param type: string, default is O (output)
-   * @returns {{x: *, y: *}}
-   */
-  getCoordinateProperty(vertexId, prop, type) {
-    if(!type)
-      type = __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT;
-    let vertexObj = this.getVertexInfoById(vertexId);
-    let vertexInfo = Object.assign({}, vertexObj);
-    let axisX = vertexInfo.x;
-    let axisY = vertexInfo.y;
-
-    // If get Coordinate for vertex only
-    // if(!prop)
-    //   return {x: type === TYPE_POINT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH : axisX, y: axisY + 2 };
-    if(!prop)
-      return {x: axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH/2, y: axisY};
-
-    let vertexData = vertexInfo.data;
-    // Find index prop in object
-    let index = Object.keys(vertexData).indexOf(prop);
-    // Calculate coordinate of prop
-    // y = current axis y + height header + indexProp*heightProp + 13;
-    // x = if output then axis x + width vertex; if not then axis x
-    // Get coordinate
-    axisY = axisY + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index*__WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT/2;
-
-    return {x: type === __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH : axisX, y: axisY};
-  }
-
-  /**
-   * Get vertex info by id
-   * @param vertexId
-   * @returns {*}
-   */
-  getVertexInfoById(vertexId) {
-    return __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, (e) => { return e.id === vertexId; });
-  }
-
-  /**
-   * When vertex selected then move it to last
-   * @param vertexId
-   */
-  moveDataToLast(vertexId) {
-    // Remove
-    let tmpVertex = this.getVertexInfoById(vertexId);
-    __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.remove(this.dataContainer.vertex, (e) => {
-      return e.id == vertexId;
-    });
-
-    this.dataContainer.vertex.push(tmpVertex);
-  }
-
-  /**
-   * When vertex selected then move it to first
-   * @param vertexId
-   */
-  moveDataToFirst(vertexId) {
-    console.log("Move to first");
-    // Remove
-    let tmpVertex = this.getVertexInfoById(vertexId);
-    __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.remove(this.dataContainer.vertex, (e) => {
-      return e.id == vertexId;
-    });
-
-    this.dataContainer.vertex.unshift(tmpVertex);
-  }
-
-  /**
-   * Find and update position connect to vertex when in move
-   * @param vertexId
-   */
-  updatePoisitionPathConnnect(vertexId) {
-    let srcPaths = this.objectUtils.findEdgeStartFromVertex(vertexId);
-    let desPaths = this.objectUtils.findEdgeConnectToVertex(vertexId);
-
-    srcPaths.forEach(src => {
-      let edgeId = src.id;
-      let prop = src.source.prop;
-      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT);
-      let options = {source: newPos}
-      this.edgeMgmt.updateAttributeNS(edgeId, options);
-    });
-
-    desPaths.forEach(des => {
-      let edgeId = des.id;
-      let prop = des.target.prop;
-      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].INPUT);
-      let options = {target: newPos}
-      this.edgeMgmt.updateAttributeNS(edgeId, options);
-    });
-  }
-
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (VertexMgmt);
-
-
-/***/ }),
-/* 799 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -50208,614 +49884,11 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 800 */
+/* 798 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__ = __webpack_require__(184);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__ = __webpack_require__(84);
-
-
-
-
-
-
-class BoundaryMgmt {
-  constructor(props){
-    this.svgSelector = props.svgSelector;
-    this.dataContainer = props.dataContainer;
-    this.objectUtils = props.objectUtils;
-
-    // Init event drag for boundary
-    this.dragRegister = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
-      .on("start", this.dragBoundaryStart)
-      .on("drag", this.dragBoundary)
-      .on("end", this.dragBoundaryEnd);
-  }
-
-  async createBoundary(options = {}){
-    let boundaryId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["b" /* generateObjectId */])('B');
-    let memeber = options.member || [];
-    let parent = options.parent || null;
-    let height = options.height || __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT;
-    let width = options.width || __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
-    let boundaryInfo = {
-      x: options.x,
-      y: options.y,
-      name: options.name || "Boundary",
-      description: options.description || "Boundary Description",
-      member: memeber,
-      id: boundaryId,
-      width: width,
-      height: height,
-      boundaryScope: this,
-      parent: parent,
-    };
-
-    this.dataContainer.boundary.push(boundaryInfo);
-
-    let group = this.svgSelector.append("g")
-      .attr("transform", `translate(${options.x}, ${options.y})`)
-      .attr("id", boundaryId)
-      .attr("class", "groupBoundary")
-      .style("visibility", "visible")
-      .style("cursor", "move");
-
-    group.append("text")
-      .attr("id", `${boundaryId}Text`)
-      .attr("x", width + 5)
-      .attr("y", 15)
-      .text("+");
-
-    group.append("rect")
-      .attr("x", width)
-      .attr("class", `boundary_right ${boundaryId}Button`)
-      .attr("id", `${boundaryId}Button`)
-      .attr("data", boundaryId)
-      .attr("width", 20)
-      .attr("height", 20)
-      .style("fill", "#ad8fbb")
-      .style("fill-opacity", ".5")
-      .style("cursor", "pointer")
-      .append("title")
-      .text("Right click to select member visible");
-
-    group.append("foreignObject")
-      .attr("id", `${boundaryId}Content`)
-      .attr("width", width)
-      .attr("height", height)
-      .style("border", "solid 1px #652a82")
-      .style("font-size", "13px")
-      .style("background", "#ffffff")
-      .append("xhtml:div")
-      .attr("class", "boundary_content")
-      .html(`
-          <div class="boundary_header">
-            <p id="${boundaryId}Header" class="header_name header_boundary" style="width: 100%; height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
-          </div>
-      `);
-
-    // Call event drag for all object vertex exit.
-    this.initEventDrag();
-  }
-
-  initEventDrag(){
-    // Call event drag for all boundary exit.
-    this.svgSelector.selectAll(".groupBoundary").call(this.dragRegister).data(this.dataContainer.boundary);
-  }
-
-  dragBoundaryStart(d) {
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this).classed("active", true);
-    __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.stopPropagation();
-  }
-
-  dragBoundary(d) {
-
-    // Update poition object in this.dataContainer.boundary
-    d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
-    d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
-    // Transform group
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this).attr("transform", (d,i) => {
-      return "translate(" + [ __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y ] + ")"
-    });
-
-    // Update position of child element
-    // let vertexMembers = d.member.vertex;
-    let boundaryScope = d.boundaryScope;
-    if(d.member.length > 0)
-      boundaryScope.reorderPositionMember(d.id, {x: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, y: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y});
-
-    if(!d.parent){
-      // Resize boundary
-      let originId = d.id;
-      let originBox = boundaryScope.objectUtils.getBBoxObjectById(originId);
-      let originWidth = originBox.width;
-      let originHeight = originBox.height;
-
-      __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]("svg").selectAll(".groupBoundary").each((d, i, node) => {
-        if(d.id != originId && !d.parent){
-          let scope = d.boundaryScope;
-          let boundaryId = d.id;
-          let boxBoundary = scope.objectUtils.getBBoxObjectById(boundaryId);
-          if(originHeight >= boxBoundary.height)
-            scope.setHeightBoundary(boundaryId, originHeight + 43);
-          if(originWidth >= boxBoundary.width)
-            scope.setWidthBoundary(boundaryId, originWidth + 15);
-        }
-      });
-    }
-  }
-
-  dragBoundaryEnd(d) {
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this).classed("active", false);
-    let originInfo = d;
-
-    let originScope = d.boundaryScope;
-    // let boxVertex = d3.select(`#${vertexInfo.id}`).node().getBBox();
-    let boxOrigin = originScope.objectUtils.getBBoxObjectById(originInfo.id);
-    // Calculate box for vertex
-    let xOrigin = originInfo.x;
-    let yOrigin = originInfo.y
-    let xOriginBox = xOrigin + boxOrigin.width;
-    let yOriginBox = yOrigin + boxOrigin.height;
-    if(originInfo.parent) {
-      // Check drag outside
-      let boundaryInfo = originScope.objectUtils.getBoundaryInfoById(originInfo.parent);
-      let boundaryId = boundaryInfo.id;
-      let boundaryScope = boundaryInfo.boundaryScope;
-      let xBoundary = boundaryInfo.x;
-      let yBoundary = boundaryInfo.y;
-      let boxBoundary = originScope.objectUtils.getBBoxObjectById(boundaryId);
-      let xBoundaryBox = xBoundary + boxBoundary.width;
-      let yBoundaryBox = yBoundary + boxBoundary.height;
-
-      // Check drop inside a boundary
-      if((xOrigin < xBoundary) || (yOrigin < yBoundary) || (xOriginBox > xBoundaryBox) || (yOriginBox > yBoundaryBox) ){
-        let member = {id: vertexInfo.id, type: "V", show: true};
-        originScope.removeMemberFromBoundary(boundaryId, originInfo.id);
-        originInfo.parent = null;
-      }
-    } else {
-      __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]("svg").selectAll(".groupBoundary").each((d, i, node) => {
-        if(!d.parent && d.id != originInfo.id){
-          // Calculate box for boundary
-          let boundaryId = d.id;
-          let boundaryScope = d.boundaryScope;
-          let boundaryInfo = boundaryScope.objectUtils.getBoundaryInfoById(boundaryId);
-          let xBoundary = boundaryInfo.x;
-          let yBoundary = boundaryInfo.y;
-          // let boxBoundary = d3.select(`#${boundaryInfo.id}`).node().getBBox();
-          let boxBoundary = boundaryScope.objectUtils.getBBoxObjectById(boundaryId);
-          let xBoundaryBox = xBoundary + boxBoundary.width;
-          let yBoundaryBox = yBoundary + boxBoundary.height;
-
-          // Check drop inside a boundary
-          if((xOrigin >= xBoundary) && (yOrigin >= yBoundary) && (xOriginBox <= xBoundaryBox) && (yOriginBox <= yBoundaryBox) ){
-            let member = {id: originInfo.id, type: "B", show: true};
-            boundaryScope.addMemberToBoundary(boundaryId, member);
-            originInfo.parent = boundaryId;
-          }
-        }
-      });
-    }
-
-    originScope.objectUtils.resetSizeAllBoundary();
-  }
-
-  /**
-   * Remove boundary element by id
-   * @param boundaryId
-   */
-  removeBoundary(boundaryId) {
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-
-    if(boundaryInfo.parent)
-      this.removeMemberFromBoundary(boundaryInfo.parent, boundaryId);
-    // Remove from DOM
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).remove();
-
-    // Reset child parent
-    this.resetParentForChildBoundary(boundaryId);
-
-    // Remove from data container
-    let data = _.remove(this.dataContainer.boundary, (e) => {
-      return e.id === boundaryId;
-    });
-  }
-
-  /**
-   * Delete boundary and all elements of it
-   * Above vertex or boundary (Event child of boundary)
-   * @param boundaryId
-   */
-  deleteAllBoundary(boundaryId) {
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-
-    if(!__WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryInfo.parent}`).empty())
-      this.removeMemberFromBoundary(boundaryInfo.parent, boundaryId);
-
-    // Remove from DOM
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).remove();
-    // Remove child of boundary
-    this.removeChildBoundary(boundaryId);
-    // this.removeBoundary(boundaryId);
-    // Remove from data container
-    let data = _.remove(this.dataContainer.boundary, (e) => {
-      return e.id === boundaryId;
-    });
-  }
-
-  /**
-   * Copy boundary and all elements of it
-   * Above vertex of boundary (Event child of boundary)
-   * @param boundaryId
-   */
-  async copyAllBoundary(boundaryId) {
-    let boundaryCloneId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["b" /* generateObjectId */])("B");
-    let boundaryClone = this.objectUtils.cloneBoundaryInfoById(boundaryId);
-    let cloneMembers = boundaryClone.member.slice();
-    boundaryClone.member = [];
-    boundaryClone.id = boundaryCloneId;
-    boundaryClone.x = boundaryClone.x + 5;
-    boundaryClone.y = boundaryClone.y + 5;
-    await this.createBoundary(boundaryClone);
-    this.cloneChildBoundary(boundaryCloneId, cloneMembers);
-  }
-
-  /**
-   * Get boundary info by id
-   * @param boundaryId
-   * @returns {*}
-   */
-  getBoundaryInfoById(boundaryId) {
-    return _.find(this.dataContainer.boundary, (e) => { return e.id === boundaryId; });
-  }
-
-  /**
-   * Reorder and Calculator position for child element
-   * @param boudaryId
-   * @param position
-   */
-  reorderPositionMember(boundaryId, pos) {
-    let orderObject = 0;
-    let heightBeforeElements = 42;
-    let widthBoundary = __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
-    let marginTop = 5;
-
-    // Get child of boundary
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId)
-    if(!pos) {
-      pos = {x: boundaryInfo.x, y: boundaryInfo.y};
-    }
-    let boundaryMembers = boundaryInfo.member;
-
-    boundaryMembers.forEach(member => {
-      if(member.show){
-        let objectId = member.id;
-        let boxObject = this.objectUtils.getBBoxObjectById(objectId);
-        let position = {x: pos.x + 5, y: pos.y + heightBeforeElements + marginTop*orderObject }; // Vertex postion center of boundary
-        if(member.type === "V"){
-          let vertexInfo = this.objectUtils.getVertexInfoById(objectId);
-          let vertexScope = vertexInfo.mainScope;
-          vertexScope.setVertexPosition(objectId, position);
-        } else {
-          this.setBoundaryPosition(objectId, position);
-        }
-
-        orderObject ++;
-        heightBeforeElements += boxObject.height;
-        if(boxObject.width > widthBoundary)
-          widthBoundary = boxObject.width + (member.type === "B" ? 10: 0);
-      }
-    });
-
-    let boundaryHeight = heightBeforeElements + marginTop*orderObject;
-    this.setHeightBoundary(boundaryId, boundaryHeight);
-    this.setWidthBoundary(boundaryId, widthBoundary);
-  }
-
-  /**
-   * Selecte member show or hidden
-   * @param child
-   */
-  selectMemberVisible(boundaryId, child, status) {
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${child.id}`).classed('hidden-object', !status);
-    // Update status member boundary
-    let boundaryObj = this.objectUtils.getBoundaryInfoById(boundaryId);
-    this.objectUtils.setBoundaryMemberStatus(boundaryId, child.id, status)
-    if (child.type === "B")
-      this.setObjectShowHide(child.id, status);
-
-    this.reorderPositionMember(boundaryId);
-    if (boundaryObj.parent)
-    // this.reorderPositionMember(boundaryObj.parent);
-      this.resizeParentBoundary(boundaryObj.parent);
-  }
-  /**
-   * When unslect/select a boundary (in nested boundary) then set it hidden/show
-   * and set all child hidden/show
-   * and resize boundary
-   * @param object
-   * @param status
-   */
-  setObjectShowHide(boundaryId, status) {
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).classed('hidden-object', !status);
-    // Loop child
-    let boundaryObj = this.objectUtils.getBoundaryInfoById(boundaryId);
-    let members = boundaryObj.member;
-    members.forEach(member => {
-      this.objectUtils.setBoundaryMemberStatus(boundaryId, member.id, status)
-      __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${member.id}`).classed('hidden-object', !status);
-      if(member.type === "B")
-        this.setObjectShowHide(member.id, status);
-    });
-    // this.reorderPositionMember(boundaryId);
-    this.resizeParentBoundary(boundaryId);
-  }
-
-  resizeParentBoundary(boundaryId) {
-    let orderObject = 0;
-    let heightBeforeElements = 42;
-    let marginTop = 5;
-    let widthBoundary = __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    let boundaryScope = boundaryInfo.boundaryScope;
-    let boundaryMembers = boundaryInfo.member;
-
-    boundaryMembers.forEach(member => {
-      if(member.show) {
-        let objectId = member.id;
-        let boxObject = this.objectUtils.getBBoxObjectById(objectId);
-        orderObject ++;
-        heightBeforeElements += boxObject.height;
-        if(boxObject.width > widthBoundary)
-          widthBoundary = boxObject.width + (member.type === "B" ? 10: 0);
-      }
-    });
-
-    let boundaryHeight = heightBeforeElements + marginTop*orderObject;
-    boundaryScope.setHeightBoundary(boundaryId, boundaryHeight);
-    boundaryScope.setWidthBoundary(boundaryId, widthBoundary);
-    if(boundaryInfo.parent)
-      this.resizeParentBoundary(boundaryInfo.parent);
-  }
-
-  /**
-   * Set height boundary
-   * @param boundaryId
-   * @param height
-   */
-  setHeightBoundary(boundaryId, height) {
-    // Set height for boundary
-    if(height < __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT)
-      height = __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT;
-    $(`#${boundaryId}Content`).attr('height', height);
-    // Update data
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    boundaryInfo.height = height;
-  }
-
-  /**
-   * Set height boundary
-   * @param boundaryId
-   * @param width
-   */
-  setWidthBoundary(boundaryId, width) {
-    // Set width for boundary
-    if(width < __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH)
-      width = __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
-    $(`#${boundaryId}Content`).attr('width', width);
-    $(`#${boundaryId}Button`).attr('x', width);
-    $(`#${boundaryId}Text`).attr('x', width + 5);
-    // Update data
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    boundaryInfo.width = width;
-  }
-
-  /**
-   * Add memebr to boundary
-   * @param boundaryId
-   * @param child
-   * Member format
-   * {id: '', type: [V, B], show: true}
-   */
-  addMemberToBoundary (boundaryId, child) {
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    boundaryInfo.member.push(child);
-    this.reorderPositionMember(boundaryId);
-    this.resizeParentBoundary(boundaryId);
-  }
-
-  /**
-   * Remove member from boundary
-   * @param boundaryId
-   * @param objectId
-   */
-  removeMemberFromBoundary(boundaryId, objectId) {
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-
-    let data = _.remove(boundaryInfo.member, (e) => {
-      return e.id === objectId;
-    });
-    this.reorderPositionMember(boundaryId);
-    this.resizeParentBoundary(boundaryId);
-  }
-
-  /**
-   * Set position for vertex
-   * Called in function dragBoundary (Object boundary)
-   * @param vertexId
-   * @param position
-   */
-  setBoundaryPosition(boundaryId, position) {
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    boundaryInfo.x = position.x;
-    boundaryInfo.y = position.y;
-
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).attr("transform", (d,i) => {
-      return "translate(" + [ position.x, position.y ] + ")"
-    });
-
-    this.reorderPositionMember(boundaryId, position);
-  }
-
-  /**
-   * Reset parent for child boundary when it deleted
-   * @param boundaryId
-   */
-  resetParentForChildBoundary(boundaryId) {
-    // Get child of boundary
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId)
-    let boundaryMembers = boundaryInfo.member;
-
-    boundaryMembers.forEach(member => {
-      let objectId = member.id;
-      if(member.type === "V"){
-        let vertexInfo = this.objectUtils.getVertexInfoById(objectId);
-        vertexInfo.parent = null;
-      } else {
-        let boundaryInfo = this.objectUtils.getBoundaryInfoById(objectId)
-        boundaryInfo.parent = null;
-      }
-    });
-  }
-
-  /**
-   * Remove child boundary
-   * @param boundaryId
-   */
-  removeChildBoundary(boundaryId) {
-    // Get child of boundary
-    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId)
-    let boundaryMembers = boundaryInfo.member;
-
-    boundaryMembers.forEach(member => {
-      let objectId = member.id;
-      if(member.type === "V"){
-        let vertexInfo = this.objectUtils.getVertexInfoById(objectId);
-        let vertexScope = vertexInfo.mainScope;
-        // Remove all child vertex
-        vertexScope.removeVertexCallFromBoundary(objectId);
-      } else {
-        // Remove all child boundary
-        this.deleteAllBoundary(objectId);
-      }
-    });
-  }
-
-  /**
-   * Clone all child boundary, above child of child boundary
-   * boundaryCloneId, cloneMembers
-   */
-  cloneChildBoundary(boundaryCloneId, cloneMembers = []) {
-    for(let i = 0; i < cloneMembers.length; i++){
-      const member = cloneMembers[i];
-      let objectId = member.id;
-      if (member.type === "V") {
-        let vertexObj = this.objectUtils.cloneVertexInfoById(objectId);
-        let vertexId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["b" /* generateObjectId */])("V");
-        vertexObj.id = vertexId;
-        console.log(`======${vertexId}=========`);
-        vertexObj.parent = boundaryCloneId;
-        let child = {id: vertexId, type: "V", show: true};
-        let scope = vertexObj.mainScope;
-        scope.create(vertexObj);
-        this.addMemberToBoundary(boundaryCloneId, child);
-      } else {
-        let boundaryObj = this.objectUtils.cloneBoundaryInfoById(objectId);
-        let cloneId = boundaryObj.id;
-        let members = boundaryObj.member.slice();
-        let boundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["b" /* generateObjectId */])("B");
-        boundaryObj.id = boundaryId;
-        boundaryObj.parent = boundaryCloneId;
-        boundaryObj.member = [];
-        let child = {id: boundaryId, type: "B", show: true};
-        this.createBoundary(boundaryObj);
-        this.addMemberToBoundary(boundaryCloneId, child);
-        this.cloneChildBoundary(boundaryId, members);
-      }
-    }
-  }
-
-  /**
-   * Make controls to edit boundary info
-   * @param boundaryId
-   */
-  makeEditBoundaryInfo (boundaryId) {
-    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    let parent = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]('svg').select(`#${boundaryId}`);
-    let scope = boundaryInfo.boundaryScope;
-    let form = parent.append("foreignObject")
-      .attr("id", `${boundaryId}Name`)
-      .attr("y", 8)
-      .attr("x", 5);
-    let input = form
-      .attr("width", boundaryInfo.width - 10)
-      .attr("height", 20)
-      .append("xhtml:form")
-      .append("input")
-      .attr("maxlength", 20)
-      .attr("class", "input-header-boundary")
-      .attr("value", function() {
-        this.focus();
-        return boundaryInfo.name;
-      })
-      .attr("style", `width: ${boundaryInfo.width - 10}px`)
-      .on("blur", function() {
-        let newName = input.node().value;
-        if(newName){
-          scope.setBoundaryName(boundaryId, newName);
-        }
-
-        parent.select(`#${boundaryId}Name`).remove();
-      })
-      .on("keypress", function() {
-        // IE fix
-        if (!__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */])
-          __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */] = window.event;
-
-        var e = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */];
-        if (e.keyCode == 13)
-        {
-          if (typeof(e.cancelBubble) !== 'undefined') // IE
-            e.cancelBubble = true;
-          if (e.stopPropagation)
-            e.stopPropagation();
-          e.preventDefault();
-
-          let newName = input.node().value;
-          if(newName){
-            scope.setBoundaryName(boundaryId, newName);
-          }
-
-          parent.select(`#${boundaryId}Name`).remove();
-        }
-      });
-  }
-
-  /**
-   * Set boundary info
-   * @param boundaryId
-   * @param boundaryId, info
-   */
-  setBoundaryName (boundaryId, name) {
-    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    boundaryInfo.name = name;
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}Header`).text(name);
-  }
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (BoundaryMgmt);
-
-
-/***/ }),
-/* 801 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__const_index__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__const_index__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__ = __webpack_require__(84);
 
 
@@ -50924,17 +49997,12 @@ class FileMgmt{
     // Process data to export
     // Need clone data cause case user export
     // later continue edit then lost parent scope
-    let cloneVertex = this.dataContainer.vertex.map(node => Object.assign({}, node));
-    let cloneEdge = this.dataContainer.edge.map(edge => Object.assign({}, edge));
-    let cloneBoundary = this.dataContainer.boundary.map(boundary => Object.assign({}, boundary));
-
-    cloneVertex.forEach(node => {
-      delete node.mainScope;
-
+    const cloneData = Object.assign({}, this.dataContainer);
+    cloneData.vertex.forEach(node => {
       let pos = new Object({
-          "id": node.id,
-          "x": node.x,
-          "y": node.y
+        "id": node.id,
+        "x": node.x,
+        "y": node.y
       });
 
       delete node.x;
@@ -50944,11 +50012,9 @@ class FileMgmt{
       dataContent.position.push(pos);
     });
 
-    dataContent.edge = cloneEdge;
+    dataContent.edge = cloneData.edge;
 
-    cloneBoundary.forEach(boundary => {
-      delete boundary.boundaryScope;
-
+    cloneData.boundary.forEach(boundary => {
       let pos = new Object({
         "id": boundary.id,
         "x": boundary.x,
@@ -50984,13 +50050,241 @@ class FileMgmt{
 
 
 /***/ }),
-/* 802 */
+/* 799 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(41);
+
+
+class MainMenu{
+  constructor(props){
+    this.selector = props.selector;
+    this.mainMgmt = props.mainMgmt;
+    this.initMainMenu();
+  }
+
+  initMainMenu(){
+    // Main menu config
+    $.contextMenu({
+      selector: this.selector,
+      autoHide: true,
+      zIndex: 100,
+      build: ($trigger, e) => {
+        return {
+          callback: (key, options) => {
+            switch (key)
+            {
+              case "clearAll": this.mainMgmt.clearAll();
+                break;
+
+              case "createBoundary": this.mainMgmt.createBoundary(options);
+                break;
+
+              default:
+                break;
+            }
+          },
+          items: {
+            "createVertex":{
+              name: "Create Vertex",
+              icon: "fa-window-maximize",
+              items: this.loadItems(),
+              disabled: window.disabledCommand
+            },
+            "sep1": "-",
+            "createBoundary": {name: "Create Boundary", icon: "fa-object-group", disabled: window.disabledCommand},
+            "sep2": "-",
+            "autoAlign": {name: "Auto Align", icon: "fa-sort-amount-desc", disabled: window.disabledCommand},
+            "sep3": "-",
+            "showReduced": {name: "Show Reduced", icon: "fa-link", disabled: window.disabledCommand},
+            "sep4": "-",
+            "clearAll": {name: "Clear All", icon: "fa-times", disabled: window.disabledCommand},
+            "sep5": "-",
+            "undo": {name: "Undo", icon: "fa-undo", disabled: window.disabledCommand},
+            "sep6": "-",
+            "redo": {name: "Redo", icon: "fa-repeat", disabled: window.disabledCommand},
+          },
+          events: {
+            show: (opt) => {
+              if(event){
+                opt["x"] = event.x;
+                opt["y"] = event.y;
+              }
+            }
+          }
+        };
+      }
+    });
+  }
+
+  loadItems() {
+    const subItems = {};
+    if(window.vertexTypes){
+      for (const key of Object.keys(window.vertexTypes)) {
+        subItems[`${key}`] = {
+          name: `${key}`,
+          icon: "fa-window-maximize",
+          callback: (key, opt) => {
+            opt.vertexType = opt.$selected.text()
+            this.mainMgmt.createVertex(opt);
+          }
+        }
+      }
+    }
+
+    let dfd = jQuery.Deferred();
+    setTimeout(() => {
+      dfd.resolve(subItems);
+    }, 10);
+    return dfd.promise();
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (MainMenu);
+
+
+/***/ }),
+/* 800 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+class VertexMenu{
+  constructor(props){
+    this.selector = props.selector;
+    this.vertex = props.vertex;
+    this.objectUtils = props.objectUtils;
+    this.initVertexMenu();
+  }
+
+  initVertexMenu(){
+    $.contextMenu({
+      selector: this.selector,
+      zIndex: 100,
+      build: ($trigger, e) => {
+        return {
+          callback: (key, options) => {
+            let vertexId = options.$trigger.attr('id');
+            switch (key)
+            {
+              case "editVertex":
+                this.vertex.makePopupEditVertex(vertexId);
+                break;
+
+              case "copyVertex":
+                this.vertex.copyVertex(vertexId);
+                break;
+
+              case "removeVertex":
+                this.vertex.removeVertex(vertexId);
+                break;
+
+              case "cancelCreateEdge":
+                this.vertex.cancelCreateEdge();
+                break;
+
+              default:
+                break;
+            }
+          },
+          items: this.initItemOnFlagCreateEdge($trigger)
+        }
+      }
+    });
+  }
+
+  initItemOnFlagCreateEdge($trigger){
+    let originItems = {
+      "editVertex": {name: "Edit Vertex Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
+      "copyVertex": {name: "Copy", icon: "fa-files-o", disabled: window.disabledCommand},
+      "removeVertex": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
+      "connectFrom": {
+        name: "Create Edge",
+        icon: "fa-times",
+        items: this.loadItems($trigger.attr('id')),
+        disabled: window.disabledCommand
+      },
+    };
+
+    let connectItems = {
+      "editVertex": {name: "Edit Vertex Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
+      "copyVertex": {name: "Copy", icon: "fa-files-o", disabled: window.disabledCommand},
+      "removeVertex": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
+      "connectTo": {
+        name: "Connect To",
+        icon: "fa-times",
+        items: this.loadItems($trigger.attr('id'), false),
+        disabled: window.disabledCommand
+      },
+      "cancelCreateEdge": {name: "Cancel Edge", icon: "fa-times", disabled: window.disabledCommand}
+    };
+    return !window.creatingEdge ? originItems : connectItems;
+  }
+
+  /**
+   * If source true mean create connect, if false or null then mean selected to connect
+   * @param vertexId
+   * @param source
+   * @returns {*}
+   */
+  loadItems(vertexId, source = true) {
+    const subItems = {};
+    // Set menu hard code
+    subItems['vertex'] = {
+      name: 'Vertex',
+      icon: "fa-window-maximize",
+      callback: (key, opt) => {
+        if(source){
+          this.vertex.setConnectFrom(vertexId);
+        }else{
+          this.vertex.setConnectTo(vertexId);
+        }
+      }
+    };
+    // Get properties of vertex
+    let vertexObj = this.objectUtils.getVertexInfoById(vertexId);
+
+    // When mode show that don't have vertex type.
+    if(window.vertexTypes){
+      let propVertexes = window.vertexTypes[vertexObj.vertexType];
+      if(!propVertexes)
+        return;
+      for (const key of Object.keys(propVertexes)) {
+        subItems[`${key}`] = {
+          name: `${key}`,
+          icon: "fa-window-maximize",
+          callback: (key, opt) => {
+            let prop = opt.$selected.text();
+            if(source){
+              this.vertex.setConnectFrom(vertexId, prop);
+            }else{
+              this.vertex.setConnectTo(vertexId, prop);
+            }
+          }
+        }
+      }
+    }
+
+    let dfd = jQuery.Deferred();
+    setTimeout(() => {
+      dfd.resolve(subItems);
+    }, 10);
+    return dfd.promise();
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (VertexMenu);
+
+
+/***/ }),
+/* 801 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_popup_ult__ = __webpack_require__(184);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(183);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__ = __webpack_require__(84);
@@ -51005,7 +50299,7 @@ const OPTIONS_EDGE_LINE_TYPE = 'edgeLineType';
 const OPTIONS_EDGE_ARROW_FLAG = 'edgeArrowFlag';
 const HTML_EDGE_FORM_ID = 'edgeForm';
 
-class EdgeMgmt{
+class Edge{
   constructor(props) {
     this.svgSelector = props.svgSelector;
     this.dataContainer = props.dataContainer;
@@ -51029,7 +50323,7 @@ class EdgeMgmt{
    * id: string, option E*********
    * Ex
    */
-  create(options = {}) {
+  createEdge(options = {}) {
     let source = Object.assign({}, options.source);
     let target = Object.assign({}, options.target);
     let type = options.type;
@@ -51039,7 +50333,7 @@ class EdgeMgmt{
     let note = options.note ? options.note : {originNote: '', middleNote: '', destNote: ''}; // Default note for Edge.
 
     // if (_.isEqual(source, target)) {
-    //   alert("Connect internal is not allowed.");
+    //   comShowMessage("Connect internal is not allowed.");
     //   return;
     // }
 
@@ -51049,7 +50343,6 @@ class EdgeMgmt{
       source: source,
       target: target,
       note: note,
-      // connect: [],
       style: style
     };
 
@@ -51057,7 +50350,7 @@ class EdgeMgmt{
     let pathStr = this.createPath(source, target);
     let line = this.svgSelector.append("path")
       .attr('d', pathStr)
-      .attr("class", "edge solid") // Default line type is solid
+      .attr("class", `${__WEBPACK_IMPORTED_MODULE_2__const_index__["i" /* HTML_EDGE_CONTAINER_CLASS */]} edge solid`) // Default line type is solid
       .attr("id", edgeId)
       .attr('fill', 'none')
       .attr("marker-end", "url(#arrow)"); // Make arrow at end path
@@ -51133,7 +50426,7 @@ class EdgeMgmt{
    */
   openPopEditType(edgeId) {
     // Get edge info by ID
-    let edgeObj = this.getEdgeInfoById(edgeId);
+    let edgeObj = this.objectUtils.getEdgeInfoById(edgeId);
     this.originEdge = edgeObj;
     let edgeInfo = edgeObj;
     $(`#${OPTIONS_EDGE_LINE_TYPE}`).val(edgeInfo.style.line);
@@ -51211,7 +50504,7 @@ class EdgeMgmt{
     Object.assign(dataEdge[dataEdge.findIndex(el => el.id === this.originEdge.id)], this.originEdge)
 
     __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${edgeId}`)
-      .attr('class', `edge ${lineType}`)
+      .attr('class', `${__WEBPACK_IMPORTED_MODULE_2__const_index__["i" /* HTML_EDGE_CONTAINER_CLASS */]} edge ${lineType}`)
       .attr('marker-end', arrowFlag === 'Y' ? 'url(#arrow)' : '');
 
     this.closePopEdgeType();
@@ -51224,7 +50517,7 @@ class EdgeMgmt{
    */
   getEdgeNotes(edgeId) {
     // Get edge info by ID
-    let edgeObj = this.getEdgeInfoById(edgeId);
+    let edgeObj = this.objectUtils.getEdgeInfoById(edgeId);
     return edgeObj.note;
   }
 
@@ -51234,7 +50527,7 @@ class EdgeMgmt{
    * @param notes
    */
   setEdgeNotes(edgeId, notes) {
-    let edgeObj = this.getEdgeInfoById(edgeId);
+    let edgeObj = this.objectUtils.getEdgeInfoById(edgeId);
     if(!edgeObj)
       return;
     edgeObj.note = notes;
@@ -51253,10 +50546,10 @@ class EdgeMgmt{
    * @param edgeId
    * @param options: object
    */
-  updateAttributeNS(edgeId, options = {}){
+  updatePathConnect(edgeId, options = {}){
     if(!edgeId)
       return;
-    let edgeInfo = this.getEdgeInfoById(edgeId);
+    let edgeInfo = this.objectUtils.getEdgeInfoById(edgeId);
     let source = edgeInfo.source;
     let target = edgeInfo.target;
     if(options.source){
@@ -51274,33 +50567,22 @@ class EdgeMgmt{
 
     let pathStr = this.createPath(source, target);
     // Get DOM and update attribute
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${edgeId}`)
-      .attr('d', pathStr);
-  }
-
-  /**
-   * Get edge info by id
-   * @param edgeId
-   * @returns {*}
-   */
-  getEdgeInfoById(edgeId) {
-    return __WEBPACK_IMPORTED_MODULE_3_lodash___default.a.find(this.dataContainer.edge, (e) => { return e.id === edgeId; });
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${edgeId}`).attr('d', pathStr);
   }
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (EdgeMgmt);
+/* harmony default export */ __webpack_exports__["a"] = (Edge);
 
 
 /***/ }),
-/* 803 */
+/* 802 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class EdgeMenuContext{
+class EdgeMenu{
   constructor(props){
     this.selector = props.selector;
-    this.edgeMgmt = props.edgeMgmt;
-    this.dataContainer = props.dataContainer;
+    this.edge = props.edge;
     this.initEdgeMenu();
   }
 
@@ -51317,11 +50599,11 @@ class EdgeMenuContext{
             switch (key)
             {
               case "openPopupEditType":
-                this.edgeMgmt.openPopEditType(edgeId);
+                this.edge.openPopEditType(edgeId);
                 break;
 
               case "removeEdge":
-                this.edgeMgmt.removeEdge(edgeId);
+                this.edge.removeEdge(edgeId);
                 break;
 
               default:
@@ -51355,32 +50637,562 @@ class EdgeMenuContext{
             show: (opt) => {
               // Get edge notes
               let edgeId = opt.$trigger.attr('id');
-              let data = this.edgeMgmt.getEdgeNotes(edgeId)
+              let data = this.edge.getEdgeNotes(edgeId)
               $.contextMenu.setInputValues(opt, data);
             },
-            hide: function(opt) {
-              // this is the trigger element
-              let $this = this;
-              $.contextMenu.getInputValues(opt, $this.data());
-
-              // Get edge notes
-              let data = $this.data();
-              let notes = {
-                originNote: data.originNote,
-                middleNote: data.middleNote,
-                destNote: data.destNote
-              };
-              let edgeId = opt.$trigger.attr('id');
-              edgeMgmt.setEdgeNotes(edgeId, notes);
-            }
+            hide: this.onEdgeMenuHide(this)
           }
         }
       }
     });
   }
+
+  onEdgeMenuHide(self) {
+    return function(opt) {
+      let $this = this;
+      $.contextMenu.getInputValues(opt, $this.data());
+
+      // Get edge notes
+      let data = $this.data();
+      let notes = {
+        originNote: data.originNote,
+        middleNote: data.middleNote,
+        destNote: data.destNote
+      };
+      let edgeId = opt.$trigger.attr('id');
+      self.edge.setEdgeNotes(edgeId, notes);
+    }
+  }
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (EdgeMenuContext);
+/* harmony default export */ __webpack_exports__["a"] = (EdgeMenu);
+
+
+/***/ }),
+/* 803 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__ = __webpack_require__(84);
+
+
+
+
+
+
+class Boundary {
+  constructor(props){
+    this.svgSelector = props.svgSelector;
+    this.dataContainer = props.dataContainer;
+    this.objectUtils = props.objectUtils;
+    this.mainMgmt = props.mainMgmt;
+
+    this.dragRegister = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
+      .on("start", this.dragBoundaryStart(this))
+      .on("drag", this.dragBoundary(this))
+      .on("end", this.dragBoundaryEnd(this));
+  }
+
+  async createBoundary(options = {}){
+    let boundaryId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["b" /* generateObjectId */])('B');
+    let memeber = options.member || [];
+    let parent = options.parent || null;
+    let height = options.height || __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT;
+    let width = options.width || __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
+    let boundaryInfo = {
+      x: options.x,
+      y: options.y,
+      name: options.name || "Boundary",
+      description: options.description || "Boundary Description",
+      member: memeber,
+      id: boundaryId,
+      width: width,
+      height: height,
+      parent: parent,
+    };
+
+    this.dataContainer.boundary.push(boundaryInfo);
+
+    let group = this.svgSelector.append("g")
+      .attr("transform", `translate(${options.x}, ${options.y})`)
+      .attr("id", boundaryId)
+      .attr("class", `${__WEBPACK_IMPORTED_MODULE_1__const_index__["h" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`)
+      .style("visibility", "visible")
+      .style("cursor", "move");
+
+    group.append("text")
+      .attr("id", `${boundaryId}Text`)
+      .attr("x", width + 5)
+      .attr("y", 15)
+      .text("+");
+
+    group.append("rect")
+      .attr("x", width)
+      .attr("class", `boundary_right ${boundaryId}Button`)
+      .attr("id", `${boundaryId}Button`)
+      .attr("data", boundaryId)
+      .attr("width", 20)
+      .attr("height", 20)
+      .style("fill", "#ad8fbb")
+      .style("fill-opacity", ".5")
+      .style("cursor", "pointer")
+      .append("title")
+      .text("Right click to select member visible");
+
+    group.append("foreignObject")
+      .attr("id", `${boundaryId}Content`)
+      .attr("width", width)
+      .attr("height", height)
+      .style("border", "solid 1px #652a82")
+      .style("font-size", "13px")
+      .style("background", "#ffffff")
+      .append("xhtml:div")
+      .attr("class", "boundary_content")
+      .html(`
+          <div class="boundary_header">
+            <p id="${boundaryId}Header" class="header_name header_boundary" style="width: 100%; height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
+          </div>
+      `);
+
+    this.initEventDrag();
+  }
+
+  initEventDrag(){
+    // Call event drag for all boundary exit.
+    this.svgSelector.selectAll(`.${__WEBPACK_IMPORTED_MODULE_1__const_index__["h" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`)
+      .data(this.dataContainer.boundary)
+      .call(this.dragRegister);
+  }
+
+  dragBoundaryStart(self) {
+    return function(d) {
+      // d3.select(this).classed("active", true);
+      __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.stopPropagation();
+    }
+  }
+
+  dragBoundary(self) {
+    return function(d) {
+      // Update poition object in this.dataContainer.boundary
+      d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
+      d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
+      // Transform group
+      __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](this).attr("transform", (d,i) => {
+        return "translate(" + [ __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y ] + ")"
+      });
+
+      // Update position of child element
+      if(d.member.length > 0)
+        self.reorderPositionMember(d.id, {x: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, y: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y});
+
+      if(!d.parent){
+        self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
+      }
+    }
+  }
+
+  dragBoundaryEnd(self) {
+    return function(d) {
+      // d3.select(this).classed("active", false);
+      if(d.parent) {
+        self.mainMgmt.checkDragObjectOutsideBoundary(d);
+      } else {
+        self.mainMgmt.checkDragObjectInsideBoundary(d, "B");
+      }
+      self.mainMgmt.resetSizeBoundary();
+    }
+  }
+
+  /**
+   * Remove boundary element by id
+   * @param boundaryId
+   */
+  removeBoundary(boundaryId) {
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+
+    if(boundaryInfo.parent)
+      this.removeMemberFromBoundary(boundaryInfo.parent, boundaryId);
+    // Remove from DOM
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).remove();
+
+    // Reset child parent
+    this.resetParentForChildBoundary(boundaryId);
+
+    // Remove from data container
+    let data = _.remove(this.dataContainer.boundary, (e) => {
+      return e.id === boundaryId;
+    });
+  }
+
+  /**
+   * Delete boundary and all elements of it
+   * Above vertex or boundary (Event child of boundary)
+   * @param boundaryId
+   */
+  deleteAllBoundary(boundaryId) {
+    let {parent} = this.objectUtils.getBoundaryInfoById(boundaryId);
+
+    // Case that delete child boundary nested in boundary
+    if(!__WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${parent}`).empty())
+      this.removeMemberFromBoundary(parent, boundaryId);
+
+    // Remove from DOM
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).remove();
+    // Remove child of boundary
+    this.removeChildElementsBoundary(boundaryId);
+    // Remove from data container
+    let data = _.remove(this.dataContainer.boundary, (e) => {
+      return e.id === boundaryId;
+    });
+  }
+
+  /**
+   * Copy boundary and all elements of it
+   * Above vertex of boundary (Event child of boundary)
+   * @param boundaryId
+   */
+  async copyAllBoundary(boundaryId) {
+    let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["b" /* generateObjectId */])("B");
+    let cBoundary = this.objectUtils.cloneBoundaryInfo(boundaryId);
+    let cMembers = cBoundary.member.slice();
+    cBoundary.member = [];
+    cBoundary.id = cBoundaryId;
+    cBoundary.x = cBoundary.x + 5;
+    cBoundary.y = cBoundary.y + 5;
+    await this.createBoundary(cBoundary);
+    this.cloneChildElementsBoundary(cBoundaryId, cMembers);
+  }
+
+  /**
+   * Reorder and Calculator position for child element
+   * @param boudaryId
+   * @param position
+   */
+  reorderPositionMember(boundaryId, pos) {
+    let orderObject = 0;
+    let hBeforeElements = 42;
+    let wBoundary = __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
+    let marginTop = 5;
+
+    // Get child of boundary
+    const {x, y, member} = this.objectUtils.getBoundaryInfoById(boundaryId)
+    if(!pos) {
+      pos = {x : x, y : y};
+    }
+    let boundaryMembers = member;
+
+    boundaryMembers.forEach(member => {
+      if(member.show){
+        let objectId = member.id;
+        const {width, height} = this.objectUtils.getBBoxObject(objectId);
+        // Vertex postion center of boundary
+        let position = {x: pos.x + 5, y: pos.y + hBeforeElements + marginTop*orderObject };
+        if(member.type === "V"){
+          this.mainMgmt.setVertexPosition(objectId, position);
+        } else {
+          this.setBoundaryPosition(objectId, position);
+        }
+
+        orderObject ++;
+        hBeforeElements += height;
+        if(width > wBoundary)
+          wBoundary = width + (member.type === "B" ? 10: 0);
+      }
+    });
+
+    let hBoundary = hBeforeElements + marginTop*orderObject;
+    this.setHeightBoundary(boundaryId, hBoundary);
+    this.setWidthBoundary(boundaryId, wBoundary);
+  }
+
+  /**
+   * Selecte member show or hidden
+   * @param child
+   */
+  selectMemberVisible(boundaryId, child, status) {
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${child.id}`).classed('hidden-object', !status);
+    // Update status member boundary
+    let boundaryObj = this.objectUtils.getBoundaryInfoById(boundaryId);
+    this.objectUtils.setBoundaryMemberStatus(boundaryId, child.id, status)
+    if (child.type === "B")
+      this.setObjectShowHide(child.id, status);
+
+    this.reorderPositionMember(boundaryId);
+    if (boundaryObj.parent)
+      this.resizeParentBoundary(boundaryObj.parent);
+  }
+  /**
+   * When unslect/select a boundary (in nested boundary) then set it hidden/show
+   * and set all child hidden/show
+   * and resize boundary
+   * @param object
+   * @param status
+   */
+  setObjectShowHide(boundaryId, status) {
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).classed('hidden-object', !status);
+    // Loop child
+    let boundaryObj = this.objectUtils.getBoundaryInfoById(boundaryId);
+    let members = boundaryObj.member;
+    members.forEach(member => {
+      this.objectUtils.setBoundaryMemberStatus(boundaryId, member.id, status)
+      __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${member.id}`).classed('hidden-object', !status);
+      if(member.type === "B")
+        this.setObjectShowHide(member.id, status);
+    });
+    // this.reorderPositionMember(boundaryId);
+    this.resizeParentBoundary(boundaryId);
+  }
+
+  /**
+   * Resize (height, width) of parent boundary
+   * When add or remove elements
+   * @param boundaryId
+   */
+  resizeParentBoundary(boundaryId) {
+    let orderObject = 0;
+    let hBeforeElements = 42;
+    let wBoundary = __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
+    let marginTop = 5;
+    let {parent, member} = this.objectUtils.getBoundaryInfoById(boundaryId);
+    let boundaryMembers = member;
+
+    boundaryMembers.forEach(member => {
+      if(member.show) {
+        let objectId = member.id;
+        const {width, height} = this.objectUtils.getBBoxObject(objectId);
+        orderObject ++;
+        hBeforeElements += height;
+        if(width > wBoundary)
+          wBoundary = width + (member.type === "B" ? 10: 0);
+      }
+    });
+
+    let hBoundary = hBeforeElements + marginTop*orderObject;
+    this.setHeightBoundary(boundaryId, hBoundary);
+    this.setWidthBoundary(boundaryId, wBoundary);
+    if(parent)
+      this.resizeParentBoundary(parent);
+  }
+
+  /**
+   * Set height boundary
+   * @param boundaryId
+   * @param height
+   */
+  setHeightBoundary(boundaryId, height) {
+    // Set height for boundary
+    if(height < __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT)
+      height = __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT;
+    $(`#${boundaryId}Content`).attr('height', height);
+    // Update data
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    boundaryInfo.height = height;
+  }
+
+  /**
+   * Set height boundary
+   * @param boundaryId
+   * @param width
+   */
+  setWidthBoundary(boundaryId, width) {
+    // Set width for boundary
+    if(width < __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH)
+      width = __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
+    $(`#${boundaryId}Content`).attr('width', width);
+    $(`#${boundaryId}Button`).attr('x', width);
+    $(`#${boundaryId}Text`).attr('x', width + 5);
+    // Update data
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    boundaryInfo.width = width;
+  }
+
+  /**
+   * Add memebr to boundary
+   * @param boundaryId
+   * @param child
+   * Member format
+   * {id: '', type: [V, B], show: true}
+   */
+  addMemberToBoundary (boundaryId, child) {
+    const {member} = this.objectUtils.getBoundaryInfoById(boundaryId);
+    member.push(child);
+    this.reorderPositionMember(boundaryId);
+    this.resizeParentBoundary(boundaryId);
+  }
+
+  /**
+   * Remove member from boundary
+   * @param boundaryId
+   * @param objectId
+   */
+  removeMemberFromBoundary(boundaryId, objectId) {
+    const {member} = this.objectUtils.getBoundaryInfoById(boundaryId);
+    let data = _.remove(member, (e) => {
+      return e.id === objectId;
+    });
+    this.reorderPositionMember(boundaryId);
+    this.resizeParentBoundary(boundaryId);
+  }
+
+  /**
+   * Set position for vertex
+   * Called in function dragBoundary (Object boundary)
+   * @param vertexId
+   * @param position
+   */
+  setBoundaryPosition(boundaryId, position) {
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    boundaryInfo.x = position.x;
+    boundaryInfo.y = position.y;
+
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}`).attr("transform", (d,i) => {
+      return "translate(" + [ position.x, position.y ] + ")"
+    });
+
+    this.reorderPositionMember(boundaryId, position);
+  }
+
+  /**
+   * Reset parent for child boundary when it deleted
+   * @param boundaryId
+   */
+  resetParentForChildBoundary(boundaryId) {
+    // Get child of boundary
+    const {member} = this.objectUtils.getBoundaryInfoById(boundaryId)
+    member.forEach(mem => {
+      let objectId = mem.id;
+      if(mem.type === "V"){
+        let info = this.objectUtils.getVertexInfoById(objectId);
+        info.parent = null;
+      } else {
+        let info = this.objectUtils.getBoundaryInfoById(objectId)
+        info.parent = null;
+      }
+    });
+  }
+
+  /**
+   * Remove child boundary
+   * @param boundaryId
+   */
+  removeChildElementsBoundary(boundaryId) {
+    // Get child of boundary
+    const {member} = this.objectUtils.getBoundaryInfoById(boundaryId)
+
+    member.forEach(mem => {
+      let objectId = mem.id;
+      if(mem.type === "V"){
+        this.mainMgmt.deleteVertex(objectId);
+      } else {
+        // Remove all child boundary
+        this.deleteAllBoundary(objectId);
+      }
+    });
+  }
+
+  /**
+   * Clone all child boundary, above child of child boundary
+   * boundaryCloneId, cloneMembers
+   */
+  cloneChildElementsBoundary(cloneId, cMembers = []) {
+    for(let i = 0; i < cMembers.length; i++){
+      const member = cMembers[i];
+      let objectId = member.id;
+      if (member.type === "V") {
+        let cVertex = this.objectUtils.cloneVertexInfo(objectId);
+        let cVertexId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["b" /* generateObjectId */])("V");
+        cVertex.id = cVertexId;
+        console.log(`======${cVertexId}=========`);
+        cVertex.parent = cloneId;
+        let child = {id: cVertexId, type: "V", show: true};
+        this.mainMgmt.createVertex(cVertex);
+        this.addMemberToBoundary(cloneId, child);
+      } else {
+        let cBoundary = this.objectUtils.cloneBoundaryInfo(objectId);
+        let members = cBoundary.member.slice();
+        let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["b" /* generateObjectId */])("B");
+        cBoundary.id = cBoundaryId;
+        console.log(`======${cBoundaryId}=========`);
+        cBoundary.parent = cloneId;
+        cBoundary.member = [];
+        let child = {id: cBoundaryId, type: "B", show: true};
+        this.createBoundary(cBoundary);
+        this.addMemberToBoundary(cloneId, child);
+        if(members.length > 0)
+          this.cloneChildElementsBoundary(cBoundaryId, members);
+      }
+    }
+  }
+
+  /**
+   * Make controls to edit boundary info
+   * @param boundaryId
+   */
+  makeEditBoundaryInfo(boundaryId) {
+    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    let parent = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]('svg').select(`#${boundaryId}`);
+    let that = this;
+    let form = parent.append("foreignObject")
+      .attr("id", `${boundaryId}Name`)
+      .attr("y", 8)
+      .attr("x", 5);
+    let input = form
+      .attr("width", boundaryInfo.width - 10)
+      .attr("height", 20)
+      .append("xhtml:form")
+      .append("input")
+      .attr("maxlength", 20)
+      .attr("class", "input-header-boundary")
+      .attr("value", function() {
+        this.focus();
+        return boundaryInfo.name;
+      })
+      .attr("style", `width: ${boundaryInfo.width - 10}px`)
+      .on("blur", function() {
+        let newName = input.node().value;
+        if(newName){
+          that.setBoundaryName(boundaryId, newName);
+        }
+        parent.select(`#${boundaryId}Name`).remove();
+      })
+      .on("keypress", function() {
+        // IE fix
+        if (!__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */])
+          __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */] = window.event;
+        let e = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */];
+        if (e.keyCode == 13)
+        {
+          if (typeof(e.cancelBubble) !== 'undefined') // IE
+            e.cancelBubble = true;
+          if (e.stopPropagation)
+            e.stopPropagation();
+          e.preventDefault();
+
+          let newName = input.node().value;
+          if(newName){
+            that.setBoundaryName(boundaryId, newName);
+          }
+          parent.select(`#${boundaryId}Name`).remove();
+        }
+      });
+  }
+
+  /**
+   * Set boundary info
+   * @param boundaryId
+   * @param boundaryId, info
+   */
+  setBoundaryName (boundaryId, name) {
+    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    boundaryInfo.name = name;
+    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${boundaryId}Header`).text(name);
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Boundary);
 
 
 /***/ }),
@@ -51388,30 +51200,153 @@ class EdgeMenuContext{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(54);
+class BoundaryMenu{
+  constructor(props){
+    this.selector = props.selector;
+    this.boundary = props.boundary;
+    this.initBoundaryMenu();
+  }
+
+  initBoundaryMenu(){
+    // Context menu for Vertex
+    $.contextMenu({
+      selector: this.selector,
+      zIndex: 100,
+      build: ($trigger, e) => {
+        return {
+          callback: (key, options) => {
+            let boundaryId = options.$trigger.attr('id');
+            switch (key)
+            {
+              case "removeBoundary":
+                this.boundary.removeBoundary(boundaryId);
+                break;
+
+              case "deleteAllBoundary":
+                this.boundary.deleteAllBoundary(boundaryId);
+                break;
+
+              case "makeEditBoundaryInfo":
+                this.boundary.makeEditBoundaryInfo(boundaryId);
+                break;
+
+              case "copyAllBoundary":
+                this.boundary.copyAllBoundary(boundaryId);
+
+              default:
+                break;
+            }
+          },
+          items: {
+            "makeEditBoundaryInfo": {name: "Edit Boundary Info", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
+            "removeBoundary": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
+            "copyAllBoundary": {name: "Copy All", icon: "fa-files-o", disabled: window.disabledCommand},
+            "deleteAllBoundary": {name: "Delete All", icon: "fa-square-o", disabled: window.disabledCommand},
+          }
+        }
+      }
+    });
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (BoundaryMenu);
+
+
+/***/ }),
+/* 805 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class BoundaryMenuItems{
+  constructor(props){
+    this.selector = props.selector;
+    this.boundary = props.boundary;
+    this.objectUtils = props.objectUtils;
+    this.dataShow = {};
+    this.initBoundaryMenuItems();
+  }
+
+  initBoundaryMenuItems(){
+    $.contextMenu({
+      selector: '.boundary_right',
+      className: 'data-title',
+      zIndex: 100,
+      // autoHide: true,
+      build: ($trigger, e) => {
+        return {
+          callback: (key, options) => {
+            let boundaryId = options.$trigger.attr('id');
+          },
+          items: this.initItems($trigger),
+          events: {
+            show: (opt) => {
+              $('.data-title').attr('data-menutitle', "Member Visible");
+              $.contextMenu.setInputValues(opt, this.dataShow);
+            }
+          }
+        }
+      }
+    });
+  }
+
+  initItems($trigger) {
+    this.dataShow = {};
+    // Get info of boundarys
+    let boundaryId = $trigger.attr('data');
+    const {member} = this.objectUtils.getBoundaryInfoById(boundaryId);
+    const subItems = {};
+    if(member.length == 0){
+      subItems.isHtmlItem = {type: 'html', html: '<div style="text-align: center; color: red;"><span>No member added</span></div>'};
+    }
+
+    member.forEach(mem => {
+      const {type, id, show} = mem;
+      const {name} = type === "B" ? this.objectUtils.getBoundaryInfoById(id) : this.objectUtils.getVertexInfoById(id);
+      subItems[`${id}`] = {name: `${name}`, type: 'checkbox', events: {click: (e) => { this.boundary.selectMemberVisible(boundaryId, mem, e.target.checked); }}};
+      this.dataShow[`${id}`] = mem.show;
+    });
+    return subItems;
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (BoundaryMenuItems);
+
+
+/***/ }),
+/* 806 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(183);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(60);
 
 
 
 
 class ObjectUtils {
   constructor(props){
-    this.svgSelector = props.svgSelector;
     this.dataContainer = props.dataContainer;
   }
 
   /**
-   * Gernerate object id with format 'prefix' + Date.now()
-   * Ex for vertex: V1234234234
-   * Ex for edge: E1234234234
-   * Ex for boundary: B1234234234
-   * @returns {string}
+   * Get BBox of object by id
+   * @param objectId
+   * @returns {*}
    */
-  generateObjectId(prefix = 'V') {
-    let date = new Date();
-    return `${prefix}${date.getTime()}`;
+  getBBoxObject(objectId) {
+    return __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${objectId}`).node().getBBox();
+  }
+
+  /* Vertex utils (S)*/
+  /**
+   * Get vertex info by id
+   * @param vertexId
+   * @returns {*}
+   */
+  getVertexInfoById(vertexId) {
+    return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.vertex, (e) => { return e.id === vertexId; });
   }
 
   /**
@@ -51441,28 +51376,29 @@ class ObjectUtils {
   }
 
   /**
-   * Find all path (edge, connect) start or end at this vertex
+   * Clone vertex info by id
    * @param vertexId
-   * @returns {Array}
    */
-  findEdgeRelateToVertex(vertexId) {
-    if(!vertexId)
-      return [];
-
-    return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) =>
-      { return e.target.vertexId === vertexId || e.source.vertexId === vertexId; }
-    );
+  cloneVertexInfo(vertexId) {
+    const obj = this.getVertexInfoById(vertexId);
+    // Clone and return
+    return Object.assign({}, obj);
   }
 
+  /* Vertex utils (E)*/
+
+  /* Edge utils (S)*/
   /**
-   * Get vertex info by id
-   * @param vertexId
+   * Get edge info by id
+   * @param edgeId
    * @returns {*}
    */
-  getVertexInfoById(vertexId) {
-    return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.vertex, (e) => { return e.id === vertexId; });
+  getEdgeInfoById(edgeId) {
+    return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.edge, (e) => { return e.id === edgeId; });
   }
+  /* Edge utils (E)*/
 
+  /* Boundary utils (S)*/
   /**
    * Get boundary info by id
    * @param boundaryId
@@ -51473,60 +51409,10 @@ class ObjectUtils {
   }
 
   /**
-   * Get BBox of object by id
-   * @param objectId
-   * @returns {*}
-   */
-  getBBoxObjectById(objectId) {
-    return __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */](`#${objectId}`).node().getBBox();
-  }
-
-  /**
-   * Reset the boundary change height when drag vertices that
-   * height larger than boundary
-   */
-  resetSizeAllBoundary() {
-    __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* select */]("svg").selectAll(".groupBoundary").each((d, i, node) => {
-      let orderObject = 0;
-      let heightBeforeElements = 42;
-      let marginTop = 5;
-      let widthBoundary = __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
-      let boundaryId = d.id;
-      let boundaryScope = d.boundaryScope;
-      let boundaryMembers = d.member;
-
-      boundaryMembers.forEach(member => {
-        if(member.show) {
-          let objectId = member.id;
-          let boxObject = this.getBBoxObjectById(objectId);
-          orderObject ++;
-          heightBeforeElements += boxObject.height;
-          if(boxObject.width > widthBoundary)
-            widthBoundary = boxObject.width + (member.type === "B" ? 10: 0);
-        }
-      });
-
-      let boundaryHeight = heightBeforeElements + marginTop*orderObject;
-      boundaryScope.setHeightBoundary(boundaryId, boundaryHeight);
-      boundaryScope.setWidthBoundary(boundaryId, widthBoundary);
-    });
-  }
-
-  /**
-   * Clone vertex info by id
-   * @param vertexId
-   */
-  cloneVertexInfoById(vertexId) {
-    const obj = this.getVertexInfoById(vertexId);
-    // Clone and return
-    return Object.assign({}, obj);
-  }
-
-  /**
    * Clone boundary info by id
    * @param boundaryId
    */
-  cloneBoundaryInfoById(boundaryId) {
+  cloneBoundaryInfo(boundaryId) {
     const obj = this.getBoundaryInfoById(boundaryId);
     // Clone and return
     return Object.assign({}, obj);
@@ -51540,99 +51426,26 @@ class ObjectUtils {
    * @param status
    */
   setBoundaryMemberStatus(boundaryId, childId, status) {
-    let boundaryInfo = this.getBoundaryInfoById(boundaryId);
-    let members = boundaryInfo.member;
-    let select =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(members, (e) => { return e.id === childId; });
+    const {member} = this.getBoundaryInfoById(boundaryId);
+    let select =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(member, (e) => { return e.id === childId; });
     if(select) {
       select.show = status;
     }
   }
+  /* Boundary utils (E)*/
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (ObjectUtils);
 
 
 /***/ }),
-/* 805 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-class MenuItemsBoundary{
-  constructor(props){
-    this.selector = props.selector;
-    this.boundaryMgmt = props.boundaryMgmt;
-    this.vertexMgmt = props.vertexMgmt;
-    this.dataContainer = props.dataContainer;
-    this.mainMgmt = props.mainMgmt;
-    this.dataShow = {};
-    this.initListItem();
-  }
-
-  initListItem(){
-    $.contextMenu({
-      selector: '.boundary_right',
-      className: 'data-title',
-      zIndex: 100,
-      // autoHide: true,
-      build: ($trigger, e) => {
-        return {
-          callback: (key, options) => {
-            let boundaryId = options.$trigger.attr('id');
-          },
-          items: this.loadItems($trigger),
-          events: {
-            show: (opt) => {
-              $('.data-title').attr('data-menutitle', "Member Visible");
-              let $this = this;
-              let data = {yesno01: true, yesno02: true, yesno03: true, yesno04: true, yesno05: false};
-
-              $.contextMenu.setInputValues(opt, this.dataShow);
-            },
-            hide: (opt) => {
-              // var $this = this;
-              // $.contextMenu.getInputValues(opt, $this.data());
-              // console.log($this.data());
-            }
-          }
-        }
-      }
-    });
-  }
-
-  loadItems($trigger) {
-    this.dataShow = {};
-    // Get info of boundarys
-    let boundaryId = $trigger.attr('data');
-    let boundaryInfo = this.boundaryMgmt.getBoundaryInfoById(boundaryId);
-    let childs = boundaryInfo.member;
-
-    const subItems = {};
-    if(childs.length == 0){
-      subItems.isHtmlItem = {type: 'html', html: '<div style="text-align: center; color: red;"><span>No member added</span></div>'};
-    }
-
-    childs.forEach(child => {
-      let type = child.type;
-      let childId = child.id;
-      let childInfo = type === "B" ? this.boundaryMgmt.getBoundaryInfoById(childId) : this.vertexMgmt.getVertexInfoById(childId);
-      subItems[`${childId}`] = {name: `${childInfo.name}`, type: 'checkbox', events: {click: (e) => { this.boundaryMgmt.selectMemberVisible(boundaryId, child, e.target.checked); }}};
-      this.dataShow[`${childId}`] = child.show;
-    });
-    return subItems;
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (MenuItemsBoundary);
-
-
-/***/ }),
-/* 806 */
+/* 807 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(807);
+var content = __webpack_require__(808);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -51640,7 +51453,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(809)(content, options);
+var update = __webpack_require__(810)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -51657,10 +51470,10 @@ if(false) {
 }
 
 /***/ }),
-/* 807 */
+/* 808 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(808)(undefined);
+exports = module.exports = __webpack_require__(809)(undefined);
 // imports
 
 
@@ -51671,7 +51484,7 @@ exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding:
 
 
 /***/ }),
-/* 808 */
+/* 809 */
 /***/ (function(module, exports) {
 
 /*
@@ -51753,7 +51566,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 809 */
+/* 810 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -51799,7 +51612,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(810);
+var	fixUrls = __webpack_require__(811);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -52112,7 +51925,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 810 */
+/* 811 */
 /***/ (function(module, exports) {
 
 

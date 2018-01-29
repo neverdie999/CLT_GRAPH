@@ -109,17 +109,12 @@ class FileMgmt{
     // Process data to export
     // Need clone data cause case user export
     // later continue edit then lost parent scope
-    let cloneVertex = this.dataContainer.vertex.map(node => Object.assign({}, node));
-    let cloneEdge = this.dataContainer.edge.map(edge => Object.assign({}, edge));
-    let cloneBoundary = this.dataContainer.boundary.map(boundary => Object.assign({}, boundary));
-
-    cloneVertex.forEach(node => {
-      delete node.mainScope;
-
+    const cloneData = Object.assign({}, this.dataContainer);
+    cloneData.vertex.forEach(node => {
       let pos = new Object({
-          "id": node.id,
-          "x": node.x,
-          "y": node.y
+        "id": node.id,
+        "x": node.x,
+        "y": node.y
       });
 
       delete node.x;
@@ -129,11 +124,9 @@ class FileMgmt{
       dataContent.position.push(pos);
     });
 
-    dataContent.edge = cloneEdge;
+    dataContent.edge = cloneData.edge;
 
-    cloneBoundary.forEach(boundary => {
-      delete boundary.boundaryScope;
-
+    cloneData.boundary.forEach(boundary => {
       let pos = new Object({
         "id": boundary.id,
         "x": boundary.x,

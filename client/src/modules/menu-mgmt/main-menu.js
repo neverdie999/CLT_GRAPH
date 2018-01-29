@@ -1,17 +1,14 @@
 import * as d3 from 'd3';
 
-class MainMenuContext{
+class MainMenu{
   constructor(props){
     this.selector = props.selector;
-    this.vertexMgmt = props.vertexMgmt;
-    this.boundaryMgmt = props.boundaryMgmt;
-    this.dataContainer = props.dataContainer;
     this.mainMgmt = props.mainMgmt;
     this.initMainMenu();
   }
 
   initMainMenu(){
-    // Context menu for Screen
+    // Main menu config
     $.contextMenu({
       selector: this.selector,
       autoHide: true,
@@ -21,10 +18,10 @@ class MainMenuContext{
           callback: (key, options) => {
             switch (key)
             {
-              case "clearAll": this.clearAll();
+              case "clearAll": this.mainMgmt.clearAll();
                 break;
 
-              case "createBoundary": this.boundaryMgmt.createBoundary(options);
+              case "createBoundary": this.mainMgmt.createBoundary(options);
                 break;
 
               default:
@@ -64,10 +61,6 @@ class MainMenuContext{
     });
   }
 
-  clearAll(){
-    this.mainMgmt.clearAll();
-  }
-
   loadItems() {
     const subItems = {};
     if(window.vertexTypes){
@@ -77,7 +70,7 @@ class MainMenuContext{
           icon: "fa-window-maximize",
           callback: (key, opt) => {
             opt.vertexType = opt.$selected.text()
-            this.vertexMgmt.create(opt);
+            this.mainMgmt.createVertex(opt);
           }
         }
       }
@@ -91,4 +84,4 @@ class MainMenuContext{
   }
 }
 
-export default MainMenuContext;
+export default MainMenu;
