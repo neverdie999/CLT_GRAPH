@@ -1,8 +1,9 @@
-class VertexMenuContext{
+
+class VertexMenu{
   constructor(props){
     this.selector = props.selector;
-    this.vertexMgmt = props.vertexMgmt;
-    this.dataContainer = props.dataContainer;
+    this.vertex = props.vertex;
+    this.objectUtils = props.objectUtils;
     this.initVertexMenu();
   }
 
@@ -17,19 +18,19 @@ class VertexMenuContext{
             switch (key)
             {
               case "editVertex":
-                this.vertexMgmt.edit(vertexId);
+                this.vertex.makePopupEditVertex(vertexId);
                 break;
 
               case "copyVertex":
-                this.vertexMgmt.copy(vertexId);
+                this.vertex.copyVertex(vertexId);
                 break;
 
               case "removeVertex":
-                this.vertexMgmt.remove(vertexId);
+                this.vertex.removeVertex(vertexId);
                 break;
 
               case "cancelCreateEdge":
-                this.vertexMgmt.cancelCreateEdge();
+                this.vertex.cancelCreateEdge();
                 break;
 
               default:
@@ -84,14 +85,14 @@ class VertexMenuContext{
       icon: "fa-window-maximize",
       callback: (key, opt) => {
         if(source){
-          this.vertexMgmt.setConnectFrom(vertexId);
+          this.vertex.setConnectFrom(vertexId);
         }else{
-          this.vertexMgmt.setConnectTo(vertexId);
+          this.vertex.setConnectTo(vertexId);
         }
       }
     };
     // Get properties of vertex
-    let vertexObj = this.vertexMgmt.getVertexInfoById(vertexId);
+    let vertexObj = this.objectUtils.getVertexInfoById(vertexId);
 
     // When mode show that don't have vertex type.
     if(window.vertexTypes){
@@ -105,9 +106,9 @@ class VertexMenuContext{
           callback: (key, opt) => {
             let prop = opt.$selected.text();
             if(source){
-              this.vertexMgmt.setConnectFrom(vertexId, prop);
+              this.vertex.setConnectFrom(vertexId, prop);
             }else{
-              this.vertexMgmt.setConnectTo(vertexId, prop);
+              this.vertex.setConnectTo(vertexId, prop);
             }
           }
         }
@@ -122,4 +123,4 @@ class VertexMenuContext{
   }
 }
 
-export default VertexMenuContext;
+export default VertexMenu;

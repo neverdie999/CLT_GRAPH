@@ -1,8 +1,7 @@
-class BoundaryMenuContext{
+class BoundaryMenu{
   constructor(props){
     this.selector = props.selector;
-    this.boundaryMgmt = props.boundaryMgmt;
-    this.dataContainer = props.dataContainer;
+    this.boundary = props.boundary;
     this.initBoundaryMenu();
   }
 
@@ -18,19 +17,19 @@ class BoundaryMenuContext{
             switch (key)
             {
               case "removeBoundary":
-                this.boundaryMgmt.removeBoundary(boundaryId);
+                this.boundary.removeBoundary(boundaryId);
                 break;
 
               case "deleteAllBoundary":
-                this.boundaryMgmt.deleteAllBoundary(boundaryId);
+                this.boundary.deleteAllBoundary(boundaryId);
                 break;
 
               case "makeEditBoundaryInfo":
-                this.boundaryMgmt.makeEditBoundaryInfo(boundaryId);
+                this.boundary.makeEditBoundaryInfo(boundaryId);
                 break;
 
               case "copyAllBoundary":
-                this.boundaryMgmt.copyAllBoundary(boundaryId);
+                this.boundary.copyAllBoundary(boundaryId);
 
               default:
                 break;
@@ -48,4 +47,4 @@ class BoundaryMenuContext{
   }
 }
 
-export default BoundaryMenuContext;
+export default BoundaryMenu;

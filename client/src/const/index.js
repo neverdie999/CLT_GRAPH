@@ -2,7 +2,7 @@ export const HTML_ALGETA_CONTAINER_CLASS = 'algetaContainer';
 export const HTML_ALGETA_CONTAINER_ID = 'algetaContainer';
 export const HTML_VERTEX_CONTAINER_CLASS = 'groupVertex';
 export const HTML_BOUNDARY_CONTAINER_CLASS = 'groupBoundary';
-export const HTML_EDGE_CLASS = 'edge';
+export const HTML_EDGE_CONTAINER_CLASS = 'groupEdge';
 
 // Graph size
 export const GRAPH_WIDTH = '100%';

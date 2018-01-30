@@ -1,8 +1,7 @@
-class EdgeMenuContext{
+class EdgeMenu{
   constructor(props){
     this.selector = props.selector;
-    this.edgeMgmt = props.edgeMgmt;
-    this.dataContainer = props.dataContainer;
+    this.edge = props.edge;
     this.initEdgeMenu();
   }
 
@@ -19,11 +18,11 @@ class EdgeMenuContext{
             switch (key)
             {
               case "openPopupEditType":
-                this.edgeMgmt.openPopEditType(edgeId);
+                this.edge.openPopEditType(edgeId);
                 break;
 
               case "removeEdge":
-                this.edgeMgmt.removeEdge(edgeId);
+                this.edge.removeEdge(edgeId);
                 break;
 
               default:
@@ -57,29 +56,32 @@ class EdgeMenuContext{
             show: (opt) => {
               // Get edge notes
               let edgeId = opt.$trigger.attr('id');
-              let data = this.edgeMgmt.getEdgeNotes(edgeId)
+              let data = this.edge.getEdgeNotes(edgeId)
               $.contextMenu.setInputValues(opt, data);
             },
-            hide: function(opt) {
-              // this is the trigger element
-              let $this = this;
-              $.contextMenu.getInputValues(opt, $this.data());
-
-              // Get edge notes
-              let data = $this.data();
-              let notes = {
-                originNote: data.originNote,
-                middleNote: data.middleNote,
-                destNote: data.destNote
-              };
-              let edgeId = opt.$trigger.attr('id');
-              edgeMgmt.setEdgeNotes(edgeId, notes);
-            }
+            hide: this.onEdgeMenuHide(this)
           }
         }
       }
     });
   }
+
+  onEdgeMenuHide(self) {
+    return function(opt) {
+      let $this = this;
+      $.contextMenu.getInputValues(opt, $this.data());
+
+      // Get edge notes
+      let data = $this.data();
+      let notes = {
+        originNote: data.originNote,
+        middleNote: data.middleNote,
+        destNote: data.destNote
+      };
+      let edgeId = opt.$trigger.attr('id');
+      self.edge.setEdgeNotes(edgeId, notes);
+    }
+  }
 }
 
-export default EdgeMenuContext;
+export default EdgeMenu;
