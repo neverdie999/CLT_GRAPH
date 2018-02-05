@@ -12,10 +12,25 @@ label {
   font-weight: 700 !important;
 }
 
-.hight_light {
-  border: solid 1px #ac2925 !important;
+.hight-light {
+  //border: solid 1px #ac2925 !important;
+  stroke: red !important;
 }
 
 .hidden-object {
   display: none;
+}
+
+#dummyPath {
+  stroke-width: 1px;
+  display:none;
+}
+
+.line {
+  stroke: blue;
+  stroke-width: 1px;
+}
+
+.selected {
+  stroke: #2795EE !important;
 }

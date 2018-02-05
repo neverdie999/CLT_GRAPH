@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 class EdgeMenu{
   constructor(props){
     this.selector = props.selector;
@@ -56,6 +57,7 @@ class EdgeMenu{
             show: (opt) => {
               // Get edge notes
               let edgeId = opt.$trigger.attr('id');
+              d3.select(`#${edgeId}`).classed("selected", true);
               let data = this.edge.getEdgeNotes(edgeId)
               $.contextMenu.setInputValues(opt, data);
             },
@@ -79,6 +81,7 @@ class EdgeMenu{
         destNote: data.destNote
       };
       let edgeId = opt.$trigger.attr('id');
+      d3.select(`#${edgeId}`).classed("selected", false);
       self.edge.setEdgeNotes(edgeId, notes);
     }
   }
