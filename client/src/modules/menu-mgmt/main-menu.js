@@ -1,5 +1,3 @@
-import * as d3 from 'd3';
-
 class MainMenu{
   constructor(props){
     this.selector = props.selector;

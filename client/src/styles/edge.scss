@@ -10,8 +10,17 @@
     stroke: #2795EE;
   }
 }
+
+.dummy-edge{
+  display: none;
+  stroke: black;
+  stroke-width: 1;
+  visibility: visible;
+  cursor: pointer;
+}
+
 .solid{
-  stroke:solid;
+  stroke: black;
 }
 
 .dash{

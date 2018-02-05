@@ -24,6 +24,7 @@ class MainMgmt {
     this.objectUtils = props.objectUtils;
     this.dataContainer = props.dataContainer;
     this.initMarkerArrow();
+    this.initPathConnect();
 
     /**
      * Init file mgmt
@@ -82,6 +83,17 @@ class MainMgmt {
       .append("path")
       .attr("d", "M 0 0 L 10 5 L 0 10 z")
       .style("stroke", "black");
+  }
+
+  /**
+   * Init path connect used to create path
+   */
+  initPathConnect() {
+    this.svgSelector.append("svg:path")
+      .attr("id", "dummyPath")
+      .attr("class", "dummy-edge solid")
+      .attr("fill", "none")
+      .attr("marker-end", "url(#arrow)");
   }
 
   /**
@@ -339,7 +351,6 @@ class MainMgmt {
     });
   }
 
-  /* Mein menu operation (S) */
   createVertex(opt) {
     this.vertex.createVertex(opt);
   }
@@ -478,8 +489,8 @@ class MainMgmt {
     this.dataContainer.boundary = [];
     this.dataContainer.edge = [];
     this.initMarkerArrow();
+    this.initPathConnect();
   }
-  /* Mein menu operation (E) */
 }
 
 export default MainMgmt;
