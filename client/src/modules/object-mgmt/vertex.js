@@ -91,7 +91,7 @@ class Vertex {
     group.append("circle")
       .attr("class", "drag_connect")
       .attr("fill", "none")
-      .attr("r", 3)
+      .attr("r", 4)
       .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH/2)
       .attr("stroke-width", 1)
       .style("cursor", "default")
@@ -99,11 +99,9 @@ class Vertex {
       .attr("pointer-events", "all")
       .on("mouseover", () => {
         d3.select(d3.event.target).classed("hight-light", true);
-        d3.select(d3.event.target).attr("r", 4);
       })
       .on("mouseout", () => {
         d3.select(d3.event.target).classed("hight-light", false);
-        d3.select(d3.event.target).attr("r", 3);
       });
 
     let htmlContent = '';
@@ -121,7 +119,7 @@ class Vertex {
         .attr("class", "drag_connect")
         .attr("prop", key)
         .attr("fill", "none")
-        .attr("r", 3)
+        .attr("r", 4)
         .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT*count + VERTEX_ATTR_SIZE.PROP_HEIGHT/2)
         .attr("stroke-width", 1)
         .style("cursor", "default")
@@ -129,11 +127,9 @@ class Vertex {
         .attr("pointer-events", "all")
         .on("mouseover", () => {
           d3.select(d3.event.target).classed("hight-light", true);
-          d3.select(d3.event.target).attr("r", 4);
         })
         .on("mouseout", () => {
           d3.select(d3.event.target).classed("hight-light", false);
-          d3.select(d3.event.target).attr("r", 3);
         });
 
       // Output
@@ -141,7 +137,7 @@ class Vertex {
         .attr("class", "drag_connect")
         .attr("prop", key)
         .attr("fill", "none")
-        .attr("r", 3)
+        .attr("r", 4)
         .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
         .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT*count + VERTEX_ATTR_SIZE.PROP_HEIGHT/2)
         .attr("stroke-width", 1)
@@ -150,11 +146,9 @@ class Vertex {
         .attr("pointer-events", "all")
         .on("mouseover", () => {
           d3.select(d3.event.target).classed("hight-light", true);
-          d3.select(d3.event.target).attr("r", 4);
         })
         .on("mouseout", () => {
           d3.select(d3.event.target).classed("hight-light", false);
-          d3.select(d3.event.target).attr("r", 3);
         });
 
       count ++;
