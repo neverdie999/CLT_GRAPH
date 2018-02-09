@@ -36449,7 +36449,7 @@ class Vertex {
     group.append("circle")
       .attr("class", "drag_connect")
       .attr("fill", "none")
-      .attr("r", 3)
+      .attr("r", 4)
       .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH/2)
       .attr("stroke-width", 1)
       .style("cursor", "default")
@@ -36457,11 +36457,11 @@ class Vertex {
       .attr("pointer-events", "all")
       .on("mouseover", () => {
         __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", true);
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 4);
+        // d3.select(d3.event.target).attr("r", 4);
       })
       .on("mouseout", () => {
         __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", false);
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 3);
+        // d3.select(d3.event.target).attr("r", 4);
       });
 
     let htmlContent = '';
@@ -36479,7 +36479,7 @@ class Vertex {
         .attr("class", "drag_connect")
         .attr("prop", key)
         .attr("fill", "none")
-        .attr("r", 3)
+        .attr("r", 4)
         .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT*count + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT/2)
         .attr("stroke-width", 1)
         .style("cursor", "default")
@@ -36487,11 +36487,11 @@ class Vertex {
         .attr("pointer-events", "all")
         .on("mouseover", () => {
           __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", true);
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 4);
+          // d3.select(d3.event.target).attr("r", 4);
         })
         .on("mouseout", () => {
           __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", false);
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 3);
+          // d3.select(d3.event.target).attr("r", 4);
         });
 
       // Output
@@ -36499,7 +36499,7 @@ class Vertex {
         .attr("class", "drag_connect")
         .attr("prop", key)
         .attr("fill", "none")
-        .attr("r", 3)
+        .attr("r", 4)
         .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
         .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT*count + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT/2)
         .attr("stroke-width", 1)
@@ -36508,11 +36508,11 @@ class Vertex {
         .attr("pointer-events", "all")
         .on("mouseover", () => {
           __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", true);
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 4);
+          // d3.select(d3.event.target).attr("r", 4);
         })
         .on("mouseout", () => {
           __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", false);
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 3);
+          // d3.select(d3.event.target).attr("r", 4);
         });
 
       count ++;
