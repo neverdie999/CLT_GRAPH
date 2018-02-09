@@ -72,7 +72,7 @@ class Boundary {
       .attr("height", height)
       .style("border", "solid 1px #652a82")
       .style("font-size", "13px")
-      .style("background", "#ffffff")
+      .style("background", "none")
       .append("xhtml:div")
       .attr("class", "boundary_content")
       .html(`

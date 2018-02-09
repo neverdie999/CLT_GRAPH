@@ -36449,7 +36449,7 @@ class Vertex {
     group.append("circle")
       .attr("class", "drag_connect")
       .attr("fill", "none")
-      .attr("r", 2)
+      .attr("r", 3)
       .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH/2)
       .attr("stroke-width", 1)
       .style("cursor", "default")
@@ -36461,7 +36461,7 @@ class Vertex {
       })
       .on("mouseout", () => {
         __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", false);
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 2);
+        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 3);
       });
 
     let htmlContent = '';
@@ -36479,7 +36479,7 @@ class Vertex {
         .attr("class", "drag_connect")
         .attr("prop", key)
         .attr("fill", "none")
-        .attr("r", 2)
+        .attr("r", 3)
         .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT*count + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT/2)
         .attr("stroke-width", 1)
         .style("cursor", "default")
@@ -36491,7 +36491,7 @@ class Vertex {
         })
         .on("mouseout", () => {
           __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", false);
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 2);
+          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 3);
         });
 
       // Output
@@ -36499,7 +36499,7 @@ class Vertex {
         .attr("class", "drag_connect")
         .attr("prop", key)
         .attr("fill", "none")
-        .attr("r", 2)
+        .attr("r", 3)
         .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
         .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT*count + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT/2)
         .attr("stroke-width", 1)
@@ -36512,7 +36512,7 @@ class Vertex {
         })
         .on("mouseout", () => {
           __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", false);
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 2);
+          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 3);
         });
 
       count ++;
@@ -50910,7 +50910,7 @@ class Boundary {
       .attr("height", height)
       .style("border", "solid 1px #652a82")
       .style("font-size", "13px")
-      .style("background", "#ffffff")
+      .style("background", "none")
       .append("xhtml:div")
       .attr("class", "boundary_content")
       .html(`
