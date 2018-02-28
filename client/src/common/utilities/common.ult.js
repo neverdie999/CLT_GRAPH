@@ -5,7 +5,7 @@ import * as d3 from 'd3';
  * @param msg
  */
 export function comShowMessage(msg = null) {
-  if(!msg)
+  if (!msg)
     return;
   alert(msg);
 }
@@ -20,4 +20,46 @@ export function comShowMessage(msg = null) {
 export function generateObjectId(prefix = 'V') {
   let date = new Date();
   return `${prefix}${date.getTime()}`;
+}
+
+/**
+ * Remove special character in selector query
+ * @param id
+ * @returns {string}
+ */
+export function replaceSpecialCharacter(id) {
+  return id.replace(/(:|\.|\[|\]|,|=|@)/g, "\\\\$1");
+}
+
+/**
+ * Create string path
+ * @param src
+ * @param tar
+ * @returns {string}
+ */
+export function createPath(src, tar) {
+  let diff = {
+    x: tar.x - src.x,
+    y: tar.y - src.y
+  };
+
+  let pathStr = 'M' + src.x + ',' + src.y + ' ';
+  pathStr += 'C';
+  pathStr += src.x + diff.x / 3 + ',' + src.y + ' ';
+  pathStr += src.x + diff.x / 3 + ',' + tar.y + ' ';
+  pathStr += tar.x + ',' + tar.y;
+
+  return pathStr;
+};
+
+/**
+ * Cancle selected path when user
+ * click click outside path selected or move object...
+ */
+export function cancleSelectedPath() {
+  window.udpateEdge = false;
+  d3.select('#edgePath').style("display", "none");
+  d3.select('#groupEdgePoint').style("display", "none");
+  d3.select("#groupEdgePoint").moveToBack();
+  d3.select("#edgePath").moveToBack();
 }

@@ -1,11 +1,11 @@
-class MainMenu{
-  constructor(props){
+class MainMenu {
+  constructor(props) {
     this.selector = props.selector;
     this.mainMgmt = props.mainMgmt;
     this.initMainMenu();
   }
 
-  initMainMenu(){
+  initMainMenu() {
     // Main menu config
     $.contextMenu({
       selector: this.selector,
@@ -14,12 +14,17 @@ class MainMenu{
       build: ($trigger, e) => {
         return {
           callback: (key, options) => {
-            switch (key)
-            {
-              case "clearAll": this.mainMgmt.clearAll();
+            switch (key) {
+              case "clearAll":
+                this.mainMgmt.clearAll();
                 break;
 
-              case "createBoundary": this.mainMgmt.createBoundary(options);
+              case "createBoundary":
+                this.mainMgmt.createBoundary(options);
+                break;
+
+              case "showReduced":
+                // window.showReduced ? this.mainMgmt.showFull(options) : this.mainMgmt.showReduced(options);
                 break;
 
               default:
@@ -27,30 +32,56 @@ class MainMenu{
             }
           },
           items: {
-            "createVertex":{
+            "createVertex": {
               name: "Create Vertex",
               icon: "fa-window-maximize",
               items: this.loadItems(),
               disabled: window.disabledCommand
             },
             "sep1": "-",
-            "createBoundary": {name: "Create Boundary", icon: "fa-object-group", disabled: window.disabledCommand},
+            "createBoundary": {
+              name: "Create Boundary",
+              icon: "fa-object-group",
+              disabled: window.disabledCommand
+            },
             "sep2": "-",
-            "autoAlign": {name: "Auto Align", icon: "fa-sort-amount-desc", disabled: window.disabledCommand},
-            "sep3": "-",
-            "showReduced": {name: "Show Reduced", icon: "fa-link", disabled: window.disabledCommand},
+            "autoAlign": {
+              name: "Auto Align",
+              icon: "fa-sort-amount-desc",
+              disabled: window.disabledCommand
+            },
+            // "sep3": "-",
+            // "showReduced": {
+            //   name: window.showReduced ? "Show Full" : "Show Reduced",
+            //   icon: "fa-link",
+            //   disabled: window.disabledCommand
+            // },
             "sep4": "-",
-            "clearAll": {name: "Clear All", icon: "fa-times", disabled: window.disabledCommand},
+            "clearAll": {
+              name: "Clear All",
+              icon: "fa-times",
+              disabled: window.disabledCommand
+            },
             "sep5": "-",
-            "undo": {name: "Undo", icon: "fa-undo", disabled: window.disabledCommand},
+            "undo": {
+              name: "Undo",
+              icon: "fa-undo",
+              disabled: window.disabledCommand
+            },
             "sep6": "-",
-            "redo": {name: "Redo", icon: "fa-repeat", disabled: window.disabledCommand},
+            "redo": {
+              name: "Redo",
+              icon: "fa-repeat",
+              disabled: window.disabledCommand
+            },
           },
           events: {
             show: (opt) => {
-              if(event){
-                opt["x"] = event.x;
-                opt["y"] = event.y;
+              if (event) {
+                opt["x"] = event.pageX;
+                // opt["x"] = event.x;
+                opt["y"] = event.pageY;
+                // opt["y"] = event.y;
               }
             }
           }
@@ -61,7 +92,7 @@ class MainMenu{
 
   loadItems() {
     const subItems = {};
-    if(window.vertexTypes){
+    if (window.vertexTypes) {
       for (const key of Object.keys(window.vertexTypes)) {
         subItems[`${key}`] = {
           name: `${key}`,

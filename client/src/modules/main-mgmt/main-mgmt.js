@@ -7,7 +7,7 @@ import EdgeMenu from '../menu-mgmt/edge-menu';
 import Boundary from '../object-mgmt/boundary';
 import BoundaryMenu from '../menu-mgmt/boundary-menu';
 import BoundaryMenuItems from '../menu-mgmt/boundary-menu-items';
-import {comShowMessage} from '../../common/utilities/common.ult';
+import {comShowMessage, createPath} from '../../common/utilities/common.ult';
 import * as d3 from 'd3';
 import {
   HTML_ALGETA_CONTAINER_CLASS,
@@ -15,7 +15,9 @@ import {
   HTML_EDGE_CONTAINER_CLASS,
   HTML_BOUNDARY_CONTAINER_CLASS,
   BOUNDARY_ATTR_SIZE,
+  TYPE_POINT,
 } from '../../const/index';
+import {HTML_ALGETA_CONTAINER_ID} from "../../const";
 
 
 class MainMgmt {
@@ -25,6 +27,12 @@ class MainMgmt {
     this.dataContainer = props.dataContainer;
     this.initMarkerArrow();
     this.initPathConnect();
+    this.dragPointConnector = d3.drag()
+      .on("start", this.dragPointStarted(this))
+      .on("drag", this.draggedPoint(this))
+      .on("end", this.dragPointEnded(this));
+
+    this.initEdgePath();
 
     /**
      * Init file mgmt
@@ -39,7 +47,7 @@ class MainMgmt {
      * @type {VertexMgmt}
      */
     this.vertex = new Vertex({
-      svgSelector : this.svgSelector,
+      svgSelector: this.svgSelector,
       dataContainer: this.dataContainer,
       objectUtils: this.objectUtils,
       mainMgmt: this
@@ -50,7 +58,7 @@ class MainMgmt {
      * @type {EdgeMgmt}
      */
     this.edge = new Edge({
-      svgSelector : this.svgSelector,
+      svgSelector: this.svgSelector,
       dataContainer: this.dataContainer,
       objectUtils: this.objectUtils,
       mainMgmt: this
@@ -61,7 +69,7 @@ class MainMgmt {
      * @type {BoundaryMgmt}
      */
     this.boundary = new Boundary({
-      svgSelector : this.svgSelector,
+      svgSelector: this.svgSelector,
       dataContainer: this.dataContainer,
       objectUtils: this.objectUtils,
       mainMgmt: this
@@ -71,7 +79,7 @@ class MainMgmt {
   /**
    * Init Marker Arrow use for edge
    */
-  initMarkerArrow(){
+  initMarkerArrow() {
     this.svgSelector.append("svg:defs").append("svg:marker")
       .attr("id", "arrow")
       .attr("viewBox", "0 0 10 10")
@@ -89,7 +97,7 @@ class MainMgmt {
    * Init path connect used to create path
    */
   initPathConnect() {
-    this.svgSelector.append("svg:path")
+    this.svgSelector.append("svg:g").append("svg:path")
       .attr("id", "dummyPath")
       .attr("class", "dummy-edge solid")
       .attr("fill", "none")
@@ -97,11 +105,54 @@ class MainMgmt {
   }
 
   /**
+   * Init path use for simulate change source or target connect
+   */
+  initEdgePath() {
+    let groupPoint = this.svgSelector.append("g")
+      .attr("id", "groupEdgePoint");
+    let group = this.svgSelector.append("g")
+      .attr("id", "groupEdgePath");
+    group.append("path")
+      .attr("id", "edgePath")
+      .attr("class", "dummy-path dash")
+      .attr("fill", "none")
+      .attr("stroke", "#2795EE");
+      // .attr("marker-end", "url(#arrow)");
+
+    // Append point to drag start or end connect point
+    groupPoint.append("circle")
+      .attr("id", "pointStart")
+      .attr("class", "dragPoint")
+      .attr("type", TYPE_POINT.OUTPUT)
+      .attr("fill", "#2795EE")
+      .attr("r", 3)
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("stroke-width", 1)
+      .style("cursor", "pointer")
+      .attr("stroke", "#2795EE");
+
+    groupPoint.append("circle")
+      .attr("id", "pointEnd")
+      .attr("class", "dragPoint")
+      .attr("type", TYPE_POINT.INPUT)
+      .attr("fill", "#2795EE")
+      .attr("r", 3)
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("stroke-width", 1)
+      .style("cursor", "pointer")
+      .attr("stroke", "#2795EE");
+
+    d3.selectAll('.dragPoint').call(this.dragPointConnector);
+  }
+
+  /**
    * Reload data vertex types when user import
    * For main context and vertex.
    * @param data
    */
-  async reloadVertexTypes(data){
+  async reloadVertexTypes(data) {
     // Set global vertex types
     // The content vertex type on graph alway
     // give to content vertex type was import from Vertex Type Defination
@@ -112,7 +163,7 @@ class MainMgmt {
     let isMisMatch = await this.validateVertexTypesInGraph();
 
     // Now just show message warning for user. Not stop working
-    if(isMisMatch)
+    if (isMisMatch)
       comShowMessage("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
         "\n Please check again!");
 
@@ -124,26 +175,26 @@ class MainMgmt {
    * Draw graph with data import by user
    * @param data
    */
-  async drawGraphFromData(data){
+  async drawGraphFromData(data) {
     this.clearAll();
     // Store vertex types
     window.vertexTypesTmp = data.vertexTypes;
 
     // Validate content
     let errorContent = await this.validateGraphDataStructure(data);
-    if(errorContent) {
+    if (errorContent) {
       comShowMessage("Format or data in Data Graph Structure is corrupted. You should check it!");
       return;
     }
 
     // If still not import Vertex Type Definition then reset it.
-    if(!window.isImportVertexTypeDefine)
+    if (!window.isImportVertexTypeDefine)
       window.vertexTypes = null;
 
     // Validate vertex type
     let isMisMatch = await this.validateVertexTypesInGraph();
     // Now just show message warning for user. Not stop working
-    if(isMisMatch)
+    if (isMisMatch)
       comShowMessage("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
         "\n Please check again!");
 
@@ -178,13 +229,13 @@ class MainMgmt {
     // Rescan child of boundary to reset size
     arrBoundary.forEach(boundary => {
       const members = boundary.member;
-      members.forEach( mem => {
-        if(!mem.show)
+      members.forEach(mem => {
+        if (!mem.show)
           this.boundary.selectMemberVisible(boundary.id, mem, true);
       });
     });
 
-    if(!window.isImportVertexTypeDefine)
+    if (!window.isImportVertexTypeDefine)
       window.vertexTypes = data.vertexTypes;
 
     this.initMenuContext();
@@ -197,7 +248,7 @@ class MainMgmt {
    */
   async validateGraphDataStructure(data) {
     // Validate struct data
-    if(!data.vertex || !data.edge || !data.boundary || !data.position || !data.vertexTypes) {
+    if (!data.vertex || !data.edge || !data.boundary || !data.position || !data.vertexTypes) {
       return Promise.resolve(true);
     }
 
@@ -207,8 +258,7 @@ class MainMgmt {
     for (let vertex of vertices) {
       let vertexType = vertex.vertexType;
       // If vertex type not exit in embedded vertex type
-      if(!vertexTypes[vertexType])
-      {
+      if (!vertexTypes[vertexType]) {
         console.log("GraphDataStructure Vertex type in graph data not exit in embedded vertex type");
         return Promise.resolve(true);
       }
@@ -216,8 +266,7 @@ class MainMgmt {
       let keySource = Object.keys(vertex.data);
       let keyTarget = Object.keys(vertexTypes[vertexType]);
       // Check length key
-      if(this.checkLengthMisMatch(keySource, keyTarget))
-      {
+      if (this.checkLengthMisMatch(keySource, keyTarget)) {
         console.log("GraphDataStructure length is different");
         return Promise.resolve(true);
       }
@@ -225,7 +274,7 @@ class MainMgmt {
       // Check mismatch key
       let flag = await this.checkKeyMisMatch(keySource, keyTarget);
 
-      if(flag) {
+      if (flag) {
         console.log("GraphDataStructure Key vertex at source not exit in target");
         return Promise.resolve(true);
       }
@@ -239,8 +288,7 @@ class MainMgmt {
    * with Vertex Type Definition
    */
   async validateVertexTypesInGraph() {
-    if(!window.vertexTypes || !window.vertexTypesTmp)
-    {
+    if (!window.vertexTypes || !window.vertexTypesTmp) {
       console.log("Targe or soruce is null");
       return Promise.resolve(false);
     }
@@ -248,8 +296,7 @@ class MainMgmt {
     // Compare length
     let vertexUse = Object.keys(window.vertexTypes);
     let vertexTmp = Object.keys(window.vertexTypesTmp);
-    if(this.checkLengthMisMatch(vertexUse, vertexTmp))
-    {
+    if (this.checkLengthMisMatch(vertexUse, vertexTmp)) {
       console.log("Length is different");
       return Promise.resolve(true);
     }
@@ -257,7 +304,7 @@ class MainMgmt {
     // Check key exit
     let flag = await this.checkKeyMisMatch(vertexUse, vertexTmp);
 
-    if(flag){
+    if (flag) {
       console.log("Key vertex at source not exit in target");
       return Promise.resolve(true);
     }
@@ -266,14 +313,13 @@ class MainMgmt {
     for (let key of vertexUse) {
       let src = Object.keys(window.vertexTypes[key]);
       let tgt = Object.keys(window.vertexTypesTmp[key]);
-      if(this.checkLengthMisMatch(src, tgt))
-      {
+      if (this.checkLengthMisMatch(src, tgt)) {
         console.log("Length of vertex element is different");
         return Promise.resolve(true);
       }
 
       let misMatchKey = await this.checkKeyMisMatch(src, tgt);
-      if(misMatchKey) {
+      if (misMatchKey) {
         console.log("Key of vertex element is different");
         return Promise.resolve(true);
       }
@@ -300,8 +346,7 @@ class MainMgmt {
   checkKeyMisMatch(src, tgt) {
     let misMatch = false;
     src.forEach(key => {
-      if(tgt.indexOf(key) < 0)
-      {
+      if (tgt.indexOf(key) < 0) {
         misMatch = true;
       }
     });
@@ -367,19 +412,21 @@ class MainMgmt {
     this.edge.updatePathConnect(edgeId, opt);
   }
 
-  // When a vertex|boundary move
-  // Resize if any boundary with size smaller than vertex|boundary size
+  /**
+   * When a vertex|boundary move
+   * Resize if any boundary with size smaller than vertex|boundary size
+   */
   reSizeBoundaryAsObjectDragged(infos) {
     // Get box object
     const {height, width} = this.objectUtils.getBBoxObject(infos.id);
 
     d3.select("svg").selectAll(`.${HTML_BOUNDARY_CONTAINER_CLASS}`).each((d, i, node) => {
-      if(d.id != infos.id && !d.parent){
+      if (d.id != infos.id && !d.parent) {
         let boundaryId = d.id;
         let bBox = this.objectUtils.getBBoxObject(boundaryId);
-        if(height >= bBox.height)
+        if (height >= bBox.height)
           this.boundary.setHeightBoundary(boundaryId, height + 43);
-        if(width >= bBox.width)
+        if (width >= bBox.width)
           this.boundary.setWidthBoundary(boundaryId, width + 15);
       }
     });
@@ -396,17 +443,17 @@ class MainMgmt {
       let boundaryMembers = d.member;
 
       boundaryMembers.forEach(member => {
-        if(member.show) {
+        if (member.show) {
           let objectId = member.id;
           const {width, height} = this.objectUtils.getBBoxObject(objectId);
-          orderObject ++;
+          orderObject++;
           hBeforeElements += height;
-          if(width > wBoundary)
-            wBoundary = width + (member.type === "B" ? 10: 0);
+          if (width > wBoundary)
+            wBoundary = width + (member.type === "B" ? 10 : 0);
         }
       });
 
-      let hBoundary = hBeforeElements + marginTop*orderObject;
+      let hBoundary = hBeforeElements + marginTop * orderObject;
       this.boundary.setHeightBoundary(boundaryId, hBoundary);
       this.boundary.setWidthBoundary(boundaryId, wBoundary);
     });
@@ -424,7 +471,7 @@ class MainMgmt {
     d3.select("svg").selectAll(`.${HTML_BOUNDARY_CONTAINER_CLASS}`).each((d, i, node) => {
       // The condition d.id != srcInfos.id user for check inside boundary
       // But it not affect to check inside vertex
-      if(!d.parent && d.id != srcInfos.id) {
+      if (!d.parent && d.id != srcInfos.id) {
         // Calculate box for boundary
         let boundaryId = d.id;
         let xTar = d.x;
@@ -434,7 +481,7 @@ class MainMgmt {
         let wBTar = yTar + bBoxTar.height;
 
         // Condition drop inside a boundary
-        if((xSrc >= xTar) && (ySrc >= yTar) && (hBSrc <= hBTar) && (wBSrc <= wBTar) ){
+        if ((xSrc >= xTar) && (ySrc >= yTar) && (hBSrc <= hBTar) && (wBSrc <= wBTar)) {
           let member = {id: srcInfos.id, type, show: true};
           this.boundary.addMemberToBoundary(boundaryId, member);
           srcInfos.parent = boundaryId;
@@ -443,7 +490,7 @@ class MainMgmt {
     });
   }
 
-  // Check drag outside parent
+  // Check drag outside boundary
   checkDragObjectOutsideBoundary(srcInfos) {
     // Get box object
     const {height, width} = this.objectUtils.getBBoxObject(srcInfos.id);
@@ -460,7 +507,7 @@ class MainMgmt {
     let yParent = y + pBox.height;
 
     // Check drag outside a boundary
-    if((xSrc < x) || (ySrc < y) || (hBSrc > xParent) || (wBSrc > yParent) ){
+    if ((xSrc < x) || (ySrc < y) || (hBSrc > xParent) || (wBSrc > yParent)) {
       this.boundary.removeMemberFromBoundary(parentId, srcInfos.id);
       srcInfos.parent = null;
     }
@@ -480,7 +527,7 @@ class MainMgmt {
    * Clear all element on graph
    * And reinit marker def
    */
-  clearAll(){
+  clearAll() {
     // Delete all element inside SVG
     d3.select("svg").selectAll("*").remove();
 
@@ -490,7 +537,224 @@ class MainMgmt {
     this.dataContainer.edge = [];
     this.initMarkerArrow();
     this.initPathConnect();
+    this.initEdgePath();
   }
-}
+
+  showReduced() {
+    window.showReduced = true;
+    let edge = this.dataContainer.edge;
+    let boundary = this.dataContainer.boundary;
+    /** Boundary **/
+    d3.selectAll('.groupBoundary').classed("hide", true); // Set Hide all Boundary
+    /** vertex **/
+    d3.selectAll('.groupVertex').classed("hide", true);  // Set Hide all Vertex
+    d3.selectAll('.drag_connect').classed("hide", true); // Set Hide all Circle
+    d3.selectAll('.property').classed("hide", true);  // Set Hide all property on the Vertex
+    let lstVer = [], lstProp = [];
+    // Get vertex and property can display
+    edge.forEach((edgeItem) => {
+      if (lstVer.indexOf(edgeItem.source.vertexId) === -1) {
+        lstVer.push(edgeItem.source.vertexId);
+      }
+      if (lstVer.indexOf(edgeItem.target.vertexId) === -1) {
+        lstVer.push(edgeItem.target.vertexId);
+      }
+      lstProp.push(
+        {
+          vert: edgeItem.source.vertexId,
+          prop: edgeItem.source.prop
+        },
+        {
+          vert: edgeItem.target.vertexId,
+          prop: edgeItem.target.prop
+        }
+      );
+    });
+    lstVer.forEach((vertexItem) => {
+      let arrPropOfVertex = [];
+      lstProp.forEach((propItem) => {
+        if (propItem.vert === vertexItem) {
+          if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
+            arrPropOfVertex.push(propItem.prop);
+          }
+        }
+      });
+      d3.select(`#${vertexItem}`).classed("hide", false); // Enable Vertex
+      arrPropOfVertex.forEach((propItem) => {
+        d3.select(`#${vertexItem}`).select(".property[prop='" + propItem + "']").classed("hide", false);
+      });
+      this.vertex.updatePathConnect(vertexItem); // Re-draw edge
+      /* Update Circle */
+      d3.select(`#${vertexItem}`).selectAll('.drag_connect:first-child').classed("hide", false);
+      this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem}`));
+    });
+    /** Boundary **/
+    // Set Display Boundary
+    boundary.forEach((bdrItem) => {
+      bdrItem.member.forEach((memberItem) => {
+        if (!d3.select(`#${memberItem.id}`).classed("hide")) {
+          d3.select(`#${bdrItem.id}`).classed("hide", false);
+        }
+      });
+    });
+  }
+
+  showFull() {
+    window.showReduced = false;
+    /** Boundary **/
+    d3.selectAll('.groupBoundary').classed("hide", false);
+    /** Vertex **/
+    d3.selectAll('.drag_connect.reduced').remove();
+    d3.selectAll('.groupVertex').classed("hide", false);
+    d3.selectAll('.property').classed("hide", false);
+    d3.selectAll('.drag_connect').classed("hide", false);
+    $(".edge ").fadeIn();
+    // Re-draw edge
+    this.dataContainer.vertex.forEach(v => {
+      this.vertex.updatePathConnect(v.id);
+    });
+  }
+
+  /**
+   * Start drag point connect
+   * @param self
+   * @returns {Function}
+   */
+  dragPointStarted(self) {
+    return function () {
+      window.udpateEdge = true;
+    }
+  }
+
+  /**
+   * Drag connect belong to mouse position
+   * @param self
+   * @returns {Function}
+   */
+  draggedPoint(self) {
+    return function () {
+      if (!window.udpateEdge)
+        return;
+
+      let pathStr = null;
+      let x = d3.mouse(d3.select('svg').node())[0];
+      let y = d3.mouse(d3.select('svg').node())[1];
+      const type = d3.select(this).attr("type");
+      if (type === "O") {
+        let px = Number(d3.select("#pointEnd").attr("cx"));
+        let py = Number(d3.select("#pointEnd").attr("cy"));
+        pathStr = createPath({x: x - 1, y: y - 1}, {x: px, y: py});
+      } else {
+        let px = Number(d3.select("#pointStart").attr("cx"));
+        let py = Number(d3.select("#pointStart").attr("cy"));
+        pathStr = createPath({x: px, y: py}, {x: x - 1, y: y - 1});
+      }
+
+      d3.select('#edgePath').attr('d', pathStr);
+      d3.select('#edgePath').style("display", "block");
+    }
+  }
+
+  /**
+   * End creation connect if destination is connect point
+   * @param self
+   * @returns {Function}
+   */
+  dragPointEnded(self) {
+    return function () {
+      if (d3.event.sourceEvent.target.tagName == "circle" && this != d3.event.sourceEvent.target) {
+        window.udpateEdge = false;
+        const type = d3.select(this).attr("type");
+        let refId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
+        let prop = d3.select(d3.event.sourceEvent.target).attr("prop");
+        let edgeId = d3.select('#edgePath').attr('ref');
+        let edgeInfo = self.objectUtils.getEdgeInfoById(edgeId);
+        const refObj = self.vertex.getCoordinateProperty(refId, prop, type);
+        refObj.vertexId = refId;
+        refObj.prop = prop;
+        type === "O" ? self.edge.updatePathConnect(edgeId, {source: refObj}) : self.edge.updatePathConnect(edgeId, {target: refObj});
+
+        d3.select('#groupEdgePoint').style("display", "none");
+        d3.select("#groupEdgePoint").moveToBack();
+      }
+
+      d3.select('#edgePath').style("display", "none");
+      d3.select("#edgePath").moveToBack();
+    }
+  }
+
+  showReduced() {
+    window.showReduced = true;
+    let edge = this.dataContainer.edge;
+    let boundary = this.dataContainer.boundary;
+    /** vertex **/
+    d3.selectAll('.groupVertex').classed("hide", true);  // Set Hide all Vertex
+    d3.selectAll('.drag_connect').classed("hide", true); // Set Hide all Circle
+    d3.selectAll('.property').classed("hide", true);  // Set Hide all property on the Vertex
+    let lstVer = [], lstProp = [];
+    // Get vertex and property can display
+    edge.forEach((edgeItem) => {
+      if (lstVer.indexOf(edgeItem.source.vertexId) === -1) {
+        lstVer.push(edgeItem.source.vertexId);
+      }
+      if (lstVer.indexOf(edgeItem.target.vertexId) === -1) {
+        lstVer.push(edgeItem.target.vertexId);
+      }
+      lstProp.push({
+        vert: edgeItem.source.vertexId,
+        prop: edgeItem.source.prop
+      }, {vert: edgeItem.target.vertexId, prop: edgeItem.target.prop});
+    });
+    lstVer.forEach((vertexItem) => {
+      let arrPropOfVertex = [];
+      lstProp.forEach((propItem) => {
+        if (propItem.vert === vertexItem) {
+          if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
+            arrPropOfVertex.push(propItem.prop);
+          }
+        }
+      });
+      d3.select(`#${vertexItem}`).classed("hide", false); // Enable Vertex
+      arrPropOfVertex.forEach((propItem) => {
+        d3.select(`#${vertexItem}`).select(".property[prop='" + propItem + "']").classed("hide", false);
+      });
+      this.vertex.updatePathConnect(vertexItem); // Re-draw edge
+      /* Update Circle */
+      d3.select(`#${vertexItem}`).selectAll('.drag_connect:first-child').classed("hide", false);
+      this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem}`));
+    });
+    this.vertex.resetSize();
+    /** Boundary **/
+    // Set Height Boundary
+    boundary.forEach((bdrItem) => {
+      this.boundary.reorderPositionMember(bdrItem.id);
+      this.boundary.resizeParentBoundary(bdrItem.id);
+    });
+    this.resetSizeBoundary();
+
+  }
+
+  showFull() {
+    let boundary = this.dataContainer.boundary;
+    window.showReduced = false;
+    /** Vertex **/
+    d3.selectAll('.drag_connect.reduced').remove();
+    d3.selectAll('.groupVertex').classed("hide", false);
+    d3.selectAll('.property').classed("hide", false);
+    d3.selectAll('.drag_connect').classed("hide", false);
+    $(".edge ").fadeIn();
+    // Re-draw edge
+    this.dataContainer.vertex.forEach(v => {
+      this.vertex.updatePathConnect(v.id);
+    });
+    this.vertex.resetSize();
+    /** Boundary **/
+    // Set Height Boundary
+    boundary.forEach((bdrItem) => {
+      this.boundary.reorderPositionMember(bdrItem.id);
+    });
+    this.resetSizeBoundary();
+  }
+};
 
 export default MainMgmt;

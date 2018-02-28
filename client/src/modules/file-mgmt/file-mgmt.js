@@ -11,14 +11,14 @@ const HTML_FILE_TYPE_ID = 'fileType';
 const HTML_BTN_EXPORT_FILE_ID = 'btnExportFile';
 const HTML_SELECTOR_MODE_GRPH = 'input:radio[name=graphMode]';
 
-class FileMgmt{
-  constructor(props){
+class FileMgmt {
+  constructor(props) {
     this.mainMgmt = props.mainMgmt;
     this.dataContainer = props.dataContainer;
     this.initButtonEvent();
   }
 
-  initButtonEvent(){
+  initButtonEvent() {
     $(`#${HTML_INPUT_FILE_ID}`).change((event) => {
       this.readJsonFile(event);
     });
@@ -38,25 +38,24 @@ class FileMgmt{
    * or  read content file Graph Data Structure
    * @param event
    */
-  readJsonFile(event){
+  readJsonFile(event) {
     let file = event.target.files[0];
-    if(!file)
+    if (!file)
       return;
 
     let fileReader = new FileReader();
     fileReader.onload = () => {
-      try
-      {
+      try {
         let data = JSON.parse(fileReader.result);
-        if($(`#${HTML_FILE_TYPE_ID}`).val() === "VERTEX_TYPE"){
+        if ($(`#${HTML_FILE_TYPE_ID}`).val() === "VERTEX_TYPE") {
           // Load json data from Vertex Type Definition and append to Menu Vertex
           this.mainMgmt.reloadVertexTypes(data);
-        }else{
+        } else {
           // Load json data from Graph Data Structure and draw to Screen
           this.mainMgmt.drawGraphFromData(data);
         }
       }
-      catch (ex){
+      catch (ex) {
         comShowMessage("Read file error!");
       }
       finally {
@@ -66,17 +65,15 @@ class FileMgmt{
     fileReader.readAsText(file);
   }
 
-  writeJsonFileGraph(){
+  writeJsonFileGraph() {
     let fileName = $("#outFile").val();
-    if(!fileName)
-    {
+    if (!fileName) {
       comShowMessage("Please input file name");
       return;
     }
 
     this.getContentGraphAsJson().then(content => {
-      if(!content)
-      {
+      if (!content) {
         comShowMessage("No content to export");
         return;
       }
@@ -145,7 +142,7 @@ class FileMgmt{
     return Promise.resolve(dataContent);
   }
 
-  clearInputFile(){
+  clearInputFile() {
     $(`#${HTML_INPUT_FILE_ID}`).val(null);
   }
 

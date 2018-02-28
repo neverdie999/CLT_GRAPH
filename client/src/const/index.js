@@ -25,9 +25,9 @@ export const INTERACTION_TP = {
 }
 
 export const INTERACTION_TP_LST = [
-  {value: 'FULL', name:'Full'},
-  {value: 'LEFT', name:'Left'},
-  {value: 'RIGHT', name:'Right'}
+  {value: 'FULL', name: 'Full'},
+  {value: 'LEFT', name: 'Left'},
+  {value: 'RIGHT', name: 'Right'}
 ];
 
 export const EDGE_LINE_TP = [
@@ -69,3 +69,5 @@ window.disabledMenu = true; // Not show menu context
 window.vertexTypes = null; // Vertex types use in current graph
 window.vertexTypesTmp = null; // Vertex types export in file Graph Data Structure => Used to validate
 window.isImportVertexTypeDefine = false; // If vertex type define was importted.
+window.showReduced = false; // Determine show full or reduced
+window.udpateEdge = false; // Define state update connect (edge) exited.
