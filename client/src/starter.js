@@ -1,5 +1,6 @@
 import MainMgmt from './modules/main-mgmt/main-mgmt';
 import ObjectUtils from './common/utilities/object.ult';
+import {cancleSelectedPath} from './common/utilities/common.ult';
 
 import * as d3 from 'd3';
 import {
@@ -9,14 +10,14 @@ import {
 } from './const/index';
 import './styles/index.scss';
 
-d3.selection.prototype.moveToFront = function() {
-  return this.each(function(){
+d3.selection.prototype.moveToFront = function () {
+  return this.each(function () {
     this.parentNode.appendChild(this);
   });
 };
 
-d3.selection.prototype.moveToBack = function() {
-  this.each(function() {
+d3.selection.prototype.moveToBack = function () {
+  this.each(function () {
     this.parentNode.firstChild && this.parentNode.insertBefore(this, this.parentNode.firstChild);
   });
 };
@@ -26,7 +27,7 @@ class Starter {
     this.initialize();
   }
 
-  initialize(){
+  initialize() {
     this.dataContainer = {
       vertex: [],
       boundary: [],
@@ -36,7 +37,15 @@ class Starter {
 
     this.svgSelector = d3.select(`#${HTML_ALGETA_CONTAINER_ID}`)
       .append("svg")
-      .attr("class","svg")
+      .on("mouseup", function() {
+        let mouse = d3.mouse(this);
+        let elem = document.elementFromPoint(mouse[0], mouse[1]);
+        // console.log("mouseup", elem.tagName)
+        if(!elem.tagName || elem.tagName != 'path') {
+          cancleSelectedPath();
+        }
+      })
+      .attr("class", "svg")
       .attr("height", GRAPH_HEIGHT)
       .attr("width", GRAPH_WIDTH);
 
@@ -53,7 +62,7 @@ class Starter {
      * @type {MainMgmt}
      */
     this.mainMgmt = new MainMgmt({
-      svgSelector : this.svgSelector,
+      svgSelector: this.svgSelector,
       objectUtils: this.objectUtils,
       dataContainer: this.dataContainer
     });

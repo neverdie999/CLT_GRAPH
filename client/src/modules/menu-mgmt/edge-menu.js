@@ -1,23 +1,24 @@
 import * as d3 from 'd3';
-class EdgeMenu{
-  constructor(props){
+
+class EdgeMenu {
+  constructor(props) {
     this.selector = props.selector;
     this.edge = props.edge;
     this.initEdgeMenu();
   }
 
-  initEdgeMenu(){
+  initEdgeMenu() {
     // Context menu for Edge
     let edgeMgmt = this.edgeMgmt;
     $.contextMenu({
       selector: this.selector,
+      delay: 300,
       zIndex: 100,
       build: ($trigger, e) => {
         return {
           callback: (key, options) => {
             let edgeId = options.$trigger.attr('id');
-            switch (key)
-            {
+            switch (key) {
               case "openPopupEditType":
                 this.edge.openPopEditType(edgeId);
                 break;
@@ -50,8 +51,16 @@ class EdgeMenu{
               value: "",
               disabled: window.disabledCommand
             },
-            "openPopupEditType": {name: "Edit line style", icon: "fa-pencil-square-o", disabled: window.disabledCommand},
-            "removeEdge": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
+            "openPopupEditType": {
+              name: "Edit line style",
+              icon: "fa-pencil-square-o",
+              disabled: window.disabledCommand
+            },
+            "removeEdge": {
+              name: "Delete",
+              icon: "fa-times",
+              disabled: window.disabledCommand
+            },
           },
           events: {
             show: (opt) => {
@@ -69,7 +78,7 @@ class EdgeMenu{
   }
 
   onEdgeMenuHide(self) {
-    return function(opt) {
+    return function (opt) {
       let $this = this;
       $.contextMenu.getInputValues(opt, $this.data());
 

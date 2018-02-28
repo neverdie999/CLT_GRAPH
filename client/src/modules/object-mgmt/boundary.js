@@ -5,10 +5,10 @@ import {
 } from '../../const/index';
 
 import PopUtils from '../../common/utilities/popup.ult';
-import {generateObjectId} from '../../common/utilities/common.ult';
+import {generateObjectId, cancleSelectedPath} from '../../common/utilities/common.ult';
 
 class Boundary {
-  constructor(props){
+  constructor(props) {
     this.svgSelector = props.svgSelector;
     this.dataContainer = props.dataContainer;
     this.objectUtils = props.objectUtils;
@@ -20,7 +20,7 @@ class Boundary {
       .on("end", this.dragBoundaryEnd(this));
   }
 
-  async createBoundary(options = {}){
+  async createBoundary(options = {}) {
     let boundaryId = options.id ? options.id : generateObjectId('B');
     let memeber = options.member || [];
     let parent = options.parent || null;
@@ -72,19 +72,21 @@ class Boundary {
       .attr("height", height)
       .style("border", "solid 1px #652a82")
       .style("font-size", "13px")
+      // .style("background", "#ffffff")
       .style("background", "none")
       .append("xhtml:div")
       .attr("class", "boundary_content")
       .html(`
           <div class="boundary_header">
-            <p id="${boundaryId}Header" class="header_name header_boundary" style="width: 100%; height: ${BOUNDARY_ATTR_SIZE.HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
+            <p id="${boundaryId}Header" class="header_name header_boundary" style="width: 100%;
+             height: ${BOUNDARY_ATTR_SIZE.HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
           </div>
       `);
 
     this.initEventDrag();
   }
 
-  initEventDrag(){
+  initEventDrag() {
     // Call event drag for all boundary exit.
     this.svgSelector.selectAll(`.${HTML_BOUNDARY_CONTAINER_CLASS}`)
       .data(this.dataContainer.boundary)
@@ -92,36 +94,38 @@ class Boundary {
   }
 
   dragBoundaryStart(self) {
-    return function(d) {
+    return function (d) {
+      if (window.udpateEdge)
+        cancleSelectedPath();
       // d3.select(this).classed("active", true);
       d3.event.sourceEvent.stopPropagation();
     }
   }
 
   dragBoundary(self) {
-    return function(d) {
+    return function (d) {
       // Update poition object in this.dataContainer.boundary
       d.x = d3.event.x;
       d.y = d3.event.y;
       // Transform group
-      d3.select(this).attr("transform", (d,i) => {
-        return "translate(" + [ d3.event.x, d3.event.y ] + ")"
+      d3.select(this).attr("transform", (d, i) => {
+        return "translate(" + [d3.event.x, d3.event.y] + ")"
       });
 
       // Update position of child element
-      if(d.member.length > 0)
+      if (d.member.length > 0)
         self.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
 
-      if(!d.parent){
+      if (!d.parent) {
         self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
       }
     }
   }
 
   dragBoundaryEnd(self) {
-    return function(d) {
+    return function (d) {
       // d3.select(this).classed("active", false);
-      if(d.parent) {
+      if (d.parent) {
         self.mainMgmt.checkDragObjectOutsideBoundary(d);
       } else {
         self.mainMgmt.checkDragObjectInsideBoundary(d, "B");
@@ -137,7 +141,7 @@ class Boundary {
   removeBoundary(boundaryId) {
     let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
 
-    if(boundaryInfo.parent)
+    if (boundaryInfo.parent)
       this.removeMemberFromBoundary(boundaryInfo.parent, boundaryId);
     // Remove from DOM
     d3.select(`#${boundaryId}`).remove();
@@ -160,7 +164,7 @@ class Boundary {
     let {parent} = this.objectUtils.getBoundaryInfoById(boundaryId);
 
     // Case that delete child boundary nested in boundary
-    if(!d3.select(`#${parent}`).empty())
+    if (!d3.select(`#${parent}`).empty())
       this.removeMemberFromBoundary(parent, boundaryId);
 
     // Remove from DOM
@@ -203,31 +207,31 @@ class Boundary {
 
     // Get child of boundary
     const {x, y, member} = this.objectUtils.getBoundaryInfoById(boundaryId)
-    if(!pos) {
-      pos = {x : x, y : y};
+    if (!pos) {
+      pos = {x: x, y: y};
     }
     let boundaryMembers = member;
 
     boundaryMembers.forEach(member => {
-      if(member.show){
+      if (member.show) {
         let objectId = member.id;
         const {width, height} = this.objectUtils.getBBoxObject(objectId);
         // Vertex postion center of boundary
-        let position = {x: pos.x + 5, y: pos.y + hBeforeElements + marginTop*orderObject };
-        if(member.type === "V"){
+        let position = {x: pos.x + 5, y: pos.y + hBeforeElements + marginTop * orderObject};
+        if (member.type === "V") {
           this.mainMgmt.setVertexPosition(objectId, position);
         } else {
           this.setBoundaryPosition(objectId, position);
         }
 
-        orderObject ++;
+        orderObject++;
         hBeforeElements += height;
-        if(width > wBoundary)
-          wBoundary = width + (member.type === "B" ? 10: 0);
+        if (width > wBoundary)
+          wBoundary = width + (member.type === "B" ? 10 : 0);
       }
     });
 
-    let hBoundary = hBeforeElements + marginTop*orderObject;
+    let hBoundary = hBeforeElements + marginTop * orderObject;
     this.setHeightBoundary(boundaryId, hBoundary);
     this.setWidthBoundary(boundaryId, wBoundary);
   }
@@ -248,6 +252,7 @@ class Boundary {
     if (boundaryObj.parent)
       this.resizeParentBoundary(boundaryObj.parent);
   }
+
   /**
    * When unslect/select a boundary (in nested boundary) then set it hidden/show
    * and set all child hidden/show
@@ -263,7 +268,7 @@ class Boundary {
     members.forEach(member => {
       this.objectUtils.setBoundaryMemberStatus(boundaryId, member.id, status)
       d3.select(`#${member.id}`).classed('hidden-object', !status);
-      if(member.type === "B")
+      if (member.type === "B")
         this.setObjectShowHide(member.id, status);
     });
     // this.reorderPositionMember(boundaryId);
@@ -284,20 +289,20 @@ class Boundary {
     let boundaryMembers = member;
 
     boundaryMembers.forEach(member => {
-      if(member.show) {
+      if (member.show) {
         let objectId = member.id;
         const {width, height} = this.objectUtils.getBBoxObject(objectId);
-        orderObject ++;
+        orderObject++;
         hBeforeElements += height;
-        if(width > wBoundary)
-          wBoundary = width + (member.type === "B" ? 10: 0);
+        if (width > wBoundary)
+          wBoundary = width + (member.type === "B" ? 10 : 0);
       }
     });
 
-    let hBoundary = hBeforeElements + marginTop*orderObject;
+    let hBoundary = hBeforeElements + marginTop * orderObject;
     this.setHeightBoundary(boundaryId, hBoundary);
     this.setWidthBoundary(boundaryId, wBoundary);
-    if(parent)
+    if (parent)
       this.resizeParentBoundary(parent);
   }
 
@@ -308,7 +313,7 @@ class Boundary {
    */
   setHeightBoundary(boundaryId, height) {
     // Set height for boundary
-    if(height < BOUNDARY_ATTR_SIZE.BOUND_HEIGHT)
+    if (height < BOUNDARY_ATTR_SIZE.BOUND_HEIGHT)
       height = BOUNDARY_ATTR_SIZE.BOUND_HEIGHT;
     $(`#${boundaryId}Content`).attr('height', height);
     // Update data
@@ -323,7 +328,7 @@ class Boundary {
    */
   setWidthBoundary(boundaryId, width) {
     // Set width for boundary
-    if(width < BOUNDARY_ATTR_SIZE.BOUND_WIDTH)
+    if (width < BOUNDARY_ATTR_SIZE.BOUND_WIDTH)
       width = BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
     $(`#${boundaryId}Content`).attr('width', width);
     $(`#${boundaryId}Button`).attr('x', width);
@@ -340,7 +345,7 @@ class Boundary {
    * Member format
    * {id: '', type: [V, B], show: true}
    */
-  addMemberToBoundary (boundaryId, child) {
+  addMemberToBoundary(boundaryId, child) {
     const {member} = this.objectUtils.getBoundaryInfoById(boundaryId);
     member.push(child);
     this.reorderPositionMember(boundaryId);
@@ -372,8 +377,8 @@ class Boundary {
     boundaryInfo.x = position.x;
     boundaryInfo.y = position.y;
 
-    d3.select(`#${boundaryId}`).attr("transform", (d,i) => {
-      return "translate(" + [ position.x, position.y ] + ")"
+    d3.select(`#${boundaryId}`).attr("transform", (d, i) => {
+      return "translate(" + [position.x, position.y] + ")"
     });
 
     this.reorderPositionMember(boundaryId, position);
@@ -388,7 +393,7 @@ class Boundary {
     const {member} = this.objectUtils.getBoundaryInfoById(boundaryId)
     member.forEach(mem => {
       let objectId = mem.id;
-      if(mem.type === "V"){
+      if (mem.type === "V") {
         let info = this.objectUtils.getVertexInfoById(objectId);
         info.parent = null;
       } else {
@@ -408,7 +413,7 @@ class Boundary {
 
     member.forEach(mem => {
       let objectId = mem.id;
-      if(mem.type === "V"){
+      if (mem.type === "V") {
         this.mainMgmt.deleteVertex(objectId);
       } else {
         // Remove all child boundary
@@ -422,7 +427,7 @@ class Boundary {
    * boundaryCloneId, cloneMembers
    */
   cloneChildElementsBoundary(cloneId, cMembers = []) {
-    for(let i = 0; i < cMembers.length; i++){
+    for (let i = 0; i < cMembers.length; i++) {
       const member = cMembers[i];
       let objectId = member.id;
       if (member.type === "V") {
@@ -445,7 +450,7 @@ class Boundary {
         let child = {id: cBoundaryId, type: "B", show: true};
         this.createBoundary(cBoundary);
         this.addMemberToBoundary(cloneId, child);
-        if(members.length > 0)
+        if (members.length > 0)
           this.cloneChildElementsBoundary(cBoundaryId, members);
       }
     }
@@ -470,25 +475,24 @@ class Boundary {
       .append("input")
       .attr("maxlength", 20)
       .attr("class", "input-header-boundary")
-      .attr("value", function() {
+      .attr("value", function () {
         this.focus();
         return boundaryInfo.name;
       })
       .attr("style", `width: ${boundaryInfo.width - 10}px`)
-      .on("blur", function() {
+      .on("blur", function () {
         let newName = input.node().value;
-        if(newName){
+        if (newName) {
           that.setBoundaryName(boundaryId, newName);
         }
         parent.select(`#${boundaryId}Name`).remove();
       })
-      .on("keypress", function() {
+      .on("keypress", function () {
         // IE fix
         if (!d3.event)
           d3.event = window.event;
         let e = d3.event;
-        if (e.keyCode == 13)
-        {
+        if (e.keyCode == 13) {
           if (typeof(e.cancelBubble) !== 'undefined') // IE
             e.cancelBubble = true;
           if (e.stopPropagation)
@@ -496,7 +500,7 @@ class Boundary {
           e.preventDefault();
 
           let newName = input.node().value;
-          if(newName){
+          if (newName) {
             that.setBoundaryName(boundaryId, newName);
           }
           parent.select(`#${boundaryId}Name`).remove();
@@ -509,7 +513,7 @@ class Boundary {
    * @param boundaryId
    * @param boundaryId, info
    */
-  setBoundaryName (boundaryId, name) {
+  setBoundaryName(boundaryId, name) {
     const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
     boundaryInfo.name = name;
     d3.select(`#${boundaryId}Header`).text(name);

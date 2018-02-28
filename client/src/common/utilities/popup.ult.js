@@ -1,10 +1,9 @@
-
 class PopUtils {
   metSetShowPopup(options) {
     /**
      * Configure position, width for modal popup.
      */
-    if(!options.popupId){
+    if (!options.popupId) {
       return;
     }
     let popupId = options.popupId;
@@ -14,12 +13,12 @@ class PopUtils {
 
     // Set position popup center
     // Default is top center
-    if(options.position === 'center'){
+    if (options.position === 'center') {
       $(`#${popupId}` + ` .modal-dialog`).css("margin-top", Math.max(0, ($(window).height() - $('.modal-dialog').height()) / 4));
     }
 
     // Set width for modal.
-    if(options.width){
+    if (options.width) {
       $(`#${popupId}` + ` .modal-dialog`).css("width", options.width);
     }
   }
@@ -28,7 +27,7 @@ class PopUtils {
     /**
      * Hide modal popup.
      */
-    if(!options.popupId){
+    if (!options.popupId) {
       return;
     }
     $(`#${options.popupId}`).modal('hide');

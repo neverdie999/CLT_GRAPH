@@ -6,25 +6,24 @@ import {
   HTML_EDGE_CONTAINER_CLASS,
 } from '../../const/index';
 import _ from "lodash";
-import {generateObjectId, comShowMessage} from '../../common/utilities/common.ult';
+import {
+  generateObjectId
+  , comShowMessage
+  , cancleSelectedPath
+} from '../../common/utilities/common.ult';
 
 const HTML_EDGE_TYPE_ID = 'editEdgeType';
 const OPTIONS_EDGE_LINE_TYPE = 'edgeLineType';
 const OPTIONS_EDGE_ARROW_FLAG = 'edgeArrowFlag';
 const HTML_EDGE_FORM_ID = 'edgeForm';
 
-class Edge{
+class Edge {
   constructor(props) {
     this.svgSelector = props.svgSelector;
     this.dataContainer = props.dataContainer;
     this.objectUtils = props.objectUtils;
     this.bindEventForPopButton();
     this.originEdge = null;
-    // Init event drag
-    this.dragRegister = d3.drag()
-      .on("start", this.dragstarted)
-      .on("drag", this.dragged)
-      .on("end", this.dragended);
   }
 
   /**
@@ -43,7 +42,7 @@ class Edge{
     let type = options.type;
     let edgeId = options.id ? options.id : generateObjectId('E');
     // Default style is line solid with arrow at end.
-    let style = options.style ? options.style : {line:"solid", arrow: "Y"};
+    let style = options.style ? options.style : {line: "solid", arrow: "Y"};
     let note = options.note ? options.note : {originNote: '', middleNote: '', destNote: ''}; // Default note for Edge.
 
     // if (_.isEqual(source, target)) {
@@ -61,22 +60,39 @@ class Edge{
     };
 
     this.dataContainer.edge.push(edgeInfo);
+    let group = this.svgSelector.append("g");
     let pathStr = this.createPath(source, target);
-    let line = this.svgSelector.append("path")
+    group.append("path")
       .attr('d', pathStr)
       .attr("class", `${HTML_EDGE_CONTAINER_CLASS} edge solid`) // Default line type is solid
       .attr("id", edgeId)
       .attr('fill', 'none')
-      .attr("marker-end", "url(#arrow)"); // Make arrow at end path
+      .attr("marker-end", "url(#arrow)") // Make arrow at end path
+      .on("click", () => {
+        window.udpateEdge = true;
+        let currentPath = d3.select(d3.event.target).attr("d");
+        d3.select('#groupEdgePoint').style("display", "block");
+        d3.select('#edgePath').style("display", "block");
+        d3.select("#edgePath").attr("d", currentPath);
+        d3.select("#groupEdgePoint").moveToFront();
+        d3.select("#edgePath").moveToFront();
+        d3.select("#edgePath").attr("ref", edgeId);
+        d3.select("#pointStart")
+          .attr("cx", source.x)
+          .attr("cy", source.y);
+        d3.select("#pointEnd")
+          .attr("cx", target.x)
+          .attr("cy", target.y);
+      });
 
-    let originNote = this.svgSelector.append("text")
+    let originNote = group.append("text")
       .style("font-size", "12px")
       .attr("x", 5)   //Move the text from the start angle of the arc
       .attr("dy", -5); //Move the text down
-    let middleNote = this.svgSelector.append("text")
+    let middleNote = group.append("text")
       .style("font-size", "12px")
       .attr("dy", -5); //Move the text down
-    let destNote = this.svgSelector.append("text")
+    let destNote = group.append("text")
       .style("font-size", "12px")
       .attr("x", -5)   //Move the text from the start angle of the arc
       .attr("dy", -5); //Move the text down
@@ -105,9 +121,9 @@ class Edge{
       .attr("startOffset", "100%")
       .text(note.destNote);
 
-    window.creatingEdge = false;
-    window.removingEdge = false;
-    window.criterionNode = null;
+    // window.creatingEdge = false;
+    // window.removingEdge = false;
+    // window.criterionNode = null;
   }
 
   /**
@@ -146,7 +162,7 @@ class Edge{
     $(`#${OPTIONS_EDGE_LINE_TYPE}`).val(edgeInfo.style.line);
     $(`#${OPTIONS_EDGE_ARROW_FLAG}`).val(edgeInfo.style.arrow);
 
-    let options = {popupId : HTML_EDGE_TYPE_ID, position: 'center', width: 210}
+    let options = {popupId: HTML_EDGE_TYPE_ID, position: 'center', width: 210}
     PopUtils.metSetShowPopup(options);
   }
 
@@ -154,7 +170,7 @@ class Edge{
    * Close popup edit line type
    */
   closePopEdgeType() {
-    let options = {popupId : HTML_EDGE_TYPE_ID}
+    let options = {popupId: HTML_EDGE_TYPE_ID}
     PopUtils.metClosePopup(options);
     this.originEdge = null;
   }
@@ -172,6 +188,9 @@ class Edge{
     });
 
     this.dataContainer.edge = data;
+    // If edge seleted then delete so must be hidden edgePath, groupEdgePoint
+    if(window.udpateEdge)
+      cancleSelectedPath();
   }
 
   /**
@@ -179,7 +198,7 @@ class Edge{
    * @param source
    * @param target
    */
-  checkExistEdge(source, target){
+  checkExistEdge(source, target) {
 
   }
 
@@ -189,7 +208,7 @@ class Edge{
    * @param tar
    * @returns {string}
    */
-  createPath(src, tar){
+  createPath(src, tar) {
     let diff = {
       x: tar.x - src.x,
       y: tar.y - src.y
@@ -242,7 +261,7 @@ class Edge{
    */
   setEdgeNotes(edgeId, notes) {
     let edgeObj = this.objectUtils.getEdgeInfoById(edgeId);
-    if(!edgeObj)
+    if (!edgeObj)
       return;
     edgeObj.note = notes;
 
@@ -260,23 +279,27 @@ class Edge{
    * @param edgeId
    * @param options: object
    */
-  updatePathConnect(edgeId, options = {}){
-    if(!edgeId)
+  updatePathConnect(edgeId, options = {}) {
+    if (!edgeId)
       return;
     let edgeInfo = this.objectUtils.getEdgeInfoById(edgeId);
     let source = edgeInfo.source;
     let target = edgeInfo.target;
-    if(options.source){
+    if (options.source) {
       // Update coordinate source
-      source = options.source;
+      // source = options.source;
       edgeInfo.source.x = options.source.x;
       edgeInfo.source.y = options.source.y;
+      edgeInfo.source.vertexId = options.source.vertexId || source.vertexId;
+      edgeInfo.source.prop = options.source.prop || source.prop;
     }
-    if(options.target){
+    if (options.target) {
       // Update coordinate target
-      target = options.target;
+      // target = options.target;
       edgeInfo.target.x = options.target.x;
       edgeInfo.target.y = options.target.y;
+      edgeInfo.target.vertexId = options.target.vertexId || target.vertexId;
+      edgeInfo.target.prop = options.target.prop || target.prop;
     }
 
     let pathStr = this.createPath(source, target);

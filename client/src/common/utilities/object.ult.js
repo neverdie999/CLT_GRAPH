@@ -7,7 +7,7 @@ import {
 } from '../../const/index';
 
 class ObjectUtils {
-  constructor(props){
+  constructor(props) {
     this.dataContainer = props.dataContainer;
   }
 
@@ -27,7 +27,9 @@ class ObjectUtils {
    * @returns {*}
    */
   getVertexInfoById(vertexId) {
-    return _.find(this.dataContainer.vertex, (e) => { return e.id === vertexId; });
+    return _.find(this.dataContainer.vertex, (e) => {
+      return e.id === vertexId;
+    });
   }
 
   /**
@@ -35,11 +37,12 @@ class ObjectUtils {
    * @param vertexId: string, required
    */
   findEdgeStartFromVertex(vertexId) {
-    if(!vertexId)
+    if (!vertexId)
       return [];
 
-    return _.filter(this.dataContainer.edge, (e) =>
-      { return e.source.vertexId === vertexId; }
+    return _.filter(this.dataContainer.edge, (e) => {
+        return e.source.vertexId === vertexId;
+      }
     );
   }
 
@@ -48,11 +51,12 @@ class ObjectUtils {
    * @param vertexId: string, required
    */
   findEdgeConnectToVertex(vertexId) {
-    if(!vertexId)
+    if (!vertexId)
       return [];
 
-    return _.filter(this.dataContainer.edge, (e) =>
-      { return e.target.vertexId === vertexId; }
+    return _.filter(this.dataContainer.edge, (e) => {
+        return e.target.vertexId === vertexId;
+      }
     );
   }
 
@@ -75,8 +79,11 @@ class ObjectUtils {
    * @returns {*}
    */
   getEdgeInfoById(edgeId) {
-    return _.find(this.dataContainer.edge, (e) => { return e.id === edgeId; });
+    return _.find(this.dataContainer.edge, (e) => {
+      return e.id === edgeId;
+    });
   }
+
   /* Edge utils (E)*/
 
   /* Boundary utils (S)*/
@@ -86,7 +93,9 @@ class ObjectUtils {
    * @returns {*}
    */
   getBoundaryInfoById(boundaryId) {
-    return _.find(this.dataContainer.boundary, (e) => { return e.id === boundaryId; });
+    return _.find(this.dataContainer.boundary, (e) => {
+      return e.id === boundaryId;
+    });
   }
 
   /**
@@ -108,11 +117,14 @@ class ObjectUtils {
    */
   setBoundaryMemberStatus(boundaryId, childId, status) {
     const {member} = this.getBoundaryInfoById(boundaryId);
-    let select =  _.find(member, (e) => { return e.id === childId; });
-    if(select) {
+    let select = _.find(member, (e) => {
+      return e.id === childId;
+    });
+    if (select) {
       select.show = status;
     }
   }
+
   /* Boundary utils (E)*/
 }
 

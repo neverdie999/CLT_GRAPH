@@ -5,9 +5,11 @@
   cursor: crosshair;
   &:hover {
     stroke: #2795EE;
+    cursor: crosshair;
   }
   &:focus {
     stroke: #2795EE;
+    cursor: crosshair;
   }
 }
 
@@ -16,7 +18,15 @@
   stroke: black;
   stroke-width: 1;
   visibility: visible;
-  cursor: pointer;
+  //cursor: pointer;
+}
+
+.dummy-path {
+  display: none;
+  stroke: #2795EE;
+  stroke-width: 1;
+  visibility: visible;
+  cursor: default;
 }
 
 .solid{
