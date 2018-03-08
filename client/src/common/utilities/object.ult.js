@@ -68,6 +68,29 @@ class ObjectUtils {
     const obj = this.getVertexInfoById(vertexId);
     // Clone and return
     return Object.assign({}, obj);
+    // _.cloneDeep(value)
+  }
+
+  /**
+   * Find all path (edge, connect) start or end at this vertex
+   * @param vertexId
+   * @returns {Array}
+   */
+  findEdgeRelateToVertex(vertexId) {
+    if(!vertexId)
+      return [];
+
+    return _.filter(this.dataContainer.edge, (e) =>
+      { return e.target.vertexId === vertexId || e.source.vertexId === vertexId; }
+    );
+  }
+
+  checkExitEdgeConnectToVertex(vertexId) {
+    let numEdges = this.findEdgeRelateToVertex(vertexId);
+    if(numEdges.length)
+      return true;
+    else
+      return false;
   }
 
   /* Vertex utils (E)*/

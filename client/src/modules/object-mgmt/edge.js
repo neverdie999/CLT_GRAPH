@@ -60,6 +60,9 @@ class Edge {
     };
 
     this.dataContainer.edge.push(edgeInfo);
+
+    //append into edge group
+    // let group = d3.select("#groupE").append("g");
     let group = this.svgSelector.append("g");
     let pathStr = this.createPath(source, target);
     group.append("path")
@@ -181,7 +184,7 @@ class Edge {
    */
   removeEdge(edgeId) {
     // Remove from DOM
-    d3.select(`#${edgeId}`).remove();
+    d3.select(`#${edgeId}`).node().parentNode.remove();
     // Remove from data container
     let data = $.grep(this.dataContainer.edge, (e) => {
       return e.id != edgeId;
@@ -290,16 +293,20 @@ class Edge {
       // source = options.source;
       edgeInfo.source.x = options.source.x;
       edgeInfo.source.y = options.source.y;
-      edgeInfo.source.vertexId = options.source.vertexId || source.vertexId;
-      edgeInfo.source.prop = options.source.prop || source.prop;
+      // edgeInfo.source.vertexId = options.source.vertexId || source.vertexId;
+      edgeInfo.source.vertexId = options.source.vertexId;
+      // edgeInfo.source.prop = options.source.prop || source.prop;
+      edgeInfo.source.prop = options.source.prop;
     }
     if (options.target) {
       // Update coordinate target
       // target = options.target;
       edgeInfo.target.x = options.target.x;
       edgeInfo.target.y = options.target.y;
-      edgeInfo.target.vertexId = options.target.vertexId || target.vertexId;
-      edgeInfo.target.prop = options.target.prop || target.prop;
+      // edgeInfo.target.vertexId = options.target.vertexId || target.vertexId;
+      edgeInfo.target.vertexId = options.target.vertexId;
+      // edgeInfo.target.prop = options.target.prop || target.prop;
+      edgeInfo.target.prop = options.target.prop;
     }
 
     let pathStr = this.createPath(source, target);

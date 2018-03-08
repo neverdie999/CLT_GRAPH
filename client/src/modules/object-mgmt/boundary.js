@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import {
   HTML_BOUNDARY_CONTAINER_CLASS,
   BOUNDARY_ATTR_SIZE,
+  HTML_VERTEX_CONTAINER_CLASS,
 } from '../../const/index';
 
 import PopUtils from '../../common/utilities/popup.ult';
@@ -40,6 +41,8 @@ class Boundary {
 
     this.dataContainer.boundary.push(boundaryInfo);
 
+    // let group = d3.select("#groupB").append("g")
+    //append into boundary group
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", boundaryId)
@@ -64,7 +67,7 @@ class Boundary {
       .style("fill-opacity", ".5")
       .style("cursor", "pointer")
       .append("title")
-      .text("Right click to select member visible");
+      .text("Right click to select visible member");
 
     group.append("foreignObject")
       .attr("id", `${boundaryId}Content`)
@@ -190,6 +193,7 @@ class Boundary {
     cBoundary.id = cBoundaryId;
     cBoundary.x = cBoundary.x + 5;
     cBoundary.y = cBoundary.y + 5;
+    cBoundary.parent = null;
     await this.createBoundary(cBoundary);
     this.cloneChildElementsBoundary(cBoundaryId, cMembers);
   }
@@ -244,13 +248,39 @@ class Boundary {
     d3.select(`#${child.id}`).classed('hidden-object', !status);
     // Update status member boundary
     let boundaryObj = this.objectUtils.getBoundaryInfoById(boundaryId);
-    this.objectUtils.setBoundaryMemberStatus(boundaryId, child.id, status)
-    if (child.type === "B")
+    this.objectUtils.setBoundaryMemberStatus(boundaryId, child.id, status);
+    let edge = this.dataContainer.edge;
+    if (child.type === "V") {
+      // set Show|hide for edge
+      edge.forEach((edgeItem) => {
+        if (edgeItem.target.vertexId === child.id || edgeItem.source.vertexId === child.id) {
+          d3.select(`#${edgeItem.id}`).classed("hide", !status);
+        }
+      });
+    }
+
+    if (child.type === "B") {
       this.setObjectShowHide(child.id, status);
+      // set Show|hide for edge
+      let arrVertex = [];
+      let lstVertexAll = this.dataContainer.vertex;
+      lstVertexAll.forEach((vertexItem) => {
+        if (vertexItem.parent && vertexItem.parent === child.id) {
+          arrVertex.push(vertexItem.id);
+        }
+      });
+      edge.forEach((edgeItem) => {
+        if (arrVertex.indexOf(edgeItem.target.vertexId) !== -1 || arrVertex.indexOf(edgeItem.source.vertexId) !== -1) {
+          d3.select(`#${edgeItem.id}`).classed("hide", !status);
+        }
+      });
+    }
 
     this.reorderPositionMember(boundaryId);
-    if (boundaryObj.parent)
+    if (boundaryObj.parent) {
       this.resizeParentBoundary(boundaryObj.parent);
+      this.reorderPositionMember(boundaryObj.parent);
+    }
   }
 
   /**
@@ -358,12 +388,15 @@ class Boundary {
    * @param objectId
    */
   removeMemberFromBoundary(boundaryId, objectId) {
-    const {member} = this.objectUtils.getBoundaryInfoById(boundaryId);
+    const {member, parent} = this.objectUtils.getBoundaryInfoById(boundaryId);
     let data = _.remove(member, (e) => {
       return e.id === objectId;
     });
+    // Resize parent and childs of parent
     this.reorderPositionMember(boundaryId);
     this.resizeParentBoundary(boundaryId);
+    if(parent)
+      this.removeMemberFromBoundary(parent);
   }
 
   /**
@@ -518,6 +551,176 @@ class Boundary {
     boundaryInfo.name = name;
     d3.select(`#${boundaryId}Header`).text(name);
   }
+
+  /**
+   * Move boundary to front
+   * @param selectorBoundaryGroup
+   * @param boundaryId
+   * @param dataContainerBoundary
+   * @param dataContainerVertex
+   */
+  moveToFrontBoundary(selectorBoundaryGroup, boundaryId, dataContainerBoundary, dataContainerVertex) {
+    d3.select(selectorBoundaryGroup).moveToFront(boundaryId, dataContainerBoundary);
+
+    if (this.checkHasMember(dataContainerBoundary, boundaryId)) {
+      this.moveMemberToFront(selectorBoundaryGroup, dataContainerVertex, dataContainerBoundary, boundaryId);
+    }
+  }
+
+  /**
+   * Move boundary to back
+   * @param selectorBoundaryGroup
+   * @param boundaryId
+   * @param dataContainerBoundary
+   * @param dataContainerVertex
+   */
+  moveToBackBoundary(selectorBoundaryGroup, boundaryId, dataContainerBoundary, dataContainerVertex) {
+    if (this.checkHasMember(dataContainerBoundary, boundaryId)) {
+      this.moveMemberToBack(selectorBoundaryGroup, dataContainerVertex, dataContainerBoundary, boundaryId);
+    }
+    d3.select(selectorBoundaryGroup).moveToBack(boundaryId, dataContainerBoundary);
+  }
+
+  /**
+   * Check boundary has member or not
+   * Type must be boundary
+   * @param dataContainer
+   * @param boundaryId
+   * @returns {boolean}
+   */
+  checkHasMember(dataContainer, boundaryId) {
+    let selectedData = dataContainer.find(element => element.id === boundaryId);
+    if (typeof selectedData != "undefined" && selectedData.member.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Get list of boundary element
+   * @param parentSelector
+   * @returns {Array}
+   */
+  getChildNodes(parentSelector) {
+    let childElements = [];
+    d3.select(parentSelector).each(function () {
+      for (let i = 0; i < this.parentNode.childNodes.length; i++) {
+        if (this.parentNode.childNodes[i].nodeType === 1 && this.parentNode.childNodes[i].nodeName === 'g')
+          childElements.push(this.parentNode.childNodes[i]);
+      }
+    })
+    return childElements;
+  }
+
+  /**
+   * Process move to front if boundary has member
+   * @param selectorBoundaryGroup
+   * @param dataContainerVertex
+   * @param boundaryDataContainer
+   * @param parentId
+   */
+  moveMemberToFront(selectorBoundaryGroup, dataContainerVertex, boundaryDataContainer, parentId) {
+    // process when it has member
+    let listBoundaryElement = this.getChildNodes(selectorBoundaryGroup);
+    let parentDataContain = boundaryDataContainer.find(item => item.id === parentId);
+    let members = parentDataContain.member;
+    let selectorVertexGroup = `.${HTML_VERTEX_CONTAINER_CLASS}`;
+
+    //check child boundary has member?
+    for (let i = 0; i < members.length; i++) {
+      //if child boundary has member is vertex, move to front all of them firstly
+      //vertex always in front of boundary
+      let childElement = listBoundaryElement.find(child => child.id === members[i].id);
+      let childDataContainer = boundaryDataContainer.find(element => element.id === members[i].id);
+      let childBoundary = [];
+      if (this.checkHasMember(boundaryDataContainer, members[i].id)) {
+        let childVertexList = childDataContainer.member.filter(vertex => vertex.type === "V");
+        childBoundary = childDataContainer.member.find(item => item.type === "B");
+        this.moveChildVertexToFront(selectorVertexGroup, dataContainerVertex, childVertexList);
+
+        if (typeof childBoundary != "undefined") {
+          this.moveMemberToFront(selectorBoundaryGroup, dataContainerVertex, boundaryDataContainer, members[i].id);
+        } else {
+          d3.select(selectorBoundaryGroup).moveToFront(childElement.id, boundaryDataContainer);
+        }
+      } else {
+        if (members[i].type === "V") {
+          d3.select(selectorVertexGroup).moveToFront(members[i].id, dataContainerVertex);
+        } else {
+          d3.select(selectorBoundaryGroup).moveToFront(childElement.id, boundaryDataContainer);
+        }
+
+      }
+    }
+  }
+
+  /**
+   * Process move to back if boundary has member
+   * @param selectorBoundaryGroup
+   * @param dataContainerVertex
+   * @param boundaryDataContainer
+   * @param parentId
+   */
+  moveMemberToBack(selectorBoundaryGroup, dataContainerVertex, boundaryDataContainer, parentId) {
+    // process when it has member
+    let listBoundaryElement = this.getChildNodes(selectorBoundaryGroup);
+    let parentDataContain = boundaryDataContainer.find(item => item.id === parentId);
+    let members = parentDataContain.member;
+    let selectorVertexGroup = `.${HTML_VERTEX_CONTAINER_CLASS}`;
+
+    for (let i = 0; i < members.length; i++) {
+      let childElement = listBoundaryElement.find(child => child.id === members[i].id);
+      let childDataContainer = boundaryDataContainer.find(element => element.id === members[i].id);
+      let childBoundary = [];
+
+      //check child boundary has member?
+      if (this.checkHasMember(boundaryDataContainer, members[i].id)) {
+        //if child boundary has member is vertex, move to back all of them firstly
+        //vertex always in front of boundary
+        let childVertexList = childDataContainer.member.filter(vertex => vertex.type === "V");
+        childBoundary = childDataContainer.member.find(item => item.type === "B");
+        this.moveChildVertexToBack(selectorVertexGroup, dataContainerVertex, childVertexList);
+
+        if (typeof childBoundary != "undefined") {
+          this.moveMemberToBack(selectorBoundaryGroup, dataContainerVertex, boundaryDataContainer, members[i].id);
+        } else {
+          d3.select(selectorBoundaryGroup).moveToBack(childElement.id, boundaryDataContainer);
+        }
+      } else {
+        if (members[i].type === "V") {
+          d3.select(selectorVertexGroup).moveToBack(members[i].id, dataContainerVertex);
+        } else {
+          d3.select(selectorBoundaryGroup).moveToBack(childElement.id, boundaryDataContainer);
+        }
+      }
+    }
+  }
+
+  /**
+   * move list of child vertex to front
+   * @param selectorVertexGroup
+   * @param dataContainerVertex
+   * @param vertexList
+   */
+  moveChildVertexToFront(selectorVertexGroup, dataContainerVertex, vertexList) {
+    for (let i = 0; i < vertexList.length; i++) {
+      d3.select(selectorVertexGroup).moveToFront(vertexList[i].id, dataContainerVertex)
+    }
+  }
+
+  /**
+   * Move list of child vertex to back
+   * @param selectorVertexGroup
+   * @param dataContainerVertex
+   * @param vertexList
+   */
+  moveChildVertexToBack(selectorVertexGroup, dataContainerVertex, vertexList) {
+    for (let i = 0; i < vertexList.length; i++) {
+      d3.select(selectorVertexGroup).moveToBack(vertexList[i].id, dataContainerVertex)
+    }
+  }
+
 };
 
 export default Boundary;

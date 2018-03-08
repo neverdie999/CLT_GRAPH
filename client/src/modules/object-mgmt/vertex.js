@@ -85,6 +85,12 @@ class Vertex {
     };
     this.dataContainer.vertex.push(vertexInfo);
 
+    //append into vertex group
+    // let group = d3.select("#groupV").append("g")
+    //   .attr("transform", `translate(${options.x}, ${options.y})`)
+    //   .attr("id", vertexId)
+    //   .attr("class", `${HTML_VERTEX_CONTAINER_CLASS}`)
+    //   .style("cursor", "move");
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", vertexId)
@@ -95,6 +101,7 @@ class Vertex {
     // Append point connect vertex
     group.append("circle")
       .attr("class", "drag_connect")
+      // .attr("fill", "none")
       .attr("fill", "white")
       .attr("r", 3)
       .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH / 2)
@@ -125,6 +132,7 @@ class Vertex {
       group.append("circle")
         .attr("class", "drag_connect")
         .attr("prop", key)
+        // .attr("fill", "none")
         .attr("fill", "white")
         .attr("type", TYPE_POINT.INPUT)
         .attr("r", 3)
@@ -146,6 +154,7 @@ class Vertex {
       group.append("circle")
         .attr("class", "drag_connect")
         .attr("prop", key)
+        // .attr("fill", "none")
         .attr("fill", "white")
         .attr("type", TYPE_POINT.OUTPUT)
         .attr("r", 3)
@@ -189,16 +198,14 @@ class Vertex {
    * Init event drag for all vertex
    */
   initEventDrag() {
-    this.svgSelector.selectAll(`.${HTML_VERTEX_CONTAINER_CLASS}`)
-      .data(this.dataContainer.vertex).call(this.dragRegister);
-
+    this.svgSelector.selectAll(`.${HTML_VERTEX_CONTAINER_CLASS}`).data(this.dataContainer.vertex).call(this.dragRegister);
     d3.selectAll('.drag_connect').call(this.dragConnector);
   }
 
   dragstarted(self) {
     return function (d) {
       // If selected path to purpose update, but then move vertex then cancle it.
-      if(window.udpateEdge)
+      if (window.udpateEdge)
         cancleSelectedPath();
       d3.event.sourceEvent.stopPropagation();
     }
@@ -344,7 +351,7 @@ class Vertex {
     for (const key of Object.keys(this.originVertex.data)) {
       this.originVertex.data[key] = data[key];
     }
-
+    // let index = Object.keys(vertexInfo.data).indexOf(prop);
     this.updateVertexInfo(this.originVertex);
     this.closePopVertexInfo();
   }
@@ -452,7 +459,6 @@ class Vertex {
     // x = if output then axis x + width vertex; if not then axis x
     // Get coordinate
     axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT + index * VERTEX_ATTR_SIZE.PROP_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2;
-
     return {
       x: type === TYPE_POINT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH : axisX,
       y: axisY
@@ -471,7 +477,9 @@ class Vertex {
       let edgeId = src.id;
       let prop = src.source.prop;
       let newPos = this.getCoordinateProperty(vertexId, prop, TYPE_POINT.OUTPUT);
-      let options = {source: newPos}
+      src.source.x = newPos.x;
+      src.source.y = newPos.y;
+      let options = {source: src.source};
       this.mainMgmt.updatePathConnect(edgeId, options);
     });
 
@@ -479,7 +487,9 @@ class Vertex {
       let edgeId = des.id;
       let prop = des.target.prop;
       let newPos = this.getCoordinateProperty(vertexId, prop, TYPE_POINT.INPUT);
-      let options = {target: newPos}
+      des.target.x = newPos.x;
+      des.target.y = newPos.y;
+      let options = {target: des.target};
       this.mainMgmt.updatePathConnect(edgeId, options);
     });
   }
@@ -603,166 +613,95 @@ class Vertex {
     return pathStr;
   };
 
-  getIndexPropInListPropShow(vertexId, prop) {
-    console.log("0", vertexId, prop);
-    let arrayProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
-    let tmpArry = arrayProp._groups[0];
-
-    let index = 0;
-    console.log("1", tmpArry);
-    for (let ele in tmpArry) {
-      console.log("2", d3.select(tmpArry[ele]));
-      console.log("3", tmpArry[ele]);
-
-      if (d3.select(tmpArry[ele]).attr('prop') === prop) {
-        break;
-      }
-      index += 1;
-    }
-
-    return index;
-  }
-
   updateCircle(arrProp, vertex) {
     let count = 0;
     for (const key of arrProp) {
-      // Input
-      vertex.append("circle")
-        .attr("class", "drag_connect reduced")
-        .attr("prop", key)
-        .attr("fill", "none")
-        .attr("r", 3)
-        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-        .attr("stroke-width", 1)
-        .style("cursor", "default")
-        .attr("stroke", "black")
-        .attr("pointer-events", "all")
-        .on("mouseover", () => {
-          d3.select(d3.event.target).classed("hight-light", true);
-        })
-        .on("mouseout", () => {
-          d3.select(d3.event.target).classed("hight-light", false);
-        });
+      if (key != null) {
+        // Input
+        vertex.insert("circle", ":first-child")
+          .attr("class", "drag_connect reduced")
+          .attr("prop", key)
+          .attr("fill", "none")
+          .attr("r", 3)
+          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+          .attr("stroke-width", 1)
+          .style("cursor", "default")
+          .attr("stroke", "black")
+          .attr("pointer-events", "all")
+          .on("mouseover", () => {
+            d3.select(d3.event.target).classed("hight-light", true);
+          })
+          .on("mouseout", () => {
+            d3.select(d3.event.target).classed("hight-light", false);
+          });
 
-      // Output
-      vertex.append("circle")
-        .attr("class", "drag_connect reduced")
-        .attr("prop", key)
-        .attr("fill", "none")
-        .attr("r", 3)
-        .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-        .attr("stroke-width", 1)
-        .style("cursor", "default")
-        .attr("stroke", "black")
-        .attr("pointer-events", "all")
-        .on("mouseover", () => {
-          d3.select(d3.event.target).classed("hight-light", true);
-        })
-        .on("mouseout", () => {
-          d3.select(d3.event.target).classed("hight-light", false);
-        });
+        // Output
+        vertex.insert("circle", ":first-child")
+          .attr("class", "drag_connect reduced")
+          .attr("prop", key)
+          .attr("fill", "none")
+          .attr("r", 3)
+          .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
+          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+          .attr("stroke-width", 1)
+          .style("cursor", "default")
+          .attr("stroke", "black")
+          .attr("pointer-events", "all")
+          .on("mouseover", () => {
+            d3.select(d3.event.target).classed("hight-light", true);
+          })
+          .on("mouseout", () => {
+            d3.select(d3.event.target).classed("hight-light", false);
+          });
 
-      count += 1;
+        count++;
+      }
     }
     this.initEventDrag();
   }
 
   /**
-   * Create temp string path
-   * @param src
-   * @param tar
-   * @returns {string}
+   * Recalculate height vertex base on property visible
+   * @param isShowFull: used in case vertex just have header.
    */
-  createTempPath(src, tar) {
-    let diff = {
-      x: tar.x - src.x,
-      y: tar.y - src.y
-    };
-
-    let pathStr = 'M' + src.x + ',' + src.y + ' ';
-    pathStr += 'C';
-    pathStr += src.x + diff.x / 3 + ',' + src.y + ' ';
-    pathStr += src.x + diff.x / 3 + ',' + tar.y + ' ';
-    pathStr += tar.x + ',' + tar.y;
-
-    return pathStr;
-  };
-
-  getIndexPropInListPropShow(vertexId, prop) {
-    console.log("0", vertexId, prop);
-    let arrayProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
-    let tmpArry = arrayProp._groups[0];
-
-    let index = 0;
-    console.log("1", tmpArry);
-    for (let ele in tmpArry) {
-      console.log("2", d3.select(tmpArry[ele]));
-      console.log("3", tmpArry[ele]);
-
-      if (d3.select(tmpArry[ele]).attr('prop') === prop) {
-        break;
-      }
-      index += 1;
-    }
-    return index;
-  }
-
-  updateCircle(arrProp, vertex) {
-    let count = 0;
-    for (const key of arrProp) {
-      // Input
-      vertex.insert("circle", ":first-child")
-        .attr("class", "drag_connect reduced")
-        .attr("prop", key)
-        .attr("fill", "none")
-        .attr("r", 3)
-        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-        .attr("stroke-width", 1)
-        .style("cursor", "default")
-        .attr("stroke", "black")
-        .attr("pointer-events", "all")
-        .on("mouseover", () => {
-          d3.select(d3.event.target).classed("hight-light", true);
-        })
-        .on("mouseout", () => {
-          d3.select(d3.event.target).classed("hight-light", false);
-        });
-
-      // Output
-      vertex.insert("circle", ":first-child")
-        .attr("class", "drag_connect reduced")
-        .attr("prop", key)
-        .attr("fill", "none")
-        .attr("r", 3)
-        .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-        .attr("stroke-width", 1)
-        .style("cursor", "default")
-        .attr("stroke", "black")
-        .attr("pointer-events", "all")
-        .on("mouseover", () => {
-          d3.select(d3.event.target).classed("hight-light", true);
-        })
-        .on("mouseout", () => {
-          d3.select(d3.event.target).classed("hight-light", false);
-        });
-
-      count++;
-    }
-    this.initEventDrag();
-  }
-
-  resetSize() {
-    let lstVertext = d3.selectAll('.groupVertex')._groups[0];
-    lstVertext.forEach((vertextItem) => {
-      if (vertextItem.id) {
-        let element = $('#' + vertextItem.id + ' .vertex_content');
-        let height = element.height();
-        element.parent().attr('height', height);
-      }
+  resetSizeVertex(isShowFull = false) {
+    let vertexes = this.dataContainer.vertex;
+    vertexes.forEach(vertex => {
+      let vertexId = vertex.id;
+      // Get all prop that not hide
+      let arrProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
+      let tmpArry = arrProp._groups[0];
+      let element = $(`#${vertexId} .vertex_content`);
+      element.parent().attr('height', tmpArry.length ? VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : isShowFull ? VERTEX_ATTR_SIZE.HEADER_HEIGHT : 0);
     });
   }
-};
+
+  /**
+   * Calculate height vertex base properties connectted
+   * @param id
+   * @param isShowFull
+   * @returns {number}
+   */
+  resetSizeVertex(isShowFull = false) {
+    let vertexes = this.dataContainer.vertex;
+    vertexes.forEach(vertex => {
+      let exitConnect = false;
+      let vertexId = vertex.id;
+      // Get all prop that not hide
+      let arrProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
+      let tmpArry = arrProp._groups[0];
+      // When not any edge connect to properties of vertex,
+      // Check exit edge connect to vertex
+      if (tmpArry.length < 1)
+        exitConnect = this.objectUtils.checkExitEdgeConnectToVertex(vertexId);
+
+      let element = $(`#${vertexId} .vertex_content`);
+      element.parent()
+        .attr('height', tmpArry.length ?
+          VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : isShowFull ?
+            VERTEX_ATTR_SIZE.HEADER_HEIGHT : exitConnect ? VERTEX_ATTR_SIZE.HEADER_HEIGHT : 0);
+    });
+  }
+}
 
 export default Vertex;
