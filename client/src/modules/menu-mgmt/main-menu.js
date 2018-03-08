@@ -24,7 +24,7 @@ class MainMenu {
                 break;
 
               case "showReduced":
-                // window.showReduced ? this.mainMgmt.showFull(options) : this.mainMgmt.showReduced(options);
+                window.showReduced ? this.mainMgmt.showFull(options) : this.mainMgmt.showReduced(options);
                 break;
 
               default:
@@ -50,12 +50,12 @@ class MainMenu {
               icon: "fa-sort-amount-desc",
               disabled: window.disabledCommand
             },
-            // "sep3": "-",
-            // "showReduced": {
-            //   name: window.showReduced ? "Show Full" : "Show Reduced",
-            //   icon: "fa-link",
-            //   disabled: window.disabledCommand
-            // },
+            "sep3": "-",
+            "showReduced": {
+              name: window.showReduced ? "Show Full" : "Show Reduced",
+              icon: "fa-link",
+              disabled: window.disabledCommand
+            },
             "sep4": "-",
             "clearAll": {
               name: "Clear All",

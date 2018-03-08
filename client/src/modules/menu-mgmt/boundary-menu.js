@@ -1,7 +1,10 @@
+import * as d3 from "d3";
+
 class BoundaryMenu {
   constructor(props) {
     this.selector = props.selector;
     this.boundary = props.boundary;
+    this.dataContainer = props.dataContainer;
     this.initBoundaryMenu();
   }
 
@@ -30,6 +33,18 @@ class BoundaryMenu {
               case "copyAllBoundary":
                 this.boundary.copyAllBoundary(boundaryId);
 
+                break;
+
+              case "moveToFront":
+                //d3.select(this.selector).moveToFront(boundaryId, this.dataContainer.boundary);
+                this.boundary.moveToFrontBoundary(this.selector, boundaryId, this.dataContainer.boundary, this.dataContainer.vertex)
+                break;
+
+              case "moveToBack":
+                //d3.select(this.selector).moveToBack(boundaryId, this.dataContainer.boundary);
+                this.boundary.moveToBackBoundary(this.selector, boundaryId, this.dataContainer.boundary, this.dataContainer.vertex)
+                break;
+
               default:
                 break;
             }
@@ -43,6 +58,8 @@ class BoundaryMenu {
             "removeBoundary": {name: "Delete", icon: "fa-times", disabled: window.disabledCommand},
             "copyAllBoundary": {name: "Copy All", icon: "fa-files-o", disabled: window.disabledCommand},
             "deleteAllBoundary": {name: "Delete All", icon: "fa-square-o", disabled: window.disabledCommand},
+            // "moveToFront": {name: "Move To Front", icon: "fa-level-up",  disabled: window.disabledCommand},
+            // "moveToBack": {name: "Move To Back",  icon: "fa-level-down",  disabled: window.disabledCommand},
           }
         }
       }

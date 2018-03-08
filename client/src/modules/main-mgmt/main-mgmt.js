@@ -27,6 +27,10 @@ class MainMgmt {
     this.dataContainer = props.dataContainer;
     this.initMarkerArrow();
     this.initPathConnect();
+    // this.initBoundaryGroup();
+    // this.initVertexGroup();
+    // this.initEdgeGroup();
+
     this.dragPointConnector = d3.drag()
       .on("start", this.dragPointStarted(this))
       .on("drag", this.draggedPoint(this))
@@ -117,7 +121,7 @@ class MainMgmt {
       .attr("class", "dummy-path dash")
       .attr("fill", "none")
       .attr("stroke", "#2795EE");
-      // .attr("marker-end", "url(#arrow)");
+    // .attr("marker-end", "url(#arrow)");
 
     // Append point to drag start or end connect point
     groupPoint.append("circle")
@@ -373,7 +377,8 @@ class MainMgmt {
     this.vertexMenu = new VertexMenu({
       selector: `.${HTML_VERTEX_CONTAINER_CLASS}`,
       vertex: this.vertex,
-      objectUtils: this.objectUtils
+      objectUtils: this.objectUtils,
+      dataContainer: this.dataContainer
     });
 
     // Vertex menu
@@ -386,6 +391,7 @@ class MainMgmt {
     this.boundaryMenu = new BoundaryMenu({
       selector: `.${HTML_BOUNDARY_CONTAINER_CLASS}`,
       boundary: this.boundary,
+      dataContainer: this.dataContainer
     });
 
     // Boundary Menu Items
@@ -432,7 +438,9 @@ class MainMgmt {
     });
   }
 
-  // Reset the boundary change height when drag
+  /**
+   * Reset size boundary when an boundary|vertex drag end.
+   */
   resetSizeBoundary() {
     d3.select("svg").selectAll(`.${HTML_BOUNDARY_CONTAINER_CLASS}`).each((d, i, node) => {
       let orderObject = 0;
@@ -490,7 +498,9 @@ class MainMgmt {
     });
   }
 
-  // Check drag outside boundary
+  /**
+   * Check drag outside boundary
+   */
   checkDragObjectOutsideBoundary(srcInfos) {
     // Get box object
     const {height, width} = this.objectUtils.getBBoxObject(srcInfos.id);
@@ -538,81 +548,9 @@ class MainMgmt {
     this.initMarkerArrow();
     this.initPathConnect();
     this.initEdgePath();
-  }
-
-  showReduced() {
-    window.showReduced = true;
-    let edge = this.dataContainer.edge;
-    let boundary = this.dataContainer.boundary;
-    /** Boundary **/
-    d3.selectAll('.groupBoundary').classed("hide", true); // Set Hide all Boundary
-    /** vertex **/
-    d3.selectAll('.groupVertex').classed("hide", true);  // Set Hide all Vertex
-    d3.selectAll('.drag_connect').classed("hide", true); // Set Hide all Circle
-    d3.selectAll('.property').classed("hide", true);  // Set Hide all property on the Vertex
-    let lstVer = [], lstProp = [];
-    // Get vertex and property can display
-    edge.forEach((edgeItem) => {
-      if (lstVer.indexOf(edgeItem.source.vertexId) === -1) {
-        lstVer.push(edgeItem.source.vertexId);
-      }
-      if (lstVer.indexOf(edgeItem.target.vertexId) === -1) {
-        lstVer.push(edgeItem.target.vertexId);
-      }
-      lstProp.push(
-        {
-          vert: edgeItem.source.vertexId,
-          prop: edgeItem.source.prop
-        },
-        {
-          vert: edgeItem.target.vertexId,
-          prop: edgeItem.target.prop
-        }
-      );
-    });
-    lstVer.forEach((vertexItem) => {
-      let arrPropOfVertex = [];
-      lstProp.forEach((propItem) => {
-        if (propItem.vert === vertexItem) {
-          if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
-            arrPropOfVertex.push(propItem.prop);
-          }
-        }
-      });
-      d3.select(`#${vertexItem}`).classed("hide", false); // Enable Vertex
-      arrPropOfVertex.forEach((propItem) => {
-        d3.select(`#${vertexItem}`).select(".property[prop='" + propItem + "']").classed("hide", false);
-      });
-      this.vertex.updatePathConnect(vertexItem); // Re-draw edge
-      /* Update Circle */
-      d3.select(`#${vertexItem}`).selectAll('.drag_connect:first-child').classed("hide", false);
-      this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem}`));
-    });
-    /** Boundary **/
-    // Set Display Boundary
-    boundary.forEach((bdrItem) => {
-      bdrItem.member.forEach((memberItem) => {
-        if (!d3.select(`#${memberItem.id}`).classed("hide")) {
-          d3.select(`#${bdrItem.id}`).classed("hide", false);
-        }
-      });
-    });
-  }
-
-  showFull() {
-    window.showReduced = false;
-    /** Boundary **/
-    d3.selectAll('.groupBoundary').classed("hide", false);
-    /** Vertex **/
-    d3.selectAll('.drag_connect.reduced').remove();
-    d3.selectAll('.groupVertex').classed("hide", false);
-    d3.selectAll('.property').classed("hide", false);
-    d3.selectAll('.drag_connect').classed("hide", false);
-    $(".edge ").fadeIn();
-    // Re-draw edge
-    this.dataContainer.vertex.forEach(v => {
-      this.vertex.updatePathConnect(v.id);
-    });
+    // this.initBoundaryGroup();
+    // this.initVertexGroup();
+    // this.initEdgeGroup();
   }
 
   /**
@@ -683,11 +621,16 @@ class MainMgmt {
     }
   }
 
+  /**
+   * Show boundary, vertex reduced as policy
+   * Show graph elements connected by edges only
+   * Boundary: show vertices which have any edges only and boundaries
+   * Vertex: show connected properties only
+   */
   showReduced() {
     window.showReduced = true;
     let edge = this.dataContainer.edge;
-    let boundary = this.dataContainer.boundary;
-    /** vertex **/
+    // let boundary = this.dataContainer.boundary;
     d3.selectAll('.groupVertex').classed("hide", true);  // Set Hide all Vertex
     d3.selectAll('.drag_connect').classed("hide", true); // Set Hide all Circle
     d3.selectAll('.property').classed("hide", true);  // Set Hide all property on the Vertex
@@ -723,17 +666,25 @@ class MainMgmt {
       d3.select(`#${vertexItem}`).selectAll('.drag_connect:first-child').classed("hide", false);
       this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem}`));
     });
-    this.vertex.resetSize();
-    /** Boundary **/
-    // Set Height Boundary
-    boundary.forEach((bdrItem) => {
-      this.boundary.reorderPositionMember(bdrItem.id);
-      this.boundary.resizeParentBoundary(bdrItem.id);
+    this.vertex.resetSizeVertex(false);
+    // Get all boundary that without parent but have child
+    let boundaries = _.filter(this.dataContainer.boundary, (g) => {
+      return g.parent != null;
     });
-    this.resetSizeBoundary();
-
+    boundaries.forEach(boundary => {
+      this.boundary.resizeParentBoundary(boundary.id);
+    });
+    boundaries = _.filter(this.dataContainer.boundary, (g) => {
+      return g.parent == null && g.member.length > 0;
+    });
+    boundaries.forEach(boundary => {
+      this.boundary.reorderPositionMember(boundary.id);
+    });
   }
 
+  /**
+   * Show full graph
+   */
   showFull() {
     let boundary = this.dataContainer.boundary;
     window.showReduced = false;
@@ -747,14 +698,53 @@ class MainMgmt {
     this.dataContainer.vertex.forEach(v => {
       this.vertex.updatePathConnect(v.id);
     });
-    this.vertex.resetSize();
-    /** Boundary **/
-    // Set Height Boundary
-    boundary.forEach((bdrItem) => {
-      this.boundary.reorderPositionMember(bdrItem.id);
+    this.vertex.resetSizeVertex(true);
+    // Get all boundary that without parent but have child
+    let boundaries = _.filter(this.dataContainer.boundary, (g) => {
+      return g.parent != null;
     });
-    this.resetSizeBoundary();
+    boundaries.forEach(boundary => {
+      this.boundary.resizeParentBoundary(boundary.id);
+    });
+    boundaries = _.filter(this.dataContainer.boundary, (g) => {
+      return g.parent == null && g.member.length > 0;
+    });
+    boundaries.forEach(boundary => {
+      this.boundary.reorderPositionMember(boundary.id);
+    });
+  }
+
+  /**
+   * Init boundary group
+   * When create boundary, it will append into this group
+   */
+  initBoundaryGroup() {
+    this.svgSelector.append("svg:g")
+      .attr("class", "boundaryGroup")
+      .attr("id", "groupB")
+      .attr("orient", "auto");
+  }
+
+  /**
+   * Init vertex group
+   * When create vertex, it will append into this group
+   */
+  initVertexGroup() {
+    this.svgSelector.append("svg:g")
+      .attr("class", "vertexGroup")
+      .attr("id", "groupV")
+      .attr("orient", "auto");
+  }
+
+  /**
+   * Init edge group
+   * When create edge, it will append into this group
+   */
+  initEdgeGroup() {
+    this.svgSelector.append("svg:g")
+      .attr("class", "egdeGroup")
+      .attr("id", "groupE")
+      .attr("orient", "auto");
   }
 };
-
 export default MainMgmt;
