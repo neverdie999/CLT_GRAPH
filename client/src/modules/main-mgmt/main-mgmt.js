@@ -625,47 +625,69 @@ class MainMgmt {
    * Show boundary, vertex reduced as policy
    * Show graph elements connected by edges only
    * Boundary: show vertices which have any edges only and boundaries
-   * Vertex: show connected properties only
+   * Vertex: show header and connected properties only
    */
   showReduced() {
     window.showReduced = true;
     let edge = this.dataContainer.edge;
     // let boundary = this.dataContainer.boundary;
-    d3.selectAll('.groupVertex').classed("hide", true);  // Set Hide all Vertex
+    // d3.selectAll('.groupVertex').classed("hide", true);  // Set Hide all Vertex
     d3.selectAll('.drag_connect').classed("hide", true); // Set Hide all Circle
     d3.selectAll('.property').classed("hide", true);  // Set Hide all property on the Vertex
     let lstVer = [], lstProp = [];
     // Get vertex and property can display
     edge.forEach((edgeItem) => {
-      if (lstVer.indexOf(edgeItem.source.vertexId) === -1) {
-        lstVer.push(edgeItem.source.vertexId);
-      }
-      if (lstVer.indexOf(edgeItem.target.vertexId) === -1) {
-        lstVer.push(edgeItem.target.vertexId);
-      }
+      // if (lstVer.indexOf(edgeItem.source.vertexId) === -1) {
+      //   lstVer.push(edgeItem.source.vertexId);
+      // }
+      // if (lstVer.indexOf(edgeItem.target.vertexId) === -1) {
+      //   lstVer.push(edgeItem.target.vertexId);
+      // }
       lstProp.push({
         vert: edgeItem.source.vertexId,
         prop: edgeItem.source.prop
       }, {vert: edgeItem.target.vertexId, prop: edgeItem.target.prop});
     });
+
+    // lstVer.forEach((vertexItem) => {
+    //   let arrPropOfVertex = [];
+    //   lstProp.forEach((propItem) => {
+    //     if (propItem.vert === vertexItem) {
+    //       if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
+    //         arrPropOfVertex.push(propItem.prop);
+    //       }
+    //     }
+    //   });
+    //   d3.select(`#${vertexItem}`).classed("hide", false); // Enable Vertex
+    //   arrPropOfVertex.forEach((propItem) => {
+    //     d3.select(`#${vertexItem}`).select(".property[prop='" + propItem + "']").classed("hide", false);
+    //   });
+    //   this.vertex.updatePathConnect(vertexItem); // Re-draw edge
+    //   /* Update Circle */
+    //   d3.select(`#${vertexItem}`).selectAll('.drag_connect:first-child').classed("hide", false);
+    //   this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem}`));
+    // });
+
+    lstVer = this.dataContainer.vertex;
     lstVer.forEach((vertexItem) => {
       let arrPropOfVertex = [];
       lstProp.forEach((propItem) => {
-        if (propItem.vert === vertexItem) {
+        if (propItem.vert === vertexItem.id) {
           if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
             arrPropOfVertex.push(propItem.prop);
           }
         }
       });
-      d3.select(`#${vertexItem}`).classed("hide", false); // Enable Vertex
+      d3.select(`#${vertexItem.id}`).classed("hide", false); // Enable Vertex
       arrPropOfVertex.forEach((propItem) => {
-        d3.select(`#${vertexItem}`).select(".property[prop='" + propItem + "']").classed("hide", false);
+        d3.select(`#${vertexItem.id}`).select(".property[prop='" + propItem + "']").classed("hide", false);
       });
       this.vertex.updatePathConnect(vertexItem); // Re-draw edge
       /* Update Circle */
-      d3.select(`#${vertexItem}`).selectAll('.drag_connect:first-child').classed("hide", false);
-      this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem}`));
+      d3.select(`#${vertexItem.id}`).selectAll('.drag_connect:first-child').classed("hide", false);
+      this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem.id}`));
     });
+
     this.vertex.resetSizeVertex(false);
     // Get all boundary that without parent but have child
     let boundaries = _.filter(this.dataContainer.boundary, (g) => {

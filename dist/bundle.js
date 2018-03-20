@@ -36584,47 +36584,69 @@ class MainMgmt {
    * Show boundary, vertex reduced as policy
    * Show graph elements connected by edges only
    * Boundary: show vertices which have any edges only and boundaries
-   * Vertex: show connected properties only
+   * Vertex: show header and connected properties only
    */
   showReduced() {
     window.showReduced = true;
     let edge = this.dataContainer.edge;
     // let boundary = this.dataContainer.boundary;
-    __WEBPACK_IMPORTED_MODULE_10_d3__["e" /* selectAll */]('.groupVertex').classed("hide", true);  // Set Hide all Vertex
+    // d3.selectAll('.groupVertex').classed("hide", true);  // Set Hide all Vertex
     __WEBPACK_IMPORTED_MODULE_10_d3__["e" /* selectAll */]('.drag_connect').classed("hide", true); // Set Hide all Circle
     __WEBPACK_IMPORTED_MODULE_10_d3__["e" /* selectAll */]('.property').classed("hide", true);  // Set Hide all property on the Vertex
     let lstVer = [], lstProp = [];
     // Get vertex and property can display
     edge.forEach((edgeItem) => {
-      if (lstVer.indexOf(edgeItem.source.vertexId) === -1) {
-        lstVer.push(edgeItem.source.vertexId);
-      }
-      if (lstVer.indexOf(edgeItem.target.vertexId) === -1) {
-        lstVer.push(edgeItem.target.vertexId);
-      }
+      // if (lstVer.indexOf(edgeItem.source.vertexId) === -1) {
+      //   lstVer.push(edgeItem.source.vertexId);
+      // }
+      // if (lstVer.indexOf(edgeItem.target.vertexId) === -1) {
+      //   lstVer.push(edgeItem.target.vertexId);
+      // }
       lstProp.push({
         vert: edgeItem.source.vertexId,
         prop: edgeItem.source.prop
       }, {vert: edgeItem.target.vertexId, prop: edgeItem.target.prop});
     });
+
+    // lstVer.forEach((vertexItem) => {
+    //   let arrPropOfVertex = [];
+    //   lstProp.forEach((propItem) => {
+    //     if (propItem.vert === vertexItem) {
+    //       if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
+    //         arrPropOfVertex.push(propItem.prop);
+    //       }
+    //     }
+    //   });
+    //   d3.select(`#${vertexItem}`).classed("hide", false); // Enable Vertex
+    //   arrPropOfVertex.forEach((propItem) => {
+    //     d3.select(`#${vertexItem}`).select(".property[prop='" + propItem + "']").classed("hide", false);
+    //   });
+    //   this.vertex.updatePathConnect(vertexItem); // Re-draw edge
+    //   /* Update Circle */
+    //   d3.select(`#${vertexItem}`).selectAll('.drag_connect:first-child').classed("hide", false);
+    //   this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem}`));
+    // });
+
+    lstVer = this.dataContainer.vertex;
     lstVer.forEach((vertexItem) => {
       let arrPropOfVertex = [];
       lstProp.forEach((propItem) => {
-        if (propItem.vert === vertexItem) {
+        if (propItem.vert === vertexItem.id) {
           if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
             arrPropOfVertex.push(propItem.prop);
           }
         }
       });
-      __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem}`).classed("hide", false); // Enable Vertex
+      __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem.id}`).classed("hide", false); // Enable Vertex
       arrPropOfVertex.forEach((propItem) => {
-        __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem}`).select(".property[prop='" + propItem + "']").classed("hide", false);
+        __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem.id}`).select(".property[prop='" + propItem + "']").classed("hide", false);
       });
       this.vertex.updatePathConnect(vertexItem); // Re-draw edge
       /* Update Circle */
-      __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem}`).selectAll('.drag_connect:first-child').classed("hide", false);
-      this.vertex.updateCircle(arrPropOfVertex, __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem}`));
+      __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem.id}`).selectAll('.drag_connect:first-child').classed("hide", false);
+      this.vertex.updateCircle(arrPropOfVertex, __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem.id}`));
     });
+
     this.vertex.resetSizeVertex(false);
     // Get all boundary that without parent but have child
     let boundaries = _.filter(this.dataContainer.boundary, (g) => {
@@ -37372,25 +37394,9 @@ class Vertex {
   }
 
   /**
-   * Recalculate height vertex base on property visible
-   * @param isShowFull: used in case vertex just have header.
-   */
-  resetSizeVertex(isShowFull = false) {
-    let vertexes = this.dataContainer.vertex;
-    vertexes.forEach(vertex => {
-      let vertexId = vertex.id;
-      // Get all prop that not hide
-      let arrProp = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexId}`).selectAll('.property:not(.hide)');
-      let tmpArry = arrProp._groups[0];
-      let element = $(`#${vertexId} .vertex_content`);
-      element.parent().attr('height', tmpArry.length ? __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * tmpArry.length : isShowFull ? __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : 0);
-    });
-  }
-
-  /**
    * Calculate height vertex base properties connectted
    * @param id
-   * @param isShowFull
+   * @param isShowFull used in case vertex just have header.
    * @returns {number}
    */
   resetSizeVertex(isShowFull = false) {
@@ -37410,7 +37416,10 @@ class Vertex {
       element.parent()
         .attr('height', tmpArry.length ?
           __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * tmpArry.length : isShowFull ?
-            __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : exitConnect ? __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : 0);
+            __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : exitConnect ? __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT);
+      // element.parent()
+      //   .attr('height', tmpArry.length ?
+      //     VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : VERTEX_ATTR_SIZE.HEADER_HEIGHT
     });
   }
 }
@@ -50693,6 +50702,7 @@ class MainMenu {
   constructor(props) {
     this.selector = props.selector;
     this.mainMgmt = props.mainMgmt;
+    this.dataContainer = props.dataContainer;
     this.initMainMenu();
   }
 
@@ -50781,6 +50791,9 @@ class MainMenu {
     });
   }
 
+  /**
+   * Generate verties from array vertexTypes
+   */
   loadItems() {
     const subItems = {};
     if (window.vertexTypes) {

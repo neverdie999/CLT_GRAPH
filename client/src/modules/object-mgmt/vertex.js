@@ -661,25 +661,9 @@ class Vertex {
   }
 
   /**
-   * Recalculate height vertex base on property visible
-   * @param isShowFull: used in case vertex just have header.
-   */
-  resetSizeVertex(isShowFull = false) {
-    let vertexes = this.dataContainer.vertex;
-    vertexes.forEach(vertex => {
-      let vertexId = vertex.id;
-      // Get all prop that not hide
-      let arrProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
-      let tmpArry = arrProp._groups[0];
-      let element = $(`#${vertexId} .vertex_content`);
-      element.parent().attr('height', tmpArry.length ? VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : isShowFull ? VERTEX_ATTR_SIZE.HEADER_HEIGHT : 0);
-    });
-  }
-
-  /**
    * Calculate height vertex base properties connectted
    * @param id
-   * @param isShowFull
+   * @param isShowFull used in case vertex just have header.
    * @returns {number}
    */
   resetSizeVertex(isShowFull = false) {
@@ -699,7 +683,10 @@ class Vertex {
       element.parent()
         .attr('height', tmpArry.length ?
           VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : isShowFull ?
-            VERTEX_ATTR_SIZE.HEADER_HEIGHT : exitConnect ? VERTEX_ATTR_SIZE.HEADER_HEIGHT : 0);
+            VERTEX_ATTR_SIZE.HEADER_HEIGHT : exitConnect ? VERTEX_ATTR_SIZE.HEADER_HEIGHT : VERTEX_ATTR_SIZE.HEADER_HEIGHT);
+      // element.parent()
+      //   .attr('height', tmpArry.length ?
+      //     VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : VERTEX_ATTR_SIZE.HEADER_HEIGHT
     });
   }
 }
