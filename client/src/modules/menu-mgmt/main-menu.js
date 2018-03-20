@@ -2,6 +2,7 @@ class MainMenu {
   constructor(props) {
     this.selector = props.selector;
     this.mainMgmt = props.mainMgmt;
+    this.dataContainer = props.dataContainer;
     this.initMainMenu();
   }
 
@@ -90,6 +91,9 @@ class MainMenu {
     });
   }
 
+  /**
+   * Generate verties from array vertexTypes
+   */
   loadItems() {
     const subItems = {};
     if (window.vertexTypes) {
