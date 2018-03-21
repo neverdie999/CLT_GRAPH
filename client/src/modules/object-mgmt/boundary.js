@@ -144,6 +144,13 @@ class Boundary {
   removeBoundary(boundaryId) {
     let boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
 
+    //set visible all child
+    const {member} = this.objectUtils.getBoundaryInfoById(boundaryId);
+    member.forEach(mem => {
+      this.selectMemberVisible(boundaryId, mem, true);
+    });
+
+    //this.selectMemberVisible(boundaryId, child, false);
     if (boundaryInfo.parent)
       this.removeMemberFromBoundary(boundaryInfo.parent, boundaryId);
     // Remove from DOM
@@ -254,12 +261,15 @@ class Boundary {
       // set Show|hide for edge
       edge.forEach((edgeItem) => {
         if (edgeItem.target.vertexId === child.id || edgeItem.source.vertexId === child.id) {
-          d3.select(`#${edgeItem.id}`).classed("hide", !status);
+          // d3.select(`#${edgeItem.id}`).classed("hide", !status);
+          let parentNode = d3.select(`#${edgeItem.id}`).node().parentNode;
+          d3.select(parentNode).classed("hide", !status); // Set class for parent container edge
         }
       });
     }
 
     if (child.type === "B") {
+      // TO-DO: Need improve this code
       this.setObjectShowHide(child.id, status);
       // set Show|hide for edge
       let arrVertex = [];
@@ -271,7 +281,9 @@ class Boundary {
       });
       edge.forEach((edgeItem) => {
         if (arrVertex.indexOf(edgeItem.target.vertexId) !== -1 || arrVertex.indexOf(edgeItem.source.vertexId) !== -1) {
-          d3.select(`#${edgeItem.id}`).classed("hide", !status);
+          // d3.select(`#${edgeItem.id}`).classed("hide", !status);
+          let parentNode = d3.select(`#${edgeItem.id}`).node().parentNode;
+          d3.select(parentNode).classed("hide", !status); // Set class for parent container edge
         }
       });
     }
@@ -518,6 +530,7 @@ class Boundary {
         if (newName) {
           that.setBoundaryName(boundaryId, newName);
         }
+        //parent.select(`#${boundaryId}Name`).remove();
         parent.select(`#${boundaryId}Name`).remove();
       })
       .on("keypress", function () {
@@ -536,7 +549,11 @@ class Boundary {
           if (newName) {
             that.setBoundaryName(boundaryId, newName);
           }
-          parent.select(`#${boundaryId}Name`).remove();
+          //fix show console bug when delete node
+          try{
+            d3.select(`#${boundaryId}Name`).remove();
+          }catch(e){}
+
         }
       });
   }
