@@ -1,296 +1,291 @@
 {
-	"vertex":[
-		{
-		"x":771,
-		"y":139,
-		"vertexType":"C#",
-		"interaction":"FULL",
-		"name":"Name",
-		"description":"Description",
-		"data":{
-		"hp":300,
-		"atk":"P30",
-		"def":"L0",
-		"spd":1.1
-		},
-		"id":"V1513653636277",
-		"parent":null
-		},
-		{
-		"x":1064,
-		"y":82,
-		"vertexType":"PHP",
-		"interaction":"FULL",
-		"name":"Name",
-		"description":"Description",
-		"data":{
-		"hp":300,
-		"atk":"P30",
-		"def":"L0",
-		"spd":1.1
-		},
-		"id":"V1513738314402",
-		"parent":null
-		},
-		{
-		"x":840,
-		"y":360,
-		"vertexType":"Troll",
-		"interaction":"FULL",
-		"name":"Name",
-		"description":"Description",
-		"data":{
-		"hp":300,
-		"atk":"P30",
-		"def":"L0",
-		"spd":1.1
-		},
-		"id":"V1513738306106",
-		"parent":null
-		},
-		{
-		"x":944,
-		"y":460,
-		"vertexType":"Troll",
-		"interaction":"FULL",
-		"name":"Name",
-		"description":"Description",
-		"data":{
-		"hp":300,
-		"atk":"P30",
-		"def":"L0",
-		"spd":1.1
-		},
-		"id":"V1513738296891",
-		"parent":null
-		},
-		{
-		"x":674,
-		"y":274,
-		"vertexType":"PHP",
-		"interaction":"FULL",
-		"name":"Name",
-		"description":"Description",
-		"data":{
-		"hp":300,
-		"atk":"P30",
-		"def":"L0",
-		"spd":1.1
-		},
-		"id":"V1513653639293",
-		"parent":null
-		},
-		{
-		"x":724,
-		"y":464,
-		"vertexType":"Java",
-		"interaction":"FULL",
-		"name":"Name",
-		"description":"Description",
-		"data":{
-		"hp":300,
-		"atk":"P30",
-		"def":"L0",
-		"spd":1.1
-		},
-		"id":"V1513653634205",
-		"parent":null
-		},
-		{
-		"x":185,
-		"y":442,
-		"vertexType":"Grunt",
-		"interaction":"FULL",
-		"name":"Name",
-		"description":"Description",
-		"data":{
-		"hp":500,
-		"atk":"M20",
-		"def":"H2",
-		"spd":1
-		},
-		"id":"V1513653626335",
-		"parent":null
-		},
-		{
-		"x":441,
-		"y":506,
-		"vertexType":"Troll",
-		"interaction":"FULL",
-		"name":"Name",
-		"description":"Description",
-		"data":{
-		"hp":300,
-		"atk":"P30",
-		"def":"L0",
-		"spd":1.1
-		},
-		"id":"V1513653632277",
-		"parent":null
-		},
-		{
-		"x":475,
-		"y":77,
-		"vertexType":"Java",
-		"interaction":"FULL",
-		"name":"Name",
-		"description":"Description",
-		"data":{
-		"hp":300,
-		"atk":"P30",
-		"def":"L0",
-		"spd":1.1
-		},
-		"id":"V1513738308882",
-		"parent":null
-		},
-		{
-		"x":449,
-		"y":235,
-		"vertexType":"C#",
-		"interaction":"FULL",
-		"name":"Name",
-		"description":"Description",
-		"data":{
-		"hp":300,
-		"atk":"P30",
-		"def":"L0",
-		"spd":1.1
-		},
-		"id":"V1513738312186",
-		"parent":null
-		}
-	],
-	"edge":[
-		{
-		"id":"E1513653644926",
-		"source":{
-		"x":260,
-		"y":442,
-		"vertexId":"V1513653626335",
-		"prop":null
-		},
-		"target":{
-		"x":749,
-		"y":274,
-		"vertexId":"V1513653639293",
-		"prop":null
-		},
-		"note":{
-		"originNote":"",
-		"middleNote":"",
-		"destNote":""
-		},
-		"style":{
-		"line":"solid",
-		"arrow":"Y"
-		}
-		},
-		{
-		"id":"E1513653650069",
-		"source":{
-		"x":335,
-		"y":493,
-		"vertexId":"V1513653626335",
-		"prop":"hp"
-		},
-		"target":{
-		"x":799,
-		"y":464,
-		"vertexId":"V1513653634205",
-		"prop":null
-		},
-		"note":{
-		"originNote":"",
-		"middleNote":"",
-		"destNote":""
-		},
-		"style":{
-		"line":"solid",
-		"arrow":"Y"
-		}
-		},
-		{
-		"id":"E1513653654461",
-		"source":{
-		"x":260,
-		"y":442,
-		"vertexId":"V1513653626335",
-		"prop":null
-		},
-		"target":{
-		"x":846,
-		"y":139,
-		"vertexId":"V1513653636277",
-		"prop":null
-		},
-		"note":{
-		"originNote":"",
-		"middleNote":"",
-		"destNote":""
-		},
-		"style":{
-		"line":"solid",
-		"arrow":"Y"
-		}
-		},
-		{
-		"id":"E1513653666044",
-		"source":{
-		"x":335,
-		"y":545,
-		"vertexId":"V1513653626335",
-		"prop":"def"
-		},
-		"target":{
-		"x":441,
-		"y":609,
-		"vertexId":"V1513653632277",
-		"prop":"def"
-		},
-		"note":{
-		"originNote":"",
-		"middleNote":"",
-		"destNote":""
-		},
-		"style":{
-		"line":"solid",
-		"arrow":"Y"
-		}
-		}
-	],
-	"boundary":{
-	},
-	"vertexTypes":{
-	"Grunt":{
-	"hp":500,
-	"atk":"M20",
-	"def":"H2",
-	"spd":1
-	},
-	"Troll":{
-	"hp":300,
-	"atk":"P30",
-	"def":"L0",
-	"spd":1.1
-	},
-	"Java":{
-	"hp":300,
-	"atk":"P30",
-	"def":"L0",
-	"spd":1.1
-	},
-	"C#":{
-	"hp":300,
-	"atk":"P30",
-	"def":"L0",
-	"spd":1.1
-	},
-	"PHP":{
-	"hp":300,
-	"atk":"P30",
-	"def":"L0",
-	"spd":1.1
-	}
-	}
+  "vertex": [
+    {
+      "vertexType": "CONCAT",
+      "name": "CONCAT",
+      "description": "Description",
+      "data": {
+        "CONNECT": "_"
+      },
+      "id": "V1522117151466",
+      "parent": "B1522117166689"
+    },
+    {
+      "vertexType": "RFF",
+      "name": "RFF",
+      "description": "Description",
+      "data": {
+        "[C506]1153": "AN3",
+        "[C506]1154": "AN70",
+        "[C506]1156": "AN9",
+        "[C506]1160": "AN6"
+      },
+      "id": "V1522117154057",
+      "parent": "B1522117166689"
+    },
+    {
+      "vertexType": "IF",
+      "name": "IF",
+      "description": "Description",
+      "data": {
+        "CONDITION": ""
+      },
+      "id": "V1522117155867",
+      "parent": "B1522117166689"
+    },
+    {
+      "vertexType": "CONCAT",
+      "name": "CONCAT",
+      "description": "Description",
+      "data": {
+        "CONNECT": "_"
+      },
+      "id": "V1522117176459",
+      "parent": "B1522117176449"
+    },
+    {
+      "vertexType": "IF",
+      "name": "IF",
+      "description": "Description",
+      "data": {
+        "CONDITION": ""
+      },
+      "id": "V1522117176465",
+      "parent": "B1522117176449"
+    },
+    {
+      "vertexType": "RFF",
+      "name": "RFF",
+      "description": "Description",
+      "data": {
+        "[C506]1153": "AN3",
+        "[C506]1154": "AN70",
+        "[C506]1156": "AN9",
+        "[C506]1160": "AN6"
+      },
+      "id": "V1522117176471",
+      "parent": "B1522117176449"
+    },
+    {
+      "vertexType": "REC01",
+      "name": "REC01",
+      "description": "Description",
+      "data": {
+        "[1]": "AN3",
+        "[2]": "AN512",
+        "[3]": "AN3"
+      },
+      "id": "V1522117205181",
+      "parent": null
+    }
+  ],
+  "edge": [
+    {
+      "id": "E1522117184522",
+      "source": {
+        "x": 310,
+        "y": 162,
+        "vertexId": "V1522117151466",
+        "prop": "CONNECT"
+      },
+      "target": {
+        "x": 675,
+        "y": 149,
+        "vertexId": "V1522117176459",
+        "prop": "CONNECT"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1522117190688",
+      "source": {
+        "x": 310,
+        "y": 358,
+        "vertexId": "V1522117154057",
+        "prop": "[C506]1156"
+      },
+      "target": {
+        "x": 675,
+        "y": 345,
+        "vertexId": "V1522117176471",
+        "prop": "[C506]1156"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    }
+  ],
+  "boundary": [
+    {
+      "name": "Boundary",
+      "description": "Boundary Description",
+      "member": [
+        {
+          "id": "V1522117151466",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1522117155867",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1522117154057",
+          "type": "V",
+          "show": true
+        }
+      ],
+      "id": "B1522117166689",
+      "width": 160,
+      "height": 336,
+      "parent": null
+    },
+    {
+      "name": "Boundary",
+      "description": "Boundary Description",
+      "member": [
+        {
+          "id": "V1522117176459",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1522117176465",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1522117176471",
+          "type": "V",
+          "show": true
+        }
+      ],
+      "id": "B1522117176449",
+      "width": 160,
+      "height": 336,
+      "parent": null
+    }
+  ],
+  "position": [
+    {
+      "id": "V1522117151466",
+      "x": 160,
+      "y": 111
+    },
+    {
+      "id": "V1522117154057",
+      "x": 160,
+      "y": 255
+    },
+    {
+      "id": "V1522117155867",
+      "x": 160,
+      "y": 183
+    },
+    {
+      "id": "V1522117176459",
+      "x": 675,
+      "y": 98
+    },
+    {
+      "id": "V1522117176465",
+      "x": 675,
+      "y": 170
+    },
+    {
+      "id": "V1522117176471",
+      "x": 675,
+      "y": 242
+    },
+    {
+      "id": "V1522117205181",
+      "x": 934,
+      "y": 174
+    },
+    {
+      "id": "B1522117166689",
+      "x": 155,
+      "y": 69
+    },
+    {
+      "id": "B1522117176449",
+      "x": 670,
+      "y": 56
+    }
+  ],
+  "vertexTypes": {
+    "SHOW_FULL_ALWAYS": [
+      "OPERATIONS"
+    ],
+    "OPERATIONS": {
+      "CONCAT": {
+        "CONNECT": "_"
+      },
+      "IF": {
+        "CONDITION": ""
+      }
+    },
+    "DATA_DEFINITIONS": {
+      "RFF": {
+        "[C506]1153": "AN3",
+        "[C506]1154": "AN70",
+        "[C506]1156": "AN9",
+        "[C506]1160": "AN6"
+      },
+      "DTM": {
+        "[C507]2005": "AN3",
+        "[C507]2380": "AN35",
+        "[C507]2379": "AN3"
+      },
+      "CTA": {
+        "[3139]": "AN3",
+        "[C056]3413": "AN17",
+        "[C056]3412": "AN256"
+      },
+      "COM": {
+        "[C076]": "AN3",
+        "[C076]3148": "AN512",
+        "[C076]3155": "AN3"
+      },
+      "REC01": {
+        "[1]": "AN3",
+        "[2]": "AN512",
+        "[3]": "AN3"
+      },
+      "REC02": {
+        "[1]": "AN3",
+        "[2]": "AN512",
+        "[3]": "AN3",
+        "[4]": "AN3",
+        "[5]": "AN3",
+        "[6]": "AN3",
+        "[7]": "AN3",
+        "[8]": "AN3",
+        "[9]": "AN3",
+        "[10]": "AN3",
+        "[11]": "AN3",
+        "[12]": "AN3",
+        "[13]": "AN3"
+      },
+      "SUBSTR": {
+        "FROM": 0,
+        "TO": -1
+      }
+    }
+  }
 }

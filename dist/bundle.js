@@ -36108,6 +36108,7 @@ class MainMgmt {
       .attr("stroke", "#2795EE");
 
     __WEBPACK_IMPORTED_MODULE_10_d3__["e" /* selectAll */]('.dragPoint').call(this.dragPointConnector);
+    __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]('#groupEdgePoint').style("display", "none");
   }
 
   /**
@@ -36116,11 +36117,20 @@ class MainMgmt {
    * @param data
    */
   async reloadVertexTypes(data) {
+    // validate structure file invalid
+    // option vertex type definition but choose graph type file
+    if (data.vertex || data.edge || data.boundary || data.position || data.vertexTypes) {
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["b" /* comShowMessage */])("Invalid structure file vertex type definition");
+      return;
+    }
+
     // Set global vertex types
     // The content vertex type on graph alway
     // give to content vertex type was import from Vertex Type Defination
-    window.vertexTypes = data;
+    window.dataFileVertexType = data; //store data in global value to write file graph.
+    window.vertexTypes = this.getListVertexType(data);
     window.isImportVertexTypeDefine = true;
+
 
     // Validate vertex type
     let isMisMatch = await this.validateVertexTypesInGraph();
@@ -36140,8 +36150,6 @@ class MainMgmt {
    */
   async drawGraphFromData(data) {
     this.clearAll();
-    // Store vertex types
-    window.vertexTypesTmp = data.vertexTypes;
 
     // Validate content
     let errorContent = await this.validateGraphDataStructure(data);
@@ -36149,6 +36157,9 @@ class MainMgmt {
       Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["b" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
       return;
     }
+
+    // Store vertex types
+    window.vertexTypesTmp = this.getListVertexType(data.vertexTypes);
 
     // If still not import Vertex Type Definition then reset it.
     if (!window.isImportVertexTypeDefine)
@@ -36199,7 +36210,7 @@ class MainMgmt {
     });
 
     if (!window.isImportVertexTypeDefine)
-      window.vertexTypes = data.vertexTypes;
+      window.vertexTypes = this.getListVertexType(data.vertexTypes);
 
     this.initMenuContext();
   }
@@ -36216,7 +36227,7 @@ class MainMgmt {
     }
 
     // Validate embedded vertex type with vertices
-    let vertexTypes = data.vertexTypes;
+    let vertexTypes = this.getListVertexType(data.vertexTypes);
     let vertices = data.vertex;
     for (let vertex of vertices) {
       let vertexType = vertex.vertexType;
@@ -36584,50 +36595,39 @@ class MainMgmt {
    * Show boundary, vertex reduced as policy
    * Show graph elements connected by edges only
    * Boundary: show vertices which have any edges only and boundaries
-   * Vertex: show header and connected properties only
+   * Vertex: The vertices in group SHOW_FULL_ALWAYS not effected by show reduced
+   * the remain vertex then show header and connected properties only
    */
   showReduced() {
     window.showReduced = true;
     let edge = this.dataContainer.edge;
+    //let showVertexType = Object.keys(window.showFullVertex);
+    let showVertexType = window.showFullVertex;
+    let lstVer = [], lstProp = [];
+
     // let boundary = this.dataContainer.boundary;
     // d3.selectAll('.groupVertex').classed("hide", true);  // Set Hide all Vertex
     __WEBPACK_IMPORTED_MODULE_10_d3__["e" /* selectAll */]('.drag_connect').classed("hide", true); // Set Hide all Circle
     __WEBPACK_IMPORTED_MODULE_10_d3__["e" /* selectAll */]('.property').classed("hide", true);  // Set Hide all property on the Vertex
-    let lstVer = [], lstProp = [];
+
+    lstVer = this.dataContainer.vertex;
+    lstVer.forEach((vertex) => {
+      showVertexType.forEach((type) => {
+        if(vertex.vertexType === type){
+          __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertex.id}`).selectAll('.drag_connect').classed("hide", false);
+          __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertex.id}`).selectAll('.property').classed("hide", false);
+        }
+      })
+    });
+
     // Get vertex and property can display
     edge.forEach((edgeItem) => {
-      // if (lstVer.indexOf(edgeItem.source.vertexId) === -1) {
-      //   lstVer.push(edgeItem.source.vertexId);
-      // }
-      // if (lstVer.indexOf(edgeItem.target.vertexId) === -1) {
-      //   lstVer.push(edgeItem.target.vertexId);
-      // }
       lstProp.push({
         vert: edgeItem.source.vertexId,
         prop: edgeItem.source.prop
       }, {vert: edgeItem.target.vertexId, prop: edgeItem.target.prop});
     });
 
-    // lstVer.forEach((vertexItem) => {
-    //   let arrPropOfVertex = [];
-    //   lstProp.forEach((propItem) => {
-    //     if (propItem.vert === vertexItem) {
-    //       if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
-    //         arrPropOfVertex.push(propItem.prop);
-    //       }
-    //     }
-    //   });
-    //   d3.select(`#${vertexItem}`).classed("hide", false); // Enable Vertex
-    //   arrPropOfVertex.forEach((propItem) => {
-    //     d3.select(`#${vertexItem}`).select(".property[prop='" + propItem + "']").classed("hide", false);
-    //   });
-    //   this.vertex.updatePathConnect(vertexItem); // Re-draw edge
-    //   /* Update Circle */
-    //   d3.select(`#${vertexItem}`).selectAll('.drag_connect:first-child').classed("hide", false);
-    //   this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem}`));
-    // });
-
-    lstVer = this.dataContainer.vertex;
     lstVer.forEach((vertexItem) => {
       let arrPropOfVertex = [];
       lstProp.forEach((propItem) => {
@@ -36641,7 +36641,7 @@ class MainMgmt {
       arrPropOfVertex.forEach((propItem) => {
         __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem.id}`).select(".property[prop='" + propItem + "']").classed("hide", false);
       });
-      this.vertex.updatePathConnect(vertexItem); // Re-draw edge
+      this.vertex.updatePathConnect(vertexItem.id); // Re-draw edge
       /* Update Circle */
       __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem.id}`).selectAll('.drag_connect:first-child').classed("hide", false);
       this.vertex.updateCircle(arrPropOfVertex, __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */](`#${vertexItem.id}`));
@@ -36727,6 +36727,35 @@ class MainMgmt {
       .attr("id", "groupE")
       .attr("orient", "auto");
   }
+
+  /**
+   * get list vertex type will show on menu
+   * @param data
+   * @returns {*}
+   */
+  getListVertexType(data){
+    let listVertexType = null;
+    // let showVertex = null;
+    let showVertex = [];
+
+    if(typeof data.SHOW_FULL_ALWAYS != "undefined" && data.SHOW_FULL_ALWAYS.length > 0){
+      data.SHOW_FULL_ALWAYS.forEach((group) => {
+        for (const key of Object.keys(data[group])) {
+          showVertex.push(key);
+        }
+      });
+      window.showFullVertex = showVertex;
+    }
+
+    for (const key of Object.keys(data)) {
+      if(key!= "SHOW_FULL_ALWAYS"){
+        listVertexType = Object.assign(listVertexType != null ? listVertexType : {}, data[key]);
+      }
+    }
+
+    return listVertexType;
+  }
+
 };
 /* harmony default export */ __webpack_exports__["a"] = (MainMgmt);
 
@@ -50554,17 +50583,28 @@ class FileMgmt {
   }
 
   initButtonEvent() {
+    // Handle event on value change on input file
     $(`#${HTML_INPUT_FILE_ID}`).change((event) => {
       this.readJsonFile(event);
     });
 
+    // Handle event click on button Download
     $(`#${HTML_BTN_EXPORT_FILE_ID}`).click((event) => {
       this.writeJsonFileGraph();
     });
 
+    // Handle event change value on group radio Mode
     $(HTML_SELECTOR_MODE_GRPH).change((event) => {
       let modeGraph = event.target.value;
       this.setGraphMode(modeGraph);
+    });
+
+    // Handle event press enter on input file name
+    $(`#${HTML_OUTPUT_FILE_ID}`).keypress((event) => {
+      if (event.keyCode == 13) {
+        this.writeJsonFileGraph();
+        event.preventDefault();
+      }
     });
   }
 
@@ -50601,7 +50641,7 @@ class FileMgmt {
   }
 
   writeJsonFileGraph() {
-    let fileName = $("#outFile").val();
+    let fileName = $(`#${HTML_OUTPUT_FILE_ID}`).val();
     if (!fileName) {
       Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["b" /* comShowMessage */])("Please input file name");
       return;
@@ -50641,6 +50681,7 @@ class FileMgmt {
     // Process data to export
     // Need clone data cause case user export
     // later continue edit then lost parent scope
+    // Purpose prevent reference data.
     const cloneData = Object.assign({}, this.dataContainer);
     cloneData.vertex.forEach(node => {
       let pos = new Object({
@@ -50672,7 +50713,7 @@ class FileMgmt {
       dataContent.position.push(pos);
     });
 
-    dataContent.vertexTypes = window.vertexTypes;
+    dataContent.vertexTypes = window.dataFileVertexType;
 
     return Promise.resolve(dataContent);
   }
