@@ -19,17 +19,28 @@ class FileMgmt {
   }
 
   initButtonEvent() {
+    // Handle event on value change on input file
     $(`#${HTML_INPUT_FILE_ID}`).change((event) => {
       this.readJsonFile(event);
     });
 
+    // Handle event click on button Download
     $(`#${HTML_BTN_EXPORT_FILE_ID}`).click((event) => {
       this.writeJsonFileGraph();
     });
 
+    // Handle event change value on group radio Mode
     $(HTML_SELECTOR_MODE_GRPH).change((event) => {
       let modeGraph = event.target.value;
       this.setGraphMode(modeGraph);
+    });
+
+    // Handle event press enter on input file name
+    $(`#${HTML_OUTPUT_FILE_ID}`).keypress((event) => {
+      if (event.keyCode == 13) {
+        this.writeJsonFileGraph();
+        event.preventDefault();
+      }
     });
   }
 
@@ -66,7 +77,7 @@ class FileMgmt {
   }
 
   writeJsonFileGraph() {
-    let fileName = $("#outFile").val();
+    let fileName = $(`#${HTML_OUTPUT_FILE_ID}`).val();
     if (!fileName) {
       comShowMessage("Please input file name");
       return;
@@ -106,6 +117,7 @@ class FileMgmt {
     // Process data to export
     // Need clone data cause case user export
     // later continue edit then lost parent scope
+    // Purpose prevent reference data.
     const cloneData = Object.assign({}, this.dataContainer);
     cloneData.vertex.forEach(node => {
       let pos = new Object({
@@ -137,7 +149,7 @@ class FileMgmt {
       dataContent.position.push(pos);
     });
 
-    dataContent.vertexTypes = window.vertexTypes;
+    dataContent.vertexTypes = window.dataFileVertexType;
 
     return Promise.resolve(dataContent);
   }

@@ -149,6 +149,7 @@ class MainMgmt {
       .attr("stroke", "#2795EE");
 
     d3.selectAll('.dragPoint').call(this.dragPointConnector);
+    d3.select('#groupEdgePoint').style("display", "none");
   }
 
   /**
@@ -157,11 +158,20 @@ class MainMgmt {
    * @param data
    */
   async reloadVertexTypes(data) {
+    // validate structure file invalid
+    // option vertex type definition but choose graph type file
+    if (data.vertex || data.edge || data.boundary || data.position || data.vertexTypes) {
+      comShowMessage("Invalid structure file vertex type definition");
+      return;
+    }
+
     // Set global vertex types
     // The content vertex type on graph alway
     // give to content vertex type was import from Vertex Type Defination
-    window.vertexTypes = data;
+    window.dataFileVertexType = data; //store data in global value to write file graph.
+    window.vertexTypes = this.getListVertexType(data);
     window.isImportVertexTypeDefine = true;
+
 
     // Validate vertex type
     let isMisMatch = await this.validateVertexTypesInGraph();
@@ -181,8 +191,6 @@ class MainMgmt {
    */
   async drawGraphFromData(data) {
     this.clearAll();
-    // Store vertex types
-    window.vertexTypesTmp = data.vertexTypes;
 
     // Validate content
     let errorContent = await this.validateGraphDataStructure(data);
@@ -190,6 +198,9 @@ class MainMgmt {
       comShowMessage("Format or data in Data Graph Structure is corrupted. You should check it!");
       return;
     }
+
+    // Store vertex types
+    window.vertexTypesTmp = this.getListVertexType(data.vertexTypes);
 
     // If still not import Vertex Type Definition then reset it.
     if (!window.isImportVertexTypeDefine)
@@ -240,7 +251,7 @@ class MainMgmt {
     });
 
     if (!window.isImportVertexTypeDefine)
-      window.vertexTypes = data.vertexTypes;
+      window.vertexTypes = this.getListVertexType(data.vertexTypes);
 
     this.initMenuContext();
   }
@@ -257,7 +268,7 @@ class MainMgmt {
     }
 
     // Validate embedded vertex type with vertices
-    let vertexTypes = data.vertexTypes;
+    let vertexTypes = this.getListVertexType(data.vertexTypes);
     let vertices = data.vertex;
     for (let vertex of vertices) {
       let vertexType = vertex.vertexType;
@@ -625,50 +636,39 @@ class MainMgmt {
    * Show boundary, vertex reduced as policy
    * Show graph elements connected by edges only
    * Boundary: show vertices which have any edges only and boundaries
-   * Vertex: show header and connected properties only
+   * Vertex: The vertices in group SHOW_FULL_ALWAYS not effected by show reduced
+   * the remain vertex then show header and connected properties only
    */
   showReduced() {
     window.showReduced = true;
     let edge = this.dataContainer.edge;
+    //let showVertexType = Object.keys(window.showFullVertex);
+    let showVertexType = window.showFullVertex;
+    let lstVer = [], lstProp = [];
+
     // let boundary = this.dataContainer.boundary;
     // d3.selectAll('.groupVertex').classed("hide", true);  // Set Hide all Vertex
     d3.selectAll('.drag_connect').classed("hide", true); // Set Hide all Circle
     d3.selectAll('.property').classed("hide", true);  // Set Hide all property on the Vertex
-    let lstVer = [], lstProp = [];
+
+    lstVer = this.dataContainer.vertex;
+    lstVer.forEach((vertex) => {
+      showVertexType.forEach((type) => {
+        if(vertex.vertexType === type){
+          d3.select(`#${vertex.id}`).selectAll('.drag_connect').classed("hide", false);
+          d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", false);
+        }
+      })
+    });
+
     // Get vertex and property can display
     edge.forEach((edgeItem) => {
-      // if (lstVer.indexOf(edgeItem.source.vertexId) === -1) {
-      //   lstVer.push(edgeItem.source.vertexId);
-      // }
-      // if (lstVer.indexOf(edgeItem.target.vertexId) === -1) {
-      //   lstVer.push(edgeItem.target.vertexId);
-      // }
       lstProp.push({
         vert: edgeItem.source.vertexId,
         prop: edgeItem.source.prop
       }, {vert: edgeItem.target.vertexId, prop: edgeItem.target.prop});
     });
 
-    // lstVer.forEach((vertexItem) => {
-    //   let arrPropOfVertex = [];
-    //   lstProp.forEach((propItem) => {
-    //     if (propItem.vert === vertexItem) {
-    //       if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
-    //         arrPropOfVertex.push(propItem.prop);
-    //       }
-    //     }
-    //   });
-    //   d3.select(`#${vertexItem}`).classed("hide", false); // Enable Vertex
-    //   arrPropOfVertex.forEach((propItem) => {
-    //     d3.select(`#${vertexItem}`).select(".property[prop='" + propItem + "']").classed("hide", false);
-    //   });
-    //   this.vertex.updatePathConnect(vertexItem); // Re-draw edge
-    //   /* Update Circle */
-    //   d3.select(`#${vertexItem}`).selectAll('.drag_connect:first-child').classed("hide", false);
-    //   this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem}`));
-    // });
-
-    lstVer = this.dataContainer.vertex;
     lstVer.forEach((vertexItem) => {
       let arrPropOfVertex = [];
       lstProp.forEach((propItem) => {
@@ -682,7 +682,7 @@ class MainMgmt {
       arrPropOfVertex.forEach((propItem) => {
         d3.select(`#${vertexItem.id}`).select(".property[prop='" + propItem + "']").classed("hide", false);
       });
-      this.vertex.updatePathConnect(vertexItem); // Re-draw edge
+      this.vertex.updatePathConnect(vertexItem.id); // Re-draw edge
       /* Update Circle */
       d3.select(`#${vertexItem.id}`).selectAll('.drag_connect:first-child').classed("hide", false);
       this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem.id}`));
@@ -768,5 +768,34 @@ class MainMgmt {
       .attr("id", "groupE")
       .attr("orient", "auto");
   }
+
+  /**
+   * get list vertex type will show on menu
+   * @param data
+   * @returns {*}
+   */
+  getListVertexType(data){
+    let listVertexType = null;
+    // let showVertex = null;
+    let showVertex = [];
+
+    if(typeof data.SHOW_FULL_ALWAYS != "undefined" && data.SHOW_FULL_ALWAYS.length > 0){
+      data.SHOW_FULL_ALWAYS.forEach((group) => {
+        for (const key of Object.keys(data[group])) {
+          showVertex.push(key);
+        }
+      });
+      window.showFullVertex = showVertex;
+    }
+
+    for (const key of Object.keys(data)) {
+      if(key!= "SHOW_FULL_ALWAYS"){
+        listVertexType = Object.assign(listVertexType != null ? listVertexType : {}, data[key]);
+      }
+    }
+
+    return listVertexType;
+  }
+
 };
 export default MainMgmt;
