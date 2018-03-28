@@ -487,19 +487,30 @@ class MainMgmt {
     let hBSrc = xSrc + width;
     let wBSrc = ySrc + height;
 
-    d3.select("svg").selectAll(`.${HTML_BOUNDARY_CONTAINER_CLASS}`).each((d, i, node) => {
-      // The condition d.id != srcInfos.id user for check inside boundary
+    // Define method reverse
+    let reverse = (input) => {
+      let ret = new Array;
+      for (let i = input.length - 1; i >= 0; i--) {
+        ret.push(input[i]);
+      }
+      return ret;
+    };
+
+    // Cause: When multi boundary overlap that drags an object inside
+    // then it will be added to => regulation add to the highest boundary
+    let reverseBoundary = reverse(this.dataContainer.boundary);
+    reverseBoundary.forEach((item) => {
+      // The condition d.id != srcInfos.id used to check inside boundary
       // But it not affect to check inside vertex
-      if (!d.parent && d.id != srcInfos.id) {
+      if (!item.parent && item.id != srcInfos.id && !srcInfos.parent) {
         // Calculate box for boundary
-        let boundaryId = d.id;
-        let xTar = d.x;
-        let yTar = d.y;
-        let bBoxTar = this.objectUtils.getBBoxObject(d.id);
+        let boundaryId = item.id;
+        let xTar = item.x;
+        let yTar = item.y;
+        let bBoxTar = this.objectUtils.getBBoxObject(item.id);
         let hBTar = xTar + bBoxTar.width;
         let wBTar = yTar + bBoxTar.height;
 
-        // Condition drop inside a boundary
         if ((xSrc >= xTar) && (ySrc >= yTar) && (hBSrc <= hBTar) && (wBSrc <= wBTar)) {
           let member = {id: srcInfos.id, type, show: true};
           this.boundary.addMemberToBoundary(boundaryId, member);
@@ -654,7 +665,7 @@ class MainMgmt {
     lstVer = this.dataContainer.vertex;
     lstVer.forEach((vertex) => {
       showVertexType.forEach((type) => {
-        if(vertex.vertexType === type){
+        if (vertex.vertexType === type) {
           d3.select(`#${vertex.id}`).selectAll('.drag_connect').classed("hide", false);
           d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", false);
         }
@@ -774,12 +785,12 @@ class MainMgmt {
    * @param data
    * @returns {*}
    */
-  getListVertexType(data){
+  getListVertexType(data) {
     let listVertexType = null;
     // let showVertex = null;
     let showVertex = [];
 
-    if(typeof data.SHOW_FULL_ALWAYS != "undefined" && data.SHOW_FULL_ALWAYS.length > 0){
+    if (typeof data.SHOW_FULL_ALWAYS != "undefined" && data.SHOW_FULL_ALWAYS.length > 0) {
       data.SHOW_FULL_ALWAYS.forEach((group) => {
         for (const key of Object.keys(data[group])) {
           showVertex.push(key);
@@ -789,7 +800,7 @@ class MainMgmt {
     }
 
     for (const key of Object.keys(data)) {
-      if(key!= "SHOW_FULL_ALWAYS"){
+      if (key != "SHOW_FULL_ALWAYS") {
         listVertexType = Object.assign(listVertexType != null ? listVertexType : {}, data[key]);
       }
     }
