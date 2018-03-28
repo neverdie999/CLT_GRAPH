@@ -123,8 +123,8 @@ class Vertex {
     for (const key of Object.keys(vertexProperties)) {
       htmlContent += `
         <div class="property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key">${key} : </label>
-          <label class="data ${key}" id="${vertexId}${key}">${vertexProperties[key]}</label>
+          <label class="key" title="${key}">${key}</label><label> : </label>
+          <label class="data ${key}" id="${vertexId}${key}" title="${vertexProperties[key]}">${vertexProperties[key]}</label>
         </div>`;
       // Append point connect prop of vertex
 

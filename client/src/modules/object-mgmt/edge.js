@@ -123,10 +123,6 @@ class Edge {
       .attr("xlink:href", `#${edgeId}`)
       .attr("startOffset", "100%")
       .text(note.destNote);
-
-    // window.creatingEdge = false;
-    // window.removingEdge = false;
-    // window.criterionNode = null;
   }
 
   /**

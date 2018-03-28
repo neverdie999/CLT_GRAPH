@@ -34,6 +34,10 @@
   width: 85px;
   text-align: right;
   font-weight: 300;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 85px;
 }
 
 .vertex_data div .data{
@@ -41,6 +45,10 @@
   width: calc(100% - 85px);
   margin-left: 5px;
   border: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 85px);
 }
 
 //.interaction_full, .interaction_left, .interaction_right{
