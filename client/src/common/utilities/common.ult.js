@@ -116,3 +116,14 @@ export function autoScrollOnMousedrag(e) {
   }
 }
 
+export function checkDragOutOfWindow() {
+  let svg = d3.select("svg").node();
+  let coordinates = d3.mouse(svg);
+  let x = coordinates[0];
+  let y = coordinates[1];
+  if(x < 0 || x > 1900 || y < 0 || y > 950) {
+    return true;
+  }
+  return false;
+}
+

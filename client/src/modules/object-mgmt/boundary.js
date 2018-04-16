@@ -9,7 +9,8 @@ import PopUtils from '../../common/utilities/popup.ult';
 import {
   generateObjectId,
   cancleSelectedPath,
-  autoScrollOnMousedrag
+  autoScrollOnMousedrag,
+  checkDragOutOfWindow
 } from '../../common/utilities/common.ult';
 
 class Boundary {
@@ -113,23 +114,26 @@ class Boundary {
     return function (d) {
       autoScrollOnMousedrag();
       // Update poition object in this.dataContainer.boundary
-      d.x = d3.event.x;
-      d.y = d3.event.y;
-      // Transform group
-      d3.select(this).attr("transform", (d, i) => {
-        return "translate(" + [d3.event.x, d3.event.y] + ")"
-      });
+      // Check drag outside window
+      if(!checkDragOutOfWindow()){
+        d.x = d3.event.x;
+        d.y = d3.event.y;
+        // Transform group
+        d3.select(this).attr("transform", (d, i) => {
+          return "translate(" + [d3.event.x, d3.event.y] + ")"
+        });
 
-      // Update position of child element
-      if (d.member.length > 0)
-        self.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
+        // Update position of child element
+        if (d.member.length > 0)
+          self.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
 
-      // let {width, height} = self.objectUtils.getBBoxObject(d.id);
-      // let data = {x: d3.event.x, y: d3.event.y, width, height, type: "B"};
-      // self.mainMgmt.updateAttrBBoxGroup(data);
+        // let {width, height} = self.objectUtils.getBBoxObject(d.id);
+        // let data = {x: d3.event.x, y: d3.event.y, width, height, type: "B"};
+        // self.mainMgmt.updateAttrBBoxGroup(data);
 
-      if (!d.parent)
-        self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
+        if (!d.parent)
+          self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
+      }
     }
   }
 
@@ -141,8 +145,10 @@ class Boundary {
       //   return "translate(" + [d3.event.x, d3.event.y] + ")"
       // });
       // Update position of child element
-      if (d.member.length > 0)
+      // Check drag outside window
+      if(!checkDragOutOfWindow() && d.member.length > 0)
         self.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
+
       // self.mainMgmt.hiddenBBoxGroup();
 
       if (d.parent) {

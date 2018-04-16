@@ -15,6 +15,7 @@ import {
   cancleSelectedPath,
   createPath,
   autoScrollOnMousedrag,
+  checkDragOutOfWindow,
 } from '../../common/utilities/common.ult';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
@@ -225,13 +226,14 @@ class Vertex {
     return function (d) {
       autoScrollOnMousedrag();
       // Update poition object in this.dataContainer.boundary
-      d.x = d3.event.x;
-      d.y = d3.event.y;
-      // Transform group
-      d3.select(`#${d.id}`).attr("transform", (d, i) => {
-        return "translate(" + [d3.event.x, d3.event.y] + ")"
-      });
-
+      if(!checkDragOutOfWindow()){
+        d.x = d3.event.x ;
+        d.y = d3.event.y;
+        // Transform group
+        d3.select(`#${d.id}`).attr("transform", (d, i) => {
+          return "translate(" + [d3.event.x, d3.event.y] + ")"
+        });
+      }
       self.updatePathConnect(d.id);
       // let {width, height} = self.objectUtils.getBBoxObject(d.id);
       // let data = {x: d3.event.x, y: d3.event.y, width, height};
