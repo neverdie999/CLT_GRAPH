@@ -1,3 +1,24 @@
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .my-group{
   .form-control{
     width:50%;
@@ -33,4 +54,51 @@ label {
 
 .selected {
   stroke: #2795EE !important;
+}
+.container-file {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.file-interface {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;
+  position: relative;
+  display: none;
+  z-index: 1;
+  margin-bottom: 15px;
+  .form-horizontal {
+    margin: 10px 0;
+  }
+}
+
+.algetaContainer {
+  right: 5px;
+  left: 5px;
+  top: 5px;
+  bottom: 5px;
+  touch-action: none;
+  overflow: auto;
+  position: absolute;
+
+  .svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    min-width: 1900px;
+    min-height: 959px;
+    position: absolute;
+  }
+}
+
+.btn-file-interface {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  bottom: 10px;
+  right: 17px;
+  font-size: 30px;
+}
+.fa-folder-open-o:hover {
+  color: #66afe9;
 }

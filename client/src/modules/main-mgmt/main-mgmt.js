@@ -30,6 +30,7 @@ class MainMgmt {
     // this.initBoundaryGroup();
     // this.initVertexGroup();
     // this.initEdgeGroup();
+    this.initBBoxGroup();
 
     this.dragPointConnector = d3.drag()
       .on("start", this.dragPointStarted(this))
@@ -573,6 +574,7 @@ class MainMgmt {
     // this.initBoundaryGroup();
     // this.initVertexGroup();
     // this.initEdgeGroup();
+    this.initBBoxGroup();
   }
 
   /**
@@ -603,11 +605,13 @@ class MainMgmt {
       if (type === "O") {
         let px = Number(d3.select("#pointEnd").attr("cx"));
         let py = Number(d3.select("#pointEnd").attr("cy"));
-        pathStr = createPath({x: x - 1, y: y - 1}, {x: px, y: py});
+        // pathStr = createPath({x: x - 1, y: y - 1}, {x: px, y: py});
+        pathStr = createPath({x, y}, {x: px, y: py});
       } else {
         let px = Number(d3.select("#pointStart").attr("cx"));
         let py = Number(d3.select("#pointStart").attr("cy"));
-        pathStr = createPath({x: px, y: py}, {x: x - 1, y: y - 1});
+        // pathStr = createPath({x: px, y: py}, {x: x - 1, y: y - 1});
+        pathStr = createPath({x: px, y: py}, {x, y});
       }
 
       d3.select('#edgePath').attr('d', pathStr);
@@ -808,5 +812,35 @@ class MainMgmt {
     return listVertexType;
   }
 
+  /**
+   * The box simulate new position of vertex or boundary dragged.
+   */
+  initBBoxGroup() {
+    this.svgSelector.append("svg:g")
+      .attr("transform", `translate(0.5, 0.5)`)
+      .append("svg:rect")
+      .attr("id", "dummyBBox")
+      .attr("class", "dummy-edge stroke-dasharray")
+      // .attr("stroke-dasharray", "3 3")
+      .attr("fill", "none");
+  }
+
+  /**
+   * When dragging a vertex or boundary then update attribute for bbox
+   * Update coordinate
+   * Update size
+   */
+  updateAttrBBoxGroup(data) {
+    d3.select('#dummyBBox').attr('x', data.x);
+    d3.select('#dummyBBox').attr('y', data.y);
+    d3.select('#dummyBBox').attr('width', data.type == "B" ? data.width - 20 : data.width - 7);
+    d3.select('#dummyBBox').attr('height', data.type == "B" ? data.height : data.height - 3);
+    d3.select('#dummyBBox').style("display", "block");
+    d3.select(d3.select("#dummyBBox").node().parentNode).moveToFront();
+  }
+
+  hiddenBBoxGroup() {
+    d3.select('#dummyBBox').style("display", "none");
+  }
 };
 export default MainMgmt;

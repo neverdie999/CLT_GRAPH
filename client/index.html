@@ -19,47 +19,53 @@
   <!-- Insert this line after script imports -->
   <script>if (window.module) module = window.module;</script>
 </head>
-<body>
-<div id="algetaContainer" class="algetaContainer" style="height: 690px">
+<body style="overflow: hidden">
+<div id="algetaContainer" class="algetaContainer">
 </div>
 
 <!-- File Management (S) -->
-<div class="container" style="width: 100% !important; border: 1px solid; height: 115px;" id="uploadFile">
-  <form class="form-horizontal" style="margin: 15px 0;">
-    <div class="form-group">
-      <label class="control-label font-weight-700 col-sm-2">File Input</label>
-      <div class="col-sm-4">
-        <div class="input-group my-group">
-          <select id="fileType" class="selectpicker form-control">
-            <option value="VERTEX_TYPE" selected>Vertex Type Definition</option>
-            <option value="GRPH_DATA">Graph Data Structure</option>
-          </select>
-          <input type="file" class="form-control" id="inputFile" name="inputFile">
+<div class="container-file">
+  <div id="btnFileInterface" class="btn-file-interface fa fa-folder-open-o"></div>
+  <div class="container file-interface" id="fileInterface">
+    <div>
+      <form class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label font-weight-700 col-sm-2">File Input</label>
+          <div class="col-sm-4">
+            <div class="input-group my-group">
+              <select id="fileType" class="selectpicker form-control">
+                <option value="VERTEX_TYPE" selected>Vertex Type Definition</option>
+                <option value="GRPH_DATA">Graph Data Structure</option>
+              </select>
+              <input type="file" class="form-control" id="inputFile" name="inputFile">
+            </div>
+          </div>
+          <label class="control-label font-weight-700 col-sm-1" style="width: 70px">Mode</label>
+          <div class="col-sm-4">
+            <label class="radio-inline">
+              <input type="radio" name="graphMode" id="editGraphMode" checked value="E">Edit Graph
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="graphMode" id="showGraphMode" value="S">Show Graph
+            </label>
+          </div>
         </div>
-      </div>
-      <label class="control-label font-weight-700 col-sm-1" style="width: 70px">Mode</label>
-      <div class="col-sm-4">
-        <label class="radio-inline">
-          <input type="radio" name="graphMode" id="editGraphMode" checked value="E">Edit Graph
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="graphMode" id="showGraphMode" value="S">Show Graph
-        </label>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label font-weight-700 col-sm-2" for="exampleInputFile">Save File</label>
-      <div class="col-sm-6">
-        <div class="input-group">
-          <input type="text" class="form-control" name="outFile" id="outFile" placeholder="Enter file name">
-          <span class="input-group-btn">
+        <div class="form-group">
+          <label class="control-label font-weight-700 col-sm-2" for="exampleInputFile">Save File</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <input type="text" class="form-control" name="outFile" id="outFile" placeholder="Enter file name">
+              <span class="input-group-btn">
                 <button class="btn btn-secondary" type="button" id="btnExportFile">Download</button>
               </span>
+            </div>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
+
 <!-- File Management (E) -->
 
 <!-- Vertex Info Popup (S) -->
@@ -150,6 +156,8 @@
     </div>
   </div>
 </div>
+
+
 <!-- Edge Edit Types Pop (E) -->
 </body>
 <script type="text/javascript" src="../dist/bundle.js"></script>

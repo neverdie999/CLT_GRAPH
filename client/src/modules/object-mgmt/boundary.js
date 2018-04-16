@@ -6,7 +6,11 @@ import {
 } from '../../const/index';
 
 import PopUtils from '../../common/utilities/popup.ult';
-import {generateObjectId, cancleSelectedPath} from '../../common/utilities/common.ult';
+import {
+  generateObjectId,
+  cancleSelectedPath,
+  autoScrollOnMousedrag
+} from '../../common/utilities/common.ult';
 
 class Boundary {
   constructor(props) {
@@ -107,6 +111,7 @@ class Boundary {
 
   dragBoundary(self) {
     return function (d) {
+      autoScrollOnMousedrag();
       // Update poition object in this.dataContainer.boundary
       d.x = d3.event.x;
       d.y = d3.event.y;
@@ -119,15 +124,27 @@ class Boundary {
       if (d.member.length > 0)
         self.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
 
-      if (!d.parent) {
+      // let {width, height} = self.objectUtils.getBBoxObject(d.id);
+      // let data = {x: d3.event.x, y: d3.event.y, width, height, type: "B"};
+      // self.mainMgmt.updateAttrBBoxGroup(data);
+
+      if (!d.parent)
         self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
-      }
     }
   }
 
   dragBoundaryEnd(self) {
     return function (d) {
       // d3.select(this).classed("active", false);
+      // Transform group
+      // d3.select(this).attr("transform", (d, i) => {
+      //   return "translate(" + [d3.event.x, d3.event.y] + ")"
+      // });
+      // Update position of child element
+      if (d.member.length > 0)
+        self.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
+      // self.mainMgmt.hiddenBBoxGroup();
+
       if (d.parent) {
         self.mainMgmt.checkDragObjectOutsideBoundary(d);
       } else {
@@ -407,7 +424,7 @@ class Boundary {
     // Resize parent and childs of parent
     this.reorderPositionMember(boundaryId);
     this.resizeParentBoundary(boundaryId);
-    if(parent)
+    if (parent)
       this.removeMemberFromBoundary(parent);
   }
 
@@ -550,9 +567,10 @@ class Boundary {
             that.setBoundaryName(boundaryId, newName);
           }
           //fix show console bug when delete node
-          try{
+          try {
             d3.select(`#${boundaryId}Name`).remove();
-          }catch(e){}
+          } catch (e) {
+          }
 
         }
       });

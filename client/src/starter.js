@@ -88,13 +88,13 @@ class Starter {
         let mouse = d3.mouse(this);
         let elem = document.elementFromPoint(mouse[0], mouse[1]);
         // console.log("mouseup", elem.tagName)
-        if((!elem.tagName || elem.tagName != 'path') && window.udpateEdge) {
+        if((!elem || !elem.tagName || elem.tagName != 'path') && window.udpateEdge) {
           cancleSelectedPath();
         }
       })
-      .attr("class", "svg")
-      .attr("height", GRAPH_HEIGHT)
-      .attr("width", GRAPH_WIDTH);
+      .attr("class", "svg");
+    // .attr("height", GRAPH_HEIGHT)
+    // .attr("width", GRAPH_WIDTH);
 
     /**
      * Init Object Utils

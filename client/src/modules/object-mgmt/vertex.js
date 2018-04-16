@@ -12,7 +12,9 @@ import PopUtils from '../../common/utilities/popup.ult';
 import {
   generateObjectId,
   replaceSpecialCharacter,
-  cancleSelectedPath
+  cancleSelectedPath,
+  createPath,
+  autoScrollOnMousedrag,
 } from '../../common/utilities/common.ult';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
@@ -86,11 +88,6 @@ class Vertex {
     this.dataContainer.vertex.push(vertexInfo);
 
     //append into vertex group
-    // let group = d3.select("#groupV").append("g")
-    //   .attr("transform", `translate(${options.x}, ${options.y})`)
-    //   .attr("id", vertexId)
-    //   .attr("class", `${HTML_VERTEX_CONTAINER_CLASS}`)
-    //   .style("cursor", "move");
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", vertexId)
@@ -198,16 +195,24 @@ class Vertex {
    * Init event drag for all vertex
    */
   initEventDrag() {
-    this.svgSelector.selectAll(`.${HTML_VERTEX_CONTAINER_CLASS}`).data(this.dataContainer.vertex).call(this.dragRegister);
+    this.svgSelector.selectAll(`.${HTML_VERTEX_CONTAINER_CLASS}`)
+      .data(this.dataContainer.vertex)
+      .on("mouseover", this.handleMouseOver(this))
+      .on("mouseout", this.handleMouseOut(this))
+      .call(this.dragRegister);
     d3.selectAll('.drag_connect').call(this.dragConnector);
   }
 
+  /**
+   * Handle event start drag vertex
+   * @param d
+   */
   dragstarted(self) {
     return function (d) {
       // If selected path to purpose update, but then move vertex then cancle it.
       if (window.udpateEdge)
         cancleSelectedPath();
-      d3.event.sourceEvent.stopPropagation();
+      // d3.event.sourceEvent.stopPropagation();
     }
   }
 
@@ -218,6 +223,7 @@ class Vertex {
    */
   dragged(self) {
     return function (d) {
+      autoScrollOnMousedrag();
       // Update poition object in this.dataContainer.boundary
       d.x = d3.event.x;
       d.y = d3.event.y;
@@ -227,6 +233,10 @@ class Vertex {
       });
 
       self.updatePathConnect(d.id);
+      // let {width, height} = self.objectUtils.getBBoxObject(d.id);
+      // let data = {x: d3.event.x, y: d3.event.y, width, height};
+      // self.mainMgmt.updateAttrBBoxGroup(data);
+
       // Resize boundary when vertex dragged
       if (!d.parent)
         self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
@@ -239,13 +249,35 @@ class Vertex {
    */
   dragended(self) {
     return function (d) {
-      // d3.select(this).classed("active", false);
+      // d3.select(this).classed("selected", false);
+      self.updatePathConnect(d.id);
+      // d.x = d3.event.x;
+      // d.y = d3.event.y;
+      // Transform group
+      // d3.select(`#${d.id}`).attr("transform", (d, i) => {
+      //   return "translate(" + [d3.event.x, d3.event.y] + ")"
+      // });
+
+      // self.mainMgmt.hiddenBBoxGroup();
+
       if (d.parent) {
         self.mainMgmt.checkDragObjectOutsideBoundary(d);
       } else {
         self.mainMgmt.checkDragObjectInsideBoundary(d, "V");
         self.mainMgmt.resetSizeBoundary();
       }
+    }
+  }
+
+  handleMouseOver(self) {
+    return function (d) {
+      // console.log("handleMouseOver", d);
+    }
+  }
+
+  handleMouseOut(self) {
+    return function (d) {
+      // console.log("handleMouseOut", d);
     }
   }
 
@@ -561,7 +593,7 @@ class Vertex {
       if (window.creatingEdge) {
         let x = d3.mouse(d3.select('svg').node())[0];
         let y = d3.mouse(d3.select('svg').node())[1];
-        let pathStr = self.createTempPath(window.sourceNode, {x, y});
+        let pathStr = createPath(window.sourceNode, {x, y});
         d3.select('#dummyPath').attr('d', pathStr);
         d3.select('#dummyPath').style("display", "block");
       }
@@ -591,27 +623,6 @@ class Vertex {
       window.sourceNode = null;
     }
   }
-
-  /**
-   * Create temp string path
-   * @param src
-   * @param tar
-   * @returns {string}
-   */
-  createTempPath(src, tar) {
-    let diff = {
-      x: tar.x - src.x,
-      y: tar.y - src.y
-    };
-
-    let pathStr = 'M' + src.x + ',' + src.y + ' ';
-    pathStr += 'C';
-    pathStr += src.x + diff.x / 3 + ',' + src.y + ' ';
-    pathStr += src.x + diff.x / 3 + ',' + tar.y + ' ';
-    pathStr += tar.x + ',' + tar.y;
-
-    return pathStr;
-  };
 
   updateCircle(arrProp, vertex) {
     let count = 0;
