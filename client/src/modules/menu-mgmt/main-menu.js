@@ -1,3 +1,5 @@
+import {getCoordinateMouseOnClick} from '../../common/utilities/common.ult';
+
 class MainMenu {
   constructor(props) {
     this.selector = props.selector;
@@ -79,10 +81,11 @@ class MainMenu {
           events: {
             show: (opt) => {
               if (event) {
-                opt["x"] = event.pageX;
-                // opt["x"] = event.x;
-                opt["y"] = event.pageY;
-                // opt["y"] = event.y;
+                const {x, y} = getCoordinateMouseOnClick(event);
+                // opt["x"] = event.pageX;
+                opt["x"] = x;
+                // opt["y"] = event.pageY;
+                opt["y"] = y;
               }
             }
           }

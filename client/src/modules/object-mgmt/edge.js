@@ -10,6 +10,7 @@ import {
   generateObjectId
   , comShowMessage
   , cancleSelectedPath
+  , createPath
 } from '../../common/utilities/common.ult';
 
 const HTML_EDGE_TYPE_ID = 'editEdgeType';
@@ -63,8 +64,9 @@ class Edge {
 
     //append into edge group
     // let group = d3.select("#groupE").append("g");
-    let group = this.svgSelector.append("g");
-    let pathStr = this.createPath(source, target);
+    let group = this.svgSelector.append("g")
+      .attr("transform", `translate(0.5, 0.5)`);
+    let pathStr = createPath(source, target);
     group.append("path")
       .attr('d', pathStr)
       .attr("class", `${HTML_EDGE_CONTAINER_CLASS} edge solid`) // Default line type is solid
@@ -188,7 +190,7 @@ class Edge {
 
     this.dataContainer.edge = data;
     // If edge seleted then delete so must be hidden edgePath, groupEdgePoint
-    if(window.udpateEdge)
+    if (window.udpateEdge)
       cancleSelectedPath();
   }
 
@@ -200,27 +202,6 @@ class Edge {
   checkExistEdge(source, target) {
 
   }
-
-  /**
-   * Create string path
-   * @param src
-   * @param tar
-   * @returns {string}
-   */
-  createPath(src, tar) {
-    let diff = {
-      x: tar.x - src.x,
-      y: tar.y - src.y
-    };
-
-    let pathStr = 'M' + src.x + ',' + src.y + ' ';
-    pathStr += 'C';
-    pathStr += src.x + diff.x / 3 + ',' + src.y + ' ';
-    pathStr += src.x + diff.x / 3 + ',' + tar.y + ' ';
-    pathStr += tar.x + ',' + tar.y;
-
-    return pathStr;
-  };
 
   /**
    * Update line type of edge
@@ -305,7 +286,7 @@ class Edge {
       edgeInfo.target.prop = options.target.prop;
     }
 
-    let pathStr = this.createPath(source, target);
+    let pathStr = createPath(source, target);
     // Get DOM and update attribute
     d3.select(`#${edgeId}`).attr('d', pathStr);
   }

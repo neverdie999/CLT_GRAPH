@@ -10,6 +10,8 @@ const HTML_OUTPUT_FILE_ID = 'outFile';
 const HTML_FILE_TYPE_ID = 'fileType';
 const HTML_BTN_EXPORT_FILE_ID = 'btnExportFile';
 const HTML_SELECTOR_MODE_GRPH = 'input:radio[name=graphMode]';
+const HTML_BTN_FILE_INTERFACE = 'btnFileInterface';
+const HTML_FILE_INTERFACE = 'fileInterface';
 
 class FileMgmt {
   constructor(props) {
@@ -42,6 +44,11 @@ class FileMgmt {
         event.preventDefault();
       }
     });
+
+    $(`#${HTML_BTN_FILE_INTERFACE}`).click((event) => {
+      $(`#${HTML_FILE_INTERFACE}`).slideToggle();
+    });
+
   }
 
   /**
@@ -71,6 +78,7 @@ class FileMgmt {
       }
       finally {
         this.clearInputFile();
+        $(`#${HTML_FILE_INTERFACE}`).slideToggle();
       }
     }
     fileReader.readAsText(file);
