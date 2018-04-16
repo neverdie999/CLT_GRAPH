@@ -2626,13 +2626,14 @@ var slice = array.slice;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["c"] = comShowMessage;
-/* harmony export (immutable) */ __webpack_exports__["e"] = generateObjectId;
-/* harmony export (immutable) */ __webpack_exports__["g"] = replaceSpecialCharacter;
-/* harmony export (immutable) */ __webpack_exports__["d"] = createPath;
+/* harmony export (immutable) */ __webpack_exports__["d"] = comShowMessage;
+/* harmony export (immutable) */ __webpack_exports__["f"] = generateObjectId;
+/* harmony export (immutable) */ __webpack_exports__["h"] = replaceSpecialCharacter;
+/* harmony export (immutable) */ __webpack_exports__["e"] = createPath;
 /* harmony export (immutable) */ __webpack_exports__["b"] = cancleSelectedPath;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getCoordinateMouseOnClick;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getCoordinateMouseOnClick;
 /* harmony export (immutable) */ __webpack_exports__["a"] = autoScrollOnMousedrag;
+/* harmony export (immutable) */ __webpack_exports__["c"] = checkDragOutOfWindow;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(115);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
@@ -2751,6 +2752,17 @@ function autoScrollOnMousedrag(e) {
   } else if (y < sT) {
     $parent.scrollTop(y);
   }
+}
+
+function checkDragOutOfWindow() {
+  let svg = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("svg").node();
+  let coordinates = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](svg);
+  let x = coordinates[0];
+  let y = coordinates[1];
+  if(x < 0 || x > 1900 || y < 0 || y > 950) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -36177,7 +36189,7 @@ class MainMgmt {
     // validate structure file invalid
     // option vertex type definition but choose graph type file
     if (data.vertex || data.edge || data.boundary || data.position || data.vertexTypes) {
-      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["c" /* comShowMessage */])("Invalid structure file vertex type definition");
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["d" /* comShowMessage */])("Invalid structure file vertex type definition");
       return;
     }
 
@@ -36194,7 +36206,7 @@ class MainMgmt {
 
     // Now just show message warning for user. Not stop working
     if (isMisMatch)
-      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["c" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["d" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
         "\n Please check again!");
 
     // Init main menu and menu for objects
@@ -36211,7 +36223,7 @@ class MainMgmt {
     // Validate content
     let errorContent = await this.validateGraphDataStructure(data);
     if (errorContent) {
-      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["c" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["d" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
       return;
     }
 
@@ -36226,7 +36238,7 @@ class MainMgmt {
     let isMisMatch = await this.validateVertexTypesInGraph();
     // Now just show message warning for user. Not stop working
     if (isMisMatch)
-      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["c" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["d" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
         "\n Please check again!");
 
     // Draw boundary
@@ -36621,12 +36633,12 @@ class MainMgmt {
         let px = Number(__WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]("#pointEnd").attr("cx"));
         let py = Number(__WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]("#pointEnd").attr("cy"));
         // pathStr = createPath({x: x - 1, y: y - 1}, {x: px, y: py});
-        pathStr = Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["d" /* createPath */])({x, y}, {x: px, y: py});
+        pathStr = Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["e" /* createPath */])({x, y}, {x: px, y: py});
       } else {
         let px = Number(__WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]("#pointStart").attr("cx"));
         let py = Number(__WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]("#pointStart").attr("cy"));
         // pathStr = createPath({x: px, y: py}, {x: x - 1, y: y - 1});
-        pathStr = Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["d" /* createPath */])({x: px, y: py}, {x, y});
+        pathStr = Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["e" /* createPath */])({x: px, y: py}, {x, y});
       }
 
       __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]('#edgePath').attr('d', pathStr);
@@ -36933,7 +36945,7 @@ class Vertex {
     let vertexType = options.vertexType;
     // Get properties vertex from list object vertex type
     let vertexProperties = options.data ? Object.assign({}, options.data) : Object.assign({}, window.vertexTypes[vertexType]);
-    let vertexId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["e" /* generateObjectId */])('V');
+    let vertexId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* generateObjectId */])('V');
     let parent = options.parent || null;
 
     let vertexInfo = {
@@ -37086,13 +37098,14 @@ class Vertex {
     return function (d) {
       Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["a" /* autoScrollOnMousedrag */])();
       // Update poition object in this.dataContainer.boundary
-      d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
-      d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
-      // Transform group
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${d.id}`).attr("transform", (d, i) => {
-        return "translate(" + [__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y] + ")"
-      });
-
+      if(!Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["c" /* checkDragOutOfWindow */])()){
+        d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x ;
+        d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
+        // Transform group
+        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${d.id}`).attr("transform", (d, i) => {
+          return "translate(" + [__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y] + ")"
+        });
+      }
       self.updatePathConnect(d.id);
       // let {width, height} = self.objectUtils.getBBoxObject(d.id);
       // let data = {x: d3.event.x, y: d3.event.y, width, height};
@@ -37264,7 +37277,7 @@ class Vertex {
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${id}Name`).text(infos.name);
     // Update properties
     for (const key of Object.keys(infos.data)) {
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["g" /* replaceSpecialCharacter */])(`${id}${key}`)}`).text(infos.data[key]);
+      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["h" /* replaceSpecialCharacter */])(`${id}${key}`)}`).text(infos.data[key]);
       vertexInfo.data[key] = infos.data[key];
     }
   }
@@ -37454,7 +37467,7 @@ class Vertex {
       if (window.creatingEdge) {
         let x = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('svg').node())[0];
         let y = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('svg').node())[1];
-        let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["d" /* createPath */])(window.sourceNode, {x, y});
+        let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["e" /* createPath */])(window.sourceNode, {x, y});
         __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#dummyPath').attr('d', pathStr);
         __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#dummyPath').style("display", "block");
       }
@@ -50748,7 +50761,7 @@ class FileMgmt {
         }
       }
       catch (ex) {
-        Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["c" /* comShowMessage */])("Read file error!");
+        Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["d" /* comShowMessage */])("Read file error!");
       }
       finally {
         this.clearInputFile();
@@ -50761,13 +50774,13 @@ class FileMgmt {
   writeJsonFileGraph() {
     let fileName = $(`#${HTML_OUTPUT_FILE_ID}`).val();
     if (!fileName) {
-      Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["c" /* comShowMessage */])("Please input file name");
+      Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["d" /* comShowMessage */])("Please input file name");
       return;
     }
 
     this.getContentGraphAsJson().then(content => {
       if (!content) {
-        Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["c" /* comShowMessage */])("No content to export");
+        Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["d" /* comShowMessage */])("No content to export");
         return;
       }
 
@@ -50941,7 +50954,7 @@ class MainMenu {
           events: {
             show: (opt) => {
               if (event) {
-                const {x, y} = Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* getCoordinateMouseOnClick */])(event);
+                const {x, y} = Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["g" /* getCoordinateMouseOnClick */])(event);
                 // opt["x"] = event.pageX;
                 opt["x"] = x;
                 // opt["y"] = event.pageY;
@@ -51119,7 +51132,7 @@ class Edge {
     let source = Object.assign({}, options.source);
     let target = Object.assign({}, options.target);
     let type = options.type;
-    let edgeId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["e" /* generateObjectId */])('E');
+    let edgeId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* generateObjectId */])('E');
     // Default style is line solid with arrow at end.
     let style = options.style ? options.style : {line: "solid", arrow: "Y"};
     let note = options.note ? options.note : {originNote: '', middleNote: '', destNote: ''}; // Default note for Edge.
@@ -51144,7 +51157,7 @@ class Edge {
     // let group = d3.select("#groupE").append("g");
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(0.5, 0.5)`);
-    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["d" /* createPath */])(source, target);
+    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["e" /* createPath */])(source, target);
     group.append("path")
       .attr('d', pathStr)
       .attr("class", `${__WEBPACK_IMPORTED_MODULE_2__const_index__["g" /* HTML_EDGE_CONTAINER_CLASS */]} edge solid`) // Default line type is solid
@@ -51364,7 +51377,7 @@ class Edge {
       edgeInfo.target.prop = options.target.prop;
     }
 
-    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["d" /* createPath */])(source, target);
+    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["e" /* createPath */])(source, target);
     // Get DOM and update attribute
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${edgeId}`).attr('d', pathStr);
   }
@@ -51509,7 +51522,7 @@ class Boundary {
   }
 
   async createBoundary(options = {}) {
-    let boundaryId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["e" /* generateObjectId */])('B');
+    let boundaryId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["f" /* generateObjectId */])('B');
     let memeber = options.member || [];
     let parent = options.parent || null;
     let height = options.height || __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT;
@@ -51596,23 +51609,26 @@ class Boundary {
     return function (d) {
       Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["a" /* autoScrollOnMousedrag */])();
       // Update poition object in this.dataContainer.boundary
-      d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
-      d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
-      // Transform group
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this).attr("transform", (d, i) => {
-        return "translate(" + [__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y] + ")"
-      });
+      // Check drag outside window
+      if(!Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["c" /* checkDragOutOfWindow */])()){
+        d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
+        d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
+        // Transform group
+        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this).attr("transform", (d, i) => {
+          return "translate(" + [__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y] + ")"
+        });
 
-      // Update position of child element
-      if (d.member.length > 0)
-        self.reorderPositionMember(d.id, {x: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, y: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y});
+        // Update position of child element
+        if (d.member.length > 0)
+          self.reorderPositionMember(d.id, {x: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, y: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y});
 
-      // let {width, height} = self.objectUtils.getBBoxObject(d.id);
-      // let data = {x: d3.event.x, y: d3.event.y, width, height, type: "B"};
-      // self.mainMgmt.updateAttrBBoxGroup(data);
+        // let {width, height} = self.objectUtils.getBBoxObject(d.id);
+        // let data = {x: d3.event.x, y: d3.event.y, width, height, type: "B"};
+        // self.mainMgmt.updateAttrBBoxGroup(data);
 
-      if (!d.parent)
-        self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
+        if (!d.parent)
+          self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
+      }
     }
   }
 
@@ -51624,8 +51640,10 @@ class Boundary {
       //   return "translate(" + [d3.event.x, d3.event.y] + ")"
       // });
       // Update position of child element
-      if (d.member.length > 0)
+      // Check drag outside window
+      if(!Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["c" /* checkDragOutOfWindow */])() && d.member.length > 0)
         self.reorderPositionMember(d.id, {x: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x, y: __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y});
+
       // self.mainMgmt.hiddenBBoxGroup();
 
       if (d.parent) {
@@ -51693,7 +51711,7 @@ class Boundary {
    * @param boundaryId
    */
   async copyAllBoundary(boundaryId) {
-    let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["e" /* generateObjectId */])("B");
+    let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["f" /* generateObjectId */])("B");
     let cBoundary = this.objectUtils.cloneBoundaryInfo(boundaryId);
     let cMembers = cBoundary.member.slice();
     cBoundary.member = [];
@@ -51977,7 +51995,7 @@ class Boundary {
       let objectId = member.id;
       if (member.type === "V") {
         let cVertex = this.objectUtils.cloneVertexInfo(objectId);
-        let cVertexId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["e" /* generateObjectId */])("V");
+        let cVertexId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["f" /* generateObjectId */])("V");
         cVertex.id = cVertexId;
         console.log(`======${cVertexId}=========`);
         cVertex.parent = cloneId;
@@ -51987,7 +52005,7 @@ class Boundary {
       } else {
         let cBoundary = this.objectUtils.cloneBoundaryInfo(objectId);
         let members = cBoundary.member.slice();
-        let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["e" /* generateObjectId */])("B");
+        let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["f" /* generateObjectId */])("B");
         cBoundary.id = cBoundaryId;
         console.log(`======${cBoundaryId}=========`);
         cBoundary.parent = cloneId;
