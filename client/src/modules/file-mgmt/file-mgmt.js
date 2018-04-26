@@ -116,6 +116,7 @@ class FileMgmt {
       downLink.remove();
 
       this.clearOutFileName();
+      $(`#${HTML_FILE_INTERFACE}`).slideToggle();
     });
   }
 
@@ -158,6 +159,7 @@ class FileMgmt {
     });
 
     dataContent.vertexTypes = window.dataFileVertexType;
+    dataContent.graphSize = {width: window.xBoundary, height: window.yBoundary};
 
     return Promise.resolve(dataContent);
   }

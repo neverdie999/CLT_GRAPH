@@ -7,7 +7,11 @@ import EdgeMenu from '../menu-mgmt/edge-menu';
 import Boundary from '../object-mgmt/boundary';
 import BoundaryMenu from '../menu-mgmt/boundary-menu';
 import BoundaryMenuItems from '../menu-mgmt/boundary-menu-items';
-import {comShowMessage, createPath} from '../../common/utilities/common.ult';
+import {
+  comShowMessage,
+  createPath,
+  setSizeGraph
+} from '../../common/utilities/common.ult';
 import * as d3 from 'd3';
 import {
   HTML_ALGETA_CONTAINER_CLASS,
@@ -213,6 +217,10 @@ class MainMgmt {
     if (isMisMatch)
       comShowMessage("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
         "\n Please check again!");
+
+    // Set size graph
+    if(data.graphSize)
+      setSizeGraph(data.graphSize);
 
     // Draw boundary
     let arrBoundary = data.boundary;

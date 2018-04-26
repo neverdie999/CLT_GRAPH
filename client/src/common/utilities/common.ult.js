@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import _ from "lodash";
 import {
-  HTML_ALGETA_CONTAINER_ID
+  HTML_ALGETA_CONTAINER_ID,
+  SVG_CONTAINER_ID
 } from '../../const/index';
 
 /**
@@ -84,6 +85,9 @@ export function cancleSelectedPath() {
   d3.select("#edgePath").moveToBack();
 }
 
+/**
+ * Get coordinate mouse when click on SVG
+ */
 export function getCoordinateMouseOnClick(e) {
   let container = $(`#${HTML_ALGETA_CONTAINER_ID}`);
   let x = e.clientX + container.scrollLeft();
@@ -91,17 +95,24 @@ export function getCoordinateMouseOnClick(e) {
   return {x, y};
 }
 
-export function autoScrollOnMousedrag(e) {
+/**
+ * Auto scroll when drag vertex or boundary
+ */
+export function autoScrollOnMousedrag(d) {
   // Autoscroll on mousedrag
   let svg = d3.select("svg").node();
   const $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
   let w = $parent.width();
   let h = $parent.height();
+
+
   let sL = $parent.scrollLeft();
   let sT = $parent.scrollTop();
   let coordinates = d3.mouse(svg);
   let x = coordinates[0];
   let y = coordinates[1];
+
+  console.log(w, h, sL, sT, x, y);
 
   if (x > w + sL) {
     $parent.scrollLeft(x - w);
@@ -116,14 +127,84 @@ export function autoScrollOnMousedrag(e) {
   }
 }
 
-export function checkDragOutOfWindow() {
+/**
+ * Check user drag mouse out of window
+ */
+export function checkDragOutOfWindow(d) {
   let svg = d3.select("svg").node();
+  const {width, height} = d3.select(`#${d.id}`).node().getBBox();
   let coordinates = d3.mouse(svg);
   let x = coordinates[0];
   let y = coordinates[1];
-  if(x < 0 || x > 1900 || y < 0 || y > 950) {
+  if (x < 20 || y < 10) {
     return true;
   }
   return false;
 }
 
+export function updateGraphBoundary(d) {
+  const {width, height} = d3.select(`#${d.id}`).node().getBBox();
+  const $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
+  let currentX = d3.event.x;
+  let currentY = d3.event.y;
+  if ((currentX + width) > window.xBoundary) {
+    window.xBoundary = currentX + width;
+    $(`#${SVG_CONTAINER_ID}`).css("min-width", window.xBoundary);
+  }
+
+  if ((currentY + height) > window.yBoundary) {
+    window.yBoundary = currentY + height;
+    $(`#${SVG_CONTAINER_ID}`).css("min-height", window.yBoundary);
+  }
+}
+
+export function setSizeGraph(options = {}) {
+  let $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
+  if (options.width) {
+    window.xBoundary = options.width + 200;
+    $(`#${SVG_CONTAINER_ID}`).css("min-width", window.xBoundary);
+  }
+
+  if (options.height) {
+    window.yBoundary = options.height + 200;
+    $(`#${SVG_CONTAINER_ID}`).css("min-height", window.yBoundary);
+  }
+}
+
+/**
+ * Shink graph when object drag end.
+ * @param d
+ */
+export function setMinBoundaryGraph(data) {
+  // Array store size
+  let lstOffsetX = [1900];
+  let lstOffsetY = [959];
+
+  // Filter boundary without parent
+  let boundaries = _.filter(data.boundary, (g) => {
+    return g.parent == null;
+  });
+
+  // Filter vertex without parent
+  let vertices = _.filter(data.vertex, (g) => {
+    return g.parent == null;
+  });
+
+  boundaries.forEach(e => {
+    let {width, height} = d3.select(`#${e.id}`).node().getBBox();
+    lstOffsetX.push(width + e.x);
+    lstOffsetY.push(height + e.y);
+  });
+
+  vertices.forEach(e => {
+    let {width, height} = d3.select(`#${e.id}`).node().getBBox();
+    lstOffsetX.push(width + e.x);
+    lstOffsetY.push(height + e.y);
+  });
+
+  // Get max width, max height
+  let width = Math.max.apply(null, lstOffsetX);
+  let height = Math.max.apply(null, lstOffsetY);
+
+  setSizeGraph({width, height});
+}

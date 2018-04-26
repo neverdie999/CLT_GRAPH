@@ -1,17 +1,21 @@
 /* width */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  //background: #f1f1f1;
+  background: whiteSmoke;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  //background: #888;
+  background: #c5c5c5;
+  border-radius: 10px;
+  border: whiteSmoke solid 3px;
 }
 
 /* Handle on hover */
@@ -74,8 +78,8 @@ label {
 
 .algetaContainer {
   right: 5px;
-  left: 5px;
-  top: 5px;
+  left: 10px;
+  top: 10px;
   bottom: 5px;
   touch-action: none;
   overflow: auto;
@@ -96,7 +100,7 @@ label {
   width: 30px;
   height: 30px;
   bottom: 10px;
-  right: 17px;
+  right: 12px;
   font-size: 30px;
 }
 .fa-folder-open-o:hover {

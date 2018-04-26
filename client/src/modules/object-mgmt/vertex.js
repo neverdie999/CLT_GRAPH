@@ -5,7 +5,8 @@ import {
   INTERACTION_TP_LST,
   TYPE_POINT,
   VERTEX_ATTR_SIZE,
-  HTML_VERTEX_CONTAINER_CLASS
+  HTML_VERTEX_CONTAINER_CLASS,
+  HTML_ALGETA_CONTAINER_ID
 } from '../../const/index';
 import _ from "lodash";
 import PopUtils from '../../common/utilities/popup.ult';
@@ -16,6 +17,8 @@ import {
   createPath,
   autoScrollOnMousedrag,
   checkDragOutOfWindow,
+  updateGraphBoundary,
+  setMinBoundaryGraph,
 } from '../../common/utilities/common.ult';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
@@ -99,7 +102,6 @@ class Vertex {
     // Append point connect vertex
     group.append("circle")
       .attr("class", "drag_connect")
-      // .attr("fill", "none")
       .attr("fill", "white")
       .attr("r", 3)
       .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH / 2)
@@ -130,7 +132,6 @@ class Vertex {
       group.append("circle")
         .attr("class", "drag_connect")
         .attr("prop", key)
-        // .attr("fill", "none")
         .attr("fill", "white")
         .attr("type", TYPE_POINT.INPUT)
         .attr("r", 3)
@@ -152,7 +153,6 @@ class Vertex {
       group.append("circle")
         .attr("class", "drag_connect")
         .attr("prop", key)
-        // .attr("fill", "none")
         .attr("fill", "white")
         .attr("type", TYPE_POINT.OUTPUT)
         .attr("r", 3)
@@ -175,6 +175,7 @@ class Vertex {
     }
 
     let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count;
+
     group.append("foreignObject")
       .attr("width", VERTEX_ATTR_SIZE.GROUP_WIDTH)
       .attr("height", vertexHeight)
@@ -198,8 +199,7 @@ class Vertex {
   initEventDrag() {
     this.svgSelector.selectAll(`.${HTML_VERTEX_CONTAINER_CLASS}`)
       .data(this.dataContainer.vertex)
-      .on("mouseover", this.handleMouseOver(this))
-      .on("mouseout", this.handleMouseOut(this))
+      // .on("mouseleave", this.handleMouseLeave(this))
       .call(this.dragRegister);
     d3.selectAll('.drag_connect').call(this.dragConnector);
   }
@@ -209,11 +209,10 @@ class Vertex {
    * @param d
    */
   dragstarted(self) {
-    return function (d) {
+    return (d) => {
       // If selected path to purpose update, but then move vertex then cancle it.
       if (window.udpateEdge)
         cancleSelectedPath();
-      // d3.event.sourceEvent.stopPropagation();
     }
   }
 
@@ -223,21 +222,18 @@ class Vertex {
    * @param d
    */
   dragged(self) {
-    return function (d) {
-      autoScrollOnMousedrag();
+    return (d) => {
+      autoScrollOnMousedrag(d);
+      updateGraphBoundary(d);
       // Update poition object in this.dataContainer.boundary
-      if(!checkDragOutOfWindow()){
-        d.x = d3.event.x ;
+      if (!checkDragOutOfWindow(d)) {
+        d.x = d3.event.x;
         d.y = d3.event.y;
-        // Transform group
         d3.select(`#${d.id}`).attr("transform", (d, i) => {
-          return "translate(" + [d3.event.x, d3.event.y] + ")"
+          return "translate(" + [d.x, d.y] + ")"
         });
       }
       self.updatePathConnect(d.id);
-      // let {width, height} = self.objectUtils.getBBoxObject(d.id);
-      // let data = {x: d3.event.x, y: d3.event.y, width, height};
-      // self.mainMgmt.updateAttrBBoxGroup(data);
 
       // Resize boundary when vertex dragged
       if (!d.parent)
@@ -250,37 +246,24 @@ class Vertex {
    * @param d
    */
   dragended(self) {
-    return function (d) {
-      // d3.select(this).classed("selected", false);
-      self.updatePathConnect(d.id);
-      // d.x = d3.event.x;
-      // d.y = d3.event.y;
-      // Transform group
-      // d3.select(`#${d.id}`).attr("transform", (d, i) => {
-      //   return "translate(" + [d3.event.x, d3.event.y] + ")"
-      // });
-
-      // self.mainMgmt.hiddenBBoxGroup();
-
+    return (d) => {
       if (d.parent) {
         self.mainMgmt.checkDragObjectOutsideBoundary(d);
       } else {
         self.mainMgmt.checkDragObjectInsideBoundary(d, "V");
         self.mainMgmt.resetSizeBoundary();
       }
+      setMinBoundaryGraph(self.dataContainer);
+      // checkDragOutOfWindow(d);
+      // d3.select(`#${d.id}`).attr("transform", (d, i) => {
+      //   return "translate(" + [d.x, d.y] + ")"
+      // });
+      // self.updatePathConnect(d.id);
     }
   }
 
-  handleMouseOver(self) {
-    return function (d) {
-      // console.log("handleMouseOver", d);
-    }
-  }
+  testFunction(d) {
 
-  handleMouseOut(self) {
-    return function (d) {
-      // console.log("handleMouseOut", d);
-    }
   }
 
   /**
@@ -409,14 +392,6 @@ class Vertex {
       vertexInfo.data[key] = infos.data[key];
     }
   }
-
-  /**
-   * Cancle state create edge on vertex
-   */
-  // cancelCreateEdge() {
-  //   window.creatingEdge = false;
-  //   window.sourceNode = null;
-  // }
 
   /**
    * Set state connect from source
@@ -626,6 +601,11 @@ class Vertex {
     }
   }
 
+  /**
+   * Update position circle connect on vertex
+   * @param arrProp
+   * @param vertex
+   */
   updateCircle(arrProp, vertex) {
     let count = 0;
     for (const key of arrProp) {
@@ -701,6 +681,30 @@ class Vertex {
       //   .attr('height', tmpArry.length ?
       //     VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : VERTEX_ATTR_SIZE.HEADER_HEIGHT
     });
+  }
+
+  testFunction() {
+    let svg = d3.select("svg").node();
+    const $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
+    let w = $parent.width();
+    let h = $parent.height();
+    let sL = $parent.scrollLeft();
+    let sT = $parent.scrollTop();
+    let coordinates = d3.mouse(svg);
+    let x = coordinates[0];
+    let y = coordinates[1];
+
+    if (x > w + sL) {
+      $parent.scrollLeft(x - w);
+    } else if (x < sL) {
+      $parent.scrollLeft(x);
+    }
+
+    if (y > h + sT) {
+      $parent.scrollTop(y - h);
+    } else if (y < sT) {
+      $parent.scrollTop(y);
+    }
   }
 }
 
