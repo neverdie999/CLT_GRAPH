@@ -105,15 +105,11 @@ export function autoScrollOnMousedrag(d) {
   const $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
   let w = $parent.width();
   let h = $parent.height();
-
-
   let sL = $parent.scrollLeft();
   let sT = $parent.scrollTop();
   let coordinates = d3.mouse(svg);
   let x = coordinates[0];
   let y = coordinates[1];
-
-  console.log(w, h, sL, sT, x, y);
 
   if (x > w + sL) {
     $parent.scrollLeft(x - w);
@@ -126,21 +122,6 @@ export function autoScrollOnMousedrag(d) {
   } else if (y < sT) {
     $parent.scrollTop(y);
   }
-}
-
-/**
- * Check user drag mouse out of window
- */
-export function checkDragOutOfWindow(d) {
-  let svg = d3.select("svg").node();
-  const {width, height} = d3.select(`#${d.id}`).node().getBBox();
-  let coordinates = d3.mouse(svg);
-  let x = coordinates[0];
-  let y = coordinates[1];
-  if (x < width || y < 40) {
-    return true;
-  }
-  return false;
 }
 
 export function updateGraphBoundary(d) {
@@ -160,15 +141,19 @@ export function updateGraphBoundary(d) {
   }
 }
 
-export function setSizeGraph(options = {width: DEFAULT_CONFIG_GRAPH.MIN_WIDTH, height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT}) {
+export function setSizeGraph(options = {
+  width: DEFAULT_CONFIG_GRAPH.MIN_WIDTH,
+  height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT
+}) {
   let $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
+  let offer = 200;
   if (options.width) {
-    window.xBoundary = options.width + 200;
+    window.xBoundary = options.width + offer;
     $(`#${SVG_CONTAINER_ID}`).css("min-width", window.xBoundary);
   }
 
   if (options.height) {
-    window.yBoundary = options.height + 200;
+    window.yBoundary = options.height + offer;
     $(`#${SVG_CONTAINER_ID}`).css("min-height", window.yBoundary);
   }
 }

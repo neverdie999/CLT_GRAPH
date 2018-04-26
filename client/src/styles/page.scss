@@ -23,9 +23,9 @@
   background: #555;
 }
 
-.my-group{
-  .form-control{
-    width:50%;
+.my-group {
+  .form-control {
+    width: 50%;
   }
 }
 
@@ -48,7 +48,7 @@ label {
 
 #dummyPath {
   stroke-width: 1px;
-  display:none;
+  display: none;
 }
 
 .line {
@@ -59,6 +59,7 @@ label {
 .selected {
   stroke: #2795EE !important;
 }
+
 .container-file {
   position: absolute;
   bottom: 0;
@@ -103,6 +104,7 @@ label {
   right: 12px;
   font-size: 30px;
 }
+
 .fa-folder-open-o:hover {
   color: #66afe9;
 }

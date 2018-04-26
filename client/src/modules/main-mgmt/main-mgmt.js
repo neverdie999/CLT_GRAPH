@@ -219,7 +219,7 @@ class MainMgmt {
         "\n Please check again!");
 
     // Set size graph
-    if(data.graphSize)
+    if (data.graphSize)
       setSizeGraph(data.graphSize);
 
     // Draw boundary

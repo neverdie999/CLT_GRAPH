@@ -2642,7 +2642,6 @@ var slice = array.slice;
 /* harmony export (immutable) */ __webpack_exports__["b"] = cancleSelectedPath;
 /* harmony export (immutable) */ __webpack_exports__["f"] = getCoordinateMouseOnClick;
 /* harmony export (immutable) */ __webpack_exports__["a"] = autoScrollOnMousedrag;
-/* unused harmony export checkDragOutOfWindow */
 /* harmony export (immutable) */ __webpack_exports__["j"] = updateGraphBoundary;
 /* harmony export (immutable) */ __webpack_exports__["i"] = setSizeGraph;
 /* harmony export (immutable) */ __webpack_exports__["h"] = setMinBoundaryGraph;
@@ -2753,15 +2752,11 @@ function autoScrollOnMousedrag(d) {
   const $parent = $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["f" /* HTML_ALGETA_CONTAINER_ID */]}`);
   let w = $parent.width();
   let h = $parent.height();
-
-
   let sL = $parent.scrollLeft();
   let sT = $parent.scrollTop();
   let coordinates = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](svg);
   let x = coordinates[0];
   let y = coordinates[1];
-
-  console.log(w, h, sL, sT, x, y);
 
   if (x > w + sL) {
     $parent.scrollLeft(x - w);
@@ -2774,21 +2769,6 @@ function autoScrollOnMousedrag(d) {
   } else if (y < sT) {
     $parent.scrollTop(y);
   }
-}
-
-/**
- * Check user drag mouse out of window
- */
-function checkDragOutOfWindow(d) {
-  let svg = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("svg").node();
-  const {width, height} = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${d.id}`).node().getBBox();
-  let coordinates = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](svg);
-  let x = coordinates[0];
-  let y = coordinates[1];
-  if (x < width || y < 40) {
-    return true;
-  }
-  return false;
 }
 
 function updateGraphBoundary(d) {
@@ -2808,15 +2788,19 @@ function updateGraphBoundary(d) {
   }
 }
 
-function setSizeGraph(options = {width: __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* DEFAULT_CONFIG_GRAPH */].MIN_WIDTH, height: __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT}) {
+function setSizeGraph(options = {
+  width: __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* DEFAULT_CONFIG_GRAPH */].MIN_WIDTH,
+  height: __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT
+}) {
   let $parent = $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["f" /* HTML_ALGETA_CONTAINER_ID */]}`);
+  let offer = 200;
   if (options.width) {
-    window.xBoundary = options.width + 200;
+    window.xBoundary = options.width + offer;
     $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* SVG_CONTAINER_ID */]}`).css("min-width", window.xBoundary);
   }
 
   if (options.height) {
-    window.yBoundary = options.height + 200;
+    window.yBoundary = options.height + offer;
     $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* SVG_CONTAINER_ID */]}`).css("min-height", window.yBoundary);
   }
 }
@@ -36016,10 +36000,6 @@ __WEBPACK_IMPORTED_MODULE_3_d3__["f" /* selection */].prototype.moveToBack = fun
   });
 };
 
-
-
-// $('#algetaContainer').scrollLeft($(document).outerWidth());
-
 class Starter {
   constructor() {
     this.initialize();
@@ -36035,10 +36015,10 @@ class Starter {
 
     this.svgSelector = __WEBPACK_IMPORTED_MODULE_3_d3__["d" /* select */](`#${__WEBPACK_IMPORTED_MODULE_4__const_index__["f" /* HTML_ALGETA_CONTAINER_ID */]}`)
       .append("svg:svg")
-      .on("mouseup", function() {
+      .on("mouseup", function () {
         let mouse = __WEBPACK_IMPORTED_MODULE_3_d3__["c" /* mouse */](this);
         let elem = document.elementFromPoint(mouse[0], mouse[1]);
-        if((!elem || !elem.tagName || elem.tagName != 'path') && window.udpateEdge) {
+        if ((!elem || !elem.tagName || elem.tagName != 'path') && window.udpateEdge) {
           Object(__WEBPACK_IMPORTED_MODULE_2__common_utilities_common_ult__["b" /* cancleSelectedPath */])();
         }
       })
@@ -36296,7 +36276,7 @@ class MainMgmt {
         "\n Please check again!");
 
     // Set size graph
-    if(data.graphSize)
+    if (data.graphSize)
       Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["i" /* setSizeGraph */])(data.graphSize);
 
     // Draw boundary
