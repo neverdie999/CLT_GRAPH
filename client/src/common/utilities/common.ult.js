@@ -162,13 +162,14 @@ export function updateGraphBoundary(d) {
 
 export function setSizeGraph(options = {width: DEFAULT_CONFIG_GRAPH.MIN_WIDTH, height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT}) {
   let $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
+  let buffer = 200;
   if (options.width) {
-    window.xBoundary = options.width + 200;
+    window.xBoundary = options.width + buffer;
     $(`#${SVG_CONTAINER_ID}`).css("min-width", window.xBoundary);
   }
 
   if (options.height) {
-    window.yBoundary = options.height + 200;
+    window.yBoundary = options.height + buffer;
     $(`#${SVG_CONTAINER_ID}`).css("min-height", window.yBoundary);
   }
 }
