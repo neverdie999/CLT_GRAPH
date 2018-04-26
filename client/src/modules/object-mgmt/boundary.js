@@ -10,7 +10,9 @@ import {
   generateObjectId,
   cancleSelectedPath,
   autoScrollOnMousedrag,
-  checkDragOutOfWindow
+  checkDragOutOfWindow,
+  updateGraphBoundary,
+  setMinBoundaryGraph,
 } from '../../common/utilities/common.ult';
 
 class Boundary {
@@ -105,17 +107,15 @@ class Boundary {
     return function (d) {
       if (window.udpateEdge)
         cancleSelectedPath();
-      // d3.select(this).classed("active", true);
-      d3.event.sourceEvent.stopPropagation();
     }
   }
 
   dragBoundary(self) {
     return function (d) {
-      autoScrollOnMousedrag();
-      // Update poition object in this.dataContainer.boundary
-      // Check drag outside window
-      if(!checkDragOutOfWindow()){
+        autoScrollOnMousedrag(d);
+      updateGraphBoundary(d);
+      if (!checkDragOutOfWindow(d)) {
+        // Update poition object in this.dataContainer.boundary
         d.x = d3.event.x;
         d.y = d3.event.y;
         // Transform group
@@ -126,37 +126,22 @@ class Boundary {
         // Update position of child element
         if (d.member.length > 0)
           self.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
-
-        // let {width, height} = self.objectUtils.getBBoxObject(d.id);
-        // let data = {x: d3.event.x, y: d3.event.y, width, height, type: "B"};
-        // self.mainMgmt.updateAttrBBoxGroup(data);
-
-        if (!d.parent)
-          self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
       }
+
+      if (!d.parent)
+        self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
     }
   }
 
   dragBoundaryEnd(self) {
     return function (d) {
-      // d3.select(this).classed("active", false);
-      // Transform group
-      // d3.select(this).attr("transform", (d, i) => {
-      //   return "translate(" + [d3.event.x, d3.event.y] + ")"
-      // });
-      // Update position of child element
-      // Check drag outside window
-      if(!checkDragOutOfWindow() && d.member.length > 0)
-        self.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
-
-      // self.mainMgmt.hiddenBBoxGroup();
-
       if (d.parent) {
         self.mainMgmt.checkDragObjectOutsideBoundary(d);
       } else {
         self.mainMgmt.checkDragObjectInsideBoundary(d, "B");
       }
       self.mainMgmt.resetSizeBoundary();
+      setMinBoundaryGraph(self.dataContainer);
     }
   }
 

@@ -3,6 +3,7 @@ export const HTML_ALGETA_CONTAINER_ID = 'algetaContainer';
 export const HTML_VERTEX_CONTAINER_CLASS = 'groupVertex';
 export const HTML_BOUNDARY_CONTAINER_CLASS = 'groupBoundary';
 export const HTML_EDGE_CONTAINER_CLASS = 'groupEdge';
+export const SVG_CONTAINER_ID = 'svgContainer';
 
 // Graph size
 export const GRAPH_WIDTH = '100%';
@@ -71,3 +72,7 @@ window.vertexTypesTmp = null; // Vertex types export in file Graph Data Structur
 window.isImportVertexTypeDefine = false; // If vertex type define was importted.
 window.showReduced = false; // Determine show full or reduced
 window.udpateEdge = false; // Define state update connect (edge) exited.
+window.showFullVertex = null // list vertex type don't be effected by showReduce function.
+window.dataFileVertexType = null //data of json file vertex type definition.
+window.xBoundary = 1900;
+window.yBoundary = 959;
