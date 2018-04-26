@@ -583,6 +583,7 @@ class MainMgmt {
     // this.initVertexGroup();
     // this.initEdgeGroup();
     this.initBBoxGroup();
+    setSizeGraph();
   }
 
   /**

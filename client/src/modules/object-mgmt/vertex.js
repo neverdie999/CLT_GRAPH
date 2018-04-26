@@ -6,7 +6,7 @@ import {
   TYPE_POINT,
   VERTEX_ATTR_SIZE,
   HTML_VERTEX_CONTAINER_CLASS,
-  HTML_ALGETA_CONTAINER_ID
+  DEFAULT_CONFIG_GRAPH
 } from '../../const/index';
 import _ from "lodash";
 import PopUtils from '../../common/utilities/popup.ult';
@@ -16,7 +16,6 @@ import {
   cancleSelectedPath,
   createPath,
   autoScrollOnMousedrag,
-  checkDragOutOfWindow,
   updateGraphBoundary,
   setMinBoundaryGraph,
 } from '../../common/utilities/common.ult';
@@ -225,14 +224,14 @@ class Vertex {
     return (d) => {
       autoScrollOnMousedrag(d);
       updateGraphBoundary(d);
-      // Update poition object in this.dataContainer.boundary
-      if (!checkDragOutOfWindow(d)) {
-        d.x = d3.event.x;
-        d.y = d3.event.y;
-        d3.select(`#${d.id}`).attr("transform", (d, i) => {
-          return "translate(" + [d.x, d.y] + ")"
-        });
-      }
+      // Prevent drag object outside the window
+      d.x = d3.event.x < DEFAULT_CONFIG_GRAPH.MIN_OFFSETX ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETX : d3.event.x;
+      d.y = d3.event.y < DEFAULT_CONFIG_GRAPH.MIN_OFFSETY ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETY : d3.event.y;
+      // Transform group
+      d3.select(`#${d.id}`).attr("transform", (d, i) => {
+        return "translate(" + [d.x, d.y] + ")"
+      });
+
       self.updatePathConnect(d.id);
 
       // Resize boundary when vertex dragged
@@ -254,16 +253,7 @@ class Vertex {
         self.mainMgmt.resetSizeBoundary();
       }
       setMinBoundaryGraph(self.dataContainer);
-      // checkDragOutOfWindow(d);
-      // d3.select(`#${d.id}`).attr("transform", (d, i) => {
-      //   return "translate(" + [d.x, d.y] + ")"
-      // });
-      // self.updatePathConnect(d.id);
     }
-  }
-
-  testFunction(d) {
-
   }
 
   /**
@@ -681,30 +671,6 @@ class Vertex {
       //   .attr('height', tmpArry.length ?
       //     VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : VERTEX_ATTR_SIZE.HEADER_HEIGHT
     });
-  }
-
-  testFunction() {
-    let svg = d3.select("svg").node();
-    const $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
-    let w = $parent.width();
-    let h = $parent.height();
-    let sL = $parent.scrollLeft();
-    let sT = $parent.scrollTop();
-    let coordinates = d3.mouse(svg);
-    let x = coordinates[0];
-    let y = coordinates[1];
-
-    if (x > w + sL) {
-      $parent.scrollLeft(x - w);
-    } else if (x < sL) {
-      $parent.scrollLeft(x);
-    }
-
-    if (y > h + sT) {
-      $parent.scrollTop(y - h);
-    } else if (y < sT) {
-      $parent.scrollTop(y);
-    }
   }
 }
 

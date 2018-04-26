@@ -3,6 +3,7 @@ import {
   HTML_BOUNDARY_CONTAINER_CLASS,
   BOUNDARY_ATTR_SIZE,
   HTML_VERTEX_CONTAINER_CLASS,
+  DEFAULT_CONFIG_GRAPH
 } from '../../const/index';
 
 import PopUtils from '../../common/utilities/popup.ult';
@@ -10,7 +11,6 @@ import {
   generateObjectId,
   cancleSelectedPath,
   autoScrollOnMousedrag,
-  checkDragOutOfWindow,
   updateGraphBoundary,
   setMinBoundaryGraph,
 } from '../../common/utilities/common.ult';
@@ -112,21 +112,20 @@ class Boundary {
 
   dragBoundary(self) {
     return function (d) {
-        autoScrollOnMousedrag(d);
+      autoScrollOnMousedrag(d);
       updateGraphBoundary(d);
-      if (!checkDragOutOfWindow(d)) {
-        // Update poition object in this.dataContainer.boundary
-        d.x = d3.event.x;
-        d.y = d3.event.y;
-        // Transform group
-        d3.select(this).attr("transform", (d, i) => {
-          return "translate(" + [d3.event.x, d3.event.y] + ")"
-        });
 
-        // Update position of child element
-        if (d.member.length > 0)
-          self.reorderPositionMember(d.id, {x: d3.event.x, y: d3.event.y});
-      }
+      // Prevent drag object outside the window
+      d.x = d3.event.x < DEFAULT_CONFIG_GRAPH.MIN_OFFSETX ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETX : d3.event.x;
+      d.y = d3.event.y < DEFAULT_CONFIG_GRAPH.MIN_OFFSETY ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETY : d3.event.y;
+      // Transform group
+      d3.select(this).attr("transform", (d, i) => {
+        return "translate(" + [d.x, d.y] + ")"
+      });
+
+      // Update position of child element
+      if (d.member.length > 0)
+        self.reorderPositionMember(d.id, {x: d.x, y: d.y});
 
       if (!d.parent)
         self.mainMgmt.reSizeBoundaryAsObjectDragged(d);

@@ -2,7 +2,8 @@ import * as d3 from 'd3';
 import _ from "lodash";
 import {
   HTML_ALGETA_CONTAINER_ID,
-  SVG_CONTAINER_ID
+  SVG_CONTAINER_ID,
+  DEFAULT_CONFIG_GRAPH
 } from '../../const/index';
 
 /**
@@ -136,7 +137,7 @@ export function checkDragOutOfWindow(d) {
   let coordinates = d3.mouse(svg);
   let x = coordinates[0];
   let y = coordinates[1];
-  if (x < 20 || y < 10) {
+  if (x < width || y < 40) {
     return true;
   }
   return false;
@@ -147,18 +148,19 @@ export function updateGraphBoundary(d) {
   const $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
   let currentX = d3.event.x;
   let currentY = d3.event.y;
+  let margin = 100;
   if ((currentX + width) > window.xBoundary) {
-    window.xBoundary = currentX + width;
+    window.xBoundary = currentX + width + margin;
     $(`#${SVG_CONTAINER_ID}`).css("min-width", window.xBoundary);
   }
 
   if ((currentY + height) > window.yBoundary) {
-    window.yBoundary = currentY + height;
+    window.yBoundary = currentY + height + margin;
     $(`#${SVG_CONTAINER_ID}`).css("min-height", window.yBoundary);
   }
 }
 
-export function setSizeGraph(options = {}) {
+export function setSizeGraph(options = {width: DEFAULT_CONFIG_GRAPH.MIN_WIDTH, height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT}) {
   let $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
   if (options.width) {
     window.xBoundary = options.width + 200;
