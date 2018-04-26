@@ -5,10 +5,6 @@ export const HTML_BOUNDARY_CONTAINER_CLASS = 'groupBoundary';
 export const HTML_EDGE_CONTAINER_CLASS = 'groupEdge';
 export const SVG_CONTAINER_ID = 'svgContainer';
 
-// Graph size
-export const GRAPH_WIDTH = '100%';
-export const GRAPH_HEIGHT = '100%';
-
 // Area file management size
 export const FILE_MGMT_HEIGHT = 115;
 
@@ -60,6 +56,14 @@ export const BOUNDARY_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
   BOUND_WIDTH: 160,
   BOUND_HEIGHT: 200,
+}
+
+// Graph size
+export const DEFAULT_CONFIG_GRAPH = {
+  MIN_OFFSETX: 5,
+  MIN_OFFSETY: 5,
+  MIN_WIDTH: 1900,
+  MIN_HEIGHT: 959,
 }
 
 // Global variable

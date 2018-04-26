@@ -6,8 +6,6 @@ import * as d3 from 'd3';
 import {
   HTML_ALGETA_CONTAINER_ID,
   SVG_CONTAINER_ID,
-  GRAPH_WIDTH,
-  GRAPH_HEIGHT,
 } from './const/index';
 import './styles/index.scss';
 
