@@ -2681,7 +2681,8 @@ function generateObjectId(prefix = 'V') {
  * @returns {string}
  */
 function replaceSpecialCharacter(id) {
-  return id.replace(/(:|\.|\[|\]|,|=|@)/g, "\\\\$1");
+  // return id.replace(/(:|\.|\[|\]|,|=|@)/g, "\\\\$1");
+  return id.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
 }
 
 /**
@@ -36000,6 +36001,10 @@ __WEBPACK_IMPORTED_MODULE_3_d3__["f" /* selection */].prototype.moveToBack = fun
   });
 };
 
+
+
+// $('#algetaContainer').scrollLeft($(document).outerWidth());
+
 class Starter {
   constructor() {
     this.initialize();
@@ -36015,10 +36020,10 @@ class Starter {
 
     this.svgSelector = __WEBPACK_IMPORTED_MODULE_3_d3__["d" /* select */](`#${__WEBPACK_IMPORTED_MODULE_4__const_index__["f" /* HTML_ALGETA_CONTAINER_ID */]}`)
       .append("svg:svg")
-      .on("mouseup", function () {
+      .on("mouseup", function() {
         let mouse = __WEBPACK_IMPORTED_MODULE_3_d3__["c" /* mouse */](this);
         let elem = document.elementFromPoint(mouse[0], mouse[1]);
-        if ((!elem || !elem.tagName || elem.tagName != 'path') && window.udpateEdge) {
+        if((!elem || !elem.tagName || elem.tagName != 'path') && window.udpateEdge) {
           Object(__WEBPACK_IMPORTED_MODULE_2__common_utilities_common_ult__["b" /* cancleSelectedPath */])();
         }
       })
@@ -51517,6 +51522,8 @@ class EdgeMenu {
 
 
 
+const HTML_BOUNDARY_INFO_ID = 'boundaryInfo';
+
 class Boundary {
   constructor(props) {
     this.svgSelector = props.svgSelector;
@@ -51528,6 +51535,8 @@ class Boundary {
       .on("start", this.dragBoundaryStart(this))
       .on("drag", this.dragBoundary(this))
       .on("end", this.dragBoundaryEnd(this));
+
+    this.bindEventForPopupBoundary();
   }
 
   async createBoundary(options = {}) {
@@ -52015,57 +52024,64 @@ class Boundary {
    * @param boundaryId
    */
   makeEditBoundaryInfo(boundaryId) {
-    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    let parent = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('svg').select(`#${boundaryId}`);
-    let that = this;
-    let form = parent.append("foreignObject")
-      .attr("id", `${boundaryId}Name`)
-      .attr("y", 8)
-      .attr("x", 5);
-    let input = form
-      .attr("width", boundaryInfo.width - 10)
-      .attr("height", 20)
-      .append("xhtml:form")
-      .append("input")
-      .attr("maxlength", 20)
-      .attr("class", "input-header-boundary")
-      .attr("value", function () {
-        this.focus();
-        return boundaryInfo.name;
-      })
-      .attr("style", `width: ${boundaryInfo.width - 10}px`)
-      .on("blur", function () {
-        let newName = input.node().value;
-        if (newName) {
-          that.setBoundaryName(boundaryId, newName);
-        }
-        //parent.select(`#${boundaryId}Name`).remove();
-        parent.select(`#${boundaryId}Name`).remove();
-      })
-      .on("keypress", function () {
-        // IE fix
-        if (!__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */])
-          __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */] = window.event;
-        let e = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */];
-        if (e.keyCode == 13) {
-          if (typeof(e.cancelBubble) !== 'undefined') // IE
-            e.cancelBubble = true;
-          if (e.stopPropagation)
-            e.stopPropagation();
-          e.preventDefault();
+    // const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    // let parent = d3.select('svg').select(`#${boundaryId}`);
+    // let that = this;
+    // let form = parent.append("foreignObject")
+    //   .attr("id", `${boundaryId}Name`)
+    //   .attr("y", 8)
+    //   .attr("x", 5);
+    // let input = form
+    //   .attr("width", boundaryInfo.width - 10)
+    //   .attr("height", 20)
+    //   .append("xhtml:form")
+    //   .append("input")
+    //   .attr("maxlength", 20)
+    //   .attr("class", "input-header-boundary")
+    //   .attr("value", function () {
+    //     this.focus();
+    //     return boundaryInfo.name;
+    //   })
+    //   .attr("style", `width: ${boundaryInfo.width - 10}px`)
+    //   .on("blur", function () {
+    //     let newName = input.node().value;
+    //     if (newName) {
+    //       that.setBoundaryName(boundaryId, newName);
+    //     }
+    //     //parent.select(`#${boundaryId}Name`).remove();
+    //     parent.select(`#${boundaryId}Name`).remove();
+    //   })
+    //   .on("keypress", function () {
+    //     // IE fix
+    //     if (!d3.event)
+    //       d3.event = window.event;
+    //     let e = d3.event;
+    //     if (e.keyCode == 13) {
+    //       if (typeof(e.cancelBubble) !== 'undefined') // IE
+    //         e.cancelBubble = true;
+    //       if (e.stopPropagation)
+    //         e.stopPropagation();
+    //       e.preventDefault();
+    //
+    //       let newName = input.node().value;
+    //       if (newName) {
+    //         that.setBoundaryName(boundaryId, newName);
+    //       }
+    //       //fix show console bug when delete node
+    //       try {
+    //         d3.select(`#${boundaryId}Name`).remove();
+    //       } catch (e) {
+    //       }
+    //
+    //     }
+    //   });
 
-          let newName = input.node().value;
-          if (newName) {
-            that.setBoundaryName(boundaryId, newName);
-          }
-          //fix show console bug when delete node
-          try {
-            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${boundaryId}Name`).remove();
-          } catch (e) {
-          }
-
-        }
-      });
+    let options = {
+      popupId: HTML_BOUNDARY_INFO_ID,
+      position: 'center',
+      width: 430
+    }
+    __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
   }
 
   /**
@@ -52246,6 +52262,35 @@ class Boundary {
     for (let i = 0; i < vertexList.length; i++) {
       __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorVertexGroup).moveToBack(vertexList[i].id, dataContainerVertex)
     }
+  }
+
+  /**
+   * Bind event and init data for controls on popup
+   */
+  bindEventForPopupBoundary() {
+    $("#boundaryBtnConfirm").click(e => {
+      this.confirmEditBoundaryInfo();
+    });
+
+    $("#boudanryBtnCancel").click(e => {
+      this.closePopBoundaryInfo();
+    });
+  }
+
+  /**
+   * Get data vertex change
+   */
+  confirmEditBoundaryInfo() {
+    // Get data on form
+    this.closePopBoundaryInfo();
+  }
+
+  /**
+   * Close popup edit vertex info
+   */
+  closePopBoundaryInfo() {
+    let options = {popupId: HTML_BOUNDARY_INFO_ID}
+    __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__["a" /* default */].metClosePopup(options);
   }
 
 };
@@ -52601,7 +52646,7 @@ exports = module.exports = __webpack_require__(809)(undefined);
 
 
 // module
-exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px 5px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .vertex-type {\n      height: 26px;\n      text-align: center; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border: 1px solid #336699;\n    border-collapse: collapse;\n    border-spacing: 0 0.5em; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper select {\n    height: 25px;\n    margin: 0 4px 0 0;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper input[type=\"radio\"] {\n    margin-top: 6px; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: whiteSmoke; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: whiteSmoke solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555; }\n\n.my-group .form-control {\n  width: 50%; }\n\nlabel {\n  font-weight: 300 !important; }\n\n.font-weight-700 {\n  font-weight: 700 !important; }\n\n.hight-light {\n  stroke: red !important; }\n\n.hidden-object {\n  display: none; }\n\n#dummyPath {\n  stroke-width: 1px;\n  display: none; }\n\n.line {\n  stroke: blue;\n  stroke-width: 1px; }\n\n.selected {\n  stroke: #2795EE !important; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n\n.file-interface {\n  box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n  position: relative;\n  display: none;\n  z-index: 1;\n  margin-bottom: 15px; }\n  .file-interface .form-horizontal {\n    margin: 10px 0; }\n\n.algetaContainer {\n  right: 5px;\n  left: 10px;\n  top: 10px;\n  bottom: 5px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .algetaContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 959px;\n    position: absolute; }\n\n.btn-file-interface {\n  position: absolute;\n  width: 30px;\n  height: 30px;\n  bottom: 10px;\n  right: 12px;\n  font-size: 30px; }\n\n.fa-folder-open-o:hover {\n  color: #66afe9; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE;\n    cursor: crosshair; }\n  .edge:focus {\n    stroke: #2795EE;\n    cursor: crosshair; }\n\n.dummy-edge {\n  display: none;\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  display: none;\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.solid {\n  stroke: black; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  background: #E1D5E7;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right;\n  font-weight: 300;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 85px; }\n\n.vertex_data div .data {\n  font-weight: 300;\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: calc(100% - 85px); }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  background: #E1D5E7;\n  border-bottom: solid 1px #652a82;\n  margin: 0;\n  padding: 8px 0px;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border: solid 1px #652a82;\n  border-left: none;\n  background: white;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #E1D5E7;\n  border: none; }\n", ""]);
+exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px 5px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .vertex-type {\n      height: 26px;\n      text-align: center; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border: 1px solid #336699;\n    border-collapse: collapse;\n    border-spacing: 0 0.5em; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper input[type=\"checkbox\"], .dialog-wrapper select {\n    height: 25px;\n    margin: 0 4px 0 0;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"]:focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"]:focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"]:focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"]:focus, .dialog-wrapper input[type=\"checkbox\"]:hover, .dialog-wrapper input[type=\"checkbox\"]:focus, .dialog-wrapper select:hover, .dialog-wrapper select:focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper input[type=\"radio\"] {\n    margin-top: 6px; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important;\n    width: 13px !important; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: whiteSmoke; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: whiteSmoke solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555; }\n\n.my-group .form-control {\n  width: 50%; }\n\nlabel {\n  font-weight: 300 !important; }\n\n.font-weight-700 {\n  font-weight: 700 !important; }\n\n.hight-light {\n  stroke: red !important; }\n\n.hidden-object {\n  display: none; }\n\n#dummyPath {\n  stroke-width: 1px;\n  display: none; }\n\n.line {\n  stroke: blue;\n  stroke-width: 1px; }\n\n.selected {\n  stroke: #2795EE !important; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n\n.file-interface {\n  box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n  position: relative;\n  display: none;\n  z-index: 1;\n  margin-bottom: 15px; }\n  .file-interface .form-horizontal {\n    margin: 10px 0; }\n\n.algetaContainer {\n  right: 5px;\n  left: 10px;\n  top: 10px;\n  bottom: 5px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .algetaContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 959px;\n    position: absolute; }\n\n.btn-file-interface {\n  position: absolute;\n  width: 30px;\n  height: 30px;\n  bottom: 10px;\n  right: 12px;\n  font-size: 30px; }\n\n.fa-folder-open-o:hover {\n  color: #66afe9; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE;\n    cursor: crosshair; }\n  .edge:focus {\n    stroke: #2795EE;\n    cursor: crosshair; }\n\n.dummy-edge {\n  display: none;\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  display: none;\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.solid {\n  stroke: black; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  background: #E1D5E7;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right;\n  font-weight: 300;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 85px; }\n\n.vertex_data div .data {\n  font-weight: 300;\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: calc(100% - 85px); }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  background: #E1D5E7;\n  border-bottom: solid 1px #652a82;\n  margin: 0;\n  padding: 8px 0px;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border: solid 1px #652a82;\n  border-left: none;\n  background: white;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #E1D5E7;\n  border: none; }\n", ""]);
 
 // exports
 
