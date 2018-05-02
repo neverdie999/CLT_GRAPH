@@ -34,7 +34,8 @@ export function generateObjectId(prefix = 'V') {
  * @returns {string}
  */
 export function replaceSpecialCharacter(id) {
-  return id.replace(/(:|\.|\[|\]|,|=|@)/g, "\\\\$1");
+  // return id.replace(/(:|\.|\[|\]|,|=|@)/g, "\\\\$1");
+  return id.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
 }
 
 /**

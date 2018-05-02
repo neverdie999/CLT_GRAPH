@@ -6,6 +6,8 @@ import * as d3 from 'd3';
 import {
   HTML_ALGETA_CONTAINER_ID,
   SVG_CONTAINER_ID,
+  GRAPH_WIDTH,
+  GRAPH_HEIGHT,
 } from './const/index';
 import './styles/index.scss';
 
@@ -27,6 +29,10 @@ d3.selection.prototype.moveToBack = function () {
   });
 };
 
+
+
+// $('#algetaContainer').scrollLeft($(document).outerWidth());
+
 class Starter {
   constructor() {
     this.initialize();
@@ -42,10 +48,10 @@ class Starter {
 
     this.svgSelector = d3.select(`#${HTML_ALGETA_CONTAINER_ID}`)
       .append("svg:svg")
-      .on("mouseup", function () {
+      .on("mouseup", function() {
         let mouse = d3.mouse(this);
         let elem = document.elementFromPoint(mouse[0], mouse[1]);
-        if ((!elem || !elem.tagName || elem.tagName != 'path') && window.udpateEdge) {
+        if((!elem || !elem.tagName || elem.tagName != 'path') && window.udpateEdge) {
           cancleSelectedPath();
         }
       })

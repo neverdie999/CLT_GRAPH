@@ -94,16 +94,20 @@
               </colgroup>
               <tbody>
               <tr>
-                <th>ID</th>
-                <td><input type="text" class="form-control" id="vertexId" name="vertexId" readonly name="vertexId"></td>
                 <th>Name</th>
-                <td><input type="text" class="form-control" id="vertexName" name="vertexName"></td>
+                <td>
+                  <input type="text" class="form-control" id="vertexName" name="vertexName">
+                </td>
+                <th>Mandatory</th>
+                <td>
+                  <input type="checkbox" class="form-control" id="vertexIsMandatory" name="vertexIsMandatory">
+                </td>
               </tr>
               <tr>
                 <th>Description</th>
                 <td><input type="text" class="form-control" id="vertexDesc" name="vertexDesc"></td>
-                <!--<th>Interaction</th>-->
-                <!--<td><select class="form-control" name="vertexInteraction" id="vertexInteraction"></select></td>-->
+                <th>Repeat</th>
+                <td><input type="number" class="form-control" id="vertexRepeat" name="vertexRepeat" min="0" max="9999"></td>
               </tr>
               </tbody>
             </table>
@@ -156,9 +160,57 @@
     </div>
   </div>
 </div>
-
-
 <!-- Edge Edit Types Pop (E) -->
+<!-- Boundary Info Popup (S)-->
+<div id="boundaryInfo" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="web-dialog modal-content">
+      <div class="dialog-title">
+        <span class="title">Boundary Info</span>
+      </div>
+
+      <div class="dialog-wrapper">
+        <div class="dialog-button-top">
+          <div class="row text-right">
+            <button id="boundaryBtnConfirm" class="btn-etc">Confirm</button>
+            <button id="boudanryBtnCancel" class="btn-etc">Cancel</button>
+          </div>
+        </div>
+        <form id="boudanryForm" action="#" method="post">
+          <div class="dialog-search form-inline">
+            <table>
+              <colgroup>
+                <col width="80"/>
+                <col width="130"/>
+                <col width="80"/>
+                <col width="*"/>
+              </colgroup>
+              <tbody>
+              <tr>
+                <th>Name</th>
+                <td>
+                  <input type="text" class="form-control" id="vertexName" name="vertexName">
+                </td>
+                <th>Mandatory</th>
+                <td>
+                  <input type="checkbox" id="vertexIsMandatory" name="vertexIsMandatory">
+                </td>
+              </tr>
+              <tr>
+                <th>Description</th>
+                <td><input type="text" class="form-control" id="vertexDesc" name="vertexDesc"></td>
+                <th>Repeat</th>
+                <td><input type="number" class="form-control" id="vertexRepeat" name="vertexRepeat" min="0" max="9999"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Boundary Info Popup (E)-->
 </body>
 <script type="text/javascript" src="../dist/bundle.js"></script>
 </html>

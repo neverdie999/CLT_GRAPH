@@ -15,6 +15,8 @@ import {
   setMinBoundaryGraph,
 } from '../../common/utilities/common.ult';
 
+const HTML_BOUNDARY_INFO_ID = 'boundaryInfo';
+
 class Boundary {
   constructor(props) {
     this.svgSelector = props.svgSelector;
@@ -26,6 +28,8 @@ class Boundary {
       .on("start", this.dragBoundaryStart(this))
       .on("drag", this.dragBoundary(this))
       .on("end", this.dragBoundaryEnd(this));
+
+    this.bindEventForPopupBoundary();
   }
 
   async createBoundary(options = {}) {
@@ -513,57 +517,64 @@ class Boundary {
    * @param boundaryId
    */
   makeEditBoundaryInfo(boundaryId) {
-    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    let parent = d3.select('svg').select(`#${boundaryId}`);
-    let that = this;
-    let form = parent.append("foreignObject")
-      .attr("id", `${boundaryId}Name`)
-      .attr("y", 8)
-      .attr("x", 5);
-    let input = form
-      .attr("width", boundaryInfo.width - 10)
-      .attr("height", 20)
-      .append("xhtml:form")
-      .append("input")
-      .attr("maxlength", 20)
-      .attr("class", "input-header-boundary")
-      .attr("value", function () {
-        this.focus();
-        return boundaryInfo.name;
-      })
-      .attr("style", `width: ${boundaryInfo.width - 10}px`)
-      .on("blur", function () {
-        let newName = input.node().value;
-        if (newName) {
-          that.setBoundaryName(boundaryId, newName);
-        }
-        //parent.select(`#${boundaryId}Name`).remove();
-        parent.select(`#${boundaryId}Name`).remove();
-      })
-      .on("keypress", function () {
-        // IE fix
-        if (!d3.event)
-          d3.event = window.event;
-        let e = d3.event;
-        if (e.keyCode == 13) {
-          if (typeof(e.cancelBubble) !== 'undefined') // IE
-            e.cancelBubble = true;
-          if (e.stopPropagation)
-            e.stopPropagation();
-          e.preventDefault();
+    // const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    // let parent = d3.select('svg').select(`#${boundaryId}`);
+    // let that = this;
+    // let form = parent.append("foreignObject")
+    //   .attr("id", `${boundaryId}Name`)
+    //   .attr("y", 8)
+    //   .attr("x", 5);
+    // let input = form
+    //   .attr("width", boundaryInfo.width - 10)
+    //   .attr("height", 20)
+    //   .append("xhtml:form")
+    //   .append("input")
+    //   .attr("maxlength", 20)
+    //   .attr("class", "input-header-boundary")
+    //   .attr("value", function () {
+    //     this.focus();
+    //     return boundaryInfo.name;
+    //   })
+    //   .attr("style", `width: ${boundaryInfo.width - 10}px`)
+    //   .on("blur", function () {
+    //     let newName = input.node().value;
+    //     if (newName) {
+    //       that.setBoundaryName(boundaryId, newName);
+    //     }
+    //     //parent.select(`#${boundaryId}Name`).remove();
+    //     parent.select(`#${boundaryId}Name`).remove();
+    //   })
+    //   .on("keypress", function () {
+    //     // IE fix
+    //     if (!d3.event)
+    //       d3.event = window.event;
+    //     let e = d3.event;
+    //     if (e.keyCode == 13) {
+    //       if (typeof(e.cancelBubble) !== 'undefined') // IE
+    //         e.cancelBubble = true;
+    //       if (e.stopPropagation)
+    //         e.stopPropagation();
+    //       e.preventDefault();
+    //
+    //       let newName = input.node().value;
+    //       if (newName) {
+    //         that.setBoundaryName(boundaryId, newName);
+    //       }
+    //       //fix show console bug when delete node
+    //       try {
+    //         d3.select(`#${boundaryId}Name`).remove();
+    //       } catch (e) {
+    //       }
+    //
+    //     }
+    //   });
 
-          let newName = input.node().value;
-          if (newName) {
-            that.setBoundaryName(boundaryId, newName);
-          }
-          //fix show console bug when delete node
-          try {
-            d3.select(`#${boundaryId}Name`).remove();
-          } catch (e) {
-          }
-
-        }
-      });
+    let options = {
+      popupId: HTML_BOUNDARY_INFO_ID,
+      position: 'center',
+      width: 430
+    }
+    PopUtils.metSetShowPopup(options);
   }
 
   /**
@@ -744,6 +755,35 @@ class Boundary {
     for (let i = 0; i < vertexList.length; i++) {
       d3.select(selectorVertexGroup).moveToBack(vertexList[i].id, dataContainerVertex)
     }
+  }
+
+  /**
+   * Bind event and init data for controls on popup
+   */
+  bindEventForPopupBoundary() {
+    $("#boundaryBtnConfirm").click(e => {
+      this.confirmEditBoundaryInfo();
+    });
+
+    $("#boudanryBtnCancel").click(e => {
+      this.closePopBoundaryInfo();
+    });
+  }
+
+  /**
+   * Get data vertex change
+   */
+  confirmEditBoundaryInfo() {
+    // Get data on form
+    this.closePopBoundaryInfo();
+  }
+
+  /**
+   * Close popup edit vertex info
+   */
+  closePopBoundaryInfo() {
+    let options = {popupId: HTML_BOUNDARY_INFO_ID}
+    PopUtils.metClosePopup(options);
   }
 
 };
