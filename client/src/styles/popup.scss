@@ -37,7 +37,7 @@
 
 .btn-etc {
   position: relative;
-  padding: 6px 10px 5px;
+  padding: 6px 10px;
   border-style: inherit;
   text-align: center;
   line-height: 12px;
@@ -87,11 +87,12 @@
       border: 1px solid #336699;
       border-collapse: collapse;
       border-spacing: 0 0.5em;
+      margin: 5px 0px 10px;
     }
   }
 
-  input[type="text"], input[type="email"] , input[type="password"], input[type="number"], input[type="checkbox"], select {
-    height: 25px;
+  input[type="text"], input[type="email"] , input[type="password"], input[type="number"], select, textarea {
+    height: 29px;
     margin: 0 4px 0 0;
     border-color: #b8d6f6;
     background-color: #fff;
@@ -101,17 +102,26 @@
     width: 100% !important;
     font-size: 12px;
     padding: 0 5px;
-    &:hover, &:focus {
+    &:hover, :focus {
       border-color: #6db3fe;
     }
   }
 
-  input[type="radio"] {
-    margin-top: 6px;
+  textarea {
+    height: 100%;
+    resize: none;
   }
 
   input[type="checkbox"] {
     height: 13px !important;
-    width: 13px !important;
+  }
+
+  .full-width {
+    width: 100%
+  }
+
+  .input-group-addon{
+    font-size: 12px;
+    border-radius: 0px;
   }
 }

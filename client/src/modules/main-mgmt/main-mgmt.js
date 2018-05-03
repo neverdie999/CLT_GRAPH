@@ -799,7 +799,7 @@ class MainMgmt {
    * @returns {*}
    */
   getListVertexType(data) {
-    let listVertexType = null;
+    let listVertexType = [];
     // let showVertex = null;
     let showVertex = [];
 

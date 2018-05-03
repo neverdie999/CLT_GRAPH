@@ -2045,7 +2045,7 @@ const HTML_EDGE_CONTAINER_CLASS = 'groupEdge';
 /* harmony export (immutable) */ __webpack_exports__["h"] = HTML_EDGE_CONTAINER_CLASS;
 
 const SVG_CONTAINER_ID = 'svgContainer';
-/* harmony export (immutable) */ __webpack_exports__["j"] = SVG_CONTAINER_ID;
+/* harmony export (immutable) */ __webpack_exports__["k"] = SVG_CONTAINER_ID;
 
 
 // Area file management size
@@ -2097,7 +2097,7 @@ const TYPE_POINT = {
   OUTPUT: 'O',
   INPUT: 'I'
 };
-/* harmony export (immutable) */ __webpack_exports__["k"] = TYPE_POINT;
+/* harmony export (immutable) */ __webpack_exports__["l"] = TYPE_POINT;
 
 
 // The attributes size of vertex
@@ -2107,7 +2107,7 @@ const VERTEX_ATTR_SIZE = {
   GROUP_WIDTH: 150,
   SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
 }
-/* harmony export (immutable) */ __webpack_exports__["l"] = VERTEX_ATTR_SIZE;
+/* harmony export (immutable) */ __webpack_exports__["m"] = VERTEX_ATTR_SIZE;
 
 
 // The attributes size of boundary
@@ -2127,6 +2127,14 @@ const DEFAULT_CONFIG_GRAPH = {
   MIN_HEIGHT: 959,
 }
 /* harmony export (immutable) */ __webpack_exports__["b"] = DEFAULT_CONFIG_GRAPH;
+
+
+// Repeat range
+const REPEAT_RANGE = {
+  MIN: 0,
+  MAX: 9999,
+}
+/* harmony export (immutable) */ __webpack_exports__["j"] = REPEAT_RANGE;
 
 
 // Global variable
@@ -2635,16 +2643,18 @@ var slice = array.slice;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["c"] = comShowMessage;
-/* harmony export (immutable) */ __webpack_exports__["e"] = generateObjectId;
-/* harmony export (immutable) */ __webpack_exports__["g"] = replaceSpecialCharacter;
-/* harmony export (immutable) */ __webpack_exports__["d"] = createPath;
-/* harmony export (immutable) */ __webpack_exports__["b"] = cancleSelectedPath;
-/* harmony export (immutable) */ __webpack_exports__["f"] = getCoordinateMouseOnClick;
-/* harmony export (immutable) */ __webpack_exports__["a"] = autoScrollOnMousedrag;
-/* harmony export (immutable) */ __webpack_exports__["j"] = updateGraphBoundary;
-/* harmony export (immutable) */ __webpack_exports__["i"] = setSizeGraph;
-/* harmony export (immutable) */ __webpack_exports__["h"] = setMinBoundaryGraph;
+/* harmony export (immutable) */ __webpack_exports__["e"] = comShowMessage;
+/* harmony export (immutable) */ __webpack_exports__["g"] = generateObjectId;
+/* harmony export (immutable) */ __webpack_exports__["i"] = replaceSpecialCharacter;
+/* harmony export (immutable) */ __webpack_exports__["f"] = createPath;
+/* harmony export (immutable) */ __webpack_exports__["c"] = cancleSelectedPath;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getCoordinateMouseOnClick;
+/* harmony export (immutable) */ __webpack_exports__["b"] = autoScrollOnMousedrag;
+/* harmony export (immutable) */ __webpack_exports__["l"] = updateGraphBoundary;
+/* harmony export (immutable) */ __webpack_exports__["k"] = setSizeGraph;
+/* harmony export (immutable) */ __webpack_exports__["j"] = setMinBoundaryGraph;
+/* harmony export (immutable) */ __webpack_exports__["a"] = allowInputNumberOnly;
+/* harmony export (immutable) */ __webpack_exports__["d"] = checkMinMaxValue;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(115);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
@@ -2780,12 +2790,12 @@ function updateGraphBoundary(d) {
   let margin = 100;
   if ((currentX + width) > window.xBoundary) {
     window.xBoundary = currentX + width + margin;
-    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* SVG_CONTAINER_ID */]}`).css("min-width", window.xBoundary);
+    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* SVG_CONTAINER_ID */]}`).css("min-width", window.xBoundary);
   }
 
   if ((currentY + height) > window.yBoundary) {
     window.yBoundary = currentY + height + margin;
-    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* SVG_CONTAINER_ID */]}`).css("min-height", window.yBoundary);
+    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* SVG_CONTAINER_ID */]}`).css("min-height", window.yBoundary);
   }
 }
 
@@ -2797,12 +2807,12 @@ function setSizeGraph(options = {
   let offer = 200;
   if (options.width) {
     window.xBoundary = options.width + offer;
-    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* SVG_CONTAINER_ID */]}`).css("min-width", window.xBoundary);
+    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* SVG_CONTAINER_ID */]}`).css("min-width", window.xBoundary);
   }
 
   if (options.height) {
     window.yBoundary = options.height + offer;
-    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* SVG_CONTAINER_ID */]}`).css("min-height", window.yBoundary);
+    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* SVG_CONTAINER_ID */]}`).css("min-height", window.yBoundary);
   }
 }
 
@@ -2842,6 +2852,36 @@ function setMinBoundaryGraph(data) {
   let height = Math.max.apply(null, lstOffsetY);
 
   setSizeGraph({width, height});
+}
+
+/**
+ * Allow only numeric (0-9) in HTML inputbox using jQuery.
+ * Allow: backspace, delete, tab, escape, enter and .
+ * Allow: Ctrl+A, Command+A
+ */
+
+function allowInputNumberOnly(e) {
+  // Allow: backspace, delete, tab, escape, enter and .
+  if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+    // Allow: Ctrl+A, Command+A
+    (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+    // Allow: home, end, left, right, down, up
+    (e.keyCode >= 35 && e.keyCode <= 40)) {
+    // let it happen, don't do anything
+    return;
+  }
+  // Ensure that it is a number and stop the keypress
+  if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+    e.preventDefault();
+  }
+}
+
+function checkMinMaxValue(val, min = __WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* REPEAT_RANGE */].MIN, max = __WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* REPEAT_RANGE */].MAX) {
+  if(parseInt(val) < min || isNaN(parseInt(val)))
+    return min;
+  else if(parseInt(val) > max)
+    return max;
+  else return parseInt(val);
 }
 
 
@@ -36024,10 +36064,10 @@ class Starter {
         let mouse = __WEBPACK_IMPORTED_MODULE_3_d3__["c" /* mouse */](this);
         let elem = document.elementFromPoint(mouse[0], mouse[1]);
         if((!elem || !elem.tagName || elem.tagName != 'path') && window.udpateEdge) {
-          Object(__WEBPACK_IMPORTED_MODULE_2__common_utilities_common_ult__["b" /* cancleSelectedPath */])();
+          Object(__WEBPACK_IMPORTED_MODULE_2__common_utilities_common_ult__["c" /* cancleSelectedPath */])();
         }
       })
-      .attr("id", `${__WEBPACK_IMPORTED_MODULE_4__const_index__["j" /* SVG_CONTAINER_ID */]}`)
+      .attr("id", `${__WEBPACK_IMPORTED_MODULE_4__const_index__["k" /* SVG_CONTAINER_ID */]}`)
       .attr("class", "svg");
 
     /**
@@ -36194,7 +36234,7 @@ class MainMgmt {
     groupPoint.append("circle")
       .attr("id", "pointStart")
       .attr("class", "dragPoint")
-      .attr("type", __WEBPACK_IMPORTED_MODULE_11__const_index__["k" /* TYPE_POINT */].OUTPUT)
+      .attr("type", __WEBPACK_IMPORTED_MODULE_11__const_index__["l" /* TYPE_POINT */].OUTPUT)
       .attr("fill", "#2795EE")
       .attr("r", 3)
       .attr("cx", 0)
@@ -36206,7 +36246,7 @@ class MainMgmt {
     groupPoint.append("circle")
       .attr("id", "pointEnd")
       .attr("class", "dragPoint")
-      .attr("type", __WEBPACK_IMPORTED_MODULE_11__const_index__["k" /* TYPE_POINT */].INPUT)
+      .attr("type", __WEBPACK_IMPORTED_MODULE_11__const_index__["l" /* TYPE_POINT */].INPUT)
       .attr("fill", "#2795EE")
       .attr("r", 3)
       .attr("cx", 0)
@@ -36228,7 +36268,7 @@ class MainMgmt {
     // validate structure file invalid
     // option vertex type definition but choose graph type file
     if (data.vertex || data.edge || data.boundary || data.position || data.vertexTypes) {
-      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["c" /* comShowMessage */])("Invalid structure file vertex type definition");
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["e" /* comShowMessage */])("Invalid structure file vertex type definition");
       return;
     }
 
@@ -36245,7 +36285,7 @@ class MainMgmt {
 
     // Now just show message warning for user. Not stop working
     if (isMisMatch)
-      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["c" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["e" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
         "\n Please check again!");
 
     // Init main menu and menu for objects
@@ -36262,7 +36302,7 @@ class MainMgmt {
     // Validate content
     let errorContent = await this.validateGraphDataStructure(data);
     if (errorContent) {
-      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["c" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["e" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
       return;
     }
 
@@ -36277,12 +36317,12 @@ class MainMgmt {
     let isMisMatch = await this.validateVertexTypesInGraph();
     // Now just show message warning for user. Not stop working
     if (isMisMatch)
-      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["c" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["e" /* comShowMessage */])("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
         "\n Please check again!");
 
     // Set size graph
     if (data.graphSize)
-      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["i" /* setSizeGraph */])(data.graphSize);
+      Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["k" /* setSizeGraph */])(data.graphSize);
 
     // Draw boundary
     let arrBoundary = data.boundary;
@@ -36645,7 +36685,7 @@ class MainMgmt {
     // this.initVertexGroup();
     // this.initEdgeGroup();
     this.initBBoxGroup();
-    Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["i" /* setSizeGraph */])();
+    Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["k" /* setSizeGraph */])();
   }
 
   /**
@@ -36677,12 +36717,12 @@ class MainMgmt {
         let px = Number(__WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]("#pointEnd").attr("cx"));
         let py = Number(__WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]("#pointEnd").attr("cy"));
         // pathStr = createPath({x: x - 1, y: y - 1}, {x: px, y: py});
-        pathStr = Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["d" /* createPath */])({x, y}, {x: px, y: py});
+        pathStr = Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["f" /* createPath */])({x, y}, {x: px, y: py});
       } else {
         let px = Number(__WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]("#pointStart").attr("cx"));
         let py = Number(__WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]("#pointStart").attr("cy"));
         // pathStr = createPath({x: px, y: py}, {x: x - 1, y: y - 1});
-        pathStr = Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["d" /* createPath */])({x: px, y: py}, {x, y});
+        pathStr = Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["f" /* createPath */])({x: px, y: py}, {x, y});
       }
 
       __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]('#edgePath').attr('d', pathStr);
@@ -36861,7 +36901,7 @@ class MainMgmt {
    * @returns {*}
    */
   getListVertexType(data) {
-    let listVertexType = null;
+    let listVertexType = [];
     // let showVertex = null;
     let showVertex = [];
 
@@ -36970,6 +37010,26 @@ class Vertex {
     $("#vertexBtnCancel").click(e => {
       this.closePopVertexInfo();
     });
+
+    // Validate input number
+    $("#vertexRepeat").keydown(function (e) {
+      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["a" /* allowInputNumberOnly */])(e);
+    });
+
+    $("#isVertexMandatory").change(function () {
+      if(this.checked && $("#vertexRepeat").val() < 1) {
+        $("#vertexRepeat").val(1);
+      }
+    });
+
+    $("#vertexRepeat").keydown(function (e) {
+      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["a" /* allowInputNumberOnly */])(e);
+    });
+
+    $("#vertexRepeat").focusout(function() {
+      let rtnVal = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["d" /* checkMinMaxValue */])(this.value, $('#isVertexMandatory').prop('checked') == true ? 1 : __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* REPEAT_RANGE */].MIN, __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* REPEAT_RANGE */].MAX);
+      this.value = rtnVal;
+    });
   }
 
   /**
@@ -36987,11 +37047,12 @@ class Vertex {
       return;
 
     let vertexType = options.vertexType;
-    // Get properties vertex from list object vertex type
-    let vertexProperties = options.data ? Object.assign({}, options.data) : Object.assign({}, window.vertexTypes[vertexType]);
-    let vertexId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["e" /* generateObjectId */])('V');
+    // Deep clone array object vertex
+    let vertexProperties =  __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(Array.isArray(options.data) ? options.data : window.vertexTypes[vertexType]);
+    let vertexId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["g" /* generateObjectId */])('V');
     let parent = options.parent || null;
 
+    // To do: Use default config and merge with current config
     let vertexInfo = {
       x: options.x,
       y: options.y,
@@ -37000,7 +37061,9 @@ class Vertex {
       description: options.description || "Description",
       data: vertexProperties,
       id: vertexId,
-      parent: parent
+      parent: parent,
+      mandatory: options.mandatory || false,
+      repeat: options.repeat || 1
     };
     this.dataContainer.vertex.push(vertexInfo);
 
@@ -37017,7 +37080,7 @@ class Vertex {
       .attr("class", "drag_connect")
       .attr("fill", "white")
       .attr("r", 3)
-      .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH / 2)
+      .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH / 2)
       .attr("stroke-width", 1)
       .style("cursor", "default")
       .attr("stroke", "black")
@@ -37033,22 +37096,22 @@ class Vertex {
 
     let htmlContent = '';
     let count = 0;
-    for (const key of Object.keys(vertexProperties)) {
+    vertexInfo.data.forEach(data => {
       htmlContent += `
-        <div class="property" prop="${key}" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
-          <label class="key" title="${key}">${key}</label><label> : </label>
-          <label class="data ${key}" id="${vertexId}${key}" title="${vertexProperties[key]}">${vertexProperties[key]}</label>
+        <div class="property" prop="${data.key}" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
+          <label class="key" title="${data.key}">${data.key}</label><label> : </label>
+          <label class="data ${data.key}" id="${vertexId}${data.key}" title="${data.spec}">${data.spec}</label>
         </div>`;
       // Append point connect prop of vertex
 
       // Input
       group.append("circle")
         .attr("class", "drag_connect")
-        .attr("prop", key)
+        .attr("prop", data.key)
         .attr("fill", "white")
-        .attr("type", __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].INPUT)
+        .attr("type", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].INPUT)
         .attr("r", 3)
-        .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * count + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2)
+        .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * count + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2)
         .attr("stroke-width", 1)
         .style("cursor", "default")
         .attr("stroke", "black")
@@ -37065,12 +37128,12 @@ class Vertex {
       // Output
       group.append("circle")
         .attr("class", "drag_connect")
-        .attr("prop", key)
+        .attr("prop", data.key)
         .attr("fill", "white")
-        .attr("type", __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT)
+        .attr("type", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].OUTPUT)
         .attr("r", 3)
-        .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
-        .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * count + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2)
+        .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
+        .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * count + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2)
         .attr("stroke-width", 1)
         .style("cursor", "default")
         .attr("stroke", "black")
@@ -37085,19 +37148,19 @@ class Vertex {
         });
 
       count += 1;
-    }
+    });
 
-    let vertexHeight = __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * count;
+    let vertexHeight = __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * count;
 
     group.append("foreignObject")
-      .attr("width", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
+      .attr("width", __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
       .attr("height", vertexHeight)
       .append("xhtml:div")
       .attr("class", "vertex_content")
       .style("font-size", "13px")
       .style("background", "#ffffff")
       .html(`
-        <p class="header_name" id="${vertexId}Name" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px">${vertexInfo.name}</p>
+        <p class="header_name" id="${vertexId}Name" title="${vertexInfo.description}" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px">${vertexInfo.name}</p>
         <div class="vertex_data">
           ${htmlContent}
         </div>
@@ -37125,7 +37188,7 @@ class Vertex {
     return (d) => {
       // If selected path to purpose update, but then move vertex then cancle it.
       if (window.udpateEdge)
-        Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["b" /* cancleSelectedPath */])();
+        Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["c" /* cancleSelectedPath */])();
     }
   }
 
@@ -37136,8 +37199,8 @@ class Vertex {
    */
   dragged(self) {
     return (d) => {
-      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["a" /* autoScrollOnMousedrag */])(d);
-      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["j" /* updateGraphBoundary */])(d);
+      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["b" /* autoScrollOnMousedrag */])(d);
+      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["l" /* updateGraphBoundary */])(d);
       // Prevent drag object outside the window
       d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x < __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETX ? __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETX : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
       d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y < __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETY ? __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETY : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
@@ -37166,7 +37229,7 @@ class Vertex {
         self.mainMgmt.checkDragObjectInsideBoundary(d, "V");
         self.mainMgmt.resetSizeBoundary();
       }
-      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["h" /* setMinBoundaryGraph */])(self.dataContainer);
+      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["j" /* setMinBoundaryGraph */])(self.dataContainer);
     }
   }
 
@@ -37191,8 +37254,8 @@ class Vertex {
   copyVertex(vertexId) {
     let infos = this.objectUtils.cloneVertexInfo(vertexId);
     let clone = {
-      x: infos.x + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
-      y: infos.y + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
+      x: infos.x + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
+      y: infos.y + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].SPACE_COPY,
       name: infos.name,
       description: infos.description,
       vertexType: infos.vertexType,
@@ -37211,32 +37274,51 @@ class Vertex {
     this.originVertex = vertexInfo;
     // Append content to popup
     $(`#vertexName`).val(vertexInfo.name);
-    $(`#vertexId`).val(vertexInfo.id);
     $(`#vertexDesc`).val(vertexInfo.description);
+    $(`#vertexRepeat`).val(vertexInfo.repeat);
+    $(`#isVertexMandatory`).prop('checked', vertexInfo.mandatory);
 
     // Generate properties vertex
     let vertexData = vertexInfo.data;
     let $propertiesGroup = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
     const $rowVertexType = $('<tr>');
-    const $vertexType = $('<th>').text(vertexInfo.vertexType);
-    $vertexType.attr('colspan', 2);
-    $vertexType.attr('class', 'vertex-type');
-    $vertexType.appendTo($rowVertexType);
+    // Generate header
+    let $colHdrId = $('<th>').text('ID');
+    $colHdrId.attr('class', 'vertex-type');
+    $colHdrId.appendTo($rowVertexType);
+    let $colHdrSpec = $('<th>').text('Spec');
+    $colHdrSpec.attr('class', 'vertex-type');
+    $colHdrSpec.appendTo($rowVertexType);
+    let $colHdrMan = $('<th>').text('Mandatory');
+    $colHdrMan.attr('class', 'vertex-type');
+    $colHdrMan.appendTo($rowVertexType);
     $rowVertexType.appendTo($propertiesGroup);
-    for (const key of Object.keys(vertexData)) {
+
+    vertexInfo.data.forEach(data => {
       const $row = $('<tr>');
-      const $th = $('<th>').text(key).appendTo($row);
+      const $th = $('<th>').text(data.key).appendTo($row);
+      // Second column
       const $td = $('<td>');
       const $input = $('<input>');
       $input.attr('type', 'text');
-      $input.attr('id', key);
-      $input.attr('name', key);
+      // $input.attr('id', key);
+      $input.attr('name', data.key);
       $input.attr('class', 'form-control');
-      $input.val(vertexData[key]);
+      $input.val(data.spec);
       $input.appendTo($td);
       $td.appendTo($row);
+      // Third column
+      const $manTd = $('<td>');
+      $manTd.attr('class', 'vertex-type');
+      const $man = $('<input>');
+      $man.attr('type', 'checkbox');
+      $man.attr('name', `${data.key}_mandatory`);
+      $man.attr('id', `${data.key}_mandatory`);
+      $man.prop('checked', data.mandatory);
+      $man.appendTo($manTd);
+      $manTd.appendTo($row);
       $row.appendTo($propertiesGroup);
-    }
+    });
 
     let options = {
       popupId: HTML_VERTEX_INFO_ID,
@@ -37265,15 +37347,8 @@ class Vertex {
     $(form).each(function (index, obj) {
       data[obj.name] = obj.value;
     });
-
-    // Update to origin data
-    this.originVertex.name = data.vertexName;
-    this.originVertex.description = data.vertexDesc;
-    for (const key of Object.keys(this.originVertex.data)) {
-      this.originVertex.data[key] = data[key];
-    }
-    // let index = Object.keys(vertexInfo.data).indexOf(prop);
-    this.updateVertexInfo(this.originVertex);
+    data.id = this.originVertex.id;
+    this.updateVertexInfo(data);
     this.closePopVertexInfo();
   }
 
@@ -37287,14 +37362,19 @@ class Vertex {
     const id = infos.id;
     let vertexInfo = this.objectUtils.getVertexInfoById(id);
     // Change name
-    vertexInfo.name = infos.name;
-    vertexInfo.description = infos.description;
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${id}Name`).text(infos.name);
+    vertexInfo.name = infos.vertexName;
+    vertexInfo.description = infos.vertexDesc;
+    vertexInfo.repeat = infos.vertexRepeat;
+    vertexInfo.mandatory = $(`#isVertexMandatory`).prop('checked');
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${id}Name`).text(infos.vertexName).attr('title', infos.vertexDesc);
     // Update properties
-    for (const key of Object.keys(infos.data)) {
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["g" /* replaceSpecialCharacter */])(`${id}${key}`)}`).text(infos.data[key]);
-      vertexInfo.data[key] = infos.data[key];
-    }
+
+    vertexInfo.data.forEach(data => {
+      let key = data.key;
+      data.spec = infos[key];
+      data.mandatory = infos[`${key}_mandatory`] ? true : false;
+      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["i" /* replaceSpecialCharacter */])(`${id}${key}`)}`).text(infos[key]).attr('title', infos[key]);
+    });
   }
 
   /**
@@ -37304,7 +37384,7 @@ class Vertex {
    */
   setConnectFrom(vertexId, prop = null) {
     window.creatingEdge = true;
-    let source = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT);
+    let source = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].OUTPUT);
     source.vertexId = vertexId;
     source.prop = prop;
     window.sourceNode = source;
@@ -37317,7 +37397,7 @@ class Vertex {
    */
   setConnectTo(vertexId, prop = null) {
     if (window.creatingEdge) {
-      let target = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].INPUT);
+      let target = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].INPUT);
       target.vertexId = vertexId;
       target.prop = prop;
       let options = {source: window.sourceNode, target: target};
@@ -37342,7 +37422,7 @@ class Vertex {
    */
   getCoordinateProperty(vertexId, prop, type) {
     if (!type)
-      type = __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT;
+      type = __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].OUTPUT;
     let vertexInfo = this.objectUtils.cloneVertexInfo(vertexId);
     let axisX = vertexInfo.x;
     let axisY = vertexInfo.y;
@@ -37351,7 +37431,7 @@ class Vertex {
     // if(!prop)
     //   return {x: type === TYPE_POINT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH : axisX, y: axisY + 2 };
     if (!prop)
-      return {x: axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH / 2, y: axisY};
+      return {x: axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH / 2, y: axisY};
 
     // Find index prop in object
     // let index = 0;
@@ -37371,9 +37451,9 @@ class Vertex {
     // y = current axis y + height header + indexProp*heightProp + 13;
     // x = if output then axis x + width vertex; if not then axis x
     // Get coordinate
-    axisY = axisY + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index * __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2;
+    axisY = axisY + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index * __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2;
     return {
-      x: type === __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH : axisX,
+      x: type === __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH : axisX,
       y: axisY
     };
   }
@@ -37389,7 +37469,7 @@ class Vertex {
     srcPaths.forEach(src => {
       let edgeId = src.id;
       let prop = src.source.prop;
-      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT);
+      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].OUTPUT);
       src.source.x = newPos.x;
       src.source.y = newPos.y;
       let options = {source: src.source};
@@ -37399,7 +37479,7 @@ class Vertex {
     desPaths.forEach(des => {
       let edgeId = des.id;
       let prop = des.target.prop;
-      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].INPUT);
+      let newPos = this.getCoordinateProperty(vertexId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].INPUT);
       des.target.x = newPos.x;
       des.target.y = newPos.y;
       let options = {target: des.target};
@@ -37457,7 +37537,7 @@ class Vertex {
       __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.stopPropagation();
       let sourceId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id");
       let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr("prop");
-      const source = self.getCoordinateProperty(sourceId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].OUTPUT);
+      const source = self.getCoordinateProperty(sourceId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].OUTPUT);
       source.vertexId = sourceId;
       source.prop = prop;
       window.sourceNode = source;
@@ -37474,7 +37554,7 @@ class Vertex {
       if (window.creatingEdge) {
         let x = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('svg').node())[0];
         let y = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('svg').node())[1];
-        let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["d" /* createPath */])(window.sourceNode, {x, y});
+        let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* createPath */])(window.sourceNode, {x, y});
         __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#dummyPath').attr('d', pathStr);
         __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#dummyPath').style("display", "block");
       }
@@ -37494,7 +37574,7 @@ class Vertex {
       if (__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.tagName == "circle" && this != __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target) {
         let targetId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id");
         let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr("prop");
-        const target = self.getCoordinateProperty(targetId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* TYPE_POINT */].INPUT);
+        const target = self.getCoordinateProperty(targetId, prop, __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* TYPE_POINT */].INPUT);
         target.vertexId = targetId;
         target.prop = prop;
         let options = {source: window.sourceNode, target: target};
@@ -37520,7 +37600,7 @@ class Vertex {
           .attr("prop", key)
           .attr("fill", "none")
           .attr("r", 3)
-          .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * count + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2)
+          .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * count + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2)
           .attr("stroke-width", 1)
           .style("cursor", "default")
           .attr("stroke", "black")
@@ -37538,8 +37618,8 @@ class Vertex {
           .attr("prop", key)
           .attr("fill", "none")
           .attr("r", 3)
-          .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
-          .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * count + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2)
+          .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
+          .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * count + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2)
           .attr("stroke-width", 1)
           .style("cursor", "default")
           .attr("stroke", "black")
@@ -37579,8 +37659,8 @@ class Vertex {
       let element = $(`#${vertexId} .vertex_content`);
       element.parent()
         .attr('height', tmpArry.length ?
-          __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * tmpArry.length : isShowFull ?
-            __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : exitConnect ? __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : __WEBPACK_IMPORTED_MODULE_1__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT);
+          __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * tmpArry.length : isShowFull ?
+            __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : exitConnect ? __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : __WEBPACK_IMPORTED_MODULE_1__const_index__["m" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT);
       // element.parent()
       //   .attr('height', tmpArry.length ?
       //     VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : VERTEX_ATTR_SIZE.HEADER_HEIGHT
@@ -50773,7 +50853,7 @@ class FileMgmt {
         }
       }
       catch (ex) {
-        Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["c" /* comShowMessage */])("Read file error!");
+        Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* comShowMessage */])("Read file error!");
       }
       finally {
         this.clearInputFile();
@@ -50786,13 +50866,13 @@ class FileMgmt {
   writeJsonFileGraph() {
     let fileName = $(`#${HTML_OUTPUT_FILE_ID}`).val();
     if (!fileName) {
-      Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["c" /* comShowMessage */])("Please input file name");
+      Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* comShowMessage */])("Please input file name");
       return;
     }
 
     this.getContentGraphAsJson().then(content => {
       if (!content) {
-        Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["c" /* comShowMessage */])("No content to export");
+        Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* comShowMessage */])("No content to export");
         return;
       }
 
@@ -50968,7 +51048,7 @@ class MainMenu {
           events: {
             show: (opt) => {
               if (event) {
-                const {x, y} = Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* getCoordinateMouseOnClick */])(event);
+                const {x, y} = Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["h" /* getCoordinateMouseOnClick */])(event);
                 // opt["x"] = event.pageX;
                 opt["x"] = x;
                 // opt["y"] = event.pageY;
@@ -51146,7 +51226,7 @@ class Edge {
     let source = Object.assign({}, options.source);
     let target = Object.assign({}, options.target);
     let type = options.type;
-    let edgeId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["e" /* generateObjectId */])('E');
+    let edgeId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["g" /* generateObjectId */])('E');
     // Default style is line solid with arrow at end.
     let style = options.style ? options.style : {line: "solid", arrow: "Y"};
     let note = options.note ? options.note : {originNote: '', middleNote: '', destNote: ''}; // Default note for Edge.
@@ -51171,7 +51251,7 @@ class Edge {
     // let group = d3.select("#groupE").append("g");
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(0.5, 0.5)`);
-    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["d" /* createPath */])(source, target);
+    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* createPath */])(source, target);
     group.append("path")
       .attr('d', pathStr)
       .attr("class", `${__WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* HTML_EDGE_CONTAINER_CLASS */]} edge solid`) // Default line type is solid
@@ -51296,7 +51376,7 @@ class Edge {
     this.dataContainer.edge = data;
     // If edge seleted then delete so must be hidden edgePath, groupEdgePoint
     if (window.udpateEdge)
-      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["b" /* cancleSelectedPath */])();
+      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["c" /* cancleSelectedPath */])();
   }
 
   /**
@@ -51391,7 +51471,7 @@ class Edge {
       edgeInfo.target.prop = options.target.prop;
     }
 
-    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["d" /* createPath */])(source, target);
+    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* createPath */])(source, target);
     // Get DOM and update attribute
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${edgeId}`).attr('d', pathStr);
   }
@@ -51540,11 +51620,13 @@ class Boundary {
   }
 
   async createBoundary(options = {}) {
-    let boundaryId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["e" /* generateObjectId */])('B');
+    let boundaryId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["g" /* generateObjectId */])('B');
     let memeber = options.member || [];
     let parent = options.parent || null;
     let height = options.height || __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT;
     let width = options.width || __WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH;
+
+    // To do: Use default config and merge with current config
     let boundaryInfo = {
       x: options.x,
       y: options.y,
@@ -51555,6 +51637,8 @@ class Boundary {
       width: width,
       height: height,
       parent: parent,
+      mandatory: options.mandatory || false,
+      repeat: options.repeat || 1
     };
 
     this.dataContainer.boundary.push(boundaryInfo);
@@ -51593,14 +51677,13 @@ class Boundary {
       .attr("height", height)
       .style("border", "solid 1px #652a82")
       .style("font-size", "13px")
-      // .style("background", "#ffffff")
       .style("background", "none")
       .append("xhtml:div")
       .attr("class", "boundary_content")
       .html(`
           <div class="boundary_header">
             <p id="${boundaryId}Header" class="header_name header_boundary" style="width: 100%;
-             height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
+             height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT}px;" title="${boundaryInfo.description}">${boundaryInfo.name}</p>
           </div>
       `);
 
@@ -51617,14 +51700,14 @@ class Boundary {
   dragBoundaryStart(self) {
     return function (d) {
       if (window.udpateEdge)
-        Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["b" /* cancleSelectedPath */])();
+        Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["c" /* cancleSelectedPath */])();
     }
   }
 
   dragBoundary(self) {
     return function (d) {
-      Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["a" /* autoScrollOnMousedrag */])(d);
-      Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["j" /* updateGraphBoundary */])(d);
+      Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["b" /* autoScrollOnMousedrag */])(d);
+      Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["l" /* updateGraphBoundary */])(d);
 
       // Prevent drag object outside the window
       d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x < __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETX ? __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETX : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
@@ -51651,7 +51734,7 @@ class Boundary {
         self.mainMgmt.checkDragObjectInsideBoundary(d, "B");
       }
       self.mainMgmt.resetSizeBoundary();
-      Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["h" /* setMinBoundaryGraph */])(self.dataContainer);
+      Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["j" /* setMinBoundaryGraph */])(self.dataContainer);
     }
   }
 
@@ -51711,7 +51794,7 @@ class Boundary {
    * @param boundaryId
    */
   async copyAllBoundary(boundaryId) {
-    let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["e" /* generateObjectId */])("B");
+    let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["g" /* generateObjectId */])("B");
     let cBoundary = this.objectUtils.cloneBoundaryInfo(boundaryId);
     let cMembers = cBoundary.member.slice();
     cBoundary.member = [];
@@ -51995,7 +52078,7 @@ class Boundary {
       let objectId = member.id;
       if (member.type === "V") {
         let cVertex = this.objectUtils.cloneVertexInfo(objectId);
-        let cVertexId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["e" /* generateObjectId */])("V");
+        let cVertexId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["g" /* generateObjectId */])("V");
         cVertex.id = cVertexId;
         console.log(`======${cVertexId}=========`);
         cVertex.parent = cloneId;
@@ -52005,7 +52088,7 @@ class Boundary {
       } else {
         let cBoundary = this.objectUtils.cloneBoundaryInfo(objectId);
         let members = cBoundary.member.slice();
-        let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["e" /* generateObjectId */])("B");
+        let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["g" /* generateObjectId */])("B");
         cBoundary.id = cBoundaryId;
         console.log(`======${cBoundaryId}=========`);
         cBoundary.parent = cloneId;
@@ -52017,82 +52100,6 @@ class Boundary {
           this.cloneChildElementsBoundary(cBoundaryId, members);
       }
     }
-  }
-
-  /**
-   * Make controls to edit boundary info
-   * @param boundaryId
-   */
-  makeEditBoundaryInfo(boundaryId) {
-    // const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    // let parent = d3.select('svg').select(`#${boundaryId}`);
-    // let that = this;
-    // let form = parent.append("foreignObject")
-    //   .attr("id", `${boundaryId}Name`)
-    //   .attr("y", 8)
-    //   .attr("x", 5);
-    // let input = form
-    //   .attr("width", boundaryInfo.width - 10)
-    //   .attr("height", 20)
-    //   .append("xhtml:form")
-    //   .append("input")
-    //   .attr("maxlength", 20)
-    //   .attr("class", "input-header-boundary")
-    //   .attr("value", function () {
-    //     this.focus();
-    //     return boundaryInfo.name;
-    //   })
-    //   .attr("style", `width: ${boundaryInfo.width - 10}px`)
-    //   .on("blur", function () {
-    //     let newName = input.node().value;
-    //     if (newName) {
-    //       that.setBoundaryName(boundaryId, newName);
-    //     }
-    //     //parent.select(`#${boundaryId}Name`).remove();
-    //     parent.select(`#${boundaryId}Name`).remove();
-    //   })
-    //   .on("keypress", function () {
-    //     // IE fix
-    //     if (!d3.event)
-    //       d3.event = window.event;
-    //     let e = d3.event;
-    //     if (e.keyCode == 13) {
-    //       if (typeof(e.cancelBubble) !== 'undefined') // IE
-    //         e.cancelBubble = true;
-    //       if (e.stopPropagation)
-    //         e.stopPropagation();
-    //       e.preventDefault();
-    //
-    //       let newName = input.node().value;
-    //       if (newName) {
-    //         that.setBoundaryName(boundaryId, newName);
-    //       }
-    //       //fix show console bug when delete node
-    //       try {
-    //         d3.select(`#${boundaryId}Name`).remove();
-    //       } catch (e) {
-    //       }
-    //
-    //     }
-    //   });
-
-    let options = {
-      popupId: HTML_BOUNDARY_INFO_ID,
-      position: 'center',
-      width: 430
-    }
-    __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
-  }
-
-  /**
-   * Set boundary info
-   * @param boundaryId
-   * @param boundaryId, info
-   */
-  setBoundaryName(boundaryId, name) {
-    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    boundaryInfo.name = name;
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${boundaryId}Header`).text(name);
   }
 
   /**
@@ -52265,6 +52272,27 @@ class Boundary {
   }
 
   /**
+   * Make controls to edit boundary info
+   * @param boundaryId
+   */
+  makeEditBoundaryInfo(boundaryId) {
+    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    this.originBoundary = boundaryInfo;
+    // Append content to popup
+    $(`#boundaryName`).val(boundaryInfo.name);
+    $(`#boundaryDesc`).val(boundaryInfo.description);
+    $(`#maxBoundaryRepeat`).val(boundaryInfo.repeat);
+    $(`#isBoundaryMandatory`).prop('checked', boundaryInfo.mandatory);
+
+    let options = {
+      popupId: HTML_BOUNDARY_INFO_ID,
+      position: 'center',
+      width: 430
+    }
+    __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
+  }
+
+  /**
    * Bind event and init data for controls on popup
    */
   bindEventForPopupBoundary() {
@@ -52275,20 +52303,49 @@ class Boundary {
     $("#boudanryBtnCancel").click(e => {
       this.closePopBoundaryInfo();
     });
+
+    // Validate input number
+    $("#maxBoundaryRepeat").keydown(function (e) {
+      Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["a" /* allowInputNumberOnly */])(e);
+    });
+
+    $("#isBoundaryMandatory").change(function () {
+      if(this.checked && $("#maxBoundaryRepeat").val() < 1) {
+        $("#maxBoundaryRepeat").val(1);
+      }
+    });
+
+    $("#maxBoundaryRepeat").keydown(function (e) {
+      Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["a" /* allowInputNumberOnly */])(e);
+    });
+
+    $("#maxBoundaryRepeat").focusout(function() {
+      let rtnVal = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["d" /* checkMinMaxValue */])(this.value, $('#isBoundaryMandatory').prop('checked') == true ? 1 : __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* REPEAT_RANGE */].MIN, __WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* REPEAT_RANGE */].MAX);
+      this.value = rtnVal;
+    });
   }
 
   /**
-   * Get data vertex change
+   * Update data boundary change
    */
   confirmEditBoundaryInfo() {
-    // Get data on form
+    const id = this.originBoundary.id;
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(id);
+    let name = $(`#boundaryName`).val();
+    boundaryInfo.name = name;
+    let description = $(`#boundaryDesc`).val();
+    boundaryInfo.description = description;
+    boundaryInfo.repeat = $(`#maxBoundaryRepeat`).val();
+    boundaryInfo.mandatory = $(`#isBoundaryMandatory`).prop('checked');
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${id}Header`).text(name).attr('title', description);
     this.closePopBoundaryInfo();
   }
 
   /**
-   * Close popup edit vertex info
+   * Close popup edit boundary info
    */
   closePopBoundaryInfo() {
+    this.originBoundary = null;
     let options = {popupId: HTML_BOUNDARY_INFO_ID}
     __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__["a" /* default */].metClosePopup(options);
   }
@@ -52646,7 +52703,7 @@ exports = module.exports = __webpack_require__(809)(undefined);
 
 
 // module
-exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px 5px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .vertex-type {\n      height: 26px;\n      text-align: center; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border: 1px solid #336699;\n    border-collapse: collapse;\n    border-spacing: 0 0.5em; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper input[type=\"checkbox\"], .dialog-wrapper select {\n    height: 25px;\n    margin: 0 4px 0 0;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"]:focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"]:focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"]:focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"]:focus, .dialog-wrapper input[type=\"checkbox\"]:hover, .dialog-wrapper input[type=\"checkbox\"]:focus, .dialog-wrapper select:hover, .dialog-wrapper select:focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper input[type=\"radio\"] {\n    margin-top: 6px; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important;\n    width: 13px !important; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: whiteSmoke; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: whiteSmoke solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555; }\n\n.my-group .form-control {\n  width: 50%; }\n\nlabel {\n  font-weight: 300 !important; }\n\n.font-weight-700 {\n  font-weight: 700 !important; }\n\n.hight-light {\n  stroke: red !important; }\n\n.hidden-object {\n  display: none; }\n\n#dummyPath {\n  stroke-width: 1px;\n  display: none; }\n\n.line {\n  stroke: blue;\n  stroke-width: 1px; }\n\n.selected {\n  stroke: #2795EE !important; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n\n.file-interface {\n  box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n  position: relative;\n  display: none;\n  z-index: 1;\n  margin-bottom: 15px; }\n  .file-interface .form-horizontal {\n    margin: 10px 0; }\n\n.algetaContainer {\n  right: 5px;\n  left: 10px;\n  top: 10px;\n  bottom: 5px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .algetaContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 959px;\n    position: absolute; }\n\n.btn-file-interface {\n  position: absolute;\n  width: 30px;\n  height: 30px;\n  bottom: 10px;\n  right: 12px;\n  font-size: 30px; }\n\n.fa-folder-open-o:hover {\n  color: #66afe9; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE;\n    cursor: crosshair; }\n  .edge:focus {\n    stroke: #2795EE;\n    cursor: crosshair; }\n\n.dummy-edge {\n  display: none;\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  display: none;\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.solid {\n  stroke: black; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  background: #E1D5E7;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right;\n  font-weight: 300;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 85px; }\n\n.vertex_data div .data {\n  font-weight: 300;\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: calc(100% - 85px); }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  background: #E1D5E7;\n  border-bottom: solid 1px #652a82;\n  margin: 0;\n  padding: 8px 0px;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border: solid 1px #652a82;\n  border-left: none;\n  background: white;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #E1D5E7;\n  border: none; }\n", ""]);
+exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .vertex-type {\n      height: 26px;\n      text-align: center; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border: 1px solid #336699;\n    border-collapse: collapse;\n    border-spacing: 0 0.5em;\n    margin: 5px 0px 10px; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper select, .dialog-wrapper textarea {\n    height: 29px;\n    margin: 0 4px 0 0;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus, .dialog-wrapper textarea:hover, .dialog-wrapper textarea :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper textarea {\n    height: 100%;\n    resize: none; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important; }\n  .dialog-wrapper .full-width {\n    width: 100%; }\n  .dialog-wrapper .input-group-addon {\n    font-size: 12px;\n    border-radius: 0px; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: whiteSmoke; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: whiteSmoke solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555; }\n\n.my-group .form-control {\n  width: 50%; }\n\nlabel {\n  font-weight: 300 !important; }\n\n.font-weight-700 {\n  font-weight: 700 !important; }\n\n.hight-light {\n  stroke: red !important; }\n\n.hidden-object {\n  display: none; }\n\n#dummyPath {\n  stroke-width: 1px;\n  display: none; }\n\n.line {\n  stroke: blue;\n  stroke-width: 1px; }\n\n.selected {\n  stroke: #2795EE !important; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n\n.file-interface {\n  box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n  position: relative;\n  display: none;\n  z-index: 1;\n  margin-bottom: 15px; }\n  .file-interface .form-horizontal {\n    margin: 10px 0; }\n\n.algetaContainer {\n  right: 5px;\n  left: 10px;\n  top: 10px;\n  bottom: 5px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .algetaContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 959px;\n    position: absolute; }\n\n.btn-file-interface {\n  position: absolute;\n  width: 30px;\n  height: 30px;\n  bottom: 10px;\n  right: 12px;\n  font-size: 30px; }\n\n.fa-folder-open-o:hover {\n  color: #66afe9; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE;\n    cursor: crosshair; }\n  .edge:focus {\n    stroke: #2795EE;\n    cursor: crosshair; }\n\n.dummy-edge {\n  display: none;\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  display: none;\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.solid {\n  stroke: black; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  background: #E1D5E7;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right;\n  font-weight: 300;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 85px; }\n\n.vertex_data div .data {\n  font-weight: 300;\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: calc(100% - 85px); }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  background: #E1D5E7;\n  border-bottom: solid 1px #652a82;\n  margin: 0;\n  padding: 8px 0px;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border: solid 1px #652a82;\n  border-left: none;\n  background: white;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #E1D5E7;\n  border: none; }\n", ""]);
 
 // exports
 

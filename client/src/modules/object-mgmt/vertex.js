@@ -6,7 +6,8 @@ import {
   TYPE_POINT,
   VERTEX_ATTR_SIZE,
   HTML_VERTEX_CONTAINER_CLASS,
-  DEFAULT_CONFIG_GRAPH
+  DEFAULT_CONFIG_GRAPH,
+  REPEAT_RANGE
 } from '../../const/index';
 import _ from "lodash";
 import PopUtils from '../../common/utilities/popup.ult';
@@ -18,6 +19,8 @@ import {
   autoScrollOnMousedrag,
   updateGraphBoundary,
   setMinBoundaryGraph,
+  allowInputNumberOnly,
+  checkMinMaxValue,
 } from '../../common/utilities/common.ult';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
@@ -56,6 +59,26 @@ class Vertex {
     $("#vertexBtnCancel").click(e => {
       this.closePopVertexInfo();
     });
+
+    // Validate input number
+    $("#vertexRepeat").keydown(function (e) {
+      allowInputNumberOnly(e);
+    });
+
+    $("#isVertexMandatory").change(function () {
+      if(this.checked && $("#vertexRepeat").val() < 1) {
+        $("#vertexRepeat").val(1);
+      }
+    });
+
+    $("#vertexRepeat").keydown(function (e) {
+      allowInputNumberOnly(e);
+    });
+
+    $("#vertexRepeat").focusout(function() {
+      let rtnVal = checkMinMaxValue(this.value, $('#isVertexMandatory').prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
+      this.value = rtnVal;
+    });
   }
 
   /**
@@ -73,11 +96,12 @@ class Vertex {
       return;
 
     let vertexType = options.vertexType;
-    // Get properties vertex from list object vertex type
-    let vertexProperties = options.data ? Object.assign({}, options.data) : Object.assign({}, window.vertexTypes[vertexType]);
+    // Deep clone array object vertex
+    let vertexProperties =  _.cloneDeep(Array.isArray(options.data) ? options.data : window.vertexTypes[vertexType]);
     let vertexId = options.id ? options.id : generateObjectId('V');
     let parent = options.parent || null;
 
+    // To do: Use default config and merge with current config
     let vertexInfo = {
       x: options.x,
       y: options.y,
@@ -86,7 +110,9 @@ class Vertex {
       description: options.description || "Description",
       data: vertexProperties,
       id: vertexId,
-      parent: parent
+      parent: parent,
+      mandatory: options.mandatory || false,
+      repeat: options.repeat || 1
     };
     this.dataContainer.vertex.push(vertexInfo);
 
@@ -119,18 +145,18 @@ class Vertex {
 
     let htmlContent = '';
     let count = 0;
-    for (const key of Object.keys(vertexProperties)) {
+    vertexInfo.data.forEach(data => {
       htmlContent += `
-        <div class="property" prop="${key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key" title="${key}">${key}</label><label> : </label>
-          <label class="data ${key}" id="${vertexId}${key}" title="${vertexProperties[key]}">${vertexProperties[key]}</label>
+        <div class="property" prop="${data.key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
+          <label class="key" title="${data.key}">${data.key}</label><label> : </label>
+          <label class="data ${data.key}" id="${vertexId}${data.key}" title="${data.spec}">${data.spec}</label>
         </div>`;
       // Append point connect prop of vertex
 
       // Input
       group.append("circle")
         .attr("class", "drag_connect")
-        .attr("prop", key)
+        .attr("prop", data.key)
         .attr("fill", "white")
         .attr("type", TYPE_POINT.INPUT)
         .attr("r", 3)
@@ -151,7 +177,7 @@ class Vertex {
       // Output
       group.append("circle")
         .attr("class", "drag_connect")
-        .attr("prop", key)
+        .attr("prop", data.key)
         .attr("fill", "white")
         .attr("type", TYPE_POINT.OUTPUT)
         .attr("r", 3)
@@ -171,7 +197,7 @@ class Vertex {
         });
 
       count += 1;
-    }
+    });
 
     let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count;
 
@@ -183,7 +209,7 @@ class Vertex {
       .style("font-size", "13px")
       .style("background", "#ffffff")
       .html(`
-        <p class="header_name" id="${vertexId}Name" style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px">${vertexInfo.name}</p>
+        <p class="header_name" id="${vertexId}Name" title="${vertexInfo.description}" style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px">${vertexInfo.name}</p>
         <div class="vertex_data">
           ${htmlContent}
         </div>
@@ -297,32 +323,51 @@ class Vertex {
     this.originVertex = vertexInfo;
     // Append content to popup
     $(`#vertexName`).val(vertexInfo.name);
-    $(`#vertexId`).val(vertexInfo.id);
     $(`#vertexDesc`).val(vertexInfo.description);
+    $(`#vertexRepeat`).val(vertexInfo.repeat);
+    $(`#isVertexMandatory`).prop('checked', vertexInfo.mandatory);
 
     // Generate properties vertex
     let vertexData = vertexInfo.data;
     let $propertiesGroup = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
     const $rowVertexType = $('<tr>');
-    const $vertexType = $('<th>').text(vertexInfo.vertexType);
-    $vertexType.attr('colspan', 2);
-    $vertexType.attr('class', 'vertex-type');
-    $vertexType.appendTo($rowVertexType);
+    // Generate header
+    let $colHdrId = $('<th>').text('ID');
+    $colHdrId.attr('class', 'vertex-type');
+    $colHdrId.appendTo($rowVertexType);
+    let $colHdrSpec = $('<th>').text('Spec');
+    $colHdrSpec.attr('class', 'vertex-type');
+    $colHdrSpec.appendTo($rowVertexType);
+    let $colHdrMan = $('<th>').text('Mandatory');
+    $colHdrMan.attr('class', 'vertex-type');
+    $colHdrMan.appendTo($rowVertexType);
     $rowVertexType.appendTo($propertiesGroup);
-    for (const key of Object.keys(vertexData)) {
+
+    vertexInfo.data.forEach(data => {
       const $row = $('<tr>');
-      const $th = $('<th>').text(key).appendTo($row);
+      const $th = $('<th>').text(data.key).appendTo($row);
+      // Second column
       const $td = $('<td>');
       const $input = $('<input>');
       $input.attr('type', 'text');
-      $input.attr('id', key);
-      $input.attr('name', key);
+      // $input.attr('id', key);
+      $input.attr('name', data.key);
       $input.attr('class', 'form-control');
-      $input.val(vertexData[key]);
+      $input.val(data.spec);
       $input.appendTo($td);
       $td.appendTo($row);
+      // Third column
+      const $manTd = $('<td>');
+      $manTd.attr('class', 'vertex-type');
+      const $man = $('<input>');
+      $man.attr('type', 'checkbox');
+      $man.attr('name', `${data.key}_mandatory`);
+      $man.attr('id', `${data.key}_mandatory`);
+      $man.prop('checked', data.mandatory);
+      $man.appendTo($manTd);
+      $manTd.appendTo($row);
       $row.appendTo($propertiesGroup);
-    }
+    });
 
     let options = {
       popupId: HTML_VERTEX_INFO_ID,
@@ -351,15 +396,8 @@ class Vertex {
     $(form).each(function (index, obj) {
       data[obj.name] = obj.value;
     });
-
-    // Update to origin data
-    this.originVertex.name = data.vertexName;
-    this.originVertex.description = data.vertexDesc;
-    for (const key of Object.keys(this.originVertex.data)) {
-      this.originVertex.data[key] = data[key];
-    }
-    // let index = Object.keys(vertexInfo.data).indexOf(prop);
-    this.updateVertexInfo(this.originVertex);
+    data.id = this.originVertex.id;
+    this.updateVertexInfo(data);
     this.closePopVertexInfo();
   }
 
@@ -373,14 +411,19 @@ class Vertex {
     const id = infos.id;
     let vertexInfo = this.objectUtils.getVertexInfoById(id);
     // Change name
-    vertexInfo.name = infos.name;
-    vertexInfo.description = infos.description;
-    d3.select(`#${id}Name`).text(infos.name);
+    vertexInfo.name = infos.vertexName;
+    vertexInfo.description = infos.vertexDesc;
+    vertexInfo.repeat = infos.vertexRepeat;
+    vertexInfo.mandatory = $(`#isVertexMandatory`).prop('checked');
+    d3.select(`#${id}Name`).text(infos.vertexName).attr('title', infos.vertexDesc);
     // Update properties
-    for (const key of Object.keys(infos.data)) {
-      d3.select(`#${replaceSpecialCharacter(`${id}${key}`)}`).text(infos.data[key]);
-      vertexInfo.data[key] = infos.data[key];
-    }
+
+    vertexInfo.data.forEach(data => {
+      let key = data.key;
+      data.spec = infos[key];
+      data.mandatory = infos[`${key}_mandatory`] ? true : false;
+      d3.select(`#${replaceSpecialCharacter(`${id}${key}`)}`).text(infos[key]).attr('title', infos[key]);
+    });
   }
 
   /**
