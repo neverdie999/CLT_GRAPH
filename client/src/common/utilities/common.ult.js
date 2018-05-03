@@ -3,7 +3,8 @@ import _ from "lodash";
 import {
   HTML_ALGETA_CONTAINER_ID,
   SVG_CONTAINER_ID,
-  DEFAULT_CONFIG_GRAPH
+  DEFAULT_CONFIG_GRAPH,
+  REPEAT_RANGE,
 } from '../../const/index';
 
 /**
@@ -195,4 +196,34 @@ export function setMinBoundaryGraph(data) {
   let height = Math.max.apply(null, lstOffsetY);
 
   setSizeGraph({width, height});
+}
+
+/**
+ * Allow only numeric (0-9) in HTML inputbox using jQuery.
+ * Allow: backspace, delete, tab, escape, enter and .
+ * Allow: Ctrl+A, Command+A
+ */
+
+export function allowInputNumberOnly(e) {
+  // Allow: backspace, delete, tab, escape, enter and .
+  if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+    // Allow: Ctrl+A, Command+A
+    (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+    // Allow: home, end, left, right, down, up
+    (e.keyCode >= 35 && e.keyCode <= 40)) {
+    // let it happen, don't do anything
+    return;
+  }
+  // Ensure that it is a number and stop the keypress
+  if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+    e.preventDefault();
+  }
+}
+
+export function checkMinMaxValue(val, min = REPEAT_RANGE.MIN, max = REPEAT_RANGE.MAX) {
+  if(parseInt(val) < min || isNaN(parseInt(val)))
+    return min;
+  else if(parseInt(val) > max)
+    return max;
+  else return parseInt(val);
 }

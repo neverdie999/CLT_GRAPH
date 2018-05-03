@@ -66,6 +66,12 @@ export const DEFAULT_CONFIG_GRAPH = {
   MIN_HEIGHT: 959,
 }
 
+// Repeat range
+export const REPEAT_RANGE = {
+  MIN: 0,
+  MAX: 9999,
+}
+
 // Global variable
 window.creatingEdge = false; // Define state creation connect (edge)
 window.sourceNode = null; // Define source node for create connect

@@ -3,7 +3,8 @@ import {
   HTML_BOUNDARY_CONTAINER_CLASS,
   BOUNDARY_ATTR_SIZE,
   HTML_VERTEX_CONTAINER_CLASS,
-  DEFAULT_CONFIG_GRAPH
+  DEFAULT_CONFIG_GRAPH,
+  REPEAT_RANGE
 } from '../../const/index';
 
 import PopUtils from '../../common/utilities/popup.ult';
@@ -13,6 +14,8 @@ import {
   autoScrollOnMousedrag,
   updateGraphBoundary,
   setMinBoundaryGraph,
+  allowInputNumberOnly,
+  checkMinMaxValue,
 } from '../../common/utilities/common.ult';
 
 const HTML_BOUNDARY_INFO_ID = 'boundaryInfo';
@@ -38,6 +41,8 @@ class Boundary {
     let parent = options.parent || null;
     let height = options.height || BOUNDARY_ATTR_SIZE.BOUND_HEIGHT;
     let width = options.width || BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
+
+    // To do: Use default config and merge with current config
     let boundaryInfo = {
       x: options.x,
       y: options.y,
@@ -48,6 +53,8 @@ class Boundary {
       width: width,
       height: height,
       parent: parent,
+      mandatory: options.mandatory || false,
+      repeat: options.repeat || 1
     };
 
     this.dataContainer.boundary.push(boundaryInfo);
@@ -86,14 +93,13 @@ class Boundary {
       .attr("height", height)
       .style("border", "solid 1px #652a82")
       .style("font-size", "13px")
-      // .style("background", "#ffffff")
       .style("background", "none")
       .append("xhtml:div")
       .attr("class", "boundary_content")
       .html(`
           <div class="boundary_header">
             <p id="${boundaryId}Header" class="header_name header_boundary" style="width: 100%;
-             height: ${BOUNDARY_ATTR_SIZE.HEADER_HEIGHT}px;">${boundaryInfo.name}</p>
+             height: ${BOUNDARY_ATTR_SIZE.HEADER_HEIGHT}px;" title="${boundaryInfo.description}">${boundaryInfo.name}</p>
           </div>
       `);
 
@@ -513,82 +519,6 @@ class Boundary {
   }
 
   /**
-   * Make controls to edit boundary info
-   * @param boundaryId
-   */
-  makeEditBoundaryInfo(boundaryId) {
-    // const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    // let parent = d3.select('svg').select(`#${boundaryId}`);
-    // let that = this;
-    // let form = parent.append("foreignObject")
-    //   .attr("id", `${boundaryId}Name`)
-    //   .attr("y", 8)
-    //   .attr("x", 5);
-    // let input = form
-    //   .attr("width", boundaryInfo.width - 10)
-    //   .attr("height", 20)
-    //   .append("xhtml:form")
-    //   .append("input")
-    //   .attr("maxlength", 20)
-    //   .attr("class", "input-header-boundary")
-    //   .attr("value", function () {
-    //     this.focus();
-    //     return boundaryInfo.name;
-    //   })
-    //   .attr("style", `width: ${boundaryInfo.width - 10}px`)
-    //   .on("blur", function () {
-    //     let newName = input.node().value;
-    //     if (newName) {
-    //       that.setBoundaryName(boundaryId, newName);
-    //     }
-    //     //parent.select(`#${boundaryId}Name`).remove();
-    //     parent.select(`#${boundaryId}Name`).remove();
-    //   })
-    //   .on("keypress", function () {
-    //     // IE fix
-    //     if (!d3.event)
-    //       d3.event = window.event;
-    //     let e = d3.event;
-    //     if (e.keyCode == 13) {
-    //       if (typeof(e.cancelBubble) !== 'undefined') // IE
-    //         e.cancelBubble = true;
-    //       if (e.stopPropagation)
-    //         e.stopPropagation();
-    //       e.preventDefault();
-    //
-    //       let newName = input.node().value;
-    //       if (newName) {
-    //         that.setBoundaryName(boundaryId, newName);
-    //       }
-    //       //fix show console bug when delete node
-    //       try {
-    //         d3.select(`#${boundaryId}Name`).remove();
-    //       } catch (e) {
-    //       }
-    //
-    //     }
-    //   });
-
-    let options = {
-      popupId: HTML_BOUNDARY_INFO_ID,
-      position: 'center',
-      width: 430
-    }
-    PopUtils.metSetShowPopup(options);
-  }
-
-  /**
-   * Set boundary info
-   * @param boundaryId
-   * @param boundaryId, info
-   */
-  setBoundaryName(boundaryId, name) {
-    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
-    boundaryInfo.name = name;
-    d3.select(`#${boundaryId}Header`).text(name);
-  }
-
-  /**
    * Move boundary to front
    * @param selectorBoundaryGroup
    * @param boundaryId
@@ -758,6 +688,27 @@ class Boundary {
   }
 
   /**
+   * Make controls to edit boundary info
+   * @param boundaryId
+   */
+  makeEditBoundaryInfo(boundaryId) {
+    const boundaryInfo = this.objectUtils.getBoundaryInfoById(boundaryId);
+    this.originBoundary = boundaryInfo;
+    // Append content to popup
+    $(`#boundaryName`).val(boundaryInfo.name);
+    $(`#boundaryDesc`).val(boundaryInfo.description);
+    $(`#maxBoundaryRepeat`).val(boundaryInfo.repeat);
+    $(`#isBoundaryMandatory`).prop('checked', boundaryInfo.mandatory);
+
+    let options = {
+      popupId: HTML_BOUNDARY_INFO_ID,
+      position: 'center',
+      width: 430
+    }
+    PopUtils.metSetShowPopup(options);
+  }
+
+  /**
    * Bind event and init data for controls on popup
    */
   bindEventForPopupBoundary() {
@@ -768,20 +719,49 @@ class Boundary {
     $("#boudanryBtnCancel").click(e => {
       this.closePopBoundaryInfo();
     });
+
+    // Validate input number
+    $("#maxBoundaryRepeat").keydown(function (e) {
+      allowInputNumberOnly(e);
+    });
+
+    $("#isBoundaryMandatory").change(function () {
+      if(this.checked && $("#maxBoundaryRepeat").val() < 1) {
+        $("#maxBoundaryRepeat").val(1);
+      }
+    });
+
+    $("#maxBoundaryRepeat").keydown(function (e) {
+      allowInputNumberOnly(e);
+    });
+
+    $("#maxBoundaryRepeat").focusout(function() {
+      let rtnVal = checkMinMaxValue(this.value, $('#isBoundaryMandatory').prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
+      this.value = rtnVal;
+    });
   }
 
   /**
-   * Get data vertex change
+   * Update data boundary change
    */
   confirmEditBoundaryInfo() {
-    // Get data on form
+    const id = this.originBoundary.id;
+    let boundaryInfo = this.objectUtils.getBoundaryInfoById(id);
+    let name = $(`#boundaryName`).val();
+    boundaryInfo.name = name;
+    let description = $(`#boundaryDesc`).val();
+    boundaryInfo.description = description;
+    boundaryInfo.repeat = $(`#maxBoundaryRepeat`).val();
+    boundaryInfo.mandatory = $(`#isBoundaryMandatory`).prop('checked');
+    d3.select(`#${id}Header`).text(name).attr('title', description);
     this.closePopBoundaryInfo();
   }
 
   /**
-   * Close popup edit vertex info
+   * Close popup edit boundary info
    */
   closePopBoundaryInfo() {
+    this.originBoundary = null;
     let options = {popupId: HTML_BOUNDARY_INFO_ID}
     PopUtils.metClosePopup(options);
   }
