@@ -1,98 +1,2267 @@
 {
   "vertex": [
     {
-      "vertexType": "CONCAT",
-      "name": "CONCAT",
+      "vertexType": "BGM",
+      "name": "BGM",
       "description": "Description",
-      "data": {
-        "CONNECT": "_"
-      },
-      "id": "V1522117151466",
-      "parent": "B1522117166689"
+      "data": [
+        {
+          "key": "[C002]1001",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C002]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C002]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C002]1000",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "1004",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "1225",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "4343",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525393865373",
+      "parent": "B1525393881017",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "DTM",
+      "name": "DTM",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C507]2005",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2380",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2379",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525393871080",
+      "parent": "B1525393881017",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "FTX",
+      "name": "FTX",
+      "description": "Description",
+      "data": [
+        {
+          "key": "4451",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "4453",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]4441",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:2",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:3",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:4",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:5",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "3453",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525393874057",
+      "parent": "B1525393881017",
+      "mandatory": false,
+      "repeat": 1
     },
     {
       "vertexType": "RFF",
       "name": "RFF",
       "description": "Description",
-      "data": {
-        "[C506]1153": "AN3",
-        "[C506]1154": "AN70",
-        "[C506]1156": "AN9",
-        "[C506]1160": "AN6"
-      },
-      "id": "V1522117154057",
-      "parent": "B1522117166689"
+      "data": [
+        {
+          "key": "[C506]1153",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]1154",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]1156",
+          "spec": "AN6",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]4000",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525393877893",
+      "parent": "B1525393881017",
+      "mandatory": false,
+      "repeat": 1
     },
     {
-      "vertexType": "IF",
-      "name": "IF",
+      "vertexType": "TDT",
+      "name": "TDT",
       "description": "Description",
-      "data": {
-        "CONDITION": ""
-      },
-      "id": "V1522117155867",
-      "parent": "B1522117166689"
-    },
-    {
-      "vertexType": "CONCAT",
-      "name": "CONCAT",
-      "description": "Description",
-      "data": {
-        "CONNECT": "_"
-      },
-      "id": "V1522117176459",
-      "parent": "B1522117176449"
-    },
-    {
-      "vertexType": "IF",
-      "name": "IF",
-      "description": "Description",
-      "data": {
-        "CONDITION": ""
-      },
-      "id": "V1522117176465",
-      "parent": "B1522117176449"
+      "data": [
+        {
+          "key": "8051",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8028",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C220]8067",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C220]8066",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C228]8179",
+          "spec": "AN8",
+          "mandatory": false
+        },
+        {
+          "key": "[C228]8178",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]3127",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]3128",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "8101",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C401]8457",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C401]8459",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C401]7130",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]8213",
+          "spec": "AN9",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]8212",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]8453",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8281",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525393940604",
+      "parent": "B1525393918381",
+      "mandatory": false,
+      "repeat": 1
     },
     {
       "vertexType": "RFF",
       "name": "RFF",
       "description": "Description",
-      "data": {
-        "[C506]1153": "AN3",
-        "[C506]1154": "AN70",
-        "[C506]1156": "AN9",
-        "[C506]1160": "AN6"
-      },
-      "id": "V1522117176471",
-      "parent": "B1522117176449"
+      "data": [
+        {
+          "key": "[C506]1153",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]1154",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]1156",
+          "spec": "AN6",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]4000",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525393945394",
+      "parent": "B1525393918381",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "LOC",
+      "name": "LOC",
+      "description": "Description",
+      "data": [
+        {
+          "key": "3227",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3225",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3224",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3223",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3222",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3233",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3232",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "5479",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525393948486",
+      "parent": "B1525393918381",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "DTM",
+      "name": "DTM",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C507]2005",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2380",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2379",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525393952776",
+      "parent": "B1525393918381",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "NAD",
+      "name": "NAD",
+      "description": "Description",
+      "data": [
+        {
+          "key": "3035",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C082]3039",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C082]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C082]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:2",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:3",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:4",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:5",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:2",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:3",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:4",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:5",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "3045",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C059]3042",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C059]3042:2",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C059]3042:3",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "3164",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "3229",
+          "spec": "AN9",
+          "mandatory": false
+        },
+        {
+          "key": "3251",
+          "spec": "AN9",
+          "mandatory": false
+        },
+        {
+          "key": "3027",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394175911",
+      "parent": "B1525394159465",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "CTA",
+      "name": "CTA",
+      "description": "Description",
+      "data": [
+        {
+          "key": "3139",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C056]3413",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C056]3412",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394178152",
+      "parent": "B1525394159465",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "GID",
+      "name": "GID",
+      "description": "Description",
+      "data": [
+        {
+          "key": "1496",
+          "spec": "AN5",
+          "mandatory": false
+        },
+        {
+          "key": "[C213]7224",
+          "spec": "AN8",
+          "mandatory": false
+        },
+        {
+          "key": "[C213]7065",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C213]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C213]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C213]7064",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394503040",
+      "parent": "B1525394212522",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "HAN",
+      "name": "HAN",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C524]4079",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C524]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C524]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C524]4078",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C218]7419",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C218]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C218]3055",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394505467",
+      "parent": "B1525394212522",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "FTX",
+      "name": "FTX",
+      "description": "Description",
+      "data": [
+        {
+          "key": "4451",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "4453",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]4441",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:2",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:3",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:4",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:5",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "3453",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394514743",
+      "parent": "B1525394212522",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "PIA",
+      "name": "PIA",
+      "description": "Description",
+      "data": [
+        {
+          "key": "4347",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C212]7140",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C212]7143",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C212]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C212]3055",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394520422",
+      "parent": "B1525394212522",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "MEA",
+      "name": "MEA",
+      "description": "Description",
+      "data": [
+        {
+          "key": "6311",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6313",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6321",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6155",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6154",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6411",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6314",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6162",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6152",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6432",
+          "spec": "N2",
+          "mandatory": false
+        },
+        {
+          "key": "7383",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394523674",
+      "parent": "B1525394212522",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "TMP",
+      "name": "TMP",
+      "description": "Description",
+      "data": [
+        {
+          "key": "6245",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C239]6246",
+          "spec": "AN5",
+          "mandatory": false
+        },
+        {
+          "key": "[C239]6411",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394529852",
+      "parent": "B1525394212522",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "RNG",
+      "name": "RNG",
+      "description": "Description",
+      "data": [
+        {
+          "key": "6167",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C280]6411",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C280]6162",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C280]6152",
+          "spec": "N18",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394532913",
+      "parent": "B1525394212522",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "SGP",
+      "name": "SGP",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C237]8260",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3027",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "7224",
+          "spec": "N8",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394540094",
+      "parent": "B1525394212522",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "EQD",
+      "name": "EQD",
+      "description": "Description",
+      "data": [
+        {
+          "key": "8053",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]8260",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3207",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C224]8155",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "[C224]8155",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C224]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C224]3055",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "8077",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8249",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8169",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394789760",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "RFF",
+      "name": "RFF",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C506]1153",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]1154",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]1156",
+          "spec": "AN6",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]4000",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394796565",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "TMD",
+      "name": "TMD",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C219]8335",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C219]8334",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "8332",
+          "spec": "AN26",
+          "mandatory": false
+        },
+        {
+          "key": "8341",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394799664",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "DTM",
+      "name": "DTM",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C507]2005",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2380",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2379",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394802506",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "DTM",
+      "name": "DTM",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C507]2005",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2380",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2379",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394805779",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "LOC",
+      "name": "LOC",
+      "description": "Description",
+      "data": [
+        {
+          "key": "3227",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3225",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3224",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3223",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3222",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3233",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3232",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "5479",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394809341",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "MEA",
+      "name": "MEA",
+      "description": "Description",
+      "data": [
+        {
+          "key": "6311",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6313",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6321",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6155",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6154",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6411",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6314",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6162",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6152",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6432",
+          "spec": "N2",
+          "mandatory": false
+        },
+        {
+          "key": "7383",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394812874",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "DIM",
+      "name": "DIM",
+      "description": "Description",
+      "data": [
+        {
+          "key": "6145",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C211]6411",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C211]6168",
+          "spec": "N15",
+          "mandatory": false
+        },
+        {
+          "key": "[C211]6140",
+          "spec": "N15",
+          "mandatory": false
+        },
+        {
+          "key": "[C211]6008",
+          "spec": "N15",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394817389",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "SEL",
+      "name": "SEL",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C555]9308",
+          "spec": "AN15",
+          "mandatory": false
+        },
+        {
+          "key": "[C555]9308:2",
+          "spec": "AN15",
+          "mandatory": false
+        },
+        {
+          "key": "[C555]9308:3",
+          "spec": "AN15",
+          "mandatory": false
+        },
+        {
+          "key": "[C215]9303",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C215]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C215]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C215]9302",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "4517",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "4517:2",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "4517:3",
+          "spec": "AN10",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394820185",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "FTX",
+      "name": "FTX",
+      "description": "Description",
+      "data": [
+        {
+          "key": "4451",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "4453",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]4441",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:2",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:3",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:4",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:5",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "3453",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394825841",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "EQA",
+      "name": "EQA",
+      "description": "Description",
+      "data": [
+        {
+          "key": "8053",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]8260",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3207",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394830154",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "DAM",
+      "name": "DAM",
+      "description": "Description",
+      "data": [
+        {
+          "key": "7493",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C821]7501",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C821]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C821]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C821]7500",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C822]7503",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C822]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C822]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C822]7502",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C825]7509",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C825]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C825]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C825]7508",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C826]1229",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C826]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C826]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C826]1228",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394963454",
+      "parent": "B1525394935241",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "COD",
+      "name": "COD",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C823]7505",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C823]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C823]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C823]1504",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C824]7507",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C824]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C824]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C824]7506",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394967594",
+      "parent": "B1525394935241",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "TDT",
+      "name": "TDT",
+      "description": "Description",
+      "data": [
+        {
+          "key": "8051",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8028",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C220]8067",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C220]8066",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C228]8179",
+          "spec": "AN8",
+          "mandatory": false
+        },
+        {
+          "key": "[C228]8178",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]3127",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]3128",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "8101",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C401]8457",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C401]8459",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C401]7130",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]8213",
+          "spec": "AN9",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]8212",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]8453",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8281",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394990080",
+      "parent": "B1525395003643",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "LOC",
+      "name": "LOC",
+      "description": "Description",
+      "data": [
+        {
+          "key": "3227",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3225",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3224",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3223",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3222",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3233",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3232",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "5479",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394993806",
+      "parent": "B1525395003643",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "DTM",
+      "name": "DTM",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C507]2005",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2380",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2379",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525394997392",
+      "parent": "B1525395003643",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "NAD",
+      "name": "NAD",
+      "description": "Description",
+      "data": [
+        {
+          "key": "3035",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C082]3039",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C082]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C082]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:2",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:3",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:4",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:5",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:2",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:3",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:4",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:5",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "3045",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C059]3042",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C059]3042:2",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C059]3042:3",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "3164",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "3229",
+          "spec": "AN9",
+          "mandatory": false
+        },
+        {
+          "key": "3251",
+          "spec": "AN9",
+          "mandatory": false
+        },
+        {
+          "key": "3027",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525395049612",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "DGS",
+      "name": "DGS",
+      "description": "Description",
+      "data": [
+        {
+          "key": "8273",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C205]8351",
+          "spec": "AN7",
+          "mandatory": false
+        },
+        {
+          "key": "[C205]8078",
+          "spec": "AN7",
+          "mandatory": false
+        },
+        {
+          "key": "[C205]8092",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "[C234]7124",
+          "spec": "N4",
+          "mandatory": false
+        },
+        {
+          "key": "[C234]7088",
+          "spec": "AN8",
+          "mandatory": false
+        },
+        {
+          "key": "[C234]8092",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3027",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C223]7106",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "[C223]6411",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8339",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8364",
+          "spec": "AN6",
+          "mandatory": false
+        },
+        {
+          "key": "8410",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "8126",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "[C235]8158",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C235]8186",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C236]8246",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C236]8246:2",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C236]8246:3",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "8255",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8325",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8211",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525395053653",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "TMP",
+      "name": "TMP",
+      "description": "Description",
+      "data": [
+        {
+          "key": "6245",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C239]6246",
+          "spec": "AN5",
+          "mandatory": false
+        },
+        {
+          "key": "[C239]6411",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525395058575",
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "CNT",
+      "name": "CNT",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[C270]6069",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C823]6066",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C823]6411",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525395086973",
+      "parent": "B1525393881017",
+      "mandatory": false,
+      "repeat": 1
     },
     {
       "vertexType": "REC01",
       "name": "REC01",
       "description": "Description",
-      "data": {
-        "[1]": "AN3",
-        "[2]": "AN512",
-        "[3]": "AN3"
-      },
-      "id": "V1522117205181",
-      "parent": null
+      "data": [
+        {
+          "key": "[1]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[2]",
+          "spec": "AN512",
+          "mandatory": false
+        },
+        {
+          "key": "[3]",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525395118346",
+      "parent": "B1525395124989",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "REC02",
+      "name": "REC02",
+      "description": "Description",
+      "data": [
+        {
+          "key": "[1]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[2]",
+          "spec": "AN512",
+          "mandatory": false
+        },
+        {
+          "key": "[3]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[4]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[5]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[6]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[7]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[8]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[9]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[10]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[11]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[12]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[13]",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "id": "V1525395121839",
+      "parent": "B1525395124989",
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "SUBSTR",
+      "name": "SUBSTR",
+      "description": "Description",
+      "data": [
+        {
+          "key": "FROM",
+          "spec": 0,
+          "mandatory": false
+        },
+        {
+          "key": "TO",
+          "spec": -1,
+          "mandatory": false
+        }
+      ],
+      "id": "V1525395296981",
+      "parent": null,
+      "mandatory": false,
+      "repeat": 1
+    },
+    {
+      "vertexType": "CONCAT",
+      "name": "CONCAT",
+      "description": "Description",
+      "data": [
+        {
+          "key": "CONNECTOR",
+          "spec": "_",
+          "mandatory": true
+        }
+      ],
+      "id": "V1525395355221",
+      "parent": null,
+      "mandatory": false,
+      "repeat": 1
     }
   ],
   "edge": [
     {
-      "id": "E1522117184522",
+      "id": "E1525395301326",
       "source": {
-        "x": 310,
-        "y": 162,
-        "vertexId": "V1522117151466",
-        "prop": "CONNECT"
+        "x": 160,
+        "y": 101,
+        "vertexId": "V1525393865373",
+        "prop": "[C002]1001"
       },
       "target": {
-        "x": 675,
-        "y": 149,
-        "vertexId": "V1522117176459",
-        "prop": "CONNECT"
+        "x": 2772,
+        "y": 30,
+        "vertexId": "V1525395296981",
+        "prop": null
       },
       "note": {
         "originNote": "",
@@ -105,18 +2274,402 @@
       }
     },
     {
-      "id": "E1522117190688",
+      "id": "E1525395304029",
       "source": {
-        "x": 310,
-        "y": 358,
-        "vertexId": "V1522117154057",
-        "prop": "[C506]1156"
+        "x": 2772,
+        "y": 30,
+        "vertexId": "V1525395296981",
+        "prop": null
       },
       "target": {
-        "x": 675,
-        "y": 345,
-        "vertexId": "V1522117176471",
-        "prop": "[C506]1156"
+        "x": 4855,
+        "y": 222,
+        "vertexId": "V1525395121839",
+        "prop": "[1]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395309934",
+      "source": {
+        "x": 160,
+        "y": 10665,
+        "vertexId": "V1525393874057",
+        "prop": "[C107]1131"
+      },
+      "target": {
+        "x": 4855,
+        "y": 326,
+        "vertexId": "V1525395121839",
+        "prop": "[5]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395341878",
+      "source": {
+        "x": 160,
+        "y": 329,
+        "vertexId": "V1525393871080",
+        "prop": "[C507]2005"
+      },
+      "target": {
+        "x": 4855,
+        "y": 98,
+        "vertexId": "V1525395118346",
+        "prop": "[1]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395347103",
+      "source": {
+        "x": 160,
+        "y": 479,
+        "vertexId": "V1525393877893",
+        "prop": "[C506]1154"
+      },
+      "target": {
+        "x": 4855,
+        "y": 124,
+        "vertexId": "V1525395118346",
+        "prop": "[2]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395362980",
+      "source": {
+        "x": 165,
+        "y": 645,
+        "vertexId": "V1525393940604",
+        "prop": "8051"
+      },
+      "target": {
+        "x": 2822,
+        "y": 546,
+        "vertexId": "V1525395355221",
+        "prop": null
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395367767",
+      "source": {
+        "x": 2822,
+        "y": 546,
+        "vertexId": "V1525395355221",
+        "prop": null
+      },
+      "target": {
+        "x": 4855,
+        "y": 248,
+        "vertexId": "V1525395121839",
+        "prop": "[2]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395374828",
+      "source": {
+        "x": 165,
+        "y": 801,
+        "vertexId": "V1525393940604",
+        "prop": "[C040]3127"
+      },
+      "target": {
+        "x": 4855,
+        "y": 150,
+        "vertexId": "V1525395118346",
+        "prop": "[3]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395383706",
+      "source": {
+        "x": 165,
+        "y": 1237,
+        "vertexId": "V1525393945394",
+        "prop": "[C506]1154"
+      },
+      "target": {
+        "x": 4855,
+        "y": 274,
+        "vertexId": "V1525395121839",
+        "prop": "[3]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395395370",
+      "source": {
+        "x": 165,
+        "y": 1413,
+        "vertexId": "V1525393948486",
+        "prop": "[C517]1131"
+      },
+      "target": {
+        "x": 4855,
+        "y": 300,
+        "vertexId": "V1525395121839",
+        "prop": "[4]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395411386",
+      "source": {
+        "x": 165,
+        "y": 1797,
+        "vertexId": "V1525393952776",
+        "prop": "[C507]2380"
+      },
+      "target": {
+        "x": 4855,
+        "y": 352,
+        "vertexId": "V1525395121839",
+        "prop": "[6]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395427798",
+      "source": {
+        "x": 165,
+        "y": 2046,
+        "vertexId": "V1525394175911",
+        "prop": "[C058]3124"
+      },
+      "target": {
+        "x": 4855,
+        "y": 378,
+        "vertexId": "V1525395121839",
+        "prop": "[7]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395441819",
+      "source": {
+        "x": 165,
+        "y": 2228,
+        "vertexId": "V1525394175911",
+        "prop": "[C080]3036:3"
+      },
+      "target": {
+        "x": 4855,
+        "y": 404,
+        "vertexId": "V1525395121839",
+        "prop": "[8]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395450171",
+      "source": {
+        "x": 165,
+        "y": 2280,
+        "vertexId": "V1525394175911",
+        "prop": "[C080]3036:5"
+      },
+      "target": {
+        "x": 4855,
+        "y": 430,
+        "vertexId": "V1525395121839",
+        "prop": "[9]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395459264",
+      "source": {
+        "x": 165,
+        "y": 2757,
+        "vertexId": "V1525394503040",
+        "prop": "[C213]7224"
+      },
+      "target": {
+        "x": 4855,
+        "y": 456,
+        "vertexId": "V1525395121839",
+        "prop": "[10]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395466552",
+      "source": {
+        "x": 165,
+        "y": 3161,
+        "vertexId": "V1525394514743",
+        "prop": "4451"
+      },
+      "target": {
+        "x": 4855,
+        "y": 482,
+        "vertexId": "V1525395121839",
+        "prop": "[11]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395474816",
+      "source": {
+        "x": 165,
+        "y": 3721,
+        "vertexId": "V1525394523674",
+        "prop": "[C502]6321"
+      },
+      "target": {
+        "x": 4855,
+        "y": 508,
+        "vertexId": "V1525395121839",
+        "prop": "[12]"
+      },
+      "note": {
+        "originNote": "",
+        "middleNote": "",
+        "destNote": ""
+      },
+      "style": {
+        "line": "solid",
+        "arrow": "Y"
+      }
+    },
+    {
+      "id": "E1525395488337",
+      "source": {
+        "x": 170,
+        "y": 8383,
+        "vertexId": "V1525394990080",
+        "prop": "[C222]3055"
+      },
+      "target": {
+        "x": 4855,
+        "y": 534,
+        "vertexId": "V1525395121839",
+        "prop": "[13]"
       },
       "note": {
         "originNote": "",
@@ -131,101 +2684,582 @@
   ],
   "boundary": [
     {
-      "name": "Boundary",
-      "description": "Boundary Description",
+      "name": "CODECO",
+      "description": "ROOT",
       "member": [
         {
-          "id": "V1522117151466",
+          "id": "V1525393865373",
           "type": "V",
           "show": true
         },
         {
-          "id": "V1522117155867",
+          "id": "V1525393871080",
           "type": "V",
           "show": true
         },
         {
-          "id": "V1522117154057",
+          "id": "V1525393877893",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "B1525393918381",
+          "type": "B",
+          "show": true
+        },
+        {
+          "id": "B1525394159465",
+          "type": "B",
+          "show": true
+        },
+        {
+          "id": "B1525394212522",
+          "type": "B",
+          "show": true
+        },
+        {
+          "id": "B1525394771291",
+          "type": "B",
+          "show": true
+        },
+        {
+          "id": "V1525395086973",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525393874057",
           "type": "V",
           "show": true
         }
       ],
-      "id": "B1522117166689",
-      "width": 160,
-      "height": 336,
-      "parent": null
+      "id": "B1525393881017",
+      "width": 220,
+      "height": 10860,
+      "parent": null,
+      "mandatory": false,
+      "repeat": "1"
     },
     {
-      "name": "Boundary",
+      "name": "GROUP1",
       "description": "Boundary Description",
       "member": [
         {
-          "id": "V1522117176459",
+          "id": "V1525393940604",
           "type": "V",
           "show": true
         },
         {
-          "id": "V1522117176465",
+          "id": "V1525393945394",
           "type": "V",
           "show": true
         },
         {
-          "id": "V1522117176471",
+          "id": "V1525393948486",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525393952776",
           "type": "V",
           "show": true
         }
       ],
-      "id": "B1522117176449",
+      "id": "B1525393918381",
       "width": 160,
-      "height": 336,
-      "parent": null
+      "height": 1292,
+      "parent": "B1525393881017",
+      "mandatory": false,
+      "repeat": "2"
+    },
+    {
+      "name": "GROUP2",
+      "description": "Boundary Description",
+      "member": [
+        {
+          "id": "V1525394175911",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394178152",
+          "type": "V",
+          "show": true
+        }
+      ],
+      "id": "B1525394159465",
+      "width": 160,
+      "height": 784,
+      "parent": "B1525393881017",
+      "mandatory": false,
+      "repeat": "9"
+    },
+    {
+      "name": "GROUP3",
+      "description": "Boundary Description",
+      "member": [
+        {
+          "id": "V1525394503040",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394505467",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394514743",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394520422",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394523674",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394529852",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394532913",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394540094",
+          "type": "V",
+          "show": true
+        }
+      ],
+      "id": "B1525394212522",
+      "width": 160,
+      "height": 1762,
+      "parent": "B1525393881017",
+      "mandatory": false,
+      "repeat": "999"
+    },
+    {
+      "name": "GROUP4",
+      "description": "Boundary Description",
+      "member": [
+        {
+          "id": "V1525394789760",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394796565",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394799664",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394805779",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394802506",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394809341",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394812874",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394817389",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394820185",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394825841",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394830154",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "B1525394935241",
+          "type": "B",
+          "show": true
+        },
+        {
+          "id": "B1525395003643",
+          "type": "B",
+          "show": true
+        },
+        {
+          "id": "V1525395049612",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525395053653",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525395058575",
+          "type": "V",
+          "show": true
+        }
+      ],
+      "id": "B1525394771291",
+      "width": 190,
+      "height": 6002,
+      "parent": "B1525393881017",
+      "mandatory": false,
+      "repeat": "9999"
+    },
+    {
+      "name": "GROUP41",
+      "description": "Boundary Description",
+      "member": [
+        {
+          "id": "V1525394963454",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394967594",
+          "type": "V",
+          "show": true
+        }
+      ],
+      "id": "B1525394935241",
+      "width": 160,
+      "height": 784,
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": "9"
+    },
+    {
+      "name": "GROUP42",
+      "description": "Boundary Description",
+      "member": [
+        {
+          "id": "V1525394990080",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394993806",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525394997392",
+          "type": "V",
+          "show": true
+        }
+      ],
+      "id": "B1525395003643",
+      "width": 160,
+      "height": 1142,
+      "parent": "B1525394771291",
+      "mandatory": false,
+      "repeat": "9"
+    },
+    {
+      "name": "FLATFILE",
+      "description": "Boundary Description",
+      "member": [
+        {
+          "id": "V1525395118346",
+          "type": "V",
+          "show": true
+        },
+        {
+          "id": "V1525395121839",
+          "type": "V",
+          "show": true
+        }
+      ],
+      "id": "B1525395124989",
+      "width": 160,
+      "height": 550,
+      "parent": null,
+      "mandatory": false,
+      "repeat": "1"
     }
   ],
   "position": [
     {
-      "id": "V1522117151466",
-      "x": 160,
-      "y": 111
+      "id": "V1525393865373",
+      "x": 10,
+      "y": 50
     },
     {
-      "id": "V1522117154057",
-      "x": 160,
-      "y": 255
+      "id": "V1525393871080",
+      "x": 10,
+      "y": 278
     },
     {
-      "id": "V1522117155867",
-      "x": 160,
-      "y": 183
+      "id": "V1525393874057",
+      "x": 10,
+      "y": 10536
     },
     {
-      "id": "V1522117176459",
-      "x": 675,
-      "y": 98
+      "id": "V1525393877893",
+      "x": 10,
+      "y": 402
     },
     {
-      "id": "V1522117176465",
-      "x": 675,
-      "y": 170
+      "id": "V1525393940604",
+      "x": 15,
+      "y": 594
     },
     {
-      "id": "V1522117176471",
-      "x": 675,
-      "y": 242
+      "id": "V1525393945394",
+      "x": 15,
+      "y": 1160
     },
     {
-      "id": "V1522117205181",
-      "x": 934,
-      "y": 174
+      "id": "V1525393948486",
+      "x": 15,
+      "y": 1310
     },
     {
-      "id": "B1522117166689",
-      "x": 155,
-      "y": 69
+      "id": "V1525393952776",
+      "x": 15,
+      "y": 1720
     },
     {
-      "id": "B1522117176449",
-      "x": 670,
-      "y": 56
+      "id": "V1525394175911",
+      "x": 15,
+      "y": 1891
+    },
+    {
+      "id": "V1525394178152",
+      "x": 15,
+      "y": 2509
+    },
+    {
+      "id": "V1525394503040",
+      "x": 15,
+      "y": 2680
+    },
+    {
+      "id": "V1525394505467",
+      "x": 15,
+      "y": 2882
+    },
+    {
+      "id": "V1525394514743",
+      "x": 15,
+      "y": 3110
+    },
+    {
+      "id": "V1525394520422",
+      "x": 15,
+      "y": 3442
+    },
+    {
+      "id": "V1525394523674",
+      "x": 15,
+      "y": 3618
+    },
+    {
+      "id": "V1525394529852",
+      "x": 15,
+      "y": 3950
+    },
+    {
+      "id": "V1525394532913",
+      "x": 15,
+      "y": 4074
+    },
+    {
+      "id": "V1525394540094",
+      "x": 15,
+      "y": 4224
+    },
+    {
+      "id": "V1525394789760",
+      "x": 15,
+      "y": 4447
+    },
+    {
+      "id": "V1525394796565",
+      "x": 15,
+      "y": 4805
+    },
+    {
+      "id": "V1525394799664",
+      "x": 15,
+      "y": 4955
+    },
+    {
+      "id": "V1525394802506",
+      "x": 15,
+      "y": 5229
+    },
+    {
+      "id": "V1525394805779",
+      "x": 15,
+      "y": 5105
+    },
+    {
+      "id": "V1525394809341",
+      "x": 15,
+      "y": 5353
+    },
+    {
+      "id": "V1525394812874",
+      "x": 15,
+      "y": 5763
+    },
+    {
+      "id": "V1525394817389",
+      "x": 15,
+      "y": 6095
+    },
+    {
+      "id": "V1525394820185",
+      "x": 15,
+      "y": 6271
+    },
+    {
+      "id": "V1525394825841",
+      "x": 15,
+      "y": 6577
+    },
+    {
+      "id": "V1525394830154",
+      "x": 15,
+      "y": 6909
+    },
+    {
+      "id": "V1525394963454",
+      "x": 20,
+      "y": 7127
+    },
+    {
+      "id": "V1525394967594",
+      "x": 20,
+      "y": 7615
+    },
+    {
+      "id": "V1525394990080",
+      "x": 20,
+      "y": 7916
+    },
+    {
+      "id": "V1525394993806",
+      "x": 20,
+      "y": 8482
+    },
+    {
+      "id": "V1525394997392",
+      "x": 20,
+      "y": 8892
+    },
+    {
+      "id": "V1525395049612",
+      "x": 15,
+      "y": 9021
+    },
+    {
+      "id": "V1525395053653",
+      "x": 15,
+      "y": 9639
+    },
+    {
+      "id": "V1525395058575",
+      "x": 15,
+      "y": 10283
+    },
+    {
+      "id": "V1525395086973",
+      "x": 10,
+      "y": 10412
+    },
+    {
+      "id": "V1525395118346",
+      "x": 4855,
+      "y": 47
+    },
+    {
+      "id": "V1525395121839",
+      "x": 4855,
+      "y": 171
+    },
+    {
+      "id": "V1525395296981",
+      "x": 2697,
+      "y": 30
+    },
+    {
+      "id": "V1525395355221",
+      "x": 2747,
+      "y": 546
+    },
+    {
+      "id": "B1525393881017",
+      "x": 5,
+      "y": 8
+    },
+    {
+      "id": "B1525393918381",
+      "x": 10,
+      "y": 552
+    },
+    {
+      "id": "B1525394159465",
+      "x": 10,
+      "y": 1849
+    },
+    {
+      "id": "B1525394212522",
+      "x": 10,
+      "y": 2638
+    },
+    {
+      "id": "B1525394771291",
+      "x": 10,
+      "y": 4405
+    },
+    {
+      "id": "B1525394935241",
+      "x": 15,
+      "y": 7085
+    },
+    {
+      "id": "B1525395003643",
+      "x": 15,
+      "y": 7874
+    },
+    {
+      "id": "B1525395124989",
+      "x": 4850,
+      "y": 5
     }
   ],
   "vertexTypes": {
@@ -233,59 +3267,1230 @@
       "OPERATIONS"
     ],
     "OPERATIONS": {
-      "CONCAT": {
-        "CONNECT": "_"
-      },
-      "IF": {
-        "CONDITION": ""
-      }
+      "CONCAT": [
+        {
+          "key": "CONNECTOR",
+          "spec": "_",
+          "mandatory": true
+        }
+      ],
+      "SUBSTR": [
+        {
+          "key": "FROM",
+          "spec": 0,
+          "mandatory": false
+        },
+        {
+          "key": "TO",
+          "spec": -1,
+          "mandatory": false
+        }
+      ],
+      "IF": [
+        {
+          "key": "CONDITION",
+          "spec": "",
+          "mandatory": false
+        }
+      ]
     },
     "DATA_DEFINITIONS": {
-      "RFF": {
-        "[C506]1153": "AN3",
-        "[C506]1154": "AN70",
-        "[C506]1156": "AN9",
-        "[C506]1160": "AN6"
-      },
-      "DTM": {
-        "[C507]2005": "AN3",
-        "[C507]2380": "AN35",
-        "[C507]2379": "AN3"
-      },
-      "CTA": {
-        "[3139]": "AN3",
-        "[C056]3413": "AN17",
-        "[C056]3412": "AN256"
-      },
-      "COM": {
-        "[C076]": "AN3",
-        "[C076]3148": "AN512",
-        "[C076]3155": "AN3"
-      },
-      "REC01": {
-        "[1]": "AN3",
-        "[2]": "AN512",
-        "[3]": "AN3"
-      },
-      "REC02": {
-        "[1]": "AN3",
-        "[2]": "AN512",
-        "[3]": "AN3",
-        "[4]": "AN3",
-        "[5]": "AN3",
-        "[6]": "AN3",
-        "[7]": "AN3",
-        "[8]": "AN3",
-        "[9]": "AN3",
-        "[10]": "AN3",
-        "[11]": "AN3",
-        "[12]": "AN3",
-        "[13]": "AN3"
-      },
-      "SUBSTR": {
-        "FROM": 0,
-        "TO": -1
-      }
+      "BGM": [
+        {
+          "key": "[C002]1001",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C002]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C002]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C002]1000",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "1004",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "1225",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "4343",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "DTM": [
+        {
+          "key": "[C507]2005",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2380",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C507]2379",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "FTX": [
+        {
+          "key": "4451",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "4453",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]4441",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C107]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:2",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:3",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:4",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C108]4440:5",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "3453",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "RFF": [
+        {
+          "key": "[C506]1153",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]1154",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]1156",
+          "spec": "AN6",
+          "mandatory": false
+        },
+        {
+          "key": "[C506]4000",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "TDT": [
+        {
+          "key": "8051",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8028",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C220]8067",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C220]8066",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C228]8179",
+          "spec": "AN8",
+          "mandatory": false
+        },
+        {
+          "key": "[C228]8178",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]3127",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C040]3128",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "8101",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C401]8457",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C401]8459",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C401]7130",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]8213",
+          "spec": "AN9",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]8212",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C222]8453",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8281",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "LOC": [
+        {
+          "key": "3227",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3225",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C517]3224",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3223",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C519]3222",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3233",
+          "spec": "AN25",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C553]3232",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "5479",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "NAD": [
+        {
+          "key": "3035",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C082]3039",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C082]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C082]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:2",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:3",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:4",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C058]3124:5",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:2",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:3",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:4",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C080]3036:5",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "3045",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C059]3042",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C059]3042:2",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C059]3042:3",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "3164",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "3229",
+          "spec": "AN9",
+          "mandatory": false
+        },
+        {
+          "key": "3251",
+          "spec": "AN9",
+          "mandatory": false
+        },
+        {
+          "key": "3027",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "CTA": [
+        {
+          "key": "3139",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C056]3413",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C056]3412",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "GID": [
+        {
+          "key": "1496",
+          "spec": "AN5",
+          "mandatory": false
+        },
+        {
+          "key": "[C213]7224",
+          "spec": "AN8",
+          "mandatory": false
+        },
+        {
+          "key": "[C213]7065",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C213]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C213]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C213]7064",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "HAN": [
+        {
+          "key": "[C524]4079",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C524]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C524]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C524]4078",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C218]7419",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C218]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C218]3055",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "PIA": [
+        {
+          "key": "4347",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C212]7140",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C212]7143",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C212]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C212]3055",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "MEA": [
+        {
+          "key": "6311",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6313",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6321",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6155",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C502]6154",
+          "spec": "AN70",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6411",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6314",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6162",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6152",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C174]6432",
+          "spec": "N2",
+          "mandatory": false
+        },
+        {
+          "key": "7383",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "TMP": [
+        {
+          "key": "6245",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C239]6246",
+          "spec": "AN5",
+          "mandatory": false
+        },
+        {
+          "key": "[C239]6411",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "RNG": [
+        {
+          "key": "6167",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C280]6411",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C280]6162",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C280]6152",
+          "spec": "N18",
+          "mandatory": false
+        }
+      ],
+      "SGP": [
+        {
+          "key": "[C237]8260",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3027",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "7224",
+          "spec": "N8",
+          "mandatory": false
+        }
+      ],
+      "DGS": [
+        {
+          "key": "8273",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C205]8351",
+          "spec": "AN7",
+          "mandatory": false
+        },
+        {
+          "key": "[C205]8078",
+          "spec": "AN7",
+          "mandatory": false
+        },
+        {
+          "key": "[C205]8092",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "[C234]7124",
+          "spec": "N4",
+          "mandatory": false
+        },
+        {
+          "key": "[C234]7088",
+          "spec": "AN8",
+          "mandatory": false
+        },
+        {
+          "key": "[C234]8092",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3027",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C223]7106",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "[C223]6411",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8339",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8364",
+          "spec": "AN6",
+          "mandatory": false
+        },
+        {
+          "key": "8410",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "8126",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "[C235]8158",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C235]8186",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C236]8246",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C236]8246:2",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C236]8246:3",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "8255",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8325",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8211",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "EQD": [
+        {
+          "key": "8053",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]8260",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3207",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C224]8155",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "[C224]8155",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C224]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C224]3055",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "8077",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8249",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "8169",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "TMD": [
+        {
+          "key": "[C219]8335",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C219]8334",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "8332",
+          "spec": "AN26",
+          "mandatory": false
+        },
+        {
+          "key": "8341",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "DIM": [
+        {
+          "key": "6145",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C211]6411",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C211]6168",
+          "spec": "N15",
+          "mandatory": false
+        },
+        {
+          "key": "[C211]6140",
+          "spec": "N15",
+          "mandatory": false
+        },
+        {
+          "key": "[C211]6008",
+          "spec": "N15",
+          "mandatory": false
+        }
+      ],
+      "SEL": [
+        {
+          "key": "[C555]9308",
+          "spec": "AN15",
+          "mandatory": false
+        },
+        {
+          "key": "[C555]9308:2",
+          "spec": "AN15",
+          "mandatory": false
+        },
+        {
+          "key": "[C555]9308:3",
+          "spec": "AN15",
+          "mandatory": false
+        },
+        {
+          "key": "[C215]9303",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C215]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C215]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C215]9302",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "4517",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "4517:2",
+          "spec": "AN10",
+          "mandatory": false
+        },
+        {
+          "key": "4517:3",
+          "spec": "AN10",
+          "mandatory": false
+        }
+      ],
+      "EQA": [
+        {
+          "key": "8053",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]8260",
+          "spec": "AN17",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C237]3207",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "DAM": [
+        {
+          "key": "7493",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C821]7501",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C821]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C821]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C821]7500",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C822]7503",
+          "spec": "AN4",
+          "mandatory": false
+        },
+        {
+          "key": "[C822]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C822]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C822]7502",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C825]7509",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C825]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C825]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C825]7508",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C826]1229",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C826]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C826]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C826]1228",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "COD": [
+        {
+          "key": "[C823]7505",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C823]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C823]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C823]1504",
+          "spec": "AN35",
+          "mandatory": false
+        },
+        {
+          "key": "[C824]7507",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C824]1131",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C824]3055",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C824]7506",
+          "spec": "AN35",
+          "mandatory": false
+        }
+      ],
+      "CNT": [
+        {
+          "key": "[C270]6069",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[C823]6066",
+          "spec": "N18",
+          "mandatory": false
+        },
+        {
+          "key": "[C823]6411",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "REC01": [
+        {
+          "key": "[1]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[2]",
+          "spec": "AN512",
+          "mandatory": false
+        },
+        {
+          "key": "[3]",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ],
+      "REC02": [
+        {
+          "key": "[1]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[2]",
+          "spec": "AN512",
+          "mandatory": false
+        },
+        {
+          "key": "[3]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[4]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[5]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[6]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[7]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[8]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[9]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[10]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[11]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[12]",
+          "spec": "AN3",
+          "mandatory": false
+        },
+        {
+          "key": "[13]",
+          "spec": "AN3",
+          "mandatory": false
+        }
+      ]
     }
+  },
+  "graphSize": {
+    "width": 5230,
+    "height": 11068
   }
 }

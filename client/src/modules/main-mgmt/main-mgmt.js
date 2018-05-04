@@ -259,8 +259,11 @@ class MainMgmt {
       });
     });
 
-    if (!window.isImportVertexTypeDefine)
+    if (!window.isImportVertexTypeDefine){
       window.vertexTypes = this.getListVertexType(data.vertexTypes);
+      window.dataFileVertexType = data.vertexTypes;
+    }
+
 
     this.initMenuContext();
   }

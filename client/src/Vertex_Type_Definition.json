@@ -3,59 +3,1225 @@
     "OPERATIONS"
   ],
   "OPERATIONS": {
-    "CONCAT": {
-      "CONNECT": "_"
-    },
-    "IF": {
-      "CONDITION": ""
-    }
+    "CONCAT": [
+      {
+        "key": "CONNECTOR",
+        "spec": "_",
+        "mandatory": true
+      }
+    ],
+    "SUBSTR": [
+      {
+        "key": "FROM",
+        "spec": 0,
+        "mandatory": false
+      },
+      {
+        "key": "TO",
+        "spec": -1,
+        "mandatory": false
+      }
+    ],
+    "IF": [
+      {
+        "key": "CONDITION",
+        "spec": "",
+        "mandatory": false
+      }
+    ]
   },
   "DATA_DEFINITIONS": {
-    "RFF": {
-      "[C506]1153": "AN3",
-      "[C506]1154": "AN70",
-      "[C506]1156": "AN6",
-      "[C506]1156": "AN9",
-      "[C506]1160": "AN6"
-    },
-    "DTM": {
-      "[C507]2005": "AN3",
-      "[C507]2380": "AN35",
-      "[C507]2379": "AN3"
-    },
-    "CTA": {
-      "[3139]": "AN3",
-      "[C056]3413": "AN17",
-      "[C056]3412": "AN256"
-    },
-    "COM": {
-      "[C076]": "AN3",
-      "[C076]3148": "AN512",
-      "[C076]3155": "AN3"
-    },
-    "REC01": {
-      "[1]": "AN3",
-      "[2]": "AN512",
-      "[3]": "AN3"
-    },
-    "REC02": {
-      "[1]": "AN3",
-      "[2]": "AN512",
-      "[3]": "AN3",
-      "[4]": "AN3",
-      "[5]": "AN3",
-      "[6]": "AN3",
-      "[7]": "AN3",
-      "[8]": "AN3",
-      "[9]": "AN3",
-      "[10]": "AN3",
-      "[11]": "AN3",
-      "[12]": "AN3",
-      "[13]": "AN3"
-    },
-    "SUBSTR": {
-      "FROM": 0,
-      "TO": -1
-    }
+    "BGM": [
+      {
+        "key": "[C002]1001",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C002]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C002]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C002]1000",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "1004",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "1225",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "4343",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "DTM": [
+      {
+        "key": "[C507]2005",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C507]2380",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C507]2379",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "FTX": [
+      {
+        "key": "4451",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "4453",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C107]4441",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C107]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C107]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C108]4440",
+        "spec": "AN70",
+        "mandatory": false
+      },
+      {
+        "key": "[C108]4440:2",
+        "spec": "AN70",
+        "mandatory": false
+      },
+      {
+        "key": "[C108]4440:3",
+        "spec": "AN70",
+        "mandatory": false
+      },
+      {
+        "key": "[C108]4440:4",
+        "spec": "AN70",
+        "mandatory": false
+      },
+      {
+        "key": "[C108]4440:5",
+        "spec": "AN70",
+        "mandatory": false
+      },
+      {
+        "key": "3453",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "RFF": [
+      {
+        "key": "[C506]1153",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C506]1154",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C506]1156",
+        "spec": "AN6",
+        "mandatory": false
+      },
+      {
+        "key": "[C506]4000",
+        "spec": "AN35",
+        "mandatory": false
+      }
+    ],
+    "TDT": [
+      {
+        "key": "8051",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "8028",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C220]8067",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C220]8066",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C228]8179",
+        "spec": "AN8",
+        "mandatory": false
+      },
+      {
+        "key": "[C228]8178",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C040]3127",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C040]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C040]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C040]3128",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "8101",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C401]8457",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C401]8459",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C401]7130",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C222]8213",
+        "spec": "AN9",
+        "mandatory": false
+      },
+      {
+        "key": "[C222]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C222]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C222]8212",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C222]8453",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "8281",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "LOC": [
+      {
+        "key": "3227",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C517]3225",
+        "spec": "AN25",
+        "mandatory": false
+      },
+      {
+        "key": "[C517]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C517]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C517]3224",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C519]3223",
+        "spec": "AN25",
+        "mandatory": false
+      },
+      {
+        "key": "[C519]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C519]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C519]3222",
+        "spec": "AN70",
+        "mandatory": false
+      },
+      {
+        "key": "[C553]3233",
+        "spec": "AN25",
+        "mandatory": false
+      },
+      {
+        "key": "[C553]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C553]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C553]3232",
+        "spec": "AN70",
+        "mandatory": false
+      },
+      {
+        "key": "5479",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "NAD": [
+      {
+        "key": "3035",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C082]3039",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C082]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C082]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C058]3124",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C058]3124:2",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C058]3124:3",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C058]3124:4",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C058]3124:5",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C080]3036",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C080]3036:2",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C080]3036:3",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C080]3036:4",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C080]3036:5",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "3045",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C059]3042",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C059]3042:2",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C059]3042:3",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "3164",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "3229",
+        "spec": "AN9",
+        "mandatory": false
+      },
+      {
+        "key": "3251",
+        "spec": "AN9",
+        "mandatory": false
+      },
+      {
+        "key": "3027",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "CTA": [
+      {
+        "key": "3139",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C056]3413",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C056]3412",
+        "spec": "AN35",
+        "mandatory": false
+      }
+    ],
+    "GID": [
+      {
+        "key": "1496",
+        "spec": "AN5",
+        "mandatory": false
+      },
+      {
+        "key": "[C213]7224",
+        "spec": "AN8",
+        "mandatory": false
+      },
+      {
+        "key": "[C213]7065",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C213]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C213]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C213]7064",
+        "spec": "AN35",
+        "mandatory": false
+      }
+    ],
+    "HAN": [
+      {
+        "key": "[C524]4079",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C524]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C524]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C524]4078",
+        "spec": "AN70",
+        "mandatory": false
+      },
+      {
+        "key": "[C218]7419",
+        "spec": "AN4",
+        "mandatory": false
+      },
+      {
+        "key": "[C218]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C218]3055",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "PIA": [
+      {
+        "key": "4347",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C212]7140",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C212]7143",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C212]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C212]3055",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "MEA": [
+      {
+        "key": "6311",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C502]6313",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C502]6321",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C502]6155",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C502]6154",
+        "spec": "AN70",
+        "mandatory": false
+      },
+      {
+        "key": "[C174]6411",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C174]6314",
+        "spec": "N18",
+        "mandatory": false
+      },
+      {
+        "key": "[C174]6162",
+        "spec": "N18",
+        "mandatory": false
+      },
+      {
+        "key": "[C174]6152",
+        "spec": "N18",
+        "mandatory": false
+      },
+      {
+        "key": "[C174]6432",
+        "spec": "N2",
+        "mandatory": false
+      },
+      {
+        "key": "7383",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "TMP": [
+      {
+        "key": "6245",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C239]6246",
+        "spec": "AN5",
+        "mandatory": false
+      },
+      {
+        "key": "[C239]6411",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "RNG": [
+      {
+        "key": "6167",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C280]6411",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C280]6162",
+        "spec": "N18",
+        "mandatory": false
+      },
+      {
+        "key": "[C280]6152",
+        "spec": "N18",
+        "mandatory": false
+      }
+    ],
+    "SGP": [
+      {
+        "key": "[C237]8260",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]3027",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "7224",
+        "spec": "N8",
+        "mandatory": false
+      }
+    ],
+    "DGS": [
+      {
+        "key": "8273",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C205]8351",
+        "spec": "AN7",
+        "mandatory": false
+      },
+      {
+        "key": "[C205]8078",
+        "spec": "AN7",
+        "mandatory": false
+      },
+      {
+        "key": "[C205]8092",
+        "spec": "AN10",
+        "mandatory": false
+      },
+      {
+        "key": "[C234]7124",
+        "spec": "N4",
+        "mandatory": false
+      },
+      {
+        "key": "[C234]7088",
+        "spec": "AN8",
+        "mandatory": false
+      },
+      {
+        "key": "[C234]8092",
+        "spec": "AN10",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]3027",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C223]7106",
+        "spec": "AN10",
+        "mandatory": false
+      },
+      {
+        "key": "[C223]6411",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "8339",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "8364",
+        "spec": "AN6",
+        "mandatory": false
+      },
+      {
+        "key": "8410",
+        "spec": "AN4",
+        "mandatory": false
+      },
+      {
+        "key": "8126",
+        "spec": "AN10",
+        "mandatory": false
+      },
+      {
+        "key": "[C235]8158",
+        "spec": "AN4",
+        "mandatory": false
+      },
+      {
+        "key": "[C235]8186",
+        "spec": "AN4",
+        "mandatory": false
+      },
+      {
+        "key": "[C236]8246",
+        "spec": "AN4",
+        "mandatory": false
+      },
+      {
+        "key": "[C236]8246:2",
+        "spec": "AN4",
+        "mandatory": false
+      },
+      {
+        "key": "[C236]8246:3",
+        "spec": "AN4",
+        "mandatory": false
+      },
+      {
+        "key": "8255",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "8325",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "8211",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "EQD": [
+      {
+        "key": "8053",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]8260",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]3207",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C224]8155",
+        "spec": "AN10",
+        "mandatory": false
+      },
+      {
+        "key": "[C224]8155",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C224]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C224]3055",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "8077",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "8249",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "8169",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "TMD": [
+      {
+        "key": "[C219]8335",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C219]8334",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "8332",
+        "spec": "AN26",
+        "mandatory": false
+      },
+      {
+        "key": "8341",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "DIM": [
+      {
+        "key": "6145",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C211]6411",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C211]6168",
+        "spec": "N15",
+        "mandatory": false
+      },
+      {
+        "key": "[C211]6140",
+        "spec": "N15",
+        "mandatory": false
+      },
+      {
+        "key": "[C211]6008",
+        "spec": "N15",
+        "mandatory": false
+      }
+    ],
+    "SEL": [
+      {
+        "key": "[C555]9308",
+        "spec": "AN15",
+        "mandatory": false
+      },
+      {
+        "key": "[C555]9308:2",
+        "spec": "AN15",
+        "mandatory": false
+      },
+      {
+        "key": "[C555]9308:3",
+        "spec": "AN15",
+        "mandatory": false
+      },
+      {
+        "key": "[C215]9303",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C215]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C215]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C215]9302",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "4517",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "4517:2",
+        "spec": "AN10",
+        "mandatory": false
+      },
+      {
+        "key": "4517:3",
+        "spec": "AN10",
+        "mandatory": false
+      }
+    ],
+    "EQA": [
+      {
+        "key": "8053",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]8260",
+        "spec": "AN17",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C237]3207",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "DAM": [
+      {
+        "key": "7493",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C821]7501",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C821]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C821]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C821]7500",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C822]7503",
+        "spec": "AN4",
+        "mandatory": false
+      },
+      {
+        "key": "[C822]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C822]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C822]7502",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C825]7509",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C825]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C825]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C825]7508",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C826]1229",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C826]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C826]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C826]1228",
+        "spec": "AN35",
+        "mandatory": false
+      }
+    ],
+    "COD": [
+      {
+        "key": "[C823]7505",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C823]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C823]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C823]1504",
+        "spec": "AN35",
+        "mandatory": false
+      },
+      {
+        "key": "[C824]7507",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C824]1131",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C824]3055",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C824]7506",
+        "spec": "AN35",
+        "mandatory": false
+      }
+    ],
+    "CNT": [
+      {
+        "key": "[C270]6069",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[C823]6066",
+        "spec": "N18",
+        "mandatory": false
+      },
+      {
+        "key": "[C823]6411",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "REC01": [
+      {
+        "key": "[1]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[2]",
+        "spec": "AN512",
+        "mandatory": false
+      },
+      {
+        "key": "[3]",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ],
+    "REC02": [
+      {
+        "key": "[1]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[2]",
+        "spec": "AN512",
+        "mandatory": false
+      },
+      {
+        "key": "[3]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[4]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[5]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[6]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[7]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[8]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[9]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[10]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[11]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[12]",
+        "spec": "AN3",
+        "mandatory": false
+      },
+      {
+        "key": "[13]",
+        "spec": "AN3",
+        "mandatory": false
+      }
+    ]
   }
 }
