@@ -100,6 +100,10 @@ class Vertex {
     let vertexProperties =  _.cloneDeep(Array.isArray(options.data) ? options.data : window.vertexTypes[vertexType]);
     let vertexId = options.id ? options.id : generateObjectId('V');
     let parent = options.parent || null;
+    let description = options.description
+      || (window.dataFileVertexType.DATA_DESCRIPTIONS
+      != undefined ? ((window.dataFileVertexType.DATA_DESCRIPTIONS[vertexType])
+      != undefined ? window.dataFileVertexType.DATA_DESCRIPTIONS[vertexType] : vertexType) : vertexType);
 
     // To do: Use default config and merge with current config
     let vertexInfo = {
@@ -107,7 +111,7 @@ class Vertex {
       y: options.y,
       vertexType: vertexType,
       name: options.name || vertexType,
-      description: options.description || "Description",
+      description: description,
       data: vertexProperties,
       id: vertexId,
       parent: parent,
@@ -714,6 +718,10 @@ class Vertex {
       //   .attr('height', tmpArry.length ?
       //     VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : VERTEX_ATTR_SIZE.HEADER_HEIGHT
     });
+  }
+
+  defineVertexDescription(options) {
+    return false;
   }
 }
 
