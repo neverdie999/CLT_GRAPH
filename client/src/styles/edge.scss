@@ -5,10 +5,12 @@
   cursor: crosshair;
   &:hover {
     stroke: #2795EE;
+    stroke-width: 1;
     cursor: crosshair;
   }
   &:focus {
     stroke: #2795EE;
+    stroke-width: 1;
     cursor: crosshair;
   }
 }
@@ -33,6 +35,10 @@
   stroke: black;
 }
 
-.dash{
+.dash {
   stroke-dasharray: 4;
+}
+
+.stroke-dasharray {
+  stroke-dasharray: 3 3;
 }
