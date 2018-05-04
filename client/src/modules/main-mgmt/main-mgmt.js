@@ -816,7 +816,7 @@ class MainMgmt {
     }
 
     for (const key of Object.keys(data)) {
-      if (key != "SHOW_FULL_ALWAYS") {
+      if (key != "SHOW_FULL_ALWAYS" && key != "DATA_DESCRIPTIONS") {
         listVertexType = Object.assign(listVertexType != null ? listVertexType : {}, data[key]);
       }
     }
