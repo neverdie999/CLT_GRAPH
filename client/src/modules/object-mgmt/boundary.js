@@ -4,7 +4,8 @@ import {
   BOUNDARY_ATTR_SIZE,
   HTML_VERTEX_CONTAINER_CLASS,
   DEFAULT_CONFIG_GRAPH,
-  REPEAT_RANGE
+  REPEAT_RANGE,
+  BOUNDARY_CONFIG,
 } from '../../const/index';
 
 import PopUtils from '../../common/utilities/popup.ult';
@@ -17,6 +18,7 @@ import {
   allowInputNumberOnly,
   checkMinMaxValue,
 } from '../../common/utilities/common.ult';
+import ColorHash from 'color-hash';
 
 const HTML_BOUNDARY_INFO_ID = 'boundaryInfo';
 
@@ -33,6 +35,7 @@ class Boundary {
       .on("end", this.dragBoundaryEnd(this));
 
     this.bindEventForPopupBoundary();
+    this.colorHash = new ColorHash({lightness: 0.2});
   }
 
   async createBoundary(options = {}) {
@@ -81,7 +84,7 @@ class Boundary {
       .attr("data", boundaryId)
       .attr("width", 20)
       .attr("height", 20)
-      .style("fill", "#ad8fbb")
+      .style("fill", this.colorHash.hex(boundaryInfo.name))
       .style("fill-opacity", ".5")
       .style("cursor", "pointer")
       .append("title")
@@ -91,7 +94,8 @@ class Boundary {
       .attr("id", `${boundaryId}Content`)
       .attr("width", width)
       .attr("height", height)
-      .style("border", "solid 1px #652a82")
+      .style("border", "solid 1px")
+      .style("border-color", this.colorHash.hex(boundaryInfo.name))
       .style("font-size", "13px")
       .style("background", "none")
       .append("xhtml:div")
@@ -99,11 +103,14 @@ class Boundary {
       .html(`
           <div class="boundary_header">
             <p id="${boundaryId}Header" class="header_name header_boundary" style="width: 100%;
-             height: ${BOUNDARY_ATTR_SIZE.HEADER_HEIGHT}px;" title="${boundaryInfo.description}">${boundaryInfo.name}</p>
+             height: ${BOUNDARY_ATTR_SIZE.HEADER_HEIGHT}px;
+             background-color: ${this.colorHash.hex(boundaryInfo.name)}" 
+             title="${boundaryInfo.description}">${boundaryInfo.name}</p>
           </div>
       `);
 
     this.initEventDrag();
+    setMinBoundaryGraph(this.dataContainer);
   }
 
   initEventDrag() {
@@ -117,6 +124,8 @@ class Boundary {
     return function (d) {
       if (window.udpateEdge)
         cancleSelectedPath();
+      if (!d.parent)
+        self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
     }
   }
 
@@ -129,21 +138,35 @@ class Boundary {
       d.x = d3.event.x < DEFAULT_CONFIG_GRAPH.MIN_OFFSETX ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETX : d3.event.x;
       d.y = d3.event.y < DEFAULT_CONFIG_GRAPH.MIN_OFFSETY ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETY : d3.event.y;
       // Transform group
-      d3.select(this).attr("transform", (d, i) => {
-        return "translate(" + [d.x, d.y] + ")"
-      });
+      // d3.select(this).attr("transform", (d, i) => {
+      //   return "translate(" + [d.x, d.y] + ")"
+      // });
 
       // Update position of child element
-      if (d.member.length > 0)
-        self.reorderPositionMember(d.id, {x: d.x, y: d.y});
+      // if (d.member.length > 0)
+      //   self.reorderPositionMember(d.id, {x: d.x, y: d.y});
 
-      if (!d.parent)
-        self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
+      let {width, height} = self.objectUtils.getBBoxObject(d.id);
+      let data = {x: d.x, y: d.y, width, height, type: "B"};
+      self.mainMgmt.updateAttrBBoxGroup(data);
     }
   }
 
   dragBoundaryEnd(self) {
     return function (d) {
+      d.x = d3.event.x < DEFAULT_CONFIG_GRAPH.MIN_OFFSETX ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETX : d3.event.x;
+      d.y = d3.event.y < DEFAULT_CONFIG_GRAPH.MIN_OFFSETY ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETY : d3.event.y;
+      // Transform group
+      d3.select(this).attr("transform", (d, i) => {
+        return "translate(" + [d.x, d.y] + ")"
+      });
+      // Update position of child element
+      // Check drag outside window
+      if(d.member.length > 0)
+        self.reorderPositionMember(d.id, {x: d.x, y: d.y});
+
+      self.mainMgmt.hiddenBBoxGroup();
+
       if (d.parent) {
         self.mainMgmt.checkDragObjectOutsideBoundary(d);
       } else {
@@ -180,6 +203,7 @@ class Boundary {
     let data = _.remove(this.dataContainer.boundary, (e) => {
       return e.id === boundaryId;
     });
+    setMinBoundaryGraph(this.dataContainer);
   }
 
   /**
@@ -202,6 +226,7 @@ class Boundary {
     let data = _.remove(this.dataContainer.boundary, (e) => {
       return e.id === boundaryId;
     });
+    setMinBoundaryGraph(this.dataContainer);
   }
 
   /**
@@ -409,6 +434,7 @@ class Boundary {
     member.push(child);
     this.reorderPositionMember(boundaryId);
     this.resizeParentBoundary(boundaryId);
+    setMinBoundaryGraph(this.dataContainer);
   }
 
   /**
@@ -426,6 +452,7 @@ class Boundary {
     this.resizeParentBoundary(boundaryId);
     if (parent)
       this.removeMemberFromBoundary(parent);
+    setMinBoundaryGraph(this.dataContainer);
   }
 
   /**
@@ -753,7 +780,11 @@ class Boundary {
     boundaryInfo.description = description;
     boundaryInfo.repeat = $(`#maxBoundaryRepeat`).val();
     boundaryInfo.mandatory = $(`#isBoundaryMandatory`).prop('checked');
-    d3.select(`#${id}Header`).text(name).attr('title', description);
+    let header = d3.select(`#${id}Header`);
+    header.text(name).attr('title', description);
+    header.style("background-color", `${this.colorHash.hex(boundaryInfo.name)}`);
+    d3.select(`#${id}Button`).style("fill", `${this.colorHash.hex(boundaryInfo.name)}`);
+    d3.select(`#${id}Content`).style("border-color", `${this.colorHash.hex(boundaryInfo.name)}`);
     this.closePopBoundaryInfo();
   }
 

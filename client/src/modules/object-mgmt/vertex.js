@@ -7,7 +7,9 @@ import {
   VERTEX_ATTR_SIZE,
   HTML_VERTEX_CONTAINER_CLASS,
   DEFAULT_CONFIG_GRAPH,
-  REPEAT_RANGE
+  REPEAT_RANGE,
+  HTML_ALGETA_CONTAINER_ID,
+  VERTEX_CONFIG,
 } from '../../const/index';
 import _ from "lodash";
 import PopUtils from '../../common/utilities/popup.ult';
@@ -22,6 +24,7 @@ import {
   allowInputNumberOnly,
   checkMinMaxValue,
 } from '../../common/utilities/common.ult';
+import ColorHash from 'color-hash';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
@@ -46,6 +49,7 @@ class Vertex {
 
     this.originVertex = null;
     this.bindEventForPopupVertex();
+    this.colorHash = new ColorHash({lightness: 0.7});
   }
 
   /**
@@ -66,7 +70,7 @@ class Vertex {
     });
 
     $("#isVertexMandatory").change(function () {
-      if(this.checked && $("#vertexRepeat").val() < 1) {
+      if (this.checked && $("#vertexRepeat").val() < 1) {
         $("#vertexRepeat").val(1);
       }
     });
@@ -75,7 +79,7 @@ class Vertex {
       allowInputNumberOnly(e);
     });
 
-    $("#vertexRepeat").focusout(function() {
+    $("#vertexRepeat").focusout(function () {
       let rtnVal = checkMinMaxValue(this.value, $('#isVertexMandatory').prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
       this.value = rtnVal;
     });
@@ -100,10 +104,6 @@ class Vertex {
     let vertexProperties =  _.cloneDeep(Array.isArray(options.data) ? options.data : window.vertexTypes[vertexType]);
     let vertexId = options.id ? options.id : generateObjectId('V');
     let parent = options.parent || null;
-    let description = options.description
-      || (window.dataFileVertexType.DATA_DESCRIPTIONS
-      != undefined ? ((window.dataFileVertexType.DATA_DESCRIPTIONS[vertexType])
-      != undefined ? window.dataFileVertexType.DATA_DESCRIPTIONS[vertexType] : vertexType) : vertexType);
 
     // To do: Use default config and merge with current config
     let vertexInfo = {
@@ -111,7 +111,7 @@ class Vertex {
       y: options.y,
       vertexType: vertexType,
       name: options.name || vertexType,
-      description: description,
+      description: options.description || "Description",
       data: vertexProperties,
       id: vertexId,
       parent: parent,
@@ -125,7 +125,7 @@ class Vertex {
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", vertexId)
       .attr("class", `${HTML_VERTEX_CONTAINER_CLASS}`)
-      .style("cursor", "move")
+      .style("cursor", "default")
       .style("visibility", "visible");
 
     // Append point connect vertex
@@ -213,13 +213,15 @@ class Vertex {
       .style("font-size", "13px")
       .style("background", "#ffffff")
       .html(`
-        <p class="header_name" id="${vertexId}Name" title="${vertexInfo.description}" style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px">${vertexInfo.name}</p>
+        <p class="header_name" id="${vertexId}Name" title="${vertexInfo.description}" 
+        style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px; background-color: ${this.colorHash.hex(vertexInfo.name)}">${vertexInfo.name}</p>
         <div class="vertex_data">
           ${htmlContent}
         </div>
       `);
 
     this.initEventDrag();
+    setMinBoundaryGraph(this.dataContainer);
   }
 
   /**
@@ -294,10 +296,15 @@ class Vertex {
     // Remove from DOM
     let vertexInfo = this.objectUtils.getVertexInfoById(vertexId);
     d3.select(`#${vertexId}`).remove();
+
+    if(vertexInfo.parent)
+      this.mainMgmt.removeMemberFromBoundary(vertexInfo.parent, vertexId);
     // Remove from data container
     let data = _.remove(this.dataContainer.vertex, (e) => {
       return e.id === vertexId;
     });
+
+    setMinBoundaryGraph(this.dataContainer);
   }
 
   /**
@@ -419,7 +426,9 @@ class Vertex {
     vertexInfo.description = infos.vertexDesc;
     vertexInfo.repeat = infos.vertexRepeat;
     vertexInfo.mandatory = $(`#isVertexMandatory`).prop('checked');
-    d3.select(`#${id}Name`).text(infos.vertexName).attr('title', infos.vertexDesc);
+    let header = d3.select(`#${id}Name`);
+    header.text(infos.vertexName).attr('title', infos.vertexDesc);
+    header.style("background-color", `${this.colorHash.hex(vertexInfo.name)}`);
     // Update properties
 
     vertexInfo.data.forEach(data => {
@@ -570,13 +579,13 @@ class Vertex {
     _.remove(this.dataContainer.vertex, (e) => {
       return e.id === vertexId;
     });
-
+    setMinBoundaryGraph(this.dataContainer);
     // Should consider again...
     // Remove all edge relate to vertex
-    // let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
-    // relatePaths.forEach(path => {
-    //   this.edgeMgmt.removeEdge(path.id);
-    // });
+    let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
+    relatePaths.forEach(path => {
+      this.mainMgmt.removeEdge(path.id);
+    });
   }
 
   /**
@@ -585,12 +594,13 @@ class Vertex {
    * @returns {Function}
    */
   startConnect(self) {
-    return function () {
+    return function (d) {
       window.creatingEdge = true;
       d3.event.sourceEvent.stopPropagation();
       let sourceId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
       let prop = d3.select(d3.event.sourceEvent.target).attr("prop");
       const source = self.getCoordinateProperty(sourceId, prop, TYPE_POINT.OUTPUT);
+      window.sourceId = sourceId;
       source.vertexId = sourceId;
       source.prop = prop;
       window.sourceNode = source;
@@ -603,13 +613,17 @@ class Vertex {
    * @returns {Function}
    */
   drawConnect(self) {
-    return function () {
+    return function (d) {
       if (window.creatingEdge) {
         let x = d3.mouse(d3.select('svg').node())[0];
         let y = d3.mouse(d3.select('svg').node())[1];
         let pathStr = createPath(window.sourceNode, {x, y});
         d3.select('#dummyPath').attr('d', pathStr);
         d3.select('#dummyPath').style("display", "block");
+        let d = {};
+        d.id = window.sourceId;
+        autoScrollOnMousedrag(d);
+        updateGraphBoundary(d);
       }
     }
   }
@@ -620,7 +634,7 @@ class Vertex {
    * @returns {Function}
    */
   endConnect(self) {
-    return function () {
+    return function (d) {
       window.creatingEdge = false;
       let sCircle = d3.select(this);
       let eCircle = d3.select(d3.event.sourceEvent.target);
@@ -635,6 +649,8 @@ class Vertex {
       }
       d3.select('#dummyPath').style("display", "none");
       window.sourceNode = null;
+      window.sourceId = null;
+      setMinBoundaryGraph(self.dataContainer);
     }
   }
 

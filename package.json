@@ -1,16 +1,20 @@
 {
-  "name": "Algenta",
+  "name": "Algeta",
   "version": "0.0.1",
   "main": "electron/app.js",
   "author": "DOU",
   "license": "MIT",
   "scripts": {
     "start-app-dev": "cross-env HOT=1 NODE_ENV=development electron -r babel-register ./electron/app",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "build-win": "electron-packager . Algeta --platform=win32  --arch=x64 --out ./production/ --overwrite --icon=icon.ico && echo 'Built for WIN'"
   },
   "dependencies": {
+    "color-hash": "^1.0.3",
     "d3": "^4.12.0",
-    "electron": "^1.7.9"
+    "electron": "^1.7.9",
+    "electron-packager": "^11.2.0",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -23,9 +27,9 @@
     "babel-register": "^6.26.0",
     "cross-env": "^5.1.1",
     "css-loader": "^0.28.7",
-    "node-sass": "^4.5.3",
     "electron-devtools-installer": "^2.2.1",
     "html-webpack-plugin": "^2.30.1",
+    "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^3.8.1"

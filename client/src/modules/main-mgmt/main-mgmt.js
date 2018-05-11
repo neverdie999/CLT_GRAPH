@@ -10,7 +10,8 @@ import BoundaryMenuItems from '../menu-mgmt/boundary-menu-items';
 import {
   comShowMessage,
   createPath,
-  setSizeGraph
+  setSizeGraph,
+  setMinBoundaryGraph,
 } from '../../common/utilities/common.ult';
 import * as d3 from 'd3';
 import {
@@ -22,7 +23,6 @@ import {
   TYPE_POINT,
 } from '../../const/index';
 import {HTML_ALGETA_CONTAINER_ID} from "../../const";
-
 
 class MainMgmt {
   constructor(props) {
@@ -729,6 +729,8 @@ class MainMgmt {
     boundaries.forEach(boundary => {
       this.boundary.reorderPositionMember(boundary.id);
     });
+
+    setMinBoundaryGraph(this.dataContainer);
   }
 
   /**
@@ -761,6 +763,8 @@ class MainMgmt {
     boundaries.forEach(boundary => {
       this.boundary.reorderPositionMember(boundary.id);
     });
+
+    setMinBoundaryGraph(this.dataContainer);
   }
 
   /**
@@ -853,6 +857,14 @@ class MainMgmt {
 
   hiddenBBoxGroup() {
     d3.select('#dummyBBox').style("display", "none");
+  }
+
+  removeMemberFromBoundary(parentId, vertexId) {
+    this.boundary.removeMemberFromBoundary(parentId, vertexId);
+  }
+
+  removeEdge(edgeId) {
+    this.edge.removeEdge(edgeId);
   }
 };
 export default MainMgmt;

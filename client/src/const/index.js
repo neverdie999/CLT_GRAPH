@@ -72,6 +72,18 @@ export const REPEAT_RANGE = {
   MAX: 9999,
 }
 
+// Boundary default config
+export const BOUNDARY_CONFIG = {
+  BG_HEADER_COLOR: '#778899',
+  LIGHT_COLOR: -20,
+  NAME: 'Boundary',
+}
+
+// Vertex default config
+export const VERTEX_CONFIG = {
+  LIGHT_COLOR: 80,
+}
+
 // Global variable
 window.creatingEdge = false; // Define state creation connect (edge)
 window.sourceNode = null; // Define source node for create connect
