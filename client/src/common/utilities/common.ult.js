@@ -5,6 +5,7 @@ import {
   SVG_CONTAINER_ID,
   DEFAULT_CONFIG_GRAPH,
   REPEAT_RANGE,
+  BOUNDARY_CONFIG
 } from '../../const/index';
 
 /**
@@ -46,30 +47,6 @@ export function replaceSpecialCharacter(id) {
  * @returns {string}
  */
 export function createPath(src, tar) {
-  // Curved line
-  // let diff = {
-  //   x: tar.x - src.x,
-  //   y: tar.y - src.y
-  // };
-  //
-  // let pathStr = 'M' + src.x + ',' + src.y + ' ';
-  // pathStr += 'C';
-  // pathStr += src.x + diff.x / 3 + ',' + src.y + ' ';
-  // pathStr += src.x + diff.x / 3 + ',' + tar.y + ' ';
-  // pathStr += tar.x + ',' + tar.y;
-  //
-  // return pathStr;
-
-  // Polylines
-  // Clone points coordinate
-  // let srcDeep = _.cloneDeep(src);
-  // let tarDeep = _.cloneDeep(tar);
-  // let factor = Math.pow(10, 0);
-  // let midPoint = {x: Math.round(((srcDeep.x + tarDeep.x) / 2) * factor) / factor, y: Math.round(((srcDeep.y + tarDeep.y) / 2) * factor) / factor};
-  // let srcMidPoint = {x: midPoint.x, y: src.y};
-  // let tarMidPoint = {x: midPoint.x, y: tar.y};
-  // let pathStr = `M${srcDeep.x},${srcDeep.y} L${srcMidPoint.x},${srcMidPoint.y} L${tarMidPoint.x},${tarMidPoint.y} L${tarDeep.x - 0.5},${tarDeep.y}`;
-
   // Straight line
   let pathStr = `M${src.x},${src.y} L${tar.x},${tar.y}`;
 
@@ -180,15 +157,21 @@ export function setMinBoundaryGraph(data) {
   });
 
   boundaries.forEach(e => {
-    let {width, height} = d3.select(`#${e.id}`).node().getBBox();
-    lstOffsetX.push(width + e.x);
-    lstOffsetY.push(height + e.y);
+    let node = d3.select(`#${e.id}`).node()
+    if(node) {
+      let {width, height} = node.getBBox();
+      lstOffsetX.push(width + e.x);
+      lstOffsetY.push(height + e.y);
+    }
   });
 
   vertices.forEach(e => {
-    let {width, height} = d3.select(`#${e.id}`).node().getBBox();
-    lstOffsetX.push(width + e.x);
-    lstOffsetY.push(height + e.y);
+    let node = d3.select(`#${e.id}`).node()
+    if(node) {
+      let {width, height} = node.getBBox();
+      lstOffsetX.push(width + e.x);
+      lstOffsetY.push(height + e.y);
+    }
   });
 
   // Get max width, max height
