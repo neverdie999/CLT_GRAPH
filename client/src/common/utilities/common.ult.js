@@ -158,7 +158,7 @@ export function setMinBoundaryGraph(data) {
 
   boundaries.forEach(e => {
     let node = d3.select(`#${e.id}`).node()
-    if(node) {
+    if (node) {
       let {width, height} = node.getBBox();
       lstOffsetX.push(width + e.x);
       lstOffsetY.push(height + e.y);
@@ -167,7 +167,7 @@ export function setMinBoundaryGraph(data) {
 
   vertices.forEach(e => {
     let node = d3.select(`#${e.id}`).node()
-    if(node) {
+    if (node) {
       let {width, height} = node.getBBox();
       lstOffsetX.push(width + e.x);
       lstOffsetY.push(height + e.y);
@@ -188,12 +188,12 @@ export function setMinBoundaryGraph(data) {
  */
 
 export function allowInputNumberOnly(e) {
-  // Allow: backspace, delete, tab, escape, enter and .
-  if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+  // Allow: backspace, delete, tab, escape, enter, dot(.) and +
+  if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 187, 189]) !== -1 ||
     // Allow: Ctrl+A, Command+A
     (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
     // Allow: home, end, left, right, down, up
-    (e.keyCode >= 35 && e.keyCode <= 40)) {
+    (e.keyCode >= 35 && e.keyCode <= 40)){
     // let it happen, don't do anything
     return;
   }
@@ -204,9 +204,14 @@ export function allowInputNumberOnly(e) {
 }
 
 export function checkMinMaxValue(val, min = REPEAT_RANGE.MIN, max = REPEAT_RANGE.MAX) {
-  if(parseInt(val) < min || isNaN(parseInt(val)))
+  if (parseInt(val) < min || isNaN(parseInt(val)))
     return min;
-  else if(parseInt(val) > max)
+  else if (parseInt(val) > max)
     return max;
   else return parseInt(val);
+}
+
+export function checkIsMatchRegex(val) {
+  const regex = new RegExp('^(?=.)([+-]?([0-9]*)(\.([0-9]+))?)$');
+  return regex.test(val);
 }

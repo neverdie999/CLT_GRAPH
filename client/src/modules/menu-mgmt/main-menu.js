@@ -47,12 +47,12 @@ class MainMenu {
               icon: "fa-object-group",
               disabled: window.disabledCommand
             },
-            "sep2": "-",
-            "autoAlign": {
-              name: "Auto Align",
-              icon: "fa-sort-amount-desc",
-              disabled: window.disabledCommand
-            },
+            // "sep2": "-",
+            // "autoAlign": {
+            //   name: "Auto Align",
+            //   icon: "fa-sort-amount-desc",
+            //   disabled: window.disabledCommand
+            // },
             "sep3": "-",
             "showReduced": {
               name: window.showReduced ? "Show Full" : "Show Reduced",
@@ -65,27 +65,26 @@ class MainMenu {
               icon: "fa-times",
               disabled: window.disabledCommand
             },
-            "sep5": "-",
-            "undo": {
-              name: "Undo",
-              icon: "fa-undo",
-              disabled: window.disabledCommand
-            },
-            "sep6": "-",
-            "redo": {
-              name: "Redo",
-              icon: "fa-repeat",
-              disabled: window.disabledCommand
-            },
+            // "sep5": "-",
+            // "undo": {
+            //   name: "Undo",
+            //   icon: "fa-undo",
+            //   disabled: window.disabledCommand
+            // },
+            // "sep6": "-",
+            // "redo": {
+            //   name: "Redo",
+            //   icon: "fa-repeat",
+            //   disabled: window.disabledCommand
+            // },
           },
           events: {
             show: (opt) => {
               if (event) {
                 const {x, y} = getCoordinateMouseOnClick(event);
-                // opt["x"] = event.pageX;
                 opt["x"] = x;
-                // opt["y"] = event.pageY;
                 opt["y"] = y;
+                opt.isMenu = true;
               }
             }
           }
@@ -99,10 +98,13 @@ class MainMenu {
    */
   loadItems() {
     const subItems = {};
-    if (window.vertexTypes) {
-      for (const key of Object.keys(window.vertexTypes)) {
-        subItems[`${key}`] = {
-          name: `${key}`,
+    if (window.vertexTypes && Array.isArray(window.vertexTypes)) {
+      let vertices = window.vertexTypes;
+      let len = vertices.length;
+      for (let i = 0; i < len; i++) {
+        let type = vertices[i].vertexType;
+        subItems[`${type}`] = {
+          name: `${type}`,
           icon: "fa-window-maximize",
           callback: (key, opt) => {
             opt.vertexType = opt.$selected.text()

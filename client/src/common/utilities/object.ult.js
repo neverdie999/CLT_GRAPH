@@ -65,10 +65,10 @@ class ObjectUtils {
    * @param vertexId
    */
   cloneVertexInfo(vertexId) {
-    const obj = this.getVertexInfoById(vertexId);
     // Clone and return
-    return Object.assign({}, obj);
-    // _.cloneDeep(value)
+    // const obj = this.getVertexInfoById(vertexId);
+    // return Object.assign({}, obj);
+    return _.cloneDeep(this.getVertexInfoById(vertexId));
   }
 
   /**
@@ -91,6 +91,11 @@ class ObjectUtils {
       return true;
     else
       return false;
+  }
+
+
+  getDataDefineByOption(options) {
+    return _.find(window.vertexTypes, options);
   }
 
   /* Vertex utils (E)*/

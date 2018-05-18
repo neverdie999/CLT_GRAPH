@@ -38,8 +38,8 @@ class Edge {
    * Ex
    */
   createEdge(options = {}) {
-    let source = Object.assign({}, options.source);
-    let target = Object.assign({}, options.target);
+    let source = _.cloneDeep(options.source);
+    let target = _.cloneDeep(options.target);
     let type = options.type;
     let edgeId = options.id ? options.id : generateObjectId('E');
     // Default style is line solid with arrow at end.

@@ -21,8 +21,10 @@ import {
   HTML_BOUNDARY_CONTAINER_CLASS,
   BOUNDARY_ATTR_SIZE,
   TYPE_POINT,
+  VERTEX_FORMAT_TYPE,
 } from '../../const/index';
 import {HTML_ALGETA_CONTAINER_ID} from "../../const";
+import _ from "lodash";
 
 class MainMgmt {
   constructor(props) {
@@ -31,9 +33,6 @@ class MainMgmt {
     this.dataContainer = props.dataContainer;
     this.initMarkerArrow();
     this.initPathConnect();
-    // this.initBoundaryGroup();
-    // this.initVertexGroup();
-    // this.initEdgeGroup();
     this.initBBoxGroup();
 
     this.dragPointConnector = d3.drag()
@@ -158,13 +157,13 @@ class MainMgmt {
   }
 
   /**
-   * Reload data vertex types when user import
+   * Get vertex types and vertex group... when user import
    * For main context and vertex.
    * @param data
    */
   async reloadVertexTypes(data) {
-    // validate structure file invalid
-    // option vertex type definition but choose graph type file
+    // Validate structure file invalid
+    // Option vertex type definition but choose graph type file
     if (data.vertex || data.edge || data.boundary || data.position || data.vertexTypes) {
       comShowMessage("Invalid structure file vertex type definition");
       return;
@@ -173,10 +172,14 @@ class MainMgmt {
     // Set global vertex types
     // The content vertex type on graph alway
     // give to content vertex type was import from Vertex Type Defination
-    window.dataFileVertexType = data; //store data in global value to write file graph.
-    window.vertexTypes = this.getListVertexType(data);
-    window.isImportVertexTypeDefine = true;
-
+    window.vertexDefine = data; //store data in global value to write file graph.
+    window.vertexTypes = data['VERTEX'];
+    window.vertexFormat = data['VERTEX_DATA_ELEMENT_FORMAT'];
+    window.vertexPresentation = data['VERTEX_PRESENTATION'];
+    window.headerForm = Object.keys(data['VERTEX_DATA_ELEMENT_FORMAT']);
+    this.getVertexFormatType(window.vertexFormat);
+    this.getVertexTypesShowFull(data);
+    window.isVertexTypeDefine = true;
 
     // Validate vertex type
     let isMisMatch = await this.validateVertexTypesInGraph();
@@ -195,21 +198,30 @@ class MainMgmt {
    * @param data
    */
   async drawGraphFromData(data) {
+
     this.clearAll();
 
     // Validate content
     let errorContent = await this.validateGraphDataStructure(data);
+
     if (errorContent) {
       comShowMessage("Format or data in Data Graph Structure is corrupted. You should check it!");
       return;
     }
 
     // Store vertex types
-    window.vertexTypesTmp = this.getListVertexType(data.vertexTypes);
+    window.vertexTypesOld = data.vertexTypes['VERTEX'];
+    window.vertexFormat = data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT'];
+    window.vertexPresentation = data.vertexTypes['VERTEX_PRESENTATION'];
+    window.headerForm = Object.keys(data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT']);
+    this.getVertexFormatType(window.vertexFormat);
+    this.getVertexTypesShowFull(data.vertexTypes);
 
     // If still not import Vertex Type Definition then reset it.
-    if (!window.isImportVertexTypeDefine)
-      window.vertexTypes = null;
+    if (!window.isVertexTypeDefine) {
+      window.vertexTypes = data.vertexTypes['VERTEX'];
+      window.vertexDefine = data.vertexTypes;
+    }
 
     // Validate vertex type
     let isMisMatch = await this.validateVertexTypesInGraph();
@@ -218,29 +230,26 @@ class MainMgmt {
       comShowMessage("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
         "\n Please check again!");
 
-    // Set size graph
-    if (data.graphSize)
-      setSizeGraph(data.graphSize);
-
     // Draw boundary
     let arrBoundary = data.boundary;
     arrBoundary.forEach(boundary => {
-      let pos = data.position.find(element => {
+      let {x, y} = data.position.find(element => {
         return element.id === boundary.id;
       });
-      boundary.x = pos.x;
-      boundary.y = pos.y;
+      boundary.x = x;
+      boundary.y = y;
+
       this.boundary.createBoundary(boundary);
     });
 
     // Draw vertex
     let arrVertex = data.vertex;
     arrVertex.forEach(vertex => {
-      let pos = data.position.find(element => {
+      let {x, y} = data.position.find(element => {
         return element.id === vertex.id;
       });
-      vertex.x = pos.x;
-      vertex.y = pos.y;
+      vertex.x = x;
+      vertex.y = y;
       this.vertex.createVertex(vertex);
     });
 
@@ -259,12 +268,6 @@ class MainMgmt {
       });
     });
 
-    if (!window.isImportVertexTypeDefine){
-      window.vertexTypes = this.getListVertexType(data.vertexTypes);
-      window.dataFileVertexType = data.vertexTypes;
-    }
-
-
     this.initMenuContext();
   }
 
@@ -275,26 +278,32 @@ class MainMgmt {
    */
   async validateGraphDataStructure(data) {
     // Validate struct data
-    if (!data.vertex || !data.edge || !data.boundary || !data.position || !data.vertexTypes) {
+    if (!data.vertex || !data.edge || !data.boundary || !data.position || !data.vertexTypes ||
+      (Object.keys(data.vertexTypes).length === 0 && data.vertexTypes.constructor === Object)) {
       return Promise.resolve(true);
     }
 
     // Validate embedded vertex type with vertices
-    let vertexTypes = this.getListVertexType(data.vertexTypes);
-    let vertices = data.vertex;
+    let dataTypes = data.vertexTypes['VERTEX'];
+    let vertices = this.removeDuplicates(data.vertex, "vertexType");
+    let types = this.getListVertexType(dataTypes);
+    // let vertices = data.vertex;
     for (let vertex of vertices) {
-      let vertexType = vertex.vertexType;
+      let type = vertex.vertexType;
       // If vertex type not exit in embedded vertex type
-      if (!vertexTypes[vertexType]) {
-        console.log("GraphDataStructure Vertex type in graph data not exit in embedded vertex type");
+      if (types.indexOf(type) < 0) {
+        console.log("[Graph Data Structure] Vertex type not exit in embedded vertex type");
         return Promise.resolve(true);
       }
 
-      let keySource = Object.keys(vertex.data);
-      let keyTarget = Object.keys(vertexTypes[vertexType]);
+      // Validate data key between embedded vertex and vetex in graph.
+      let dataSource = vertex.data;
+      let dataTarget = _.find(dataTypes, {'vertexType': type});
+      let keySource = Object.keys(dataSource[0]);
+      let keyTarget = Object.keys(dataTarget.data[0]);
       // Check length key
       if (this.checkLengthMisMatch(keySource, keyTarget)) {
-        console.log("GraphDataStructure length is different");
+        console.log("[Graph Data Structure] Data's length is different");
         return Promise.resolve(true);
       }
 
@@ -302,7 +311,7 @@ class MainMgmt {
       let flag = await this.checkKeyMisMatch(keySource, keyTarget);
 
       if (flag) {
-        console.log("GraphDataStructure Key vertex at source not exit in target");
+        console.log("[Graph Data Structure] Key vertex at source not exit in target");
         return Promise.resolve(true);
       }
     }
@@ -311,35 +320,43 @@ class MainMgmt {
   }
 
   /**
-   * Validate Embedded Vertex Types in Graph Data Structure
+   * Validate embedded Vertex Types in Graph Data Structure
    * with Vertex Type Definition
    */
   async validateVertexTypesInGraph() {
-    if (!window.vertexTypes || !window.vertexTypesTmp) {
+    if (!window.vertexTypes || !window.vertexTypesOld) {
       console.log("Targe or soruce is null");
       return Promise.resolve(false);
     }
 
+    const source = window.vertexTypes;
+    const target = window.vertexTypesOld;
+    const current = this.getListVertexType(source);
+    const old = this.getListVertexType(target);
     // Compare length
-    let vertexUse = Object.keys(window.vertexTypes);
-    let vertexTmp = Object.keys(window.vertexTypesTmp);
-    if (this.checkLengthMisMatch(vertexUse, vertexTmp)) {
-      console.log("Length is different");
+    if (this.checkLengthMisMatch(current, old)) {
+      console.log("[Vertex Type Define] Length is different");
       return Promise.resolve(true);
     }
 
     // Check key exit
-    let flag = await this.checkKeyMisMatch(vertexUse, vertexTmp);
-
-    if (flag) {
-      console.log("Key vertex at source not exit in target");
-      return Promise.resolve(true);
+    let lenKey = current.length;
+    for (let i = 0; i < lenKey; i++) {
+      let type = current[i];
+      if (old.indexOf(type) < 0) {
+        console.log("Vetex type import don't match with vertex type in graph");
+        return Promise.resolve(true);
+      }
     }
 
     // Check data key in every vertex type
-    for (let key of vertexUse) {
-      let src = Object.keys(window.vertexTypes[key]);
-      let tgt = Object.keys(window.vertexTypesTmp[key]);
+    for (let i = 0; i < lenKey; i++) {
+      let type = current[i];
+      let dataSource = _.find(source, {'vertexType': type});
+      let dataTarget = _.find(target, {'vertexType': type});
+      let src = Object.keys(dataSource.data[0]);
+      let tgt = Object.keys(dataTarget.data[0]);
+
       if (this.checkLengthMisMatch(src, tgt)) {
         console.log("Length of vertex element is different");
         return Promise.resolve(true);
@@ -573,6 +590,7 @@ class MainMgmt {
    */
   clearAll() {
     // Delete all element inside SVG
+    window.showReduced = false;
     d3.select("svg").selectAll("*").remove();
 
     // Clear all data cotainer for vertex, boundary, edge
@@ -582,9 +600,6 @@ class MainMgmt {
     this.initMarkerArrow();
     this.initPathConnect();
     this.initEdgePath();
-    // this.initBoundaryGroup();
-    // this.initVertexGroup();
-    // this.initEdgeGroup();
     this.initBBoxGroup();
     setSizeGraph();
   }
@@ -669,23 +684,16 @@ class MainMgmt {
   showReduced() {
     window.showReduced = true;
     let edge = this.dataContainer.edge;
-    //let showVertexType = Object.keys(window.showFullVertex);
-    let showVertexType = window.showFullVertex;
+    let full = window.groupVertexOption["SHOW_FULL_ALWAYS"];
     let lstVer = [], lstProp = [];
 
-    // let boundary = this.dataContainer.boundary;
-    // d3.selectAll('.groupVertex').classed("hide", true);  // Set Hide all Vertex
-    d3.selectAll('.drag_connect').classed("hide", true); // Set Hide all Circle
-    d3.selectAll('.property').classed("hide", true);  // Set Hide all property on the Vertex
-
-    lstVer = this.dataContainer.vertex;
+    // Filter the vertex effected by show reduced
+    lstVer = _.filter(this.dataContainer.vertex, (e) => {
+      return full.indexOf(e.vertexType) < 0;
+    });
     lstVer.forEach((vertex) => {
-      showVertexType.forEach((type) => {
-        if (vertex.vertexType === type) {
-          d3.select(`#${vertex.id}`).selectAll('.drag_connect').classed("hide", false);
-          d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", false);
-        }
-      })
+      d3.select(`#${vertex.id}`).selectAll('.drag_connect:not(.connect_header)').classed("hide", true);
+      d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", true);
     });
 
     // Get vertex and property can display
@@ -695,6 +703,8 @@ class MainMgmt {
         prop: edgeItem.source.prop
       }, {vert: edgeItem.target.vertexId, prop: edgeItem.target.prop});
     });
+
+    console.log("lstProp", lstProp);
 
     lstVer.forEach((vertexItem) => {
       let arrPropOfVertex = [];
@@ -708,11 +718,11 @@ class MainMgmt {
       d3.select(`#${vertexItem.id}`).classed("hide", false); // Enable Vertex
       arrPropOfVertex.forEach((propItem) => {
         d3.select(`#${vertexItem.id}`).select(".property[prop='" + propItem + "']").classed("hide", false);
+        d3.select(`#${vertexItem.id}`).select(".property[prop='" + propItem + "']").classed("hide", false);
       });
       this.vertex.updatePathConnect(vertexItem.id); // Re-draw edge
       /* Update Circle */
-      d3.select(`#${vertexItem.id}`).selectAll('.drag_connect:first-child').classed("hide", false);
-      this.vertex.updateCircle(arrPropOfVertex, d3.select(`#${vertexItem.id}`));
+      this.vertex.updatePositionConnect(arrPropOfVertex, d3.select(`#${vertexItem.id}`), vertexItem.id);
     });
 
     this.vertex.resetSizeVertex(false);
@@ -768,64 +778,19 @@ class MainMgmt {
   }
 
   /**
-   * Init boundary group
-   * When create boundary, it will append into this group
-   */
-  initBoundaryGroup() {
-    this.svgSelector.append("svg:g")
-      .attr("class", "boundaryGroup")
-      .attr("id", "groupB")
-      .attr("orient", "auto");
-  }
-
-  /**
-   * Init vertex group
-   * When create vertex, it will append into this group
-   */
-  initVertexGroup() {
-    this.svgSelector.append("svg:g")
-      .attr("class", "vertexGroup")
-      .attr("id", "groupV")
-      .attr("orient", "auto");
-  }
-
-  /**
-   * Init edge group
-   * When create edge, it will append into this group
-   */
-  initEdgeGroup() {
-    this.svgSelector.append("svg:g")
-      .attr("class", "egdeGroup")
-      .attr("id", "groupE")
-      .attr("orient", "auto");
-  }
-
-  /**
    * get list vertex type will show on menu
-   * @param data
+   * @param array data
    * @returns {*}
    */
   getListVertexType(data) {
-    let listVertexType = [];
-    // let showVertex = null;
-    let showVertex = [];
-
-    if (typeof data.SHOW_FULL_ALWAYS != "undefined" && data.SHOW_FULL_ALWAYS.length > 0) {
-      data.SHOW_FULL_ALWAYS.forEach((group) => {
-        for (const key of Object.keys(data[group])) {
-          showVertex.push(key);
-        }
-      });
-      window.showFullVertex = showVertex;
+    let types = [];
+    let len = data.length;
+    for (let i = 0; i < len; i++) {
+      let type = data[i];
+      types.push(type.vertexType);
     }
 
-    for (const key of Object.keys(data)) {
-      if (key != "SHOW_FULL_ALWAYS" && key != "DATA_DESCRIPTIONS") {
-        listVertexType = Object.assign(listVertexType != null ? listVertexType : {}, data[key]);
-      }
-    }
-
-    return listVertexType;
+    return types;
   }
 
   /**
@@ -865,6 +830,64 @@ class MainMgmt {
 
   removeEdge(edgeId) {
     this.edge.removeEdge(edgeId);
+  }
+
+  getVertexFormatType(data) {
+    let formatType = {};
+    let header = window.headerForm;
+    let len = header.length;
+    for (let i = 0; i < len; i++) {
+      let key = header[i];
+      let value = data[key];
+      let type = typeof(value);
+      if (type == "boolean") {
+        formatType[key] = VERTEX_FORMAT_TYPE.BOOLEAN; // For boolean
+      } else if (type == "object" && Array.isArray(value)) {
+        formatType[key] = VERTEX_FORMAT_TYPE.ARRAY; // For array
+      } else if (type == "string" && value === "number") {
+        formatType[key] = VERTEX_FORMAT_TYPE.NUMBER; // For number
+      } else {
+        formatType[key] = VERTEX_FORMAT_TYPE.STRING; // For string and other type
+      }
+    }
+
+    window.vertexFormatType = formatType;
+  }
+
+  getVertexTypesShowFull(data) {
+    const group = data["VERTEX_GROUP"];
+    const vertex = data["VERTEX"];
+    let len = group.length;
+    for (let i = 0; i < len; i++) {
+      let groupType = group[i].groupType;
+      let groupOption = group[i].option;
+      let lenOpt = groupOption.length;
+      for (let j = 0; j < lenOpt; j++) {
+        let option = groupOption[j];
+        let groupVertex = _.filter(vertex, (e) => {
+            return e.groupType === groupType;
+          }
+        );
+        let groupAction = [];
+        groupVertex.forEach(e => {
+          groupAction.push(e.vertexType);
+        });
+        window.groupVertexOption[option] = groupAction;
+      }
+    }
+  }
+
+  /**
+   * Removing Duplicate Objects From An Array By Property
+   * @param myArr
+   * @param prop
+   * @author: Dwayne
+   * @reference: https://ilikekillnerds.com/2016/05/removing-duplicate-objects-array-property-name-javascript/
+   */
+  removeDuplicates(myArr, prop) {
+    return myArr.filter((obj, pos, arr) => {
+      return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+    });
   }
 };
 export default MainMgmt;

@@ -77,17 +77,25 @@
         padding: 0 10px;
       }
 
-      .vertex-type {
+      .checkbox_center, .col_header {
         height: 26px;
         text-align: center;
+      }
+
+      .col_header {
+        background-color: #336699;
+        color: #ffffff;
       }
     }
 
     .vertex-properties {
-      border: 1px solid #336699;
+      //border: 1px solid #336699;
       border-collapse: collapse;
       border-spacing: 0 0.5em;
       margin: 5px 0px 10px;
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
     }
   }
 
