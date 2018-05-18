@@ -198,12 +198,9 @@ class MainMgmt {
    * @param data
    */
   async drawGraphFromData(data) {
-
     this.clearAll();
-
     // Validate content
     let errorContent = await this.validateGraphDataStructure(data);
-
     if (errorContent) {
       comShowMessage("Format or data in Data Graph Structure is corrupted. You should check it!");
       return;
@@ -269,6 +266,7 @@ class MainMgmt {
     });
 
     this.initMenuContext();
+    this.showFull();
   }
 
   /**
@@ -703,8 +701,6 @@ class MainMgmt {
         prop: edgeItem.source.prop
       }, {vert: edgeItem.target.vertexId, prop: edgeItem.target.prop});
     });
-
-    console.log("lstProp", lstProp);
 
     lstVer.forEach((vertexItem) => {
       let arrPropOfVertex = [];
