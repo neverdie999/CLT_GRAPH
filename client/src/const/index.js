@@ -79,9 +79,12 @@ export const BOUNDARY_CONFIG = {
   NAME: 'Boundary',
 }
 
-// Vertex default config
-export const VERTEX_CONFIG = {
-  LIGHT_COLOR: 80,
+// Vertex type format
+export const VERTEX_FORMAT_TYPE = {
+  BOOLEAN: 1,
+  ARRAY: 2,
+  NUMBER: 3,
+  STRING: 4,
 }
 
 // Global variable
@@ -90,11 +93,11 @@ window.sourceNode = null; // Define source node for create connect
 window.disabledCommand = false; // Use for only mode (Disable all command on menu context)
 window.disabledMenu = true; // Not show menu context
 window.vertexTypes = null; // Vertex types use in current graph
-window.vertexTypesTmp = null; // Vertex types export in file Graph Data Structure => Used to validate
-window.isImportVertexTypeDefine = false; // If vertex type define was importted.
+window.vertexTypesOld = null; // Vertex types export in file Graph Data Structure => Used to validate
+window.isVertexTypeDefine = false; // If vertex type define was importted.
 window.showReduced = false; // Determine show full or reduced
 window.udpateEdge = false; // Define state update connect (edge) exited.
-window.showFullVertex = null // list vertex type don't be effected by showReduce function.
-window.dataFileVertexType = null //data of json file vertex type definition.
+window.groupVertexOption = {} // list vertex type have same option.
+window.vertexDefine = null //data of json file vertex type definition.
 window.xBoundary = 1900;
 window.yBoundary = 959;

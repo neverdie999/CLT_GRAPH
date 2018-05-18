@@ -12,6 +12,7 @@ const HTML_BTN_EXPORT_FILE_ID = 'btnExportFile';
 const HTML_SELECTOR_MODE_GRPH = 'input:radio[name=graphMode]';
 const HTML_BTN_FILE_INTERFACE = 'btnFileInterface';
 const HTML_FILE_INTERFACE = 'fileInterface';
+import _ from "lodash";
 
 class FileMgmt {
   constructor(props) {
@@ -74,6 +75,7 @@ class FileMgmt {
         }
       }
       catch (ex) {
+        console.log("Error", ex);
         comShowMessage("Read file error!");
       }
       finally {
@@ -127,7 +129,7 @@ class FileMgmt {
     // Need clone data cause case user export
     // later continue edit then lost parent scope
     // Purpose prevent reference data.
-    const cloneData = Object.assign({}, this.dataContainer);
+    const cloneData = _.cloneDeep(this.dataContainer);
     cloneData.vertex.forEach(node => {
       let pos = new Object({
         "id": node.id,
@@ -158,7 +160,7 @@ class FileMgmt {
       dataContent.position.push(pos);
     });
 
-    dataContent.vertexTypes = window.dataFileVertexType;
+    dataContent.vertexTypes = window.vertexDefine || {};
     dataContent.graphSize = {width: window.xBoundary, height: window.yBoundary};
 
     return Promise.resolve(dataContent);

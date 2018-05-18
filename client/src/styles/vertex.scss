@@ -6,6 +6,8 @@
   border-top: 1px solid black;
   border-left: 1px solid black;
   border-right: 1px solid black;
+  font-size: 13px;
+  background: #ffffff;
 }
 
 .header_name {
@@ -48,6 +50,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: calc(100% - 85px);
+}
+
+.drag_connect {
+  fill: white;
+  stroke-width: 1;
+  stroke: black;
 }
 
 //.interaction_full, .interaction_left, .interaction_right{

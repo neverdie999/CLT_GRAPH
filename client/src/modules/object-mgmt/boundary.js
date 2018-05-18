@@ -39,59 +39,52 @@ class Boundary {
   }
 
   async createBoundary(options = {}) {
-    let boundaryId = options.id ? options.id : generateObjectId('B');
-    let memeber = options.member || [];
-    let parent = options.parent || null;
-    let height = options.height || BOUNDARY_ATTR_SIZE.BOUND_HEIGHT;
-    let width = options.width || BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
+    let {x, y, name, description, member, id, width, height, parent, mandatory, repeat} = options;
+    if (!id)
+      id = generateObjectId('B');
+    if(!width)
+      width = BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
+    if(!height)
+      height = BOUNDARY_ATTR_SIZE.BOUND_HEIGHT
 
-    // To do: Use default config and merge with current config
     let boundaryInfo = {
-      x: options.x,
-      y: options.y,
-      name: options.name || "Boundary",
-      description: options.description || "Boundary Description",
-      member: memeber,
-      id: boundaryId,
+      x: x,
+      y: y,
+      name: name || "Boundary",
+      description: description || "Boundary Description",
+      member: member || [],
+      id: id,
       width: width,
       height: height,
-      parent: parent,
-      mandatory: options.mandatory || false,
-      repeat: options.repeat || 1
+      parent: parent || null,
+      mandatory: mandatory || false,
+      repeat: repeat || 1
     };
 
     this.dataContainer.boundary.push(boundaryInfo);
-
-    // let group = d3.select("#groupB").append("g")
-    //append into boundary group
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
-      .attr("id", boundaryId)
+      .attr("id", id)
       .attr("class", `${HTML_BOUNDARY_CONTAINER_CLASS}`)
-      .style("visibility", "visible")
       .style("cursor", "move");
 
     group.append("text")
-      .attr("id", `${boundaryId}Text`)
+      .attr("id", `${id}Text`)
       .attr("x", width + 5)
       .attr("y", 15)
       .text("+");
 
     group.append("rect")
       .attr("x", width)
-      .attr("class", `boundary_right ${boundaryId}Button`)
-      .attr("id", `${boundaryId}Button`)
-      .attr("data", boundaryId)
-      .attr("width", 20)
-      .attr("height", 20)
+      .attr("class", `boundary_right ${id}Button`)
+      .attr("id", `${id}Button`)
+      .attr("data", id)
       .style("fill", this.colorHash.hex(boundaryInfo.name))
-      .style("fill-opacity", ".5")
-      .style("cursor", "pointer")
       .append("title")
       .text("Right click to select visible member");
 
     group.append("foreignObject")
-      .attr("id", `${boundaryId}Content`)
+      .attr("id", `${id}Content`)
       .attr("width", width)
       .attr("height", height)
       .style("border", "solid 1px")
@@ -102,7 +95,7 @@ class Boundary {
       .attr("class", "boundary_content")
       .html(`
           <div class="boundary_header">
-            <p id="${boundaryId}Header" class="header_name header_boundary" style="width: 100%;
+            <p id="${id}Header" class="header_name header_boundary" style="width: 100%;
              height: ${BOUNDARY_ATTR_SIZE.HEADER_HEIGHT}px;
              background-color: ${this.colorHash.hex(boundaryInfo.name)}" 
              title="${boundaryInfo.description}">${boundaryInfo.name}</p>
@@ -162,7 +155,7 @@ class Boundary {
       });
       // Update position of child element
       // Check drag outside window
-      if(d.member.length > 0)
+      if (d.member.length > 0)
         self.reorderPositionMember(d.id, {x: d.x, y: d.y});
 
       self.mainMgmt.hiddenBBoxGroup();
@@ -753,7 +746,7 @@ class Boundary {
     });
 
     $("#isBoundaryMandatory").change(function () {
-      if(this.checked && $("#maxBoundaryRepeat").val() < 1) {
+      if (this.checked && $("#maxBoundaryRepeat").val() < 1) {
         $("#maxBoundaryRepeat").val(1);
       }
     });
@@ -762,7 +755,7 @@ class Boundary {
       allowInputNumberOnly(e);
     });
 
-    $("#maxBoundaryRepeat").focusout(function() {
+    $("#maxBoundaryRepeat").focusout(function () {
       let rtnVal = checkMinMaxValue(this.value, $('#isBoundaryMandatory').prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
       this.value = rtnVal;
     });
@@ -796,7 +789,6 @@ class Boundary {
     let options = {popupId: HTML_BOUNDARY_INFO_ID}
     PopUtils.metClosePopup(options);
   }
-
 };
 
 export default Boundary;

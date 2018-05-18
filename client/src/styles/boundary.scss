@@ -1,6 +1,6 @@
 
-.boundary{
-  cursor:pointer;
+.boundary {
+  cursor: pointer;
   //border:solid 1px #652a82;
   padding: 8px;
 }
@@ -13,23 +13,25 @@
   //padding: 8px 0px;
   text-align: center;
   font-weight: 600;
-  float:left;
+  float: left;
 }
 
 .boundary_right {
   //border:solid 1px #652a82;
-  border-left:none;
+  border-left: none;
   //background: white;
   margin: 0;
   padding: 0px;
   text-align: center;
   font-weight: 600;
-  float:right;
-  width:20px;
-  height:20px;
+  float: right;
+  width: 20px;
+  height: 20px;
+  fill-opacity: .5;
+  cursor: pointer;
 }
 
-.boundary_data{
+.boundary_data {
   //border: solid 1px #652a82;
 }
 
@@ -48,6 +50,7 @@
   font-size: 11px;
   font-weight: bold;
 }
+
 .data-title li:first-child {
   margin-top: 20px;
 }

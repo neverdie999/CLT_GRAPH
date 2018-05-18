@@ -9,7 +9,7 @@ import {
   DEFAULT_CONFIG_GRAPH,
   REPEAT_RANGE,
   HTML_ALGETA_CONTAINER_ID,
-  VERTEX_CONFIG,
+  VERTEX_FORMAT_TYPE,
 } from '../../const/index';
 import _ from "lodash";
 import PopUtils from '../../common/utilities/popup.ult';
@@ -23,12 +23,15 @@ import {
   setMinBoundaryGraph,
   allowInputNumberOnly,
   checkMinMaxValue,
+  checkIsMatchRegex,
+  comShowMessage,
 } from '../../common/utilities/common.ult';
 import ColorHash from 'color-hash';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
 const HTML_VERTEX_FORM_ID = 'vertexForm';
+const CONNECT_KEY = 'Connected';
 
 class Vertex {
   constructor(props) {
@@ -47,7 +50,7 @@ class Vertex {
       .on("drag", this.drawConnect(this))
       .on("end", this.endConnect(this));
 
-    this.originVertex = null;
+    this.currentId = null;
     this.bindEventForPopupVertex();
     this.colorHash = new ColorHash({lightness: 0.7});
   }
@@ -56,11 +59,11 @@ class Vertex {
    * Bind event and init data for controls on popup
    */
   bindEventForPopupVertex() {
-    $("#vertexBtnConfirm").click(e => {
+    $("#vertexBtnConfirm").click(() => {
       this.confirmEditVertexInfo();
     });
 
-    $("#vertexBtnCancel").click(e => {
+    $("#vertexBtnCancel").click(() => {
       this.closePopVertexInfo();
     });
 
@@ -96,124 +99,82 @@ class Vertex {
    * Ex
    */
   createVertex(options) {
-    if (!options.vertexType)
+    let {x, y, name, description, data, id, parent, mandatory, repeat, isMenu, vertexType} = options;
+    if (!vertexType)
       return;
+    // Deep clone vertex define
+    if (isMenu) {
+      let info = _.cloneDeep(this.objectUtils.getDataDefineByOption({'vertexType': vertexType}));
+      data = info.data;
+      description = info.description;
+    }
+    if (!id)
+      id = generateObjectId('V');
 
-    let vertexType = options.vertexType;
-    // Deep clone array object vertex
-    let vertexProperties =  _.cloneDeep(Array.isArray(options.data) ? options.data : window.vertexTypes[vertexType]);
-    let vertexId = options.id ? options.id : generateObjectId('V');
-    let parent = options.parent || null;
-
-    // To do: Use default config and merge with current config
     let vertexInfo = {
-      x: options.x,
-      y: options.y,
+      x: x,
+      y: y,
       vertexType: vertexType,
-      name: options.name || vertexType,
-      description: options.description || "Description",
-      data: vertexProperties,
-      id: vertexId,
-      parent: parent,
-      mandatory: options.mandatory || false,
-      repeat: options.repeat || 1
+      name: name || vertexType,
+      description: description || "Description",
+      data: data || [],
+      id: id,
+      parent: parent || null,
+      mandatory: mandatory || false,
+      repeat: repeat || 1
     };
     this.dataContainer.vertex.push(vertexInfo);
 
-    //append into vertex group
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
-      .attr("id", vertexId)
+      .attr("id", id)
       .attr("class", `${HTML_VERTEX_CONTAINER_CLASS}`)
-      .style("cursor", "default")
-      .style("visibility", "visible");
+      .style("cursor", "default");
 
     // Append point connect vertex
     group.append("circle")
-      .attr("class", "drag_connect")
-      .attr("fill", "white")
+      .attr("class", "drag_connect connect_header")
       .attr("r", 3)
-      .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH / 2)
-      .attr("stroke-width", 1)
-      .style("cursor", "default")
-      .attr("stroke", "black")
-      .attr("pointer-events", "all")
-      .on("mouseover", () => {
-        d3.select(d3.event.target).classed("hight-light", true);
-        d3.select(d3.event.target).attr("r", 4);
-      })
-      .on("mouseout", () => {
-        d3.select(d3.event.target).classed("hight-light", false);
-        d3.select(d3.event.target).attr("r", 3);
-      });
+      .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH / 2);
 
     let htmlContent = '';
-    let count = 0;
-    vertexInfo.data.forEach(data => {
+    let len = vertexInfo.data.length;
+    let presentation = window.vertexPresentation;
+    for (let i = 0; i < len; i++) {
+      let data = vertexInfo.data[i];
       htmlContent += `
-        <div class="property" prop="${data.key}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key" title="${data.key}">${data.key}</label><label> : </label>
-          <label class="data ${data.key}" id="${vertexId}${data.key}" title="${data.spec}">${data.spec}</label>
+        <div class="property" prop="${id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
+          <label class="key" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${data[presentation.key] || ""}</label><label> : </label>
+          <label class="data" id="${id}${presentation.value}${i}" title="${data[presentation.valueTooltip] || "No data to show"}">${data[presentation.value] || ""}</label>
         </div>`;
-      // Append point connect prop of vertex
 
       // Input
       group.append("circle")
         .attr("class", "drag_connect")
-        .attr("prop", data.key)
-        .attr("fill", "white")
+        .attr("prop", `${id}${CONNECT_KEY}${i}`)
         .attr("type", TYPE_POINT.INPUT)
         .attr("r", 3)
-        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-        .attr("stroke-width", 1)
-        .style("cursor", "default")
-        .attr("stroke", "black")
-        .attr("pointer-events", "all")
-        .on("mouseover", () => {
-          d3.select(d3.event.target).classed("hight-light", true);
-          d3.select(d3.event.target).attr("r", 4);
-        })
-        .on("mouseout", () => {
-          d3.select(d3.event.target).classed("hight-light", false);
-          d3.select(d3.event.target).attr("r", 3);
-        });
+        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2);
 
       // Output
       group.append("circle")
         .attr("class", "drag_connect")
-        .attr("prop", data.key)
-        .attr("fill", "white")
+        .attr("prop", `${id}${CONNECT_KEY}${i}`)
         .attr("type", TYPE_POINT.OUTPUT)
         .attr("r", 3)
         .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-        .attr("stroke-width", 1)
-        .style("cursor", "default")
-        .attr("stroke", "black")
-        .attr("pointer-events", "all")
-        .on("mouseover", () => {
-          d3.select(d3.event.target).classed("hight-light", true);
-          d3.select(d3.event.target).attr("r", 4);
-        })
-        .on("mouseout", () => {
-          d3.select(d3.event.target).classed("hight-light", false);
-          d3.select(d3.event.target).attr("r", 3);
-        });
+        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2);
+    }
 
-      count += 1;
-    });
-
-    let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count;
+    let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * len;
 
     group.append("foreignObject")
       .attr("width", VERTEX_ATTR_SIZE.GROUP_WIDTH)
       .attr("height", vertexHeight)
       .append("xhtml:div")
       .attr("class", "vertex_content")
-      .style("font-size", "13px")
-      .style("background", "#ffffff")
       .html(`
-        <p class="header_name" id="${vertexId}Name" title="${vertexInfo.description}" 
+        <p class="header_name" id="${id}Name" title="${vertexInfo.description}" 
         style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px; background-color: ${this.colorHash.hex(vertexInfo.name)}">${vertexInfo.name}</p>
         <div class="vertex_data">
           ${htmlContent}
@@ -230,9 +191,16 @@ class Vertex {
   initEventDrag() {
     this.svgSelector.selectAll(`.${HTML_VERTEX_CONTAINER_CLASS}`)
       .data(this.dataContainer.vertex)
-      // .on("mouseleave", this.handleMouseLeave(this))
       .call(this.dragRegister);
-    d3.selectAll('.drag_connect').call(this.dragConnector);
+    d3.selectAll(".drag_connect:not(.hide)").call(this.dragConnector)
+      .on("mouseover", () => {
+        d3.select(d3.event.target).classed("hight-light", true);
+        d3.select(d3.event.target).attr("r", 4);
+      })
+      .on("mouseout", () => {
+        d3.select(d3.event.target).classed("hight-light", false);
+        d3.select(d3.event.target).attr("r", 3);
+      });
   }
 
   /**
@@ -297,7 +265,7 @@ class Vertex {
     let vertexInfo = this.objectUtils.getVertexInfoById(vertexId);
     d3.select(`#${vertexId}`).remove();
 
-    if(vertexInfo.parent)
+    if (vertexInfo.parent)
       this.mainMgmt.removeMemberFromBoundary(vertexInfo.parent, vertexId);
     // Remove from data container
     let data = _.remove(this.dataContainer.vertex, (e) => {
@@ -305,6 +273,12 @@ class Vertex {
     });
 
     setMinBoundaryGraph(this.dataContainer);
+
+    // Remove all edge relate to vertex
+    let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId);
+    relatePaths.forEach(path => {
+      this.mainMgmt.removeEdge(path.id);
+    });
   }
 
   /**
@@ -312,15 +286,10 @@ class Vertex {
    * @param vertexId
    */
   copyVertex(vertexId) {
-    let infos = this.objectUtils.cloneVertexInfo(vertexId);
-    let clone = {
-      x: infos.x + VERTEX_ATTR_SIZE.SPACE_COPY,
-      y: infos.y + VERTEX_ATTR_SIZE.SPACE_COPY,
-      name: infos.name,
-      description: infos.description,
-      vertexType: infos.vertexType,
-      data: infos.data
-    };
+    let {x, y, name, description, vertexType, data, repeat, mandatory} = this.objectUtils.cloneVertexInfo(vertexId);
+    x = x + VERTEX_ATTR_SIZE.SPACE_COPY;
+    y = y + VERTEX_ATTR_SIZE.SPACE_COPY;
+    let clone = {x, y, name, description, vertexType, data, repeat, mandatory};
     this.createVertex(clone);
   }
 
@@ -330,55 +299,57 @@ class Vertex {
    */
   makePopupEditVertex(vertexId) {
     // Use in function updateVertexInfo()
-    const vertexInfo = this.objectUtils.cloneVertexInfo(vertexId);
-    this.originVertex = vertexInfo;
+    let {name, description, repeat, mandatory, data, id} = this.objectUtils.cloneVertexInfo(vertexId);
+    this.currentId = id;
     // Append content to popup
-    $(`#vertexName`).val(vertexInfo.name);
-    $(`#vertexDesc`).val(vertexInfo.description);
-    $(`#vertexRepeat`).val(vertexInfo.repeat);
-    $(`#isVertexMandatory`).prop('checked', vertexInfo.mandatory);
+    $(`#vertexName`).val(name);
+    $(`#vertexDesc`).val(description);
+    $(`#vertexRepeat`).val(repeat);
+    $(`#isVertexMandatory`).prop('checked', mandatory);
 
     // Generate properties vertex
-    let vertexData = vertexInfo.data;
-    let $propertiesGroup = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
-    const $rowVertexType = $('<tr>');
-    // Generate header
-    let $colHdrId = $('<th>').text('ID');
-    $colHdrId.attr('class', 'vertex-type');
-    $colHdrId.appendTo($rowVertexType);
-    let $colHdrSpec = $('<th>').text('Spec');
-    $colHdrSpec.attr('class', 'vertex-type');
-    $colHdrSpec.appendTo($rowVertexType);
-    let $colHdrMan = $('<th>').text('Mandatory');
-    $colHdrMan.attr('class', 'vertex-type');
-    $colHdrMan.appendTo($rowVertexType);
-    $rowVertexType.appendTo($propertiesGroup);
+    let keyHeader = window.headerForm;
+    let dataHeader = window.vertexFormat;
+    let cols = keyHeader.length;
+    let rows = data.length;
 
-    vertexInfo.data.forEach(data => {
+    let $form = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
+    // Generate header table
+    let $headerRow = $('<tr>');
+    for (let i = 0; i < cols; i++) {
+      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(keyHeader[i]));
+      $colHdr.attr('class', 'col_header');
+      $colHdr.appendTo($headerRow);
+    }
+    $headerRow.appendTo($form);
+
+    // Generate content table
+    const typeData = window.vertexFormatType;
+    const dataFormat = window.vertexFormat;
+    for (let i = 0; i < rows; i++) {
+      const dataRow = data[i];
       const $row = $('<tr>');
-      const $th = $('<th>').text(data.key).appendTo($row);
-      // Second column
-      const $td = $('<td>');
-      const $input = $('<input>');
-      $input.attr('type', 'text');
-      // $input.attr('id', key);
-      $input.attr('name', data.key);
-      $input.attr('class', 'form-control');
-      $input.val(data.spec);
-      $input.appendTo($td);
-      $td.appendTo($row);
-      // Third column
-      const $manTd = $('<td>');
-      $manTd.attr('class', 'vertex-type');
-      const $man = $('<input>');
-      $man.attr('type', 'checkbox');
-      $man.attr('name', `${data.key}_mandatory`);
-      $man.attr('id', `${data.key}_mandatory`);
-      $man.prop('checked', data.mandatory);
-      $man.appendTo($manTd);
-      $manTd.appendTo($row);
-      $row.appendTo($propertiesGroup);
-    });
+      for (let j = 0; j < cols; j++) {
+        let id = vertexId;
+        let prop = headerForm[j];
+        let type = typeData[prop];
+        let val = dataRow[prop];
+        let opt = [];
+
+        const $col = $('<td>');
+        // Get option if type is array
+        if (type === VERTEX_FORMAT_TYPE.ARRAY) {
+          opt = dataFormat[prop];
+        } else if (type === VERTEX_FORMAT_TYPE.BOOLEAN) {
+          $col.attr('class', 'checkbox_center');
+        }
+
+        let $control = this.generateControlByType({i, type, val, prop, id, opt});
+        $control.appendTo($col);
+        $col.appendTo($row);
+      }
+      $row.appendTo($form);
+    }
 
     let options = {
       popupId: HTML_VERTEX_INFO_ID,
@@ -392,7 +363,7 @@ class Vertex {
    * Close popup edit vertex info
    */
   closePopVertexInfo() {
-    this.originVertex = null;
+    this.currentId = null;
     let options = {popupId: HTML_VERTEX_INFO_ID}
     PopUtils.metClosePopup(options);
   }
@@ -407,7 +378,7 @@ class Vertex {
     $(form).each(function (index, obj) {
       data[obj.name] = obj.value;
     });
-    data.id = this.originVertex.id;
+    data.id = this.currentId;
     this.updateVertexInfo(data);
     this.closePopVertexInfo();
   }
@@ -418,52 +389,47 @@ class Vertex {
    * Update name, type, ...
    * Update present (DOM)
    */
-  updateVertexInfo(infos) {
-    const id = infos.id;
-    let vertexInfo = this.objectUtils.getVertexInfoById(id);
+  updateVertexInfo(forms) {
+    const id = forms.id;
+    let vertex = this.objectUtils.getVertexInfoById(id);
     // Change name
-    vertexInfo.name = infos.vertexName;
-    vertexInfo.description = infos.vertexDesc;
-    vertexInfo.repeat = infos.vertexRepeat;
-    vertexInfo.mandatory = $(`#isVertexMandatory`).prop('checked');
+    vertex.name = forms.vertexName;
+    vertex.description = forms.vertexDesc;
+    vertex.repeat = forms.vertexRepeat;
+    vertex.mandatory = $(`#isVertexMandatory`).prop('checked');
     let header = d3.select(`#${id}Name`);
-    header.text(infos.vertexName).attr('title', infos.vertexDesc);
-    header.style("background-color", `${this.colorHash.hex(vertexInfo.name)}`);
+    header.text(vertex.name).attr('title', vertex.description);
+    header.style("background-color", `${this.colorHash.hex(vertex.name)}`);
+
     // Update properties
+    let keyHeader = window.headerForm;
+    let dataHeader = window.vertexFormat;
+    let cols = keyHeader.length;
+    let data = vertex.data;
+    let rows = data.length;
+    const typeData = window.vertexFormatType;
+    const dataFormat = window.vertexFormat;
+    let presentation = window.vertexPresentation;
+    for (let i = 0; i < rows; i++) {
+      const dataRow = data[i];
+      const $row = $('<tr>');
+      for (let j = 0; j < cols; j++) {
+        let prop = headerForm[j];
+        let type = typeData[prop];
+        if (type === VERTEX_FORMAT_TYPE.BOOLEAN) {
+          dataRow[prop] = forms[`${prop}${i}`] ? true : false;
+        } else {
+          dataRow[prop] = forms[`${prop}${i}`];
+        }
+      }
+      let key = dataRow.key;
 
-    vertexInfo.data.forEach(data => {
-      let key = data.key;
-      data.spec = infos[key];
-      data.mandatory = infos[`${key}_mandatory`] ? true : false;
-      d3.select(`#${replaceSpecialCharacter(`${id}${key}`)}`).text(infos[key]).attr('title', infos[key]);
-    });
-  }
-
-  /**
-   * Set state connect from source
-   * @param vertexId
-   * @param prop
-   */
-  setConnectFrom(vertexId, prop = null) {
-    window.creatingEdge = true;
-    let source = this.getCoordinateProperty(vertexId, prop, TYPE_POINT.OUTPUT);
-    source.vertexId = vertexId;
-    source.prop = prop;
-    window.sourceNode = source;
-  }
-
-  /**
-   * Set state connect to target
-   * @param vertexId: string, require
-   * @param prop: string, option
-   */
-  setConnectTo(vertexId, prop = null) {
-    if (window.creatingEdge) {
-      let target = this.getCoordinateProperty(vertexId, prop, TYPE_POINT.INPUT);
-      target.vertexId = vertexId;
-      target.prop = prop;
-      let options = {source: window.sourceNode, target: target};
-      this.createConnect(options);
+      d3.select(`#${replaceSpecialCharacter(`${id}${presentation.key}${i}`)}`)
+        .text(dataRow[presentation.key])
+        .attr('title', dataRow[presentation.keyTooltip]);
+      d3.select(`#${replaceSpecialCharacter(`${id}${presentation.value}${i}`)}`)
+        .text(dataRow[presentation.value])
+        .attr('title', dataRow[presentation.valueTooltip]);
     }
   }
 
@@ -495,23 +461,9 @@ class Vertex {
     if (!prop)
       return {x: axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH / 2, y: axisY};
 
-    // Find index prop in object
-    // let index = 0;
-    let arrayProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
-    let tmpArry = arrayProp._groups[0];
-
-    let index = 0;
-    for (let ele in tmpArry) {
-      if (d3.select(tmpArry[ele]).attr('prop') === prop) {
-        break;
-      }
-      index += 1;
-    }
-    // let index = Object.keys(vertexInfo.data).indexOf(prop);
-
+    // Get index prop in object
+    let index = this.findIndexPropInVertex(vertexId, prop);
     // Calculate coordinate of prop
-    // y = current axis y + height header + indexProp*heightProp + 13;
-    // x = if output then axis x + width vertex; if not then axis x
     // Get coordinate
     axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT + index * VERTEX_ATTR_SIZE.PROP_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2;
     return {
@@ -659,48 +611,24 @@ class Vertex {
    * @param arrProp
    * @param vertex
    */
-  updateCircle(arrProp, vertex) {
-    let count = 0;
-    for (const key of arrProp) {
-      if (key != null) {
+  updatePositionConnect(arrProp, vertex, id) {
+    for (const prop of arrProp) {
+      if (prop != null) {
+        let count = this.findIndexPropInVertex(id, prop);
         // Input
         vertex.insert("circle", ":first-child")
           .attr("class", "drag_connect reduced")
-          .attr("prop", key)
-          .attr("fill", "none")
+          .attr("prop", prop)
           .attr("r", 3)
-          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-          .attr("stroke-width", 1)
-          .style("cursor", "default")
-          .attr("stroke", "black")
-          .attr("pointer-events", "all")
-          .on("mouseover", () => {
-            d3.select(d3.event.target).classed("hight-light", true);
-          })
-          .on("mouseout", () => {
-            d3.select(d3.event.target).classed("hight-light", false);
-          });
+          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2);
 
         // Output
         vertex.insert("circle", ":first-child")
           .attr("class", "drag_connect reduced")
-          .attr("prop", key)
-          .attr("fill", "none")
+          .attr("prop", prop)
           .attr("r", 3)
           .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-          .attr("stroke-width", 1)
-          .style("cursor", "default")
-          .attr("stroke", "black")
-          .attr("pointer-events", "all")
-          .on("mouseover", () => {
-            d3.select(d3.event.target).classed("hight-light", true);
-          })
-          .on("mouseout", () => {
-            d3.select(d3.event.target).classed("hight-light", false);
-          });
-
-        count++;
+          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2);
       }
     }
     this.initEventDrag();
@@ -736,8 +664,94 @@ class Vertex {
     });
   }
 
-  defineVertexDescription(options) {
-    return false;
+  /**
+   * Generate control with options
+   * @param options
+   * @returns {*}
+   */
+  generateControlByType(options) {
+    let $control = null;
+    const {i, type, val, prop, id, opt} = options;
+    switch (type) {
+      case VERTEX_FORMAT_TYPE.BOOLEAN:
+        $control = $('<input>');
+        $control.attr('type', 'checkbox');
+        $control.attr('name', `${prop}${i}`);
+        $control.prop('checked', val);
+        $control.attr("value", val);
+        break;
+      case VERTEX_FORMAT_TYPE.ARRAY:
+        $control = $('<select>');
+        $control.attr('name', `${prop}${i}`);
+        $control.attr('class', 'form-control');
+        $.each(opt, (key, value) => {
+          $control
+            .append($("<option></option>")
+              .attr("value", value)
+              .prop('selected', value == val)
+              .text(value));
+        });
+        break;
+      case VERTEX_FORMAT_TYPE.NUMBER:
+        $control = $('<input>');
+        $control.attr('type', 'text');
+        $control.attr('name', `${prop}${i}`);
+        $control.attr("value", val);
+        $control.attr('class', 'form-control');
+        $control
+          .on('keydown', function (e) {
+            allowInputNumberOnly(e);
+          })
+          .on('focusout', function (e) {
+            if(this.value && !checkIsMatchRegex(this.value)){
+              comShowMessage("Input invalid");
+              this.value = "";
+            } else {
+               if(isNaN(this.value)){
+                 comShowMessage("Input invalid");
+                 this.value = "";
+               }
+            }
+          });
+        break;
+      default:
+        $control = $('<input>');
+        $control.attr('type', 'text');
+        $control.attr('name', `${prop}${i}`);
+        $control.attr("value", val);
+        $control.attr('class', 'form-control');
+    }
+
+    return $control;
+  }
+
+  /**
+   * Upper case first letter
+   */
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  /**
+   * Find index of prop in vertex properties
+   * @param vertexId
+   * @param prop
+   * @returns {number}
+   */
+  findIndexPropInVertex(vertexId, prop) {
+    // Find index prop in object
+    let arrayProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
+    let tmpArry = arrayProp._groups[0];
+
+    let index = 0;
+    for (let ele in tmpArry) {
+      if (d3.select(tmpArry[ele]).attr('prop') === prop) {
+        break;
+      }
+      index += 1;
+    }
+
+    return index;
   }
 }
 
