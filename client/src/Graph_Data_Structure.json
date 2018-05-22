@@ -246,9 +246,5 @@
       "keyTooltip": "description",
       "valueTooltip": "usage"
     }
-  },
-  "graphSize": {
-    "width": 2100,
-    "height": 1159
   }
 }

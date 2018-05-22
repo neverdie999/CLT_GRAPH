@@ -1,8 +1,5 @@
 import * as d3 from 'd3';
 import {
-  SCREEN_SIZES,
-  INTERACTION_TP,
-  INTERACTION_TP_LST,
   TYPE_POINT,
   VERTEX_ATTR_SIZE,
   HTML_VERTEX_CONTAINER_CLASS,
@@ -10,6 +7,7 @@ import {
   REPEAT_RANGE,
   HTML_ALGETA_CONTAINER_ID,
   VERTEX_FORMAT_TYPE,
+  POPUP_CONFIG,
 } from '../../const/index';
 import _ from "lodash";
 import PopUtils from '../../common/utilities/popup.ult';
@@ -40,12 +38,12 @@ class Vertex {
     this.dataContainer = props.dataContainer;
     this.mainMgmt = props.mainMgmt;
 
-    this.dragRegister = d3.drag()
+    this.handlerDragVertex = d3.drag()
       .on("start", this.dragstarted(this))
       .on("drag", this.dragged(this))
       .on("end", this.dragended(this));
 
-    this.dragConnector = d3.drag()
+    this.handlerDragConnectPoint = d3.drag()
       .on("start", this.startConnect(this))
       .on("drag", this.drawConnect(this))
       .on("end", this.endConnect(this));
@@ -99,7 +97,7 @@ class Vertex {
    * Ex
    */
   createVertex(options) {
-    let {x, y, name, description, data, id, parent, mandatory, repeat, isMenu, vertexType} = options;
+    let {x, y, name, description, data, id, parent, mandatory, repeat, isMenu, vertexType, isImport} = options;
     if (!vertexType)
       return;
     // Deep clone vertex define
@@ -125,17 +123,29 @@ class Vertex {
     };
     this.dataContainer.vertex.push(vertexInfo);
 
-    let group = this.svgSelector.append("g")
+    let group = this.svgSelector.selectAll(`.${HTML_VERTEX_CONTAINER_CLASS}`)
+      .data(this.dataContainer.vertex)
+      .enter().append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", id)
       .attr("class", `${HTML_VERTEX_CONTAINER_CLASS}`)
-      .style("cursor", "default");
+      .style("cursor", "default")
+      .call(this.handlerDragVertex);
 
     // Append point connect vertex
     group.append("circle")
       .attr("class", "drag_connect connect_header")
       .attr("r", 3)
-      .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH / 2);
+      .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH / 2)
+      .on("mouseover", () => {
+        d3.select(d3.event.target).classed("hight-light", true);
+        d3.select(d3.event.target).attr("r", 4);
+      })
+      .on("mouseout", () => {
+        d3.select(d3.event.target).classed("hight-light", false);
+        d3.select(d3.event.target).attr("r", 3);
+      })
+      .call(this.handlerDragConnectPoint);
 
     let htmlContent = '';
     let len = vertexInfo.data.length;
@@ -154,7 +164,16 @@ class Vertex {
         .attr("prop", `${id}${CONNECT_KEY}${i}`)
         .attr("type", TYPE_POINT.INPUT)
         .attr("r", 3)
-        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2);
+        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+        .on("mouseover", () => {
+          d3.select(d3.event.target).classed("hight-light", true);
+          d3.select(d3.event.target).attr("r", 4);
+        })
+        .on("mouseout", () => {
+          d3.select(d3.event.target).classed("hight-light", false);
+          d3.select(d3.event.target).attr("r", 3);
+        })
+        .call(this.handlerDragConnectPoint);
 
       // Output
       group.append("circle")
@@ -163,7 +182,16 @@ class Vertex {
         .attr("type", TYPE_POINT.OUTPUT)
         .attr("r", 3)
         .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2);
+        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+        .on("mouseover", () => {
+          d3.select(d3.event.target).classed("hight-light", true);
+          d3.select(d3.event.target).attr("r", 4);
+        })
+        .on("mouseout", () => {
+          d3.select(d3.event.target).classed("hight-light", false);
+          d3.select(d3.event.target).attr("r", 3);
+        })
+        .call(this.handlerDragConnectPoint);
     }
 
     let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * len;
@@ -180,9 +208,10 @@ class Vertex {
           ${htmlContent}
         </div>
       `);
-
-    this.initEventDrag();
-    setMinBoundaryGraph(this.dataContainer);
+    if(!isImport){
+      // this.initEventDrag();
+      setMinBoundaryGraph(this.dataContainer);
+    }
   }
 
   /**
@@ -191,8 +220,8 @@ class Vertex {
   initEventDrag() {
     this.svgSelector.selectAll(`.${HTML_VERTEX_CONTAINER_CLASS}`)
       .data(this.dataContainer.vertex)
-      .call(this.dragRegister);
-    d3.selectAll(".drag_connect:not(.hide)").call(this.dragConnector)
+      .call(this.handlerDragVertex);
+    d3.selectAll(".drag_connect:not(.hide)").call(this.handlerDragConnectPoint)
       .on("mouseover", () => {
         d3.select(d3.event.target).classed("hight-light", true);
         d3.select(d3.event.target).attr("r", 4);
@@ -212,6 +241,9 @@ class Vertex {
       // If selected path to purpose update, but then move vertex then cancle it.
       if (window.udpateEdge)
         cancleSelectedPath();
+      // Resize boundary when vertex dragged
+      if (!d.parent)
+        self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
     }
   }
 
@@ -231,12 +263,7 @@ class Vertex {
       d3.select(`#${d.id}`).attr("transform", (d, i) => {
         return "translate(" + [d.x, d.y] + ")"
       });
-
       self.updatePathConnect(d.id);
-
-      // Resize boundary when vertex dragged
-      if (!d.parent)
-        self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
     }
   }
 
@@ -289,8 +316,8 @@ class Vertex {
     let {x, y, name, description, vertexType, data, repeat, mandatory} = this.objectUtils.cloneVertexInfo(vertexId);
     x = x + VERTEX_ATTR_SIZE.SPACE_COPY;
     y = y + VERTEX_ATTR_SIZE.SPACE_COPY;
-    let clone = {x, y, name, description, vertexType, data, repeat, mandatory};
-    this.createVertex(clone);
+    // let clone = {x, y, name, description, vertexType, data, repeat, mandatory};
+    this.createVertex({x, y, name, description, vertexType, data, repeat, mandatory});
   }
 
   /**
@@ -312,20 +339,33 @@ class Vertex {
     let dataHeader = window.vertexFormat;
     let cols = keyHeader.length;
     let rows = data.length;
+    const typeData = window.vertexFormatType;
+    const dataFormat = window.vertexFormat;
 
     let $form = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
+    let $content = $('<tbody>');
     // Generate header table
     let $headerRow = $('<tr>');
+    let $colGroup = $('<colgroup>');
+    let $popWidth = 0;
     for (let i = 0; i < cols; i++) {
       let $colHdr = $('<th>').text(this.capitalizeFirstLetter(keyHeader[i]));
       $colHdr.attr('class', 'col_header');
       $colHdr.appendTo($headerRow);
+
+      // Init col in colgroup
+      let prop = headerForm[i];
+      let type = typeData[prop];
+      let width = this.findLongestContent({data, prop, type});
+      $popWidth += width;
+      let $colWidth =  $('<col>').attr('width', width);
+      $colWidth.appendTo($colGroup);
     }
-    $headerRow.appendTo($form);
+    $colGroup.appendTo($form);
+    $headerRow.appendTo($content);
+    $content.appendTo($form);
 
     // Generate content table
-    const typeData = window.vertexFormatType;
-    const dataFormat = window.vertexFormat;
     for (let i = 0; i < rows; i++) {
       const dataRow = data[i];
       const $row = $('<tr>');
@@ -354,7 +394,7 @@ class Vertex {
     let options = {
       popupId: HTML_VERTEX_INFO_ID,
       position: 'center',
-      width: 430
+      width: $popWidth + POPUP_CONFIG.PADDING_CHAR
     }
     PopUtils.metSetShowPopup(options);
   }
@@ -448,12 +488,12 @@ class Vertex {
    * @param type: string, default is O (output)
    * @returns {{x: *, y: *}}
    */
-  getCoordinateProperty(vertexId, prop, type) {
+  getCoordinateProperty(id, prop, type) {
     if (!type)
       type = TYPE_POINT.OUTPUT;
-    let vertexInfo = this.objectUtils.cloneVertexInfo(vertexId);
-    let axisX = vertexInfo.x;
-    let axisY = vertexInfo.y;
+    let {x, y} = this.objectUtils.getVertexInfoById(id);
+    let axisX = x;
+    let axisY = y;
 
     // If get Coordinate for vertex only
     // if(!prop)
@@ -462,7 +502,7 @@ class Vertex {
       return {x: axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH / 2, y: axisY};
 
     // Get index prop in object
-    let index = this.findIndexPropInVertex(vertexId, prop);
+    let index = this.findIndexPropInVertex(id, prop);
     // Calculate coordinate of prop
     // Get coordinate
     axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT + index * VERTEX_ATTR_SIZE.PROP_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2;
@@ -508,7 +548,7 @@ class Vertex {
    * @param position
    */
   setVertexPosition(vertexId, position) {
-    const {x, y} = position;
+    let {x, y} = position;
     let vertexInfo = this.objectUtils.getVertexInfoById(vertexId);
     vertexInfo.x = x;
     vertexInfo.y = y;
@@ -620,7 +660,16 @@ class Vertex {
           .attr("class", "drag_connect reduced")
           .attr("prop", prop)
           .attr("r", 3)
-          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2);
+          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+          .on("mouseover", () => {
+            d3.select(d3.event.target).classed("hight-light", true);
+            d3.select(d3.event.target).attr("r", 4);
+          })
+          .on("mouseout", () => {
+            d3.select(d3.event.target).classed("hight-light", false);
+            d3.select(d3.event.target).attr("r", 3);
+          })
+          .call(this.handlerDragConnectPoint);
 
         // Output
         vertex.insert("circle", ":first-child")
@@ -628,10 +677,18 @@ class Vertex {
           .attr("prop", prop)
           .attr("r", 3)
           .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2);
+          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+          .on("mouseover", () => {
+            d3.select(d3.event.target).classed("hight-light", true);
+            d3.select(d3.event.target).attr("r", 4);
+          })
+          .on("mouseout", () => {
+            d3.select(d3.event.target).classed("hight-light", false);
+            d3.select(d3.event.target).attr("r", 3);
+          })
+          .call(this.handlerDragConnectPoint);
       }
     }
-    this.initEventDrag();
   }
 
   /**
@@ -658,9 +715,6 @@ class Vertex {
         .attr('height', tmpArry.length ?
           VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : isShowFull ?
             VERTEX_ATTR_SIZE.HEADER_HEIGHT : exitConnect ? VERTEX_ATTR_SIZE.HEADER_HEIGHT : VERTEX_ATTR_SIZE.HEADER_HEIGHT);
-      // element.parent()
-      //   .attr('height', tmpArry.length ?
-      //     VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : VERTEX_ATTR_SIZE.HEADER_HEIGHT
     });
   }
 
@@ -752,6 +806,23 @@ class Vertex {
     }
 
     return index;
+  }
+
+  findLongestContent(configs) {
+    let {data, prop, type} = configs;
+    let firstRow = data[0];
+
+    // If type is boolean or first undefined or object hasn't the specified property
+    if((type === VERTEX_FORMAT_TYPE.BOOLEAN) || !firstRow || !firstRow.hasOwnProperty(prop))
+      return prop.toString().length*POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
+
+    // From an array of objects, extract value of a property as array
+    let arr = data.map(e => e[prop]);
+    let longest = arr.reduce((a, b) => { return a.length > b.length ? a : b; });
+    if(longest.toString().length < prop.toString().length)
+      return prop.toString().length*POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
+
+    return longest.toString().length*POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
   }
 }
 

@@ -8,25 +8,6 @@ export const SVG_CONTAINER_ID = 'svgContainer';
 // Area file management size
 export const FILE_MGMT_HEIGHT = 115;
 
-// Screen size
-export const SCREEN_SIZES = {
-  WIDTH: window.innerWidth,
-  HEIGHT: window.innerHeight,
-}
-
-// Interaction type
-export const INTERACTION_TP = {
-  FULL: 'FULL',
-  LEFT: 'LEFT',
-  RIGHT: 'RIGHT',
-}
-
-export const INTERACTION_TP_LST = [
-  {value: 'FULL', name: 'Full'},
-  {value: 'LEFT', name: 'Left'},
-  {value: 'RIGHT', name: 'Right'}
-];
-
 export const EDGE_LINE_TP = [
   {value: 'solid', name: 'Solid'},
   {value: 'dash', name: "Dash"}
@@ -85,6 +66,14 @@ export const VERTEX_FORMAT_TYPE = {
   ARRAY: 2,
   NUMBER: 3,
   STRING: 4,
+}
+
+// Popup config
+export const POPUP_CONFIG = {
+  MAX_WIDTH: 1550,
+  MIN_WIDTH: 450,
+  PADDING_CHAR: 18,
+  WIDTH_CHAR: 8,
 }
 
 // Global variable
