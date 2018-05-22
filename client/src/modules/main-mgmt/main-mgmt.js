@@ -235,7 +235,7 @@ class MainMgmt {
       });
       boundary.x = x;
       boundary.y = y;
-
+      boundary.isImport = true;
       this.boundary.createBoundary(boundary);
     });
 
@@ -247,6 +247,7 @@ class MainMgmt {
       });
       vertex.x = x;
       vertex.y = y;
+      vertex.isImport = true;
       this.vertex.createVertex(vertex);
     });
 
@@ -266,7 +267,7 @@ class MainMgmt {
     });
 
     this.initMenuContext();
-    this.showFull();
+    this.updateHeightBoundary();
   }
 
   /**
@@ -285,7 +286,6 @@ class MainMgmt {
     let dataTypes = data.vertexTypes['VERTEX'];
     let vertices = this.removeDuplicates(data.vertex, "vertexType");
     let types = this.getListVertexType(dataTypes);
-    // let vertices = data.vertex;
     for (let vertex of vertices) {
       let type = vertex.vertexType;
       // If vertex type not exit in embedded vertex type
@@ -552,22 +552,22 @@ class MainMgmt {
    */
   checkDragObjectOutsideBoundary(srcInfos) {
     // Get box object
-    const {height, width} = this.objectUtils.getBBoxObject(srcInfos.id);
+    const {id, parent} = srcInfos;
+    let {height, width} = this.objectUtils.getBBoxObject(id);
     let xSrc = srcInfos.x;
     let ySrc = srcInfos.y;
     let hBSrc = xSrc + width;
     let wBSrc = ySrc + height;
 
     // Parent
-    let parentId = srcInfos.parent;
-    const {x, y} = this.objectUtils.getBoundaryInfoById(parentId);
-    let pBox = this.objectUtils.getBBoxObject(parentId);
+    const {x, y} = this.objectUtils.getBoundaryInfoById(parent);
+    let pBox = this.objectUtils.getBBoxObject(parent);
     let xParent = x + pBox.width;
     let yParent = y + pBox.height;
 
     // Check drag outside a boundary
     if ((xSrc < x) || (ySrc < y) || (hBSrc > xParent) || (wBSrc > yParent)) {
-      this.boundary.removeMemberFromBoundary(parentId, srcInfos.id);
+      this.boundary.removeMemberFromBoundary(parent, srcInfos.id);
       srcInfos.parent = null;
     }
   }
@@ -722,55 +722,38 @@ class MainMgmt {
     });
 
     this.vertex.resetSizeVertex(false);
-    // Get all boundary that without parent but have child
-    let boundaries = _.filter(this.dataContainer.boundary, (g) => {
-      return g.parent != null;
-    });
-    boundaries.forEach(boundary => {
-      this.boundary.resizeParentBoundary(boundary.id);
-    });
-    boundaries = _.filter(this.dataContainer.boundary, (g) => {
-      return g.parent == null && g.member.length > 0;
-    });
-    boundaries.forEach(boundary => {
-      this.boundary.reorderPositionMember(boundary.id);
-    });
-
-    setMinBoundaryGraph(this.dataContainer);
+    this.updateHeightBoundary();
   }
 
   /**
    * Show full graph
    */
   showFull() {
-    let boundary = this.dataContainer.boundary;
+    let edges = this.dataContainer.edge;
     window.showReduced = false;
     /** Vertex **/
     d3.selectAll('.drag_connect.reduced').remove();
-    d3.selectAll('.groupVertex').classed("hide", false);
     d3.selectAll('.property').classed("hide", false);
     d3.selectAll('.drag_connect').classed("hide", false);
-    $(".edge ").fadeIn();
-    // Re-draw edge
-    this.dataContainer.vertex.forEach(v => {
-      this.vertex.updatePathConnect(v.id);
-    });
-    this.vertex.resetSizeVertex(true);
-    // Get all boundary that without parent but have child
-    let boundaries = _.filter(this.dataContainer.boundary, (g) => {
-      return g.parent != null;
-    });
-    boundaries.forEach(boundary => {
-      this.boundary.resizeParentBoundary(boundary.id);
-    });
-    boundaries = _.filter(this.dataContainer.boundary, (g) => {
-      return g.parent == null && g.member.length > 0;
-    });
-    boundaries.forEach(boundary => {
-      this.boundary.reorderPositionMember(boundary.id);
-    });
 
-    setMinBoundaryGraph(this.dataContainer);
+    // Filter the vertex exit edge
+    let len = edges.length;
+    let vertices = [];
+    for (let i = 0; i < len; i++) {
+      let edge = edges[i];
+      vertices.push(edge.source.vertexId);
+      vertices.push(edge.target.vertexId);
+    }
+
+    vertices = Array.from(new Set(vertices))
+    len = vertices.length;
+    // Re-draw edge
+    for (let i = 0; i < len; i++) {
+      let id = vertices[i];
+      this.vertex.updatePathConnect(id);
+    }
+    this.vertex.resetSizeVertex(true);
+    this.updateHeightBoundary();
   }
 
   /**
@@ -884,6 +867,24 @@ class MainMgmt {
     return myArr.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
     });
+  }
+
+  updateHeightBoundary() {
+    // Get all boundary that without parent but have child
+    let boundaries = _.filter(this.dataContainer.boundary, (g) => {
+      return g.parent != null;
+    });
+    boundaries.forEach(boundary => {
+      this.boundary.resizeParentBoundary(boundary.id);
+    });
+    boundaries = _.filter(this.dataContainer.boundary, (g) => {
+      return g.parent == null && g.member.length > 0;
+    });
+    boundaries.forEach(boundary => {
+      this.boundary.reorderPositionMember(boundary.id);
+    });
+
+    setMinBoundaryGraph(this.dataContainer);
   }
 };
 export default MainMgmt;

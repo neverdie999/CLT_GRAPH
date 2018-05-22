@@ -1,7 +1,5 @@
 import {
   HTML_ALGETA_CONTAINER_ID,
-  SCREEN_SIZES,
-  FILE_MGMT_HEIGHT,
 } from '../../const/index';
 import {comShowMessage} from '../../common/utilities/common.ult';
 
@@ -161,7 +159,6 @@ class FileMgmt {
     });
 
     dataContent.vertexTypes = window.vertexDefine || {};
-    dataContent.graphSize = {width: window.xBoundary, height: window.yBoundary};
 
     return Promise.resolve(dataContent);
   }

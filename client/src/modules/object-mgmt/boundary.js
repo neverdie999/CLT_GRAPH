@@ -29,7 +29,7 @@ class Boundary {
     this.objectUtils = props.objectUtils;
     this.mainMgmt = props.mainMgmt;
 
-    this.dragRegister = d3.drag()
+    this.handlerDragBoundary = d3.drag()
       .on("start", this.dragBoundaryStart(this))
       .on("drag", this.dragBoundary(this))
       .on("end", this.dragBoundaryEnd(this));
@@ -39,7 +39,7 @@ class Boundary {
   }
 
   async createBoundary(options = {}) {
-    let {x, y, name, description, member, id, width, height, parent, mandatory, repeat} = options;
+    let {x, y, name, description, member, id, width, height, parent, mandatory, repeat, isImport} = options;
     if (!id)
       id = generateObjectId('B');
     if(!width)
@@ -62,11 +62,15 @@ class Boundary {
     };
 
     this.dataContainer.boundary.push(boundaryInfo);
-    let group = this.svgSelector.append("g")
+    let group = this.svgSelector.selectAll(`.${HTML_BOUNDARY_CONTAINER_CLASS}`)
+      .data(this.dataContainer.boundary)
+      .enter()
+      .append("g")
       .attr("transform", `translate(${options.x}, ${options.y})`)
       .attr("id", id)
       .attr("class", `${HTML_BOUNDARY_CONTAINER_CLASS}`)
-      .style("cursor", "move");
+      .style("cursor", "move")
+      .call(this.handlerDragBoundary);
 
     group.append("text")
       .attr("id", `${id}Text`)
@@ -101,16 +105,17 @@ class Boundary {
              title="${boundaryInfo.description}">${boundaryInfo.name}</p>
           </div>
       `);
-
-    this.initEventDrag();
-    setMinBoundaryGraph(this.dataContainer);
+    if(!isImport){
+      // this.initEventDrag();
+      setMinBoundaryGraph(this.dataContainer);
+    }
   }
 
   initEventDrag() {
     // Call event drag for all boundary exit.
     this.svgSelector.selectAll(`.${HTML_BOUNDARY_CONTAINER_CLASS}`)
       .data(this.dataContainer.boundary)
-      .call(this.dragRegister);
+      .call(this.handlerDragBoundary);
   }
 
   dragBoundaryStart(self) {

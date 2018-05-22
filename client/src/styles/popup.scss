@@ -93,15 +93,15 @@
       border-collapse: collapse;
       border-spacing: 0 0.5em;
       margin: 5px 0px 10px;
-      display: block;
-      overflow-x: auto;
-      white-space: nowrap;
+      //display: block;
+      //overflow-x: auto;
+      //white-space: nowrap;
     }
   }
 
   input[type="text"], input[type="email"] , input[type="password"], input[type="number"], select, textarea {
     height: 29px;
-    margin: 0 4px 0 0;
+    //margin: 0 4px 0 0;
     border-color: #b8d6f6;
     background-color: #fff;
     line-height: 17px;
