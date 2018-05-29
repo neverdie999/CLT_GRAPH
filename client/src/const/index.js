@@ -24,6 +24,13 @@ export const TYPE_POINT = {
   INPUT: 'I'
 };
 
+// Connect side (left, right, both)
+export const CONNECT_TYPE = {
+  LEFT: 'LEFT',
+  RIGHT: 'RIGHT',
+  BOTH: 'BOTH'
+}
+
 // The attributes size of vertex
 export const VERTEX_ATTR_SIZE = {
   HEADER_HEIGHT: 38,

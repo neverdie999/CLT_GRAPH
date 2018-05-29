@@ -508,6 +508,7 @@ class MainMgmt {
   // Check drag inside boundary
   checkDragObjectInsideBoundary(srcInfos, type) {
     // Get box object
+    // Get box object
     const {height, width} = this.objectUtils.getBBoxObject(srcInfos.id);
     let xSrc = srcInfos.x;
     let ySrc = srcInfos.y;

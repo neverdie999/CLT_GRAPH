@@ -8,6 +8,7 @@ import {
   HTML_ALGETA_CONTAINER_ID,
   VERTEX_FORMAT_TYPE,
   POPUP_CONFIG,
+  CONNECT_TYPE,
 } from '../../const/index';
 import _ from "lodash";
 import PopUtils from '../../common/utilities/popup.ult';
@@ -97,7 +98,10 @@ class Vertex {
    * Ex
    */
   createVertex(options) {
-    let {x, y, name, description, data, id, parent, mandatory, repeat, isMenu, vertexType, isImport} = options;
+    let {x, y, name, description, data, id, parent, mandatory, repeat, isMenu, vertexType, isImport, connectType} = options;
+    // To do: Read or load from config.
+    connectType = CONNECT_TYPE.BOTH;
+
     if (!vertexType)
       return;
     // Deep clone vertex define
@@ -133,19 +137,20 @@ class Vertex {
       .call(this.handlerDragVertex);
 
     // Append point connect vertex
-    group.append("circle")
-      .attr("class", "drag_connect connect_header")
-      .attr("r", 3)
-      .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH / 2)
-      .on("mouseover", () => {
-        d3.select(d3.event.target).classed("hight-light", true);
-        d3.select(d3.event.target).attr("r", 4);
-      })
-      .on("mouseout", () => {
-        d3.select(d3.event.target).classed("hight-light", false);
-        d3.select(d3.event.target).attr("r", 3);
-      })
-      .call(this.handlerDragConnectPoint);
+    if(connectType)
+      group.append("circle")
+        .attr("class", "drag_connect connect_header")
+        .attr("r", 3)
+        .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH / 2)
+        .on("mouseover", () => {
+          d3.select(d3.event.target).classed("hight-light", true);
+          d3.select(d3.event.target).attr("r", 4);
+        })
+        .on("mouseout", () => {
+          d3.select(d3.event.target).classed("hight-light", false);
+          d3.select(d3.event.target).attr("r", 3);
+        })
+        .call(this.handlerDragConnectPoint);
 
     let htmlContent = '';
     let len = vertexInfo.data.length;
@@ -159,39 +164,41 @@ class Vertex {
         </div>`;
 
       // Input
-      group.append("circle")
-        .attr("class", "drag_connect")
-        .attr("prop", `${id}${CONNECT_KEY}${i}`)
-        .attr("type", TYPE_POINT.INPUT)
-        .attr("r", 3)
-        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-        .on("mouseover", () => {
-          d3.select(d3.event.target).classed("hight-light", true);
-          d3.select(d3.event.target).attr("r", 4);
-        })
-        .on("mouseout", () => {
-          d3.select(d3.event.target).classed("hight-light", false);
-          d3.select(d3.event.target).attr("r", 3);
-        })
-        .call(this.handlerDragConnectPoint);
+      if(connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.LEFT)
+        group.append("circle")
+          .attr("class", "drag_connect")
+          .attr("prop", `${id}${CONNECT_KEY}${i}`)
+          .attr("type", TYPE_POINT.INPUT)
+          .attr("r", 3)
+          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+          .on("mouseover", () => {
+            d3.select(d3.event.target).classed("hight-light", true);
+            d3.select(d3.event.target).attr("r", 4);
+          })
+          .on("mouseout", () => {
+            d3.select(d3.event.target).classed("hight-light", false);
+            d3.select(d3.event.target).attr("r", 3);
+          })
+          .call(this.handlerDragConnectPoint);
 
       // Output
-      group.append("circle")
-        .attr("class", "drag_connect")
-        .attr("prop", `${id}${CONNECT_KEY}${i}`)
-        .attr("type", TYPE_POINT.OUTPUT)
-        .attr("r", 3)
-        .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-        .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-        .on("mouseover", () => {
-          d3.select(d3.event.target).classed("hight-light", true);
-          d3.select(d3.event.target).attr("r", 4);
-        })
-        .on("mouseout", () => {
-          d3.select(d3.event.target).classed("hight-light", false);
-          d3.select(d3.event.target).attr("r", 3);
-        })
-        .call(this.handlerDragConnectPoint);
+      if(connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.RIGHT)
+        group.append("circle")
+          .attr("class", "drag_connect")
+          .attr("prop", `${id}${CONNECT_KEY}${i}`)
+          .attr("type", TYPE_POINT.OUTPUT)
+          .attr("r", 3)
+          .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
+          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+          .on("mouseover", () => {
+            d3.select(d3.event.target).classed("hight-light", true);
+            d3.select(d3.event.target).attr("r", 4);
+          })
+          .on("mouseout", () => {
+            d3.select(d3.event.target).classed("hight-light", false);
+            d3.select(d3.event.target).attr("r", 3);
+          })
+          .call(this.handlerDragConnectPoint);
     }
 
     let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * len;
@@ -655,38 +662,42 @@ class Vertex {
     for (const prop of arrProp) {
       if (prop != null) {
         let count = this.findIndexPropInVertex(id, prop);
+        // To do: Read or load from config.
+        let connectType = CONNECT_TYPE.BOTH;
         // Input
-        vertex.insert("circle", ":first-child")
-          .attr("class", "drag_connect reduced")
-          .attr("prop", prop)
-          .attr("r", 3)
-          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-          .on("mouseover", () => {
-            d3.select(d3.event.target).classed("hight-light", true);
-            d3.select(d3.event.target).attr("r", 4);
-          })
-          .on("mouseout", () => {
-            d3.select(d3.event.target).classed("hight-light", false);
-            d3.select(d3.event.target).attr("r", 3);
-          })
-          .call(this.handlerDragConnectPoint);
+        if(connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.LEFT)
+          vertex.insert("circle", ":first-child")
+            .attr("class", "drag_connect reduced")
+            .attr("prop", prop)
+            .attr("r", 3)
+            .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+            .on("mouseover", () => {
+              d3.select(d3.event.target).classed("hight-light", true);
+              d3.select(d3.event.target).attr("r", 4);
+            })
+            .on("mouseout", () => {
+              d3.select(d3.event.target).classed("hight-light", false);
+              d3.select(d3.event.target).attr("r", 3);
+            })
+            .call(this.handlerDragConnectPoint);
 
         // Output
-        vertex.insert("circle", ":first-child")
-          .attr("class", "drag_connect reduced")
-          .attr("prop", prop)
-          .attr("r", 3)
-          .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-          .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
-          .on("mouseover", () => {
-            d3.select(d3.event.target).classed("hight-light", true);
-            d3.select(d3.event.target).attr("r", 4);
-          })
-          .on("mouseout", () => {
-            d3.select(d3.event.target).classed("hight-light", false);
-            d3.select(d3.event.target).attr("r", 3);
-          })
-          .call(this.handlerDragConnectPoint);
+        if(connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.RIGHT)
+          vertex.insert("circle", ":first-child")
+            .attr("class", "drag_connect reduced")
+            .attr("prop", prop)
+            .attr("r", 3)
+            .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
+            .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * count + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+            .on("mouseover", () => {
+              d3.select(d3.event.target).classed("hight-light", true);
+              d3.select(d3.event.target).attr("r", 4);
+            })
+            .on("mouseout", () => {
+              d3.select(d3.event.target).classed("hight-light", false);
+              d3.select(d3.event.target).attr("r", 3);
+            })
+            .call(this.handlerDragConnectPoint);
       }
     }
   }
