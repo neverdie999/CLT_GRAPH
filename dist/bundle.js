@@ -37895,6 +37895,7 @@ class MainMgmt {
     window.vertexTypes = data['VERTEX'];
     window.vertexFormat = data['VERTEX_DATA_ELEMENT_FORMAT'];
     window.vertexPresentation = data['VERTEX_PRESENTATION'];
+    window.vertexDataElementFormat = data['VERTEX_DATA_ELEMENT_FORMAT'];
     window.headerForm = Object.keys(data['VERTEX_DATA_ELEMENT_FORMAT']);
     this.getVertexFormatType(window.vertexFormat);
     this.getVertexTypesShowFull(data);
@@ -37929,6 +37930,7 @@ class MainMgmt {
     window.vertexTypesOld = data.vertexTypes['VERTEX'];
     window.vertexFormat = data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT'];
     window.vertexPresentation = data.vertexTypes['VERTEX_PRESENTATION'];
+    window.vertexDataElementFormat = data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT'];
     window.headerForm = Object.keys(data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT']);
     this.getVertexFormatType(window.vertexFormat);
     this.getVertexTypesShowFull(data.vertexTypes);
@@ -39340,23 +39342,25 @@ class Vertex {
   generateControlByType(options) {
     let $control = null;
     const {i, type, val, prop, id, opt} = options;
+    let defaultVal = window.vertexDataElementFormat[prop];
     switch (type) {
       case __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].BOOLEAN:
         $control = $('<input>');
         $control.attr('type', 'checkbox');
         $control.attr('name', `${prop}${i}`);
-        $control.prop('checked', val);
+        $control.prop('checked', typeof(val) == "boolean" ? val : defaultVal);
         $control.attr("value", val);
         break;
       case __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].ARRAY:
+        let firstOpt = opt[0];
         $control = $('<select>');
         $control.attr('name', `${prop}${i}`);
         $control.attr('class', 'form-control');
         $.each(opt, (key, value) => {
           $control
             .append($("<option></option>")
-              .attr("value", value)
-              .prop('selected', value == val)
+              .attr("value", value || firstOpt)
+              .prop('selected', value == (val || firstOpt))
               .text(value));
         });
         break;
@@ -39375,10 +39379,10 @@ class Vertex {
               Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* comShowMessage */])("Input invalid");
               this.value = "";
             } else {
-               if(isNaN(this.value)){
-                 Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* comShowMessage */])("Input invalid");
-                 this.value = "";
-               }
+              if(isNaN(this.value)){
+                Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* comShowMessage */])("Input invalid");
+                this.value = "";
+              }
             }
           });
         break;

@@ -176,6 +176,7 @@ class MainMgmt {
     window.vertexTypes = data['VERTEX'];
     window.vertexFormat = data['VERTEX_DATA_ELEMENT_FORMAT'];
     window.vertexPresentation = data['VERTEX_PRESENTATION'];
+    window.vertexDataElementFormat = data['VERTEX_DATA_ELEMENT_FORMAT'];
     window.headerForm = Object.keys(data['VERTEX_DATA_ELEMENT_FORMAT']);
     this.getVertexFormatType(window.vertexFormat);
     this.getVertexTypesShowFull(data);
@@ -210,6 +211,7 @@ class MainMgmt {
     window.vertexTypesOld = data.vertexTypes['VERTEX'];
     window.vertexFormat = data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT'];
     window.vertexPresentation = data.vertexTypes['VERTEX_PRESENTATION'];
+    window.vertexDataElementFormat = data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT'];
     window.headerForm = Object.keys(data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT']);
     this.getVertexFormatType(window.vertexFormat);
     this.getVertexTypesShowFull(data.vertexTypes);
