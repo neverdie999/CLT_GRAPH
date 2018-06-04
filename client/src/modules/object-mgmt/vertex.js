@@ -737,23 +737,25 @@ class Vertex {
   generateControlByType(options) {
     let $control = null;
     const {i, type, val, prop, id, opt} = options;
+    let defaultVal = window.vertexDataElementFormat[prop];
     switch (type) {
       case VERTEX_FORMAT_TYPE.BOOLEAN:
         $control = $('<input>');
         $control.attr('type', 'checkbox');
         $control.attr('name', `${prop}${i}`);
-        $control.prop('checked', val);
+        $control.prop('checked', typeof(val) == "boolean" ? val : defaultVal);
         $control.attr("value", val);
         break;
       case VERTEX_FORMAT_TYPE.ARRAY:
+        let firstOpt = opt[0];
         $control = $('<select>');
         $control.attr('name', `${prop}${i}`);
         $control.attr('class', 'form-control');
         $.each(opt, (key, value) => {
           $control
             .append($("<option></option>")
-              .attr("value", value)
-              .prop('selected', value == val)
+              .attr("value", value || firstOpt)
+              .prop('selected', value == (val || firstOpt))
               .text(value));
         });
         break;
@@ -772,10 +774,10 @@ class Vertex {
               comShowMessage("Input invalid");
               this.value = "";
             } else {
-               if(isNaN(this.value)){
-                 comShowMessage("Input invalid");
-                 this.value = "";
-               }
+              if(isNaN(this.value)){
+                comShowMessage("Input invalid");
+                this.value = "";
+              }
             }
           });
         break;
