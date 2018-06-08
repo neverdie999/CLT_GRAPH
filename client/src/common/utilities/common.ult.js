@@ -5,7 +5,6 @@ import {
   SVG_CONTAINER_ID,
   DEFAULT_CONFIG_GRAPH,
   REPEAT_RANGE,
-  BOUNDARY_CONFIG
 } from '../../const/index';
 
 /**

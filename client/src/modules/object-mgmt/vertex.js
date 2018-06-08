@@ -137,7 +137,7 @@ class Vertex {
       .call(this.handlerDragVertex);
 
     // Append point connect vertex
-    if(connectType)
+    if (connectType)
       group.append("circle")
         .attr("class", "drag_connect connect_header")
         .attr("r", 3)
@@ -164,7 +164,7 @@ class Vertex {
         </div>`;
 
       // Input
-      if(connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.LEFT)
+      if (connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.LEFT)
         group.append("circle")
           .attr("class", "drag_connect")
           .attr("prop", `${id}${CONNECT_KEY}${i}`)
@@ -182,7 +182,7 @@ class Vertex {
           .call(this.handlerDragConnectPoint);
 
       // Output
-      if(connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.RIGHT)
+      if (connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.RIGHT)
         group.append("circle")
           .attr("class", "drag_connect")
           .attr("prop", `${id}${CONNECT_KEY}${i}`)
@@ -215,7 +215,7 @@ class Vertex {
           ${htmlContent}
         </div>
       `);
-    if(!isImport){
+    if (!isImport) {
       // this.initEventDrag();
       setMinBoundaryGraph(this.dataContainer);
     }
@@ -343,7 +343,6 @@ class Vertex {
 
     // Generate properties vertex
     let keyHeader = window.headerForm;
-    let dataHeader = window.vertexFormat;
     let cols = keyHeader.length;
     let rows = data.length;
     const typeData = window.vertexFormatType;
@@ -361,11 +360,12 @@ class Vertex {
       $colHdr.appendTo($headerRow);
 
       // Init col in colgroup
-      let prop = headerForm[i];
+      let prop = keyHeader[i];
       let type = typeData[prop];
-      let width = this.findLongestContent({data, prop, type});
+      let def = dataFormat[prop];
+      let width = this.findLongestContent({data, prop, type, def});
       $popWidth += width;
-      let $colWidth =  $('<col>').attr('width', width);
+      let $colWidth = $('<col>').attr('width', width);
       $colWidth.appendTo($colGroup);
     }
     $colGroup.appendTo($form);
@@ -377,8 +377,7 @@ class Vertex {
       const dataRow = data[i];
       const $row = $('<tr>');
       for (let j = 0; j < cols; j++) {
-        let id = vertexId;
-        let prop = headerForm[j];
+        let prop = keyHeader[j];
         let type = typeData[prop];
         let val = dataRow[prop];
         let opt = [];
@@ -391,7 +390,7 @@ class Vertex {
           $col.attr('class', 'checkbox_center');
         }
 
-        let $control = this.generateControlByType({i, type, val, prop, id, opt});
+        let $control = this.generateControlByType({i, type, val, prop, opt});
         $control.appendTo($col);
         $col.appendTo($row);
       }
@@ -450,16 +449,13 @@ class Vertex {
 
     // Update properties
     let keyHeader = window.headerForm;
-    let dataHeader = window.vertexFormat;
     let cols = keyHeader.length;
     let data = vertex.data;
     let rows = data.length;
     const typeData = window.vertexFormatType;
-    const dataFormat = window.vertexFormat;
     let presentation = window.vertexPresentation;
     for (let i = 0; i < rows; i++) {
       const dataRow = data[i];
-      const $row = $('<tr>');
       for (let j = 0; j < cols; j++) {
         let prop = headerForm[j];
         let type = typeData[prop];
@@ -469,7 +465,6 @@ class Vertex {
           dataRow[prop] = forms[`${prop}${i}`];
         }
       }
-      let key = dataRow.key;
 
       d3.select(`#${replaceSpecialCharacter(`${id}${presentation.key}${i}`)}`)
         .text(dataRow[presentation.key])
@@ -665,7 +660,7 @@ class Vertex {
         // To do: Read or load from config.
         let connectType = CONNECT_TYPE.BOTH;
         // Input
-        if(connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.LEFT)
+        if (connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.LEFT)
           vertex.insert("circle", ":first-child")
             .attr("class", "drag_connect reduced")
             .attr("prop", prop)
@@ -682,7 +677,7 @@ class Vertex {
             .call(this.handlerDragConnectPoint);
 
         // Output
-        if(connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.RIGHT)
+        if (connectType === CONNECT_TYPE.BOTH || connectType === CONNECT_TYPE.RIGHT)
           vertex.insert("circle", ":first-child")
             .attr("class", "drag_connect reduced")
             .attr("prop", prop)
@@ -736,18 +731,17 @@ class Vertex {
    */
   generateControlByType(options) {
     let $control = null;
-    const {i, type, val, prop, id, opt} = options;
-    let defaultVal = window.vertexDataElementFormat[prop];
+    const {i, type, val, prop, opt} = options;
+    let defaultVal = window.vertexDataElementFormat[prop]
     switch (type) {
       case VERTEX_FORMAT_TYPE.BOOLEAN:
         $control = $('<input>');
         $control.attr('type', 'checkbox');
         $control.attr('name', `${prop}${i}`);
-        $control.prop('checked', typeof(val) == "boolean" ? val : defaultVal);
+        $control.prop('checked', typeof(val) == 'boolean' ? val : defaultVal);
         $control.attr("value", val);
         break;
       case VERTEX_FORMAT_TYPE.ARRAY:
-        let firstOpt = opt[0];
         $control = $('<select>');
         $control.attr('name', `${prop}${i}`);
         $control.attr('class', 'form-control');
@@ -755,7 +749,7 @@ class Vertex {
           $control
             .append($("<option></option>")
               .attr("value", value || firstOpt)
-              .prop('selected', value == (val || firstOpt))
+              .prop('selected', value === (val || firstOpt))
               .text(value));
         });
         break;
@@ -763,18 +757,18 @@ class Vertex {
         $control = $('<input>');
         $control.attr('type', 'text');
         $control.attr('name', `${prop}${i}`);
-        $control.attr("value", val);
+        $control.attr("value", !isNaN(val) ? val : defaultVal);
         $control.attr('class', 'form-control');
         $control
           .on('keydown', function (e) {
             allowInputNumberOnly(e);
           })
           .on('focusout', function (e) {
-            if(this.value && !checkIsMatchRegex(this.value)){
+            if (this.value && !checkIsMatchRegex(this.value)) {
               comShowMessage("Input invalid");
               this.value = "";
             } else {
-              if(isNaN(this.value)){
+              if (isNaN(this.value)) {
                 comShowMessage("Input invalid");
                 this.value = "";
               }
@@ -785,7 +779,7 @@ class Vertex {
         $control = $('<input>');
         $control.attr('type', 'text');
         $control.attr('name', `${prop}${i}`);
-        $control.attr("value", val);
+        $control.attr("value", val != undefined ? val : defaultVal);
         $control.attr('class', 'form-control');
     }
 
@@ -822,20 +816,34 @@ class Vertex {
   }
 
   findLongestContent(configs) {
-    let {data, prop, type} = configs;
+    let {data, prop, type, def} = configs;
     let firstRow = data[0];
+    let arr = [];
 
-    // If type is boolean or first undefined or object hasn't the specified property
-    if((type === VERTEX_FORMAT_TYPE.BOOLEAN) || !firstRow || !firstRow.hasOwnProperty(prop))
-      return prop.toString().length*POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
+    // If type is boolean or first undefined or firstRow is empty
+    if ((type === VERTEX_FORMAT_TYPE.BOOLEAN) || !firstRow)
+      return prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
+
+    //  If object firstRow hasn't it own the specified property
+    if (!firstRow.hasOwnProperty(prop)) {
+      let lengthProp = prop.toString().length;
+      let lengthDef = def.toString().length;
+      return (lengthProp > lengthDef ? lengthProp * POPUP_CONFIG.WIDTH_CHAR : lengthDef * POPUP_CONFIG.WIDTH_CHAR) + POPUP_CONFIG.PADDING_CHAR;
+    }
 
     // From an array of objects, extract value of a property as array
-    let arr = data.map(e => e[prop]);
-    let longest = arr.reduce((a, b) => { return a.length > b.length ? a : b; });
-    if(longest.toString().length < prop.toString().length)
-      return prop.toString().length*POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
+    if (type === VERTEX_FORMAT_TYPE.ARRAY) {
+      arr = def;
+    } else {
+      arr = data.map(e => e[prop]);
+    }
+    let longest = arr.reduce((a, b) => {
+      return a.length > b.length ? a : b;
+    });
+    if (longest.toString().length < prop.toString().length)
+      return prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
 
-    return longest.toString().length*POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
+    return longest.toString().length * (type === VERTEX_FORMAT_TYPE.ARRAY ? POPUP_CONFIG.WIDTH_CHAR_UPPER : POPUP_CONFIG.WIDTH_CHAR) + POPUP_CONFIG.PADDING_CHAR;
   }
 }
 

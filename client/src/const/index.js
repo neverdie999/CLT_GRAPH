@@ -80,7 +80,8 @@ export const POPUP_CONFIG = {
   MAX_WIDTH: 1550,
   MIN_WIDTH: 450,
   PADDING_CHAR: 18,
-  WIDTH_CHAR: 8,
+  WIDTH_CHAR: 10,
+  WIDTH_CHAR_UPPER: 11.5,
 }
 
 // Global variable

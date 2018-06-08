@@ -5,7 +5,6 @@ import {
   HTML_VERTEX_CONTAINER_CLASS,
   DEFAULT_CONFIG_GRAPH,
   REPEAT_RANGE,
-  BOUNDARY_CONFIG,
 } from '../../const/index';
 
 import PopUtils from '../../common/utilities/popup.ult';
