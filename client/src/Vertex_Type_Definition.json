@@ -14,8 +14,8 @@
         {
           "usage": "O",
           "key": "CONNECTOR",
+          "mount": 10,
           "value": "_",
-          "mount": 100,
           "description": "connector between strings"
         }
       ]
@@ -133,17 +133,16 @@
   ],
   "VERTEX_DATA_ELEMENT_FORMAT": {
     "usage": [
-      "M",
-      "O",
-      "C"
+      "COMPOSE",
+      "COMPONENT",
+      "SIMPLE"
     ],
     "key": "text",
     "value": "text",
-    "flag": false,
-    "mount" : "number",
+    "flag": true,
+    "mount" : 1,
     "description": "text",
-    "description01": "text",
-    "quality" : "number"
+    "option": "Please input option"
   },
   "VERTEX_PRESENTATION": {
     "key": "key",

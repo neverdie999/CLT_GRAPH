@@ -822,11 +822,11 @@ class MainMgmt {
       let key = header[i];
       let value = data[key];
       let type = typeof(value);
-      if (type == "boolean") {
+      if (type === "boolean") {
         formatType[key] = VERTEX_FORMAT_TYPE.BOOLEAN; // For boolean
-      } else if (type == "object" && Array.isArray(value)) {
+      } else if (type === "object" && Array.isArray(value)) {
         formatType[key] = VERTEX_FORMAT_TYPE.ARRAY; // For array
-      } else if (type == "string" && value === "number") {
+      } else if (type === "number") {
         formatType[key] = VERTEX_FORMAT_TYPE.NUMBER; // For number
       } else {
         formatType[key] = VERTEX_FORMAT_TYPE.STRING; // For string and other type
