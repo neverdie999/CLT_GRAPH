@@ -838,7 +838,9 @@ class Vertex {
       arr = data.map(e => e[prop]);
     }
     let longest = arr.reduce((a, b) => {
-      return a.length > b.length ? a : b;
+      let firstTmp = a + "";
+      let secondTmp = b + "";
+      return firstTmp.length > secondTmp.length ? firstTmp : secondTmp;
     });
     if (longest.toString().length < prop.toString().length)
       return prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
