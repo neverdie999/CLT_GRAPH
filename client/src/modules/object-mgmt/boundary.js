@@ -94,10 +94,11 @@ class Boundary {
       .style("border-color", this.colorHash.hex(boundaryInfo.name))
       .style("font-size", "13px")
       .style("background", "none")
+      .style("pointer-events", "none")
       .append("xhtml:div")
       .attr("class", "boundary_content")
       .html(`
-          <div class="boundary_header">
+          <div class="boundary_header" style="pointer-events: all">
             <p id="${id}Header" class="header_name header_boundary" style="width: 100%;
              height: ${BOUNDARY_ATTR_SIZE.HEADER_HEIGHT}px;
              background-color: ${this.colorHash.hex(boundaryInfo.name)}" 
@@ -132,8 +133,8 @@ class Boundary {
       updateGraphBoundary(d);
 
       // Prevent drag object outside the window
-      d.x = d3.event.x < DEFAULT_CONFIG_GRAPH.MIN_OFFSETX ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETX : d3.event.x;
-      d.y = d3.event.y < DEFAULT_CONFIG_GRAPH.MIN_OFFSETY ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETY : d3.event.y;
+      d.x = d3.event.x < DEFAULT_CONFIG_GRAPH.MIN_OFFSET_X ? DEFAULT_CONFIG_GRAPH.MIN_OFFSET_X : d3.event.x;
+      d.y = d3.event.y < DEFAULT_CONFIG_GRAPH.MIN_OFFSET_Y ? DEFAULT_CONFIG_GRAPH.MIN_OFFSET_Y : d3.event.y;
       // Transform group
       // d3.select(this).attr("transform", (d, i) => {
       //   return "translate(" + [d.x, d.y] + ")"
@@ -151,8 +152,8 @@ class Boundary {
 
   dragBoundaryEnd(self) {
     return function (d) {
-      d.x = d3.event.x < DEFAULT_CONFIG_GRAPH.MIN_OFFSETX ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETX : d3.event.x;
-      d.y = d3.event.y < DEFAULT_CONFIG_GRAPH.MIN_OFFSETY ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETY : d3.event.y;
+      d.x = d3.event.x < DEFAULT_CONFIG_GRAPH.MIN_OFFSET_X ? DEFAULT_CONFIG_GRAPH.MIN_OFFSET_X : d3.event.x;
+      d.y = d3.event.y < DEFAULT_CONFIG_GRAPH.MIN_OFFSET_Y ? DEFAULT_CONFIG_GRAPH.MIN_OFFSET_Y : d3.event.y;
       // Transform group
       d3.select(this).attr("transform", (d, i) => {
         return "translate(" + [d.x, d.y] + ")"
@@ -736,11 +737,11 @@ class Boundary {
    * Bind event and init data for controls on popup
    */
   bindEventForPopupBoundary() {
-    $("#boundaryBtnConfirm").click(e => {
+    $("#boundaryBtnConfirm").click(() => {
       this.confirmEditBoundaryInfo();
     });
 
-    $("#boudanryBtnCancel").click(e => {
+    $("#boundaryBtnCancel").click(() => {
       this.closePopBoundaryInfo();
     });
 
@@ -790,7 +791,7 @@ class Boundary {
    */
   closePopBoundaryInfo() {
     this.originBoundary = null;
-    let options = {popupId: HTML_BOUNDARY_INFO_ID}
+    let options = {popupId: HTML_BOUNDARY_INFO_ID};
     PopUtils.metClosePopup(options);
   }
 };

@@ -22,8 +22,8 @@ import {
   BOUNDARY_ATTR_SIZE,
   TYPE_POINT,
   VERTEX_FORMAT_TYPE,
+  DATA_GLOBAL,
 } from '../../const/index';
-import {HTML_ALGETA_CONTAINER_ID} from "../../const";
 import _ from "lodash";
 
 class MainMgmt {
@@ -169,17 +169,15 @@ class MainMgmt {
       return;
     }
 
+    const {VERTEX, VERTEX_GROUP} = data;
     // Set global vertex types
     // The content vertex type on graph alway
     // give to content vertex type was import from Vertex Type Defination
-    window.vertexDefine = data; //store data in global value to write file graph.
-    window.vertexTypes = data['VERTEX'];
-    window.vertexFormat = data['VERTEX_DATA_ELEMENT_FORMAT'];
-    window.vertexPresentation = data['VERTEX_PRESENTATION'];
-    window.vertexDataElementFormat = data['VERTEX_DATA_ELEMENT_FORMAT'];
-    window.headerForm = Object.keys(data['VERTEX_DATA_ELEMENT_FORMAT']);
-    this.getVertexFormatType(window.vertexFormat);
+    this.getVertexFormatType(VERTEX_GROUP);
     this.getVertexTypesShowFull(data);
+    window.vertexDefine = data;
+    window.vertexTypes = VERTEX;
+    window.vertexGroup = VERTEX_GROUP;
     window.isVertexTypeDefine = true;
 
     // Validate vertex type
@@ -204,22 +202,20 @@ class MainMgmt {
     let errorContent = await this.validateGraphDataStructure(data);
     if (errorContent) {
       comShowMessage("Format or data in Data Graph Structure is corrupted. You should check it!");
-      return;
+      // return;
     }
 
     // Store vertex types
-    window.vertexTypesOld = data.vertexTypes['VERTEX'];
-    window.vertexFormat = data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT'];
-    window.vertexPresentation = data.vertexTypes['VERTEX_PRESENTATION'];
-    window.vertexDataElementFormat = data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT'];
-    window.headerForm = Object.keys(data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT']);
-    this.getVertexFormatType(window.vertexFormat);
-    this.getVertexTypesShowFull(data.vertexTypes);
+    const {vertexTypes} = data;
+    const {VERTEX, VERTEX_GROUP} = vertexTypes;
+    this.getVertexFormatType(VERTEX_GROUP);
+    this.getVertexTypesShowFull(vertexTypes);
 
     // If still not import Vertex Type Definition then reset it.
     if (!window.isVertexTypeDefine) {
-      window.vertexTypes = data.vertexTypes['VERTEX'];
-      window.vertexDefine = data.vertexTypes;
+      window.vertexTypes = VERTEX;
+      window.vertexDefine = vertexTypes;
+      window.vertexGroup = VERTEX_GROUP;
     }
 
     // Validate vertex type
@@ -814,26 +810,35 @@ class MainMgmt {
     this.edge.removeEdge(edgeId);
   }
 
-  getVertexFormatType(data) {
-    let formatType = {};
-    let header = window.headerForm;
-    let len = header.length;
-    for (let i = 0; i < len; i++) {
-      let key = header[i];
-      let value = data[key];
-      let type = typeof(value);
-      if (type === "boolean") {
-        formatType[key] = VERTEX_FORMAT_TYPE.BOOLEAN; // For boolean
-      } else if (type === "object" && Array.isArray(value)) {
-        formatType[key] = VERTEX_FORMAT_TYPE.ARRAY; // For array
-      } else if (type === "number") {
-        formatType[key] = VERTEX_FORMAT_TYPE.NUMBER; // For number
-      } else {
-        formatType[key] = VERTEX_FORMAT_TYPE.STRING; // For string and other type
+  getVertexFormatType(vertexGroup) {
+    vertexGroup.forEach(group => {
+      const {groupType, dataElementFormat, vertexPresentation} = group;
+      window.headerForm[groupType] = Object.keys(dataElementFormat);
+      window.vertexPresentation[groupType] = vertexPresentation;
+      window.vertexFormat[groupType] = dataElementFormat;
+      window.vertexGroupType[groupType] = group;
+      let formatType = {};
+      let header = window.headerForm[groupType];
+      let len = header.length;
+      for (let i = 0; i < len; i++) {
+        let key = header[i];
+        let value = dataElementFormat[key];
+        let type = typeof(value);
+        if (type === "boolean") {
+          formatType[key] = VERTEX_FORMAT_TYPE.BOOLEAN; // For boolean
+        } else if (type === "object" && Array.isArray(value)) {
+          formatType[key] = VERTEX_FORMAT_TYPE.ARRAY; // For array
+        } else if (type === "number") {
+          formatType[key] = VERTEX_FORMAT_TYPE.NUMBER; // For number
+        } else {
+          formatType[key] = VERTEX_FORMAT_TYPE.STRING; // For string and other type
+        }
       }
-    }
 
-    window.vertexFormatType = formatType;
+      window.vertexFormatType[groupType] = formatType;
+    });
+
+    console.log(window.vertexFormatType);
   }
 
   getVertexTypesShowFull(data) {
@@ -857,6 +862,8 @@ class MainMgmt {
         window.groupVertexOption[option] = groupAction;
       }
     }
+
+    console.log(window.groupVertexOption);
   }
 
   /**

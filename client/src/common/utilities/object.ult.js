@@ -1,10 +1,5 @@
 import * as d3 from 'd3';
 import _ from "lodash";
-import {
-  TYPE_POINT,
-  VERTEX_ATTR_SIZE,
-  BOUNDARY_ATTR_SIZE
-} from '../../const/index';
 
 class ObjectUtils {
   constructor(props) {

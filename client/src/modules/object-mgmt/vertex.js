@@ -5,10 +5,10 @@ import {
   HTML_VERTEX_CONTAINER_CLASS,
   DEFAULT_CONFIG_GRAPH,
   REPEAT_RANGE,
-  HTML_ALGETA_CONTAINER_ID,
   VERTEX_FORMAT_TYPE,
   POPUP_CONFIG,
   CONNECT_TYPE,
+  VERTEX_GROUP_OPTION,
 } from '../../const/index';
 import _ from "lodash";
 import PopUtils from '../../common/utilities/popup.ult';
@@ -31,6 +31,7 @@ const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
 const HTML_VERTEX_FORM_ID = 'vertexForm';
 const CONNECT_KEY = 'Connected';
+const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
 
 class Vertex {
   constructor(props) {
@@ -98,7 +99,7 @@ class Vertex {
    * Ex
    */
   createVertex(options) {
-    let {x, y, name, description, data, id, parent, mandatory, repeat, isMenu, vertexType, isImport, connectType} = options;
+    let {x, y, name, description, data, id, parent, mandatory, repeat, isMenu, vertexType, isImport, connectType, groupType} = options;
     // To do: Read or load from config.
     connectType = CONNECT_TYPE.BOTH;
 
@@ -109,6 +110,7 @@ class Vertex {
       let info = _.cloneDeep(this.objectUtils.getDataDefineByOption({'vertexType': vertexType}));
       data = info.data;
       description = info.description;
+      groupType = info.groupType;
     }
     if (!id)
       id = generateObjectId('V');
@@ -121,6 +123,7 @@ class Vertex {
       description: description || "Description",
       data: data || [],
       id: id,
+      groupType: groupType,
       parent: parent || null,
       mandatory: mandatory || false,
       repeat: repeat || 1
@@ -154,7 +157,7 @@ class Vertex {
 
     let htmlContent = '';
     let len = vertexInfo.data.length;
-    let presentation = window.vertexPresentation;
+    let presentation = window.vertexPresentation[groupType];
     for (let i = 0; i < len; i++) {
       let data = vertexInfo.data[i];
       htmlContent += `
@@ -264,8 +267,8 @@ class Vertex {
       autoScrollOnMousedrag(d);
       updateGraphBoundary(d);
       // Prevent drag object outside the window
-      d.x = d3.event.x < DEFAULT_CONFIG_GRAPH.MIN_OFFSETX ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETX : d3.event.x;
-      d.y = d3.event.y < DEFAULT_CONFIG_GRAPH.MIN_OFFSETY ? DEFAULT_CONFIG_GRAPH.MIN_OFFSETY : d3.event.y;
+      d.x = d3.event.x < DEFAULT_CONFIG_GRAPH.MIN_OFFSET_X ? DEFAULT_CONFIG_GRAPH.MIN_OFFSET_X : d3.event.x;
+      d.y = d3.event.y < DEFAULT_CONFIG_GRAPH.MIN_OFFSET_Y ? DEFAULT_CONFIG_GRAPH.MIN_OFFSET_Y : d3.event.y;
       // Transform group
       d3.select(`#${d.id}`).attr("transform", (d, i) => {
         return "translate(" + [d.x, d.y] + ")"
@@ -320,11 +323,10 @@ class Vertex {
    * @param vertexId
    */
   copyVertex(vertexId) {
-    let {x, y, name, description, vertexType, data, repeat, mandatory} = this.objectUtils.cloneVertexInfo(vertexId);
+    let {x, y, name, description, vertexType, data, repeat, mandatory, groupType} = this.objectUtils.cloneVertexInfo(vertexId);
     x = x + VERTEX_ATTR_SIZE.SPACE_COPY;
     y = y + VERTEX_ATTR_SIZE.SPACE_COPY;
-    // let clone = {x, y, name, description, vertexType, data, repeat, mandatory};
-    this.createVertex({x, y, name, description, vertexType, data, repeat, mandatory});
+    this.createVertex({x, y, name, description, vertexType, data, repeat, mandatory, groupType});
   }
 
   /**
@@ -333,7 +335,18 @@ class Vertex {
    */
   makePopupEditVertex(vertexId) {
     // Use in function updateVertexInfo()
-    let {name, description, repeat, mandatory, data, id} = this.objectUtils.cloneVertexInfo(vertexId);
+    let {name, description, repeat, mandatory, data, id, groupType} = this.objectUtils.cloneVertexInfo(vertexId);
+    // Get vertex group with group type
+    let group = _.find(window.vertexGroupType, (g) => {
+      return g.groupType === groupType;
+    });
+    const option = group.option;
+    // Set show hide group button dynamic data set
+    if(option.indexOf(VERTEX_GROUP_OPTION.DYNAMIC_DATASET) < 0)
+      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}`).hide();
+    else
+      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}`).show();
+
     this.currentId = id;
     // Append content to popup
     $(`#vertexName`).val(name);
@@ -342,11 +355,11 @@ class Vertex {
     $(`#isVertexMandatory`).prop('checked', mandatory);
 
     // Generate properties vertex
-    let keyHeader = window.headerForm;
+    let keyHeader = window.headerForm[groupType];
     let cols = keyHeader.length;
     let rows = data.length;
-    const typeData = window.vertexFormatType;
-    const dataFormat = window.vertexFormat;
+    const typeData = window.vertexFormatType[groupType];
+    const dataFormat = window.vertexFormat[groupType];
 
     let $form = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
     let $content = $('<tbody>');
@@ -359,7 +372,7 @@ class Vertex {
       $colHdr.attr('class', 'col_header');
       $colHdr.appendTo($headerRow);
 
-      // Init col in colgroup
+      // Init col in col group
       let prop = keyHeader[i];
       let type = typeData[prop];
       let def = dataFormat[prop];
@@ -390,7 +403,7 @@ class Vertex {
           $col.attr('class', 'checkbox_center');
         }
 
-        let $control = this.generateControlByType({i, type, val, prop, opt});
+        let $control = this.generateControlByType({i, type, val, prop, opt, groupType});
         $control.appendTo($col);
         $col.appendTo($row);
       }
@@ -444,20 +457,21 @@ class Vertex {
     vertex.repeat = forms.vertexRepeat;
     vertex.mandatory = $(`#isVertexMandatory`).prop('checked');
     let header = d3.select(`#${id}Name`);
+    let groupType = vertex.groupType;
     header.text(vertex.name).attr('title', vertex.description);
     header.style("background-color", `${this.colorHash.hex(vertex.name)}`);
 
     // Update properties
-    let keyHeader = window.headerForm;
+    let keyHeader = window.headerForm[groupType];
     let cols = keyHeader.length;
     let data = vertex.data;
     let rows = data.length;
-    const typeData = window.vertexFormatType;
-    let presentation = window.vertexPresentation;
+    const typeData = window.vertexFormatType[groupType];
+    let presentation = window.vertexPresentation[groupType];
     for (let i = 0; i < rows; i++) {
       const dataRow = data[i];
       for (let j = 0; j < cols; j++) {
-        let prop = headerForm[j];
+        let prop = keyHeader[j];
         let type = typeData[prop];
         if (type === VERTEX_FORMAT_TYPE.BOOLEAN) {
           dataRow[prop] = forms[`${prop}${i}`] ? true : false;
@@ -731,8 +745,8 @@ class Vertex {
    */
   generateControlByType(options) {
     let $control = null;
-    const {i, type, val, prop, opt} = options;
-    let defaultVal = window.vertexDataElementFormat[prop]
+    const {i, type, val, prop, opt, groupType} = options;
+    let defaultVal = window.vertexFormat[groupType][prop];
     switch (type) {
       case VERTEX_FORMAT_TYPE.BOOLEAN:
         $control = $('<input>');
@@ -742,6 +756,7 @@ class Vertex {
         $control.attr("value", val);
         break;
       case VERTEX_FORMAT_TYPE.ARRAY:
+        let firstOpt = opt[0];
         $control = $('<select>');
         $control.attr('name', `${prop}${i}`);
         $control.attr('class', 'form-control');
@@ -828,6 +843,9 @@ class Vertex {
     if (!firstRow.hasOwnProperty(prop)) {
       let lengthProp = prop.toString().length;
       let lengthDef = def.toString().length;
+      let type = typeof(def);
+      if(type === "object" && Array.isArray(def))
+        lengthDef = this.getLongestContentFromArry(def).toString().length;
       return (lengthProp > lengthDef ? lengthProp * POPUP_CONFIG.WIDTH_CHAR : lengthDef * POPUP_CONFIG.WIDTH_CHAR) + POPUP_CONFIG.PADDING_CHAR;
     }
 
@@ -837,15 +855,19 @@ class Vertex {
     } else {
       arr = data.map(e => e[prop]);
     }
-    let longest = arr.reduce((a, b) => {
-      let firstTmp = a + "";
-      let secondTmp = b + "";
-      return firstTmp.length > secondTmp.length ? firstTmp : secondTmp;
-    });
+    let longest = this.getLongestContentFromArry(arr);
     if (longest.toString().length < prop.toString().length)
       return prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
 
     return longest.toString().length * (type === VERTEX_FORMAT_TYPE.ARRAY ? POPUP_CONFIG.WIDTH_CHAR_UPPER : POPUP_CONFIG.WIDTH_CHAR) + POPUP_CONFIG.PADDING_CHAR;
+  }
+
+  getLongestContentFromArry(arr) {
+    return arr.reduce((a, b) => {
+      let firstTmp = a + "";
+      let secondTmp = b + "";
+      return firstTmp.length > secondTmp.length ? firstTmp : secondTmp;
+    });
   }
 }
 

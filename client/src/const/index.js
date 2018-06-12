@@ -5,9 +5,6 @@ export const HTML_BOUNDARY_CONTAINER_CLASS = 'groupBoundary';
 export const HTML_EDGE_CONTAINER_CLASS = 'groupEdge';
 export const SVG_CONTAINER_ID = 'svgContainer';
 
-// Area file management size
-export const FILE_MGMT_HEIGHT = 115;
-
 export const EDGE_LINE_TP = [
   {value: 'solid', name: 'Solid'},
   {value: 'dash', name: "Dash"}
@@ -48,8 +45,8 @@ export const BOUNDARY_ATTR_SIZE = {
 
 // Graph size
 export const DEFAULT_CONFIG_GRAPH = {
-  MIN_OFFSETX: 5,
-  MIN_OFFSETY: 5,
+  MIN_OFFSET_X: 5,
+  MIN_OFFSET_Y: 5,
   MIN_WIDTH: 1900,
   MIN_HEIGHT: 959,
 }
@@ -58,13 +55,6 @@ export const DEFAULT_CONFIG_GRAPH = {
 export const REPEAT_RANGE = {
   MIN: 0,
   MAX: 9999,
-}
-
-// Boundary default config
-export const BOUNDARY_CONFIG = {
-  BG_HEADER_COLOR: '#778899',
-  LIGHT_COLOR: -20,
-  NAME: 'Boundary',
 }
 
 // Vertex type format
@@ -84,6 +74,12 @@ export const POPUP_CONFIG = {
   WIDTH_CHAR_UPPER: 11.5,
 }
 
+// Vertex group option
+export const VERTEX_GROUP_OPTION = {
+  SHOW_FULL_ALWAYS: 'SHOW_FULL_ALWAYS',
+  DYNAMIC_DATASET: 'DYNAMIC_DATASET',
+}
+
 // Global variable
 window.creatingEdge = false; // Define state creation connect (edge)
 window.sourceNode = null; // Define source node for create connect
@@ -94,7 +90,29 @@ window.vertexTypesOld = null; // Vertex types export in file Graph Data Structur
 window.isVertexTypeDefine = false; // If vertex type define was importted.
 window.showReduced = false; // Determine show full or reduced
 window.udpateEdge = false; // Define state update connect (edge) exited.
-window.groupVertexOption = {} // list vertex type have same option.
-window.vertexDefine = null //data of json file vertex type definition.
+window.groupVertexOption = {}; // list vertex type have same option.
+window.vertexDefine = null; //data of json file vertex type definition.
+window.vertexFormatType = {}; // Vertex group format type
+window.vertexFormat = {}; // Data element vertex format
+window.vertexGroupType = {};
+window.headerForm = {}; // Header group type
+window.vertexPresentation = {}; // Group vertex presentation
 window.xBoundary = 1900;
 window.yBoundary = 959;
+
+export const DATA_GLOBAL = {
+  isCreatingEdge: false,
+  srcNode: null,
+  isDisabledCommand: false,
+  isDisabledMenu: true,
+  vertexTypes: null,
+  vertexTypesOld: null,
+  IS_IMPORT_VERTEX_TYPE_DEFINE: false,
+  IS_SHOW_REDUCED: false,
+  IS_UPDATE_EDGE: false,
+  GROUP_VERTEX_OPTION: null,
+  VERTEX_DEFINE: null,
+  VERTEX_GROUP: null,
+  CURRENT_GRAPH_WIDTH: 1900,
+  CURRENT_GRAPH_HEIGHT: 959,
+}
