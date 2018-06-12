@@ -1455,155 +1455,12 @@ function projectionMutator(projectAt) {
 
 /***/ }),
 /* 36 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const HTML_ALGETA_CONTAINER_CLASS = 'algetaContainer';
-/* harmony export (immutable) */ __webpack_exports__["f"] = HTML_ALGETA_CONTAINER_CLASS;
-
-const HTML_ALGETA_CONTAINER_ID = 'algetaContainer';
-/* harmony export (immutable) */ __webpack_exports__["g"] = HTML_ALGETA_CONTAINER_ID;
-
-const HTML_VERTEX_CONTAINER_CLASS = 'groupVertex';
-/* harmony export (immutable) */ __webpack_exports__["j"] = HTML_VERTEX_CONTAINER_CLASS;
-
-const HTML_BOUNDARY_CONTAINER_CLASS = 'groupBoundary';
-/* harmony export (immutable) */ __webpack_exports__["h"] = HTML_BOUNDARY_CONTAINER_CLASS;
-
-const HTML_EDGE_CONTAINER_CLASS = 'groupEdge';
-/* harmony export (immutable) */ __webpack_exports__["i"] = HTML_EDGE_CONTAINER_CLASS;
-
-const SVG_CONTAINER_ID = 'svgContainer';
-/* harmony export (immutable) */ __webpack_exports__["m"] = SVG_CONTAINER_ID;
-
-
-// Area file management size
-const FILE_MGMT_HEIGHT = 115;
-/* unused harmony export FILE_MGMT_HEIGHT */
-
-
-const EDGE_LINE_TP = [
-  {value: 'solid', name: 'Solid'},
-  {value: 'dash', name: "Dash"}
-];
-/* harmony export (immutable) */ __webpack_exports__["e"] = EDGE_LINE_TP;
-
-
-const EDGE_ARROW_FLG = [
-  {value: 'Y', name: 'Yes'},
-  {value: 'N', name: 'No'}
-]
-/* harmony export (immutable) */ __webpack_exports__["d"] = EDGE_ARROW_FLG;
-
-
-// Type of point connect
-const TYPE_POINT = {
-  OUTPUT: 'O',
-  INPUT: 'I'
-};
-/* harmony export (immutable) */ __webpack_exports__["n"] = TYPE_POINT;
-
-
-// Connect side (left, right, both)
-const CONNECT_TYPE = {
-  LEFT: 'LEFT',
-  RIGHT: 'RIGHT',
-  BOTH: 'BOTH'
-}
-/* harmony export (immutable) */ __webpack_exports__["b"] = CONNECT_TYPE;
-
-
-// The attributes size of vertex
-const VERTEX_ATTR_SIZE = {
-  HEADER_HEIGHT: 38,
-  PROP_HEIGHT: 26,
-  GROUP_WIDTH: 150,
-  SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
-}
-/* harmony export (immutable) */ __webpack_exports__["o"] = VERTEX_ATTR_SIZE;
-
-
-// The attributes size of boundary
-const BOUNDARY_ATTR_SIZE = {
-  HEADER_HEIGHT: 38,
-  BOUND_WIDTH: 160,
-  BOUND_HEIGHT: 200,
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = BOUNDARY_ATTR_SIZE;
-
-
-// Graph size
-const DEFAULT_CONFIG_GRAPH = {
-  MIN_OFFSETX: 5,
-  MIN_OFFSETY: 5,
-  MIN_WIDTH: 1900,
-  MIN_HEIGHT: 959,
-}
-/* harmony export (immutable) */ __webpack_exports__["c"] = DEFAULT_CONFIG_GRAPH;
-
-
-// Repeat range
-const REPEAT_RANGE = {
-  MIN: 0,
-  MAX: 9999,
-}
-/* harmony export (immutable) */ __webpack_exports__["l"] = REPEAT_RANGE;
-
-
-// Boundary default config
-const BOUNDARY_CONFIG = {
-  BG_HEADER_COLOR: '#778899',
-  LIGHT_COLOR: -20,
-  NAME: 'Boundary',
-}
-/* unused harmony export BOUNDARY_CONFIG */
-
-
-// Vertex type format
-const VERTEX_FORMAT_TYPE = {
-  BOOLEAN: 1,
-  ARRAY: 2,
-  NUMBER: 3,
-  STRING: 4,
-}
-/* harmony export (immutable) */ __webpack_exports__["p"] = VERTEX_FORMAT_TYPE;
-
-
-// Popup config
-const POPUP_CONFIG = {
-  MAX_WIDTH: 1550,
-  MIN_WIDTH: 450,
-  PADDING_CHAR: 18,
-  WIDTH_CHAR: 10,
-  WIDTH_CHAR_UPPER: 11.5,
-}
-/* harmony export (immutable) */ __webpack_exports__["k"] = POPUP_CONFIG;
-
-
-// Global variable
-window.creatingEdge = false; // Define state creation connect (edge)
-window.sourceNode = null; // Define source node for create connect
-window.disabledCommand = false; // Use for only mode (Disable all command on menu context)
-window.disabledMenu = true; // Not show menu context
-window.vertexTypes = null; // Vertex types use in current graph
-window.vertexTypesOld = null; // Vertex types export in file Graph Data Structure => Used to validate
-window.isVertexTypeDefine = false; // If vertex type define was importted.
-window.showReduced = false; // Determine show full or reduced
-window.udpateEdge = false; // Define state update connect (edge) exited.
-window.groupVertexOption = {} // list vertex type have same option.
-window.vertexDefine = null //data of json file vertex type definition.
-window.xBoundary = 1900;
-window.yBoundary = 959;
-
-
-/***/ }),
-/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 if (__webpack_require__(7)) {
-  var LIBRARY = __webpack_require__(42);
+  var LIBRARY = __webpack_require__(41);
   var global = __webpack_require__(3);
   var fails = __webpack_require__(4);
   var $export = __webpack_require__(0);
@@ -2084,7 +1941,7 @@ if (__webpack_require__(7)) {
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Map = __webpack_require__(217);
@@ -2141,7 +1998,7 @@ module.exports = {
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2162,7 +2019,7 @@ module.exports = {
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2179,7 +2036,7 @@ var durationWeek = 6048e5;
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var META = __webpack_require__(47)('meta');
@@ -2238,14 +2095,14 @@ var meta = module.exports = {
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports) {
 
 module.exports = false;
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.3.31 Array.prototype[@@unscopables]
@@ -2258,7 +2115,7 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2350,12 +2207,173 @@ Transition.prototype = transition.prototype = {
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = noop;
 function noop() {}
+
+
+/***/ }),
+/* 45 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const HTML_ALGETA_CONTAINER_CLASS = 'algetaContainer';
+/* harmony export (immutable) */ __webpack_exports__["f"] = HTML_ALGETA_CONTAINER_CLASS;
+
+const HTML_ALGETA_CONTAINER_ID = 'algetaContainer';
+/* harmony export (immutable) */ __webpack_exports__["g"] = HTML_ALGETA_CONTAINER_ID;
+
+const HTML_VERTEX_CONTAINER_CLASS = 'groupVertex';
+/* harmony export (immutable) */ __webpack_exports__["j"] = HTML_VERTEX_CONTAINER_CLASS;
+
+const HTML_BOUNDARY_CONTAINER_CLASS = 'groupBoundary';
+/* harmony export (immutable) */ __webpack_exports__["h"] = HTML_BOUNDARY_CONTAINER_CLASS;
+
+const HTML_EDGE_CONTAINER_CLASS = 'groupEdge';
+/* harmony export (immutable) */ __webpack_exports__["i"] = HTML_EDGE_CONTAINER_CLASS;
+
+const SVG_CONTAINER_ID = 'svgContainer';
+/* harmony export (immutable) */ __webpack_exports__["m"] = SVG_CONTAINER_ID;
+
+
+const EDGE_LINE_TP = [
+  {value: 'solid', name: 'Solid'},
+  {value: 'dash', name: "Dash"}
+];
+/* harmony export (immutable) */ __webpack_exports__["e"] = EDGE_LINE_TP;
+
+
+const EDGE_ARROW_FLG = [
+  {value: 'Y', name: 'Yes'},
+  {value: 'N', name: 'No'}
+]
+/* harmony export (immutable) */ __webpack_exports__["d"] = EDGE_ARROW_FLG;
+
+
+// Type of point connect
+const TYPE_POINT = {
+  OUTPUT: 'O',
+  INPUT: 'I'
+};
+/* harmony export (immutable) */ __webpack_exports__["n"] = TYPE_POINT;
+
+
+// Connect side (left, right, both)
+const CONNECT_TYPE = {
+  LEFT: 'LEFT',
+  RIGHT: 'RIGHT',
+  BOTH: 'BOTH'
+}
+/* harmony export (immutable) */ __webpack_exports__["b"] = CONNECT_TYPE;
+
+
+// The attributes size of vertex
+const VERTEX_ATTR_SIZE = {
+  HEADER_HEIGHT: 38,
+  PROP_HEIGHT: 26,
+  GROUP_WIDTH: 150,
+  SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
+}
+/* harmony export (immutable) */ __webpack_exports__["o"] = VERTEX_ATTR_SIZE;
+
+
+// The attributes size of boundary
+const BOUNDARY_ATTR_SIZE = {
+  HEADER_HEIGHT: 38,
+  BOUND_WIDTH: 160,
+  BOUND_HEIGHT: 200,
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = BOUNDARY_ATTR_SIZE;
+
+
+// Graph size
+const DEFAULT_CONFIG_GRAPH = {
+  MIN_OFFSET_X: 5,
+  MIN_OFFSET_Y: 5,
+  MIN_WIDTH: 1900,
+  MIN_HEIGHT: 959,
+}
+/* harmony export (immutable) */ __webpack_exports__["c"] = DEFAULT_CONFIG_GRAPH;
+
+
+// Repeat range
+const REPEAT_RANGE = {
+  MIN: 0,
+  MAX: 9999,
+}
+/* harmony export (immutable) */ __webpack_exports__["l"] = REPEAT_RANGE;
+
+
+// Vertex type format
+const VERTEX_FORMAT_TYPE = {
+  BOOLEAN: 1,
+  ARRAY: 2,
+  NUMBER: 3,
+  STRING: 4,
+}
+/* harmony export (immutable) */ __webpack_exports__["p"] = VERTEX_FORMAT_TYPE;
+
+
+// Popup config
+const POPUP_CONFIG = {
+  MAX_WIDTH: 1550,
+  MIN_WIDTH: 450,
+  PADDING_CHAR: 18,
+  WIDTH_CHAR: 10,
+  WIDTH_CHAR_UPPER: 11.5,
+}
+/* harmony export (immutable) */ __webpack_exports__["k"] = POPUP_CONFIG;
+
+
+// Vertex group option
+const VERTEX_GROUP_OPTION = {
+  SHOW_FULL_ALWAYS: 'SHOW_FULL_ALWAYS',
+  DYNAMIC_DATASET: 'DYNAMIC_DATASET',
+}
+/* harmony export (immutable) */ __webpack_exports__["q"] = VERTEX_GROUP_OPTION;
+
+
+// Global variable
+window.creatingEdge = false; // Define state creation connect (edge)
+window.sourceNode = null; // Define source node for create connect
+window.disabledCommand = false; // Use for only mode (Disable all command on menu context)
+window.disabledMenu = true; // Not show menu context
+window.vertexTypes = null; // Vertex types use in current graph
+window.vertexTypesOld = null; // Vertex types export in file Graph Data Structure => Used to validate
+window.isVertexTypeDefine = false; // If vertex type define was importted.
+window.showReduced = false; // Determine show full or reduced
+window.udpateEdge = false; // Define state update connect (edge) exited.
+window.groupVertexOption = {}; // list vertex type have same option.
+window.vertexDefine = null; //data of json file vertex type definition.
+window.vertexFormatType = {}; // Vertex group format type
+window.vertexFormat = {}; // Data element vertex format
+window.vertexGroupType = {};
+window.headerForm = {}; // Header group type
+window.vertexPresentation = {}; // Group vertex presentation
+window.xBoundary = 1900;
+window.yBoundary = 959;
+
+const DATA_GLOBAL = {
+  isCreatingEdge: false,
+  srcNode: null,
+  isDisabledCommand: false,
+  isDisabledMenu: true,
+  vertexTypes: null,
+  vertexTypesOld: null,
+  IS_IMPORT_VERTEX_TYPE_DEFINE: false,
+  IS_SHOW_REDUCED: false,
+  IS_UPDATE_EDGE: false,
+  GROUP_VERTEX_OPTION: null,
+  VERTEX_DEFINE: null,
+  VERTEX_GROUP: null,
+  CURRENT_GRAPH_WIDTH: 1900,
+  CURRENT_GRAPH_HEIGHT: 959,
+}
+/* unused harmony export DATA_GLOBAL */
+
 
 
 /***/ }),
@@ -2684,7 +2702,7 @@ var slice = array.slice;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(45);
 
 
 
@@ -20780,7 +20798,7 @@ var store = global[SHARED] || (global[SHARED] = {});
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
   version: core.version,
-  mode: __webpack_require__(42) ? 'pure' : 'global',
+  mode: __webpack_require__(41) ? 'pure' : 'global',
   copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
 });
 
@@ -20964,7 +20982,7 @@ var global = __webpack_require__(3);
 var $export = __webpack_require__(0);
 var redefine = __webpack_require__(16);
 var redefineAll = __webpack_require__(55);
-var meta = __webpack_require__(41);
+var meta = __webpack_require__(40);
 var forOf = __webpack_require__(54);
 var anInstance = __webpack_require__(53);
 var isObject = __webpack_require__(5);
@@ -21087,7 +21105,7 @@ module.exports = {
 "use strict";
 
 // Forced replacement prototype accessors methods
-module.exports = __webpack_require__(42) || !__webpack_require__(4)(function () {
+module.exports = __webpack_require__(41) || !__webpack_require__(4)(function () {
   var K = Math.random();
   // In FF throws only define methods
   // eslint-disable-next-line no-undef, no-useless-call
@@ -22166,7 +22184,7 @@ module.exports = function (it) {
 
 var global = __webpack_require__(3);
 var core = __webpack_require__(22);
-var LIBRARY = __webpack_require__(42);
+var LIBRARY = __webpack_require__(41);
 var wksExt = __webpack_require__(197);
 var defineProperty = __webpack_require__(8).f;
 module.exports = function (name) {
@@ -22333,7 +22351,7 @@ module.exports = function (TO_STRING) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(42);
+var LIBRARY = __webpack_require__(41);
 var $export = __webpack_require__(0);
 var redefine = __webpack_require__(16);
 var hide = __webpack_require__(15);
@@ -22538,7 +22556,7 @@ module.exports = function fill(value /* , start = 0, end = @length */) {
 
 "use strict";
 
-var addToUnscopables = __webpack_require__(43);
+var addToUnscopables = __webpack_require__(42);
 var step = __webpack_require__(213);
 var Iterators = __webpack_require__(64);
 var toIObject = __webpack_require__(19);
@@ -22771,7 +22789,7 @@ module.exports.f = function (C) {
 
 var global = __webpack_require__(3);
 var DESCRIPTORS = __webpack_require__(7);
-var LIBRARY = __webpack_require__(42);
+var LIBRARY = __webpack_require__(41);
 var $typed = __webpack_require__(99);
 var hide = __webpack_require__(15);
 var redefineAll = __webpack_require__(55);
@@ -23276,7 +23294,7 @@ function customEvent(event1, listener, that, args) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__rgb__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__array__ = __webpack_require__(254);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__date__ = __webpack_require__(255);
@@ -23715,7 +23733,7 @@ function basis(t1, v0, v1, v2, v3) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_selection_index__ = __webpack_require__(607);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_transition_index__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_transition_index__ = __webpack_require__(43);
 /* unused harmony reexport transition */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_active__ = __webpack_require__(638);
 /* unused harmony reexport active */
@@ -26226,7 +26244,7 @@ function clipEdges(x0, y0, x1, y1) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__const_index__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__const_index__ = __webpack_require__(45);
 
 
 class PopUtils {
@@ -26719,7 +26737,7 @@ var $iterDefine = __webpack_require__(135);
 var step = __webpack_require__(213);
 var setSpecies = __webpack_require__(52);
 var DESCRIPTORS = __webpack_require__(7);
-var fastKey = __webpack_require__(41).fastKey;
+var fastKey = __webpack_require__(40).fastKey;
 var validate = __webpack_require__(65);
 var SIZE = DESCRIPTORS ? '_s' : 'size';
 
@@ -26883,7 +26901,7 @@ module.exports = __webpack_require__(98)(SET, function (get) {
 
 var each = __webpack_require__(32)(0);
 var redefine = __webpack_require__(16);
-var meta = __webpack_require__(41);
+var meta = __webpack_require__(40);
 var assign = __webpack_require__(201);
 var weak = __webpack_require__(221);
 var isObject = __webpack_require__(5);
@@ -26948,7 +26966,7 @@ if (fails(function () { return new $WeakMap().set((Object.freeze || Object)(tmp)
 "use strict";
 
 var redefineAll = __webpack_require__(55);
-var getWeak = __webpack_require__(41).getWeak;
+var getWeak = __webpack_require__(40).getWeak;
 var anObject = __webpack_require__(2);
 var isObject = __webpack_require__(5);
 var anInstance = __webpack_require__(53);
@@ -27771,7 +27789,7 @@ var rad2deg = 180 / Math.PI;
 "use strict";
 /* unused harmony export rgbBasis */
 /* unused harmony export rgbBasisClosed */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__basis__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__basisClosed__ = __webpack_require__(252);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__color__ = __webpack_require__(76);
@@ -28043,7 +28061,7 @@ function one(b) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_interpolate__ = __webpack_require__(34);
 
 
@@ -28586,7 +28604,7 @@ var prefixExponent;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return areaStream; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stream__ = __webpack_require__(58);
 
 
@@ -29016,7 +29034,7 @@ function compareIntersection(a, b) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__noop__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__noop__ = __webpack_require__(44);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function() {
@@ -29462,7 +29480,7 @@ var coordinates = [null, null],
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stream__ = __webpack_require__(58);
 
 
@@ -29524,7 +29542,7 @@ function lengthPoint(lambda, phi) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__noop__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__noop__ = __webpack_require__(44);
 
 
 var x0 = Infinity,
@@ -32540,7 +32558,7 @@ var has = __webpack_require__(18);
 var DESCRIPTORS = __webpack_require__(7);
 var $export = __webpack_require__(0);
 var redefine = __webpack_require__(16);
-var META = __webpack_require__(41).KEY;
+var META = __webpack_require__(40).KEY;
 var $fails = __webpack_require__(4);
 var shared = __webpack_require__(88);
 var setToStringTag = __webpack_require__(62);
@@ -32686,7 +32704,7 @@ if (!USE_NATIVE) {
   __webpack_require__(73).f = $propertyIsEnumerable;
   __webpack_require__(90).f = $getOwnPropertySymbols;
 
-  if (DESCRIPTORS && !__webpack_require__(42)) {
+  if (DESCRIPTORS && !__webpack_require__(41)) {
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
@@ -32878,7 +32896,7 @@ __webpack_require__(31)('getOwnPropertyNames', function () {
 
 // 19.1.2.5 Object.freeze(O)
 var isObject = __webpack_require__(5);
-var meta = __webpack_require__(41).onFreeze;
+var meta = __webpack_require__(40).onFreeze;
 
 __webpack_require__(31)('freeze', function ($freeze) {
   return function freeze(it) {
@@ -32893,7 +32911,7 @@ __webpack_require__(31)('freeze', function ($freeze) {
 
 // 19.1.2.17 Object.seal(O)
 var isObject = __webpack_require__(5);
-var meta = __webpack_require__(41).onFreeze;
+var meta = __webpack_require__(40).onFreeze;
 
 __webpack_require__(31)('seal', function ($seal) {
   return function seal(it) {
@@ -32908,7 +32926,7 @@ __webpack_require__(31)('seal', function ($seal) {
 
 // 19.1.2.15 Object.preventExtensions(O)
 var isObject = __webpack_require__(5);
-var meta = __webpack_require__(41).onFreeze;
+var meta = __webpack_require__(40).onFreeze;
 
 __webpack_require__(31)('preventExtensions', function ($preventExtensions) {
   return function preventExtensions(it) {
@@ -34553,7 +34571,7 @@ var $export = __webpack_require__(0);
 
 $export($export.P, 'Array', { copyWithin: __webpack_require__(212) });
 
-__webpack_require__(43)('copyWithin');
+__webpack_require__(42)('copyWithin');
 
 
 /***/ }),
@@ -34565,7 +34583,7 @@ var $export = __webpack_require__(0);
 
 $export($export.P, 'Array', { fill: __webpack_require__(143) });
 
-__webpack_require__(43)('fill');
+__webpack_require__(42)('fill');
 
 
 /***/ }),
@@ -34586,7 +34604,7 @@ $export($export.P + $export.F * forced, 'Array', {
     return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
   }
 });
-__webpack_require__(43)(KEY);
+__webpack_require__(42)(KEY);
 
 
 /***/ }),
@@ -34607,7 +34625,7 @@ $export($export.P + $export.F * forced, 'Array', {
     return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
   }
 });
-__webpack_require__(43)(KEY);
+__webpack_require__(42)(KEY);
 
 
 /***/ }),
@@ -34831,7 +34849,7 @@ __webpack_require__(95)('split', 2, function (defined, SPLIT, $split) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(42);
+var LIBRARY = __webpack_require__(41);
 var global = __webpack_require__(3);
 var ctx = __webpack_require__(23);
 var classof = __webpack_require__(74);
@@ -35206,7 +35224,7 @@ $export($export.G + $export.W + $export.F * !__webpack_require__(99).ABV, {
 /* 443 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(37)('Int8', 1, function (init) {
+__webpack_require__(36)('Int8', 1, function (init) {
   return function Int8Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -35217,7 +35235,7 @@ __webpack_require__(37)('Int8', 1, function (init) {
 /* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(37)('Uint8', 1, function (init) {
+__webpack_require__(36)('Uint8', 1, function (init) {
   return function Uint8Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -35228,7 +35246,7 @@ __webpack_require__(37)('Uint8', 1, function (init) {
 /* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(37)('Uint8', 1, function (init) {
+__webpack_require__(36)('Uint8', 1, function (init) {
   return function Uint8ClampedArray(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -35239,7 +35257,7 @@ __webpack_require__(37)('Uint8', 1, function (init) {
 /* 446 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(37)('Int16', 2, function (init) {
+__webpack_require__(36)('Int16', 2, function (init) {
   return function Int16Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -35250,7 +35268,7 @@ __webpack_require__(37)('Int16', 2, function (init) {
 /* 447 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(37)('Uint16', 2, function (init) {
+__webpack_require__(36)('Uint16', 2, function (init) {
   return function Uint16Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -35261,7 +35279,7 @@ __webpack_require__(37)('Uint16', 2, function (init) {
 /* 448 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(37)('Int32', 4, function (init) {
+__webpack_require__(36)('Int32', 4, function (init) {
   return function Int32Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -35272,7 +35290,7 @@ __webpack_require__(37)('Int32', 4, function (init) {
 /* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(37)('Uint32', 4, function (init) {
+__webpack_require__(36)('Uint32', 4, function (init) {
   return function Uint32Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -35283,7 +35301,7 @@ __webpack_require__(37)('Uint32', 4, function (init) {
 /* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(37)('Float32', 4, function (init) {
+__webpack_require__(36)('Float32', 4, function (init) {
   return function Float32Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -35294,7 +35312,7 @@ __webpack_require__(37)('Float32', 4, function (init) {
 /* 451 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(37)('Float64', 8, function (init) {
+__webpack_require__(36)('Float64', 8, function (init) {
   return function Float64Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -35653,7 +35671,7 @@ $export($export.P, 'Array', {
   }
 });
 
-__webpack_require__(43)('includes');
+__webpack_require__(42)('includes');
 
 
 /***/ }),
@@ -35682,7 +35700,7 @@ $export($export.P, 'Array', {
   }
 });
 
-__webpack_require__(43)('flatMap');
+__webpack_require__(42)('flatMap');
 
 
 /***/ }),
@@ -35710,7 +35728,7 @@ $export($export.P, 'Array', {
   }
 });
 
-__webpack_require__(43)('flatten');
+__webpack_require__(42)('flatten');
 
 
 /***/ }),
@@ -36343,7 +36361,7 @@ $export($export.S, 'Promise', { 'try': function (callbackfn) {
 /* 511 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(38);
+var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
 var toMetaKey = metadata.key;
 var ordinaryDefineOwnMetadata = metadata.set;
@@ -36357,7 +36375,7 @@ metadata.exp({ defineMetadata: function defineMetadata(metadataKey, metadataValu
 /* 512 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(38);
+var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
 var toMetaKey = metadata.key;
 var getOrCreateMetadataMap = metadata.map;
@@ -36378,7 +36396,7 @@ metadata.exp({ deleteMetadata: function deleteMetadata(metadataKey, target /* , 
 /* 513 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(38);
+var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
 var getPrototypeOf = __webpack_require__(21);
 var ordinaryHasOwnMetadata = metadata.has;
@@ -36403,7 +36421,7 @@ metadata.exp({ getMetadata: function getMetadata(metadataKey, target /* , target
 
 var Set = __webpack_require__(219);
 var from = __webpack_require__(228);
-var metadata = __webpack_require__(38);
+var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
 var getPrototypeOf = __webpack_require__(21);
 var ordinaryOwnMetadataKeys = metadata.keys;
@@ -36426,7 +36444,7 @@ metadata.exp({ getMetadataKeys: function getMetadataKeys(target /* , targetKey *
 /* 515 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(38);
+var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
 var ordinaryGetOwnMetadata = metadata.get;
 var toMetaKey = metadata.key;
@@ -36441,7 +36459,7 @@ metadata.exp({ getOwnMetadata: function getOwnMetadata(metadataKey, target /* , 
 /* 516 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(38);
+var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
 var ordinaryOwnMetadataKeys = metadata.keys;
 var toMetaKey = metadata.key;
@@ -36455,7 +36473,7 @@ metadata.exp({ getOwnMetadataKeys: function getOwnMetadataKeys(target /* , targe
 /* 517 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(38);
+var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
 var getPrototypeOf = __webpack_require__(21);
 var ordinaryHasOwnMetadata = metadata.has;
@@ -36477,7 +36495,7 @@ metadata.exp({ hasMetadata: function hasMetadata(metadataKey, target /* , target
 /* 518 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(38);
+var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
 var ordinaryHasOwnMetadata = metadata.has;
 var toMetaKey = metadata.key;
@@ -36492,7 +36510,7 @@ metadata.exp({ hasOwnMetadata: function hasOwnMetadata(metadataKey, target /* , 
 /* 519 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $metadata = __webpack_require__(38);
+var $metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
 var aFunction = __webpack_require__(12);
 var toMetaKey = $metadata.key;
@@ -37630,7 +37648,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_object_ult__ = __webpack_require__(862);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utilities_common_ult__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__const_index__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__const_index__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__styles_index_scss__ = __webpack_require__(863);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__styles_index_scss__);
 
@@ -37727,11 +37745,9 @@ class Starter {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__menu_mgmt_boundary_menu_items__ = __webpack_require__(861);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_d3__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__const_index__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__const__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_lodash__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_lodash__);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__const_index__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_lodash__);
 
 
 
@@ -37889,17 +37905,15 @@ class MainMgmt {
       return;
     }
 
+    const {VERTEX, VERTEX_GROUP} = data;
     // Set global vertex types
     // The content vertex type on graph alway
     // give to content vertex type was import from Vertex Type Defination
-    window.vertexDefine = data; //store data in global value to write file graph.
-    window.vertexTypes = data['VERTEX'];
-    window.vertexFormat = data['VERTEX_DATA_ELEMENT_FORMAT'];
-    window.vertexPresentation = data['VERTEX_PRESENTATION'];
-    window.vertexDataElementFormat = data['VERTEX_DATA_ELEMENT_FORMAT'];
-    window.headerForm = Object.keys(data['VERTEX_DATA_ELEMENT_FORMAT']);
-    this.getVertexFormatType(window.vertexFormat);
+    this.getVertexFormatType(VERTEX_GROUP);
     this.getVertexTypesShowFull(data);
+    window.vertexDefine = data;
+    window.vertexTypes = VERTEX;
+    window.vertexGroup = VERTEX_GROUP;
     window.isVertexTypeDefine = true;
 
     // Validate vertex type
@@ -37924,22 +37938,20 @@ class MainMgmt {
     let errorContent = await this.validateGraphDataStructure(data);
     if (errorContent) {
       Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["f" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
-      return;
+      // return;
     }
 
     // Store vertex types
-    window.vertexTypesOld = data.vertexTypes['VERTEX'];
-    window.vertexFormat = data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT'];
-    window.vertexPresentation = data.vertexTypes['VERTEX_PRESENTATION'];
-    window.vertexDataElementFormat = data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT'];
-    window.headerForm = Object.keys(data.vertexTypes['VERTEX_DATA_ELEMENT_FORMAT']);
-    this.getVertexFormatType(window.vertexFormat);
-    this.getVertexTypesShowFull(data.vertexTypes);
+    const {vertexTypes} = data;
+    const {VERTEX, VERTEX_GROUP} = vertexTypes;
+    this.getVertexFormatType(VERTEX_GROUP);
+    this.getVertexTypesShowFull(vertexTypes);
 
     // If still not import Vertex Type Definition then reset it.
     if (!window.isVertexTypeDefine) {
-      window.vertexTypes = data.vertexTypes['VERTEX'];
-      window.vertexDefine = data.vertexTypes;
+      window.vertexTypes = VERTEX;
+      window.vertexDefine = vertexTypes;
+      window.vertexGroup = VERTEX_GROUP;
     }
 
     // Validate vertex type
@@ -38018,7 +38030,7 @@ class MainMgmt {
 
       // Validate data key between embedded vertex and vetex in graph.
       let dataSource = vertex.data;
-      let dataTarget = __WEBPACK_IMPORTED_MODULE_13_lodash___default.a.find(dataTypes, {'vertexType': type});
+      let dataTarget = __WEBPACK_IMPORTED_MODULE_12_lodash___default.a.find(dataTypes, {'vertexType': type});
       let keySource = Object.keys(dataSource[0]);
       let keyTarget = Object.keys(dataTarget.data[0]);
       // Check length key
@@ -38072,8 +38084,8 @@ class MainMgmt {
     // Check data key in every vertex type
     for (let i = 0; i < lenKey; i++) {
       let type = current[i];
-      let dataSource = __WEBPACK_IMPORTED_MODULE_13_lodash___default.a.find(source, {'vertexType': type});
-      let dataTarget = __WEBPACK_IMPORTED_MODULE_13_lodash___default.a.find(target, {'vertexType': type});
+      let dataSource = __WEBPACK_IMPORTED_MODULE_12_lodash___default.a.find(source, {'vertexType': type});
+      let dataTarget = __WEBPACK_IMPORTED_MODULE_12_lodash___default.a.find(target, {'vertexType': type});
       let src = Object.keys(dataSource.data[0]);
       let tgt = Object.keys(dataTarget.data[0]);
 
@@ -38409,7 +38421,7 @@ class MainMgmt {
     let lstVer = [], lstProp = [];
 
     // Filter the vertex effected by show reduced
-    lstVer = __WEBPACK_IMPORTED_MODULE_13_lodash___default.a.filter(this.dataContainer.vertex, (e) => {
+    lstVer = __WEBPACK_IMPORTED_MODULE_12_lodash___default.a.filter(this.dataContainer.vertex, (e) => {
       return full.indexOf(e.vertexType) < 0;
     });
     lstVer.forEach((vertex) => {
@@ -38534,26 +38546,35 @@ class MainMgmt {
     this.edge.removeEdge(edgeId);
   }
 
-  getVertexFormatType(data) {
-    let formatType = {};
-    let header = window.headerForm;
-    let len = header.length;
-    for (let i = 0; i < len; i++) {
-      let key = header[i];
-      let value = data[key];
-      let type = typeof(value);
-      if (type === "boolean") {
-        formatType[key] = __WEBPACK_IMPORTED_MODULE_11__const_index__["p" /* VERTEX_FORMAT_TYPE */].BOOLEAN; // For boolean
-      } else if (type === "object" && Array.isArray(value)) {
-        formatType[key] = __WEBPACK_IMPORTED_MODULE_11__const_index__["p" /* VERTEX_FORMAT_TYPE */].ARRAY; // For array
-      } else if (type === "number") {
-        formatType[key] = __WEBPACK_IMPORTED_MODULE_11__const_index__["p" /* VERTEX_FORMAT_TYPE */].NUMBER; // For number
-      } else {
-        formatType[key] = __WEBPACK_IMPORTED_MODULE_11__const_index__["p" /* VERTEX_FORMAT_TYPE */].STRING; // For string and other type
+  getVertexFormatType(vertexGroup) {
+    vertexGroup.forEach(group => {
+      const {groupType, dataElementFormat, vertexPresentation} = group;
+      window.headerForm[groupType] = Object.keys(dataElementFormat);
+      window.vertexPresentation[groupType] = vertexPresentation;
+      window.vertexFormat[groupType] = dataElementFormat;
+      window.vertexGroupType[groupType] = group;
+      let formatType = {};
+      let header = window.headerForm[groupType];
+      let len = header.length;
+      for (let i = 0; i < len; i++) {
+        let key = header[i];
+        let value = dataElementFormat[key];
+        let type = typeof(value);
+        if (type === "boolean") {
+          formatType[key] = __WEBPACK_IMPORTED_MODULE_11__const_index__["p" /* VERTEX_FORMAT_TYPE */].BOOLEAN; // For boolean
+        } else if (type === "object" && Array.isArray(value)) {
+          formatType[key] = __WEBPACK_IMPORTED_MODULE_11__const_index__["p" /* VERTEX_FORMAT_TYPE */].ARRAY; // For array
+        } else if (type === "number") {
+          formatType[key] = __WEBPACK_IMPORTED_MODULE_11__const_index__["p" /* VERTEX_FORMAT_TYPE */].NUMBER; // For number
+        } else {
+          formatType[key] = __WEBPACK_IMPORTED_MODULE_11__const_index__["p" /* VERTEX_FORMAT_TYPE */].STRING; // For string and other type
+        }
       }
-    }
 
-    window.vertexFormatType = formatType;
+      window.vertexFormatType[groupType] = formatType;
+    });
+
+    console.log(window.vertexFormatType);
   }
 
   getVertexTypesShowFull(data) {
@@ -38566,7 +38587,7 @@ class MainMgmt {
       let lenOpt = groupOption.length;
       for (let j = 0; j < lenOpt; j++) {
         let option = groupOption[j];
-        let groupVertex = __WEBPACK_IMPORTED_MODULE_13_lodash___default.a.filter(vertex, (e) => {
+        let groupVertex = __WEBPACK_IMPORTED_MODULE_12_lodash___default.a.filter(vertex, (e) => {
             return e.groupType === groupType;
           }
         );
@@ -38577,6 +38598,8 @@ class MainMgmt {
         window.groupVertexOption[option] = groupAction;
       }
     }
+
+    console.log(window.groupVertexOption);
   }
 
   /**
@@ -38594,13 +38617,13 @@ class MainMgmt {
 
   updateHeightBoundary() {
     // Get all boundary that without parent but have child
-    let boundaries = __WEBPACK_IMPORTED_MODULE_13_lodash___default.a.filter(this.dataContainer.boundary, (g) => {
+    let boundaries = __WEBPACK_IMPORTED_MODULE_12_lodash___default.a.filter(this.dataContainer.boundary, (g) => {
       return g.parent != null;
     });
     boundaries.forEach(boundary => {
       this.boundary.resizeParentBoundary(boundary.id);
     });
-    boundaries = __WEBPACK_IMPORTED_MODULE_13_lodash___default.a.filter(this.dataContainer.boundary, (g) => {
+    boundaries = __WEBPACK_IMPORTED_MODULE_12_lodash___default.a.filter(this.dataContainer.boundary, (g) => {
       return g.parent == null && g.member.length > 0;
     });
     boundaries.forEach(boundary => {
@@ -38619,7 +38642,7 @@ class MainMgmt {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__ = __webpack_require__(195);
@@ -38637,6 +38660,7 @@ const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
 const HTML_VERTEX_FORM_ID = 'vertexForm';
 const CONNECT_KEY = 'Connected';
+const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
 
 class Vertex {
   constructor(props) {
@@ -38704,7 +38728,7 @@ class Vertex {
    * Ex
    */
   createVertex(options) {
-    let {x, y, name, description, data, id, parent, mandatory, repeat, isMenu, vertexType, isImport, connectType} = options;
+    let {x, y, name, description, data, id, parent, mandatory, repeat, isMenu, vertexType, isImport, connectType, groupType} = options;
     // To do: Read or load from config.
     connectType = __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* CONNECT_TYPE */].BOTH;
 
@@ -38715,6 +38739,7 @@ class Vertex {
       let info = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(this.objectUtils.getDataDefineByOption({'vertexType': vertexType}));
       data = info.data;
       description = info.description;
+      groupType = info.groupType;
     }
     if (!id)
       id = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["h" /* generateObjectId */])('V');
@@ -38727,6 +38752,7 @@ class Vertex {
       description: description || "Description",
       data: data || [],
       id: id,
+      groupType: groupType,
       parent: parent || null,
       mandatory: mandatory || false,
       repeat: repeat || 1
@@ -38760,7 +38786,7 @@ class Vertex {
 
     let htmlContent = '';
     let len = vertexInfo.data.length;
-    let presentation = window.vertexPresentation;
+    let presentation = window.vertexPresentation[groupType];
     for (let i = 0; i < len; i++) {
       let data = vertexInfo.data[i];
       htmlContent += `
@@ -38870,8 +38896,8 @@ class Vertex {
       Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["b" /* autoScrollOnMousedrag */])(d);
       Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["m" /* updateGraphBoundary */])(d);
       // Prevent drag object outside the window
-      d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETX ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETX : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
-      d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETY ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETY : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
+      d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_X ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_X : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
+      d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_Y ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_Y : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
       // Transform group
       __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${d.id}`).attr("transform", (d, i) => {
         return "translate(" + [d.x, d.y] + ")"
@@ -38926,11 +38952,10 @@ class Vertex {
    * @param vertexId
    */
   copyVertex(vertexId) {
-    let {x, y, name, description, vertexType, data, repeat, mandatory} = this.objectUtils.cloneVertexInfo(vertexId);
+    let {x, y, name, description, vertexType, data, repeat, mandatory, groupType} = this.objectUtils.cloneVertexInfo(vertexId);
     x = x + __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].SPACE_COPY;
     y = y + __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].SPACE_COPY;
-    // let clone = {x, y, name, description, vertexType, data, repeat, mandatory};
-    this.createVertex({x, y, name, description, vertexType, data, repeat, mandatory});
+    this.createVertex({x, y, name, description, vertexType, data, repeat, mandatory, groupType});
   }
 
   /**
@@ -38939,7 +38964,18 @@ class Vertex {
    */
   makePopupEditVertex(vertexId) {
     // Use in function updateVertexInfo()
-    let {name, description, repeat, mandatory, data, id} = this.objectUtils.cloneVertexInfo(vertexId);
+    let {name, description, repeat, mandatory, data, id, groupType} = this.objectUtils.cloneVertexInfo(vertexId);
+    // Get vertex group with group type
+    let group = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(window.vertexGroupType, (g) => {
+      return g.groupType === groupType;
+    });
+    const option = group.option;
+    // Set show hide group button dynamic data set
+    if(option.indexOf(__WEBPACK_IMPORTED_MODULE_1__const_index__["q" /* VERTEX_GROUP_OPTION */].DYNAMIC_DATASET) < 0)
+      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}`).hide();
+    else
+      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}`).show();
+
     this.currentId = id;
     // Append content to popup
     $(`#vertexName`).val(name);
@@ -38948,11 +38984,11 @@ class Vertex {
     $(`#isVertexMandatory`).prop('checked', mandatory);
 
     // Generate properties vertex
-    let keyHeader = window.headerForm;
+    let keyHeader = window.headerForm[groupType];
     let cols = keyHeader.length;
     let rows = data.length;
-    const typeData = window.vertexFormatType;
-    const dataFormat = window.vertexFormat;
+    const typeData = window.vertexFormatType[groupType];
+    const dataFormat = window.vertexFormat[groupType];
 
     let $form = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
     let $content = $('<tbody>');
@@ -38965,7 +39001,7 @@ class Vertex {
       $colHdr.attr('class', 'col_header');
       $colHdr.appendTo($headerRow);
 
-      // Init col in colgroup
+      // Init col in col group
       let prop = keyHeader[i];
       let type = typeData[prop];
       let def = dataFormat[prop];
@@ -38996,7 +39032,7 @@ class Vertex {
           $col.attr('class', 'checkbox_center');
         }
 
-        let $control = this.generateControlByType({i, type, val, prop, opt});
+        let $control = this.generateControlByType({i, type, val, prop, opt, groupType});
         $control.appendTo($col);
         $col.appendTo($row);
       }
@@ -39050,20 +39086,21 @@ class Vertex {
     vertex.repeat = forms.vertexRepeat;
     vertex.mandatory = $(`#isVertexMandatory`).prop('checked');
     let header = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${id}Name`);
+    let groupType = vertex.groupType;
     header.text(vertex.name).attr('title', vertex.description);
     header.style("background-color", `${this.colorHash.hex(vertex.name)}`);
 
     // Update properties
-    let keyHeader = window.headerForm;
+    let keyHeader = window.headerForm[groupType];
     let cols = keyHeader.length;
     let data = vertex.data;
     let rows = data.length;
-    const typeData = window.vertexFormatType;
-    let presentation = window.vertexPresentation;
+    const typeData = window.vertexFormatType[groupType];
+    let presentation = window.vertexPresentation[groupType];
     for (let i = 0; i < rows; i++) {
       const dataRow = data[i];
       for (let j = 0; j < cols; j++) {
-        let prop = headerForm[j];
+        let prop = keyHeader[j];
         let type = typeData[prop];
         if (type === __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
           dataRow[prop] = forms[`${prop}${i}`] ? true : false;
@@ -39337,8 +39374,8 @@ class Vertex {
    */
   generateControlByType(options) {
     let $control = null;
-    const {i, type, val, prop, opt} = options;
-    let defaultVal = window.vertexDataElementFormat[prop]
+    const {i, type, val, prop, opt, groupType} = options;
+    let defaultVal = window.vertexFormat[groupType][prop];
     switch (type) {
       case __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].BOOLEAN:
         $control = $('<input>');
@@ -39348,6 +39385,7 @@ class Vertex {
         $control.attr("value", val);
         break;
       case __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].ARRAY:
+        let firstOpt = opt[0];
         $control = $('<select>');
         $control.attr('name', `${prop}${i}`);
         $control.attr('class', 'form-control');
@@ -39434,6 +39472,9 @@ class Vertex {
     if (!firstRow.hasOwnProperty(prop)) {
       let lengthProp = prop.toString().length;
       let lengthDef = def.toString().length;
+      let type = typeof(def);
+      if(type === "object" && Array.isArray(def))
+        lengthDef = this.getLongestContentFromArry(def).toString().length;
       return (lengthProp > lengthDef ? lengthProp * __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR : lengthDef * __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR) + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].PADDING_CHAR;
     }
 
@@ -39443,15 +39484,19 @@ class Vertex {
     } else {
       arr = data.map(e => e[prop]);
     }
-    let longest = arr.reduce((a, b) => {
-      let firstTmp = a + "";
-      let secondTmp = b + "";
-      return firstTmp.length > secondTmp.length ? firstTmp : secondTmp;
-    });
+    let longest = this.getLongestContentFromArry(arr);
     if (longest.toString().length < prop.toString().length)
       return prop.toString().length * __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].PADDING_CHAR;
 
     return longest.toString().length * (type === __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].ARRAY ? __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR_UPPER : __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR) + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].PADDING_CHAR;
+  }
+
+  getLongestContentFromArry(arr) {
+    return arr.reduce((a, b) => {
+      let firstTmp = a + "";
+      let secondTmp = b + "";
+      return firstTmp.length > secondTmp.length ? firstTmp : secondTmp;
+    });
   }
 }
 
@@ -42377,7 +42422,7 @@ function tanh(x) {
 
 "use strict";
 /* unused harmony export hslLong */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(76);
 
 
@@ -42408,7 +42453,7 @@ var hslLong = hsl(__WEBPACK_IMPORTED_MODULE_1__color__["a" /* default */]);
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(76);
 
 
@@ -42434,7 +42479,7 @@ function lab(start, end) {
 
 "use strict";
 /* unused harmony export hclLong */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(76);
 
 
@@ -42465,7 +42510,7 @@ var hclLong = hcl(__WEBPACK_IMPORTED_MODULE_1__color__["a" /* default */]);
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return cubehelixLong; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(76);
 
 
@@ -42602,7 +42647,7 @@ __WEBPACK_IMPORTED_MODULE_0_d3_selection__["h" /* selection */].prototype.transi
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__transition_index__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__transition_index__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transition_schedule__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_ease__ = __webpack_require__(260);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_timer__ = __webpack_require__(106);
@@ -42867,7 +42912,7 @@ function easeConstant(id, value) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(43);
 
 
 
@@ -42891,7 +42936,7 @@ function easeConstant(id, value) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(43);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function(transition) {
@@ -42977,7 +43022,7 @@ function removeFunction(id) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__schedule__ = __webpack_require__(27);
 
 
@@ -43009,7 +43054,7 @@ function removeFunction(id) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__schedule__ = __webpack_require__(27);
 
 
@@ -43181,7 +43226,7 @@ function textFunction(value) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__schedule__ = __webpack_require__(27);
 
 
@@ -43513,7 +43558,7 @@ var elasticInOut = (function custom(a, p) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__transition_index__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__transition_index__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transition_schedule__ = __webpack_require__(27);
 
 
@@ -46026,7 +46071,7 @@ function rangeContains(range, x) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__noop__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__noop__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stream__ = __webpack_require__(58);
 
 
@@ -46613,7 +46658,7 @@ function graticule10() {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(44);
 
 
 
@@ -46781,7 +46826,7 @@ function centroidPointRing(x, y) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = PathContext;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__noop__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__noop__ = __webpack_require__(44);
 
 
 
@@ -46836,7 +46881,7 @@ PathContext.prototype = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(44);
 
 
 
@@ -50711,7 +50756,7 @@ var milliseconds = millisecond.range;
 "use strict";
 /* unused harmony export seconds */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interval__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(39);
 
 
 
@@ -50736,7 +50781,7 @@ var seconds = second.range;
 "use strict";
 /* unused harmony export minutes */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interval__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(39);
 
 
 
@@ -50761,7 +50806,7 @@ var minutes = minute.range;
 "use strict";
 /* unused harmony export hours */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interval__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(39);
 
 
 
@@ -50788,7 +50833,7 @@ var hours = hour.range;
 "use strict";
 /* unused harmony export days */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interval__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(39);
 
 
 
@@ -50826,7 +50871,7 @@ var days = day.range;
 /* unused harmony export fridays */
 /* unused harmony export saturdays */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interval__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(39);
 
 
 
@@ -50924,7 +50969,7 @@ var years = year.range;
 "use strict";
 /* unused harmony export utcMinutes */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interval__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(39);
 
 
 
@@ -50949,7 +50994,7 @@ var utcMinutes = utcMinute.range;
 "use strict";
 /* unused harmony export utcHours */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interval__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(39);
 
 
 
@@ -50974,7 +51019,7 @@ var utcHours = utcHour.range;
 "use strict";
 /* unused harmony export utcDays */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interval__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(39);
 
 
 
@@ -51012,7 +51057,7 @@ var utcDays = utcDay.range;
 /* unused harmony export utcFridays */
 /* unused harmony export utcSaturdays */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__interval__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__duration__ = __webpack_require__(39);
 
 
 
@@ -51191,7 +51236,7 @@ var parseIso = +new Date("2000-01-01T00:00:00.000Z")
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_interpolate__ = __webpack_require__(34);
 
 
@@ -51206,7 +51251,7 @@ var parseIso = +new Date("2000-01-01T00:00:00.000Z")
 "use strict";
 /* unused harmony export warm */
 /* unused harmony export cool */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_interpolate__ = __webpack_require__(34);
 
 
@@ -53708,7 +53753,7 @@ module.exports = BKDRHash;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__const_index__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__const_index__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
@@ -54122,7 +54167,7 @@ class VertexMenu {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_popup_ult__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__ = __webpack_require__(61);
@@ -54527,7 +54572,7 @@ class EdgeMenu {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_color_hash__ = __webpack_require__(325);
@@ -54614,10 +54659,11 @@ class Boundary {
       .style("border-color", this.colorHash.hex(boundaryInfo.name))
       .style("font-size", "13px")
       .style("background", "none")
+      .style("pointer-events", "none")
       .append("xhtml:div")
       .attr("class", "boundary_content")
       .html(`
-          <div class="boundary_header">
+          <div class="boundary_header" style="pointer-events: all">
             <p id="${id}Header" class="header_name header_boundary" style="width: 100%;
              height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["a" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT}px;
              background-color: ${this.colorHash.hex(boundaryInfo.name)}" 
@@ -54652,8 +54698,8 @@ class Boundary {
       Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["m" /* updateGraphBoundary */])(d);
 
       // Prevent drag object outside the window
-      d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETX ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETX : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
-      d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETY ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETY : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
+      d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_X ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_X : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
+      d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_Y ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_Y : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
       // Transform group
       // d3.select(this).attr("transform", (d, i) => {
       //   return "translate(" + [d.x, d.y] + ")"
@@ -54671,8 +54717,8 @@ class Boundary {
 
   dragBoundaryEnd(self) {
     return function (d) {
-      d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETX ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETX : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
-      d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETY ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSETY : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
+      d.x = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_X ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_X : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
+      d.y = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y < __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_Y ? __WEBPACK_IMPORTED_MODULE_1__const_index__["c" /* DEFAULT_CONFIG_GRAPH */].MIN_OFFSET_Y : __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
       // Transform group
       __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this).attr("transform", (d, i) => {
         return "translate(" + [d.x, d.y] + ")"
@@ -55256,11 +55302,11 @@ class Boundary {
    * Bind event and init data for controls on popup
    */
   bindEventForPopupBoundary() {
-    $("#boundaryBtnConfirm").click(e => {
+    $("#boundaryBtnConfirm").click(() => {
       this.confirmEditBoundaryInfo();
     });
 
-    $("#boudanryBtnCancel").click(e => {
+    $("#boundaryBtnCancel").click(() => {
       this.closePopBoundaryInfo();
     });
 
@@ -55310,7 +55356,7 @@ class Boundary {
    */
   closePopBoundaryInfo() {
     this.originBoundary = null;
-    let options = {popupId: HTML_BOUNDARY_INFO_ID}
+    let options = {popupId: HTML_BOUNDARY_INFO_ID};
     __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__["a" /* default */].metClosePopup(options);
   }
 };
@@ -55473,8 +55519,6 @@ class BoundaryMenuItems {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(36);
-
 
 
 
