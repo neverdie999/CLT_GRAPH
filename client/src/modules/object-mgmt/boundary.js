@@ -105,17 +105,8 @@ class Boundary {
              title="${boundaryInfo.description}">${boundaryInfo.name}</p>
           </div>
       `);
-    if(!isImport){
-      // this.initEventDrag();
+    if(!isImport)
       setMinBoundaryGraph(this.dataContainer);
-    }
-  }
-
-  initEventDrag() {
-    // Call event drag for all boundary exit.
-    this.svgSelector.selectAll(`.${HTML_BOUNDARY_CONTAINER_CLASS}`)
-      .data(this.dataContainer.boundary)
-      .call(this.handlerDragBoundary);
   }
 
   dragBoundaryStart(self) {
@@ -267,7 +258,7 @@ class Boundary {
       if (member.show) {
         let objectId = member.id;
         const {width, height} = this.objectUtils.getBBoxObject(objectId);
-        // Vertex postion center of boundary
+        // Vertex position center of boundary
         let position = {x: pos.x + 5, y: pos.y + hBeforeElements + marginTop * orderObject};
         if (member.type === "V") {
           this.mainMgmt.setVertexPosition(objectId, position);

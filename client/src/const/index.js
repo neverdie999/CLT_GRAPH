@@ -36,6 +36,11 @@ export const VERTEX_ATTR_SIZE = {
   SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
 }
 
+//atributes size of rectangle
+export const RECTANGLE_ATTR_SIZE = {
+  RECTANGLE_HEIGHT: 20,
+  RECTANGLE_WIDTH: 20,
+}
 // The attributes size of boundary
 export const BOUNDARY_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
@@ -72,6 +77,7 @@ export const POPUP_CONFIG = {
   PADDING_CHAR: 18,
   WIDTH_CHAR: 10,
   WIDTH_CHAR_UPPER: 11.5,
+  WIDTH_COL_DEL_CHECK: 45,
 }
 
 // Vertex group option
