@@ -2280,6 +2280,13 @@ const VERTEX_ATTR_SIZE = {
 /* harmony export (immutable) */ __webpack_exports__["o"] = VERTEX_ATTR_SIZE;
 
 
+//atributes size of rectangle
+const RECTANGLE_ATTR_SIZE = {
+  RECTANGLE_HEIGHT: 20,
+  RECTANGLE_WIDTH: 20,
+}
+/* unused harmony export RECTANGLE_ATTR_SIZE */
+
 // The attributes size of boundary
 const BOUNDARY_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
@@ -2324,6 +2331,7 @@ const POPUP_CONFIG = {
   PADDING_CHAR: 18,
   WIDTH_CHAR: 10,
   WIDTH_CHAR_UPPER: 11.5,
+  WIDTH_COL_DEL_CHECK: 45,
 }
 /* harmony export (immutable) */ __webpack_exports__["k"] = POPUP_CONFIG;
 
@@ -37726,7 +37734,7 @@ class Starter {
   }
 }
 
-/* unused harmony default export */ var _unused_webpack_default_export = (new Starter());
+new Starter();
 
 
 /***/ }),
@@ -37944,6 +37952,7 @@ class MainMgmt {
     // Store vertex types
     const {vertexTypes} = data;
     const {VERTEX, VERTEX_GROUP} = vertexTypes;
+    window.vertexTypesOld = VERTEX;
     this.getVertexFormatType(VERTEX_GROUP);
     this.getVertexTypesShowFull(vertexTypes);
 
@@ -38031,8 +38040,8 @@ class MainMgmt {
       // Validate data key between embedded vertex and vetex in graph.
       let dataSource = vertex.data;
       let dataTarget = __WEBPACK_IMPORTED_MODULE_12_lodash___default.a.find(dataTypes, {'vertexType': type});
-      let keySource = Object.keys(dataSource[0]);
-      let keyTarget = Object.keys(dataTarget.data[0]);
+      let keySource = Object.keys(dataSource[0] || {});
+      let keyTarget = Object.keys(dataTarget.data[0] || {});
       // Check length key
       if (this.checkLengthMisMatch(keySource, keyTarget)) {
         console.log("[Graph Data Structure] Data's length is different");
@@ -38086,8 +38095,8 @@ class MainMgmt {
       let type = current[i];
       let dataSource = __WEBPACK_IMPORTED_MODULE_12_lodash___default.a.find(source, {'vertexType': type});
       let dataTarget = __WEBPACK_IMPORTED_MODULE_12_lodash___default.a.find(target, {'vertexType': type});
-      let src = Object.keys(dataSource.data[0]);
-      let tgt = Object.keys(dataTarget.data[0]);
+      let src = Object.keys(dataSource.data[0] || {});
+      let tgt = Object.keys(dataTarget.data[0] || {});
 
       if (this.checkLengthMisMatch(src, tgt)) {
         console.log("Length of vertex element is different");
@@ -38573,8 +38582,6 @@ class MainMgmt {
 
       window.vertexFormatType[groupType] = formatType;
     });
-
-    console.log(window.vertexFormatType);
   }
 
   getVertexTypesShowFull(data) {
@@ -38598,8 +38605,6 @@ class MainMgmt {
         window.groupVertexOption[option] = groupAction;
       }
     }
-
-    console.log(window.groupVertexOption);
   }
 
   /**
@@ -38632,6 +38637,10 @@ class MainMgmt {
 
     Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["k" /* setMinBoundaryGraph */])(this.dataContainer);
   }
+
+  reorderPositionMember(boundaryId) {
+    this.boundary.reorderPositionMember(boundaryId);
+  }
 };
 /* harmony default export */ __webpack_exports__["a"] = (MainMgmt);
 
@@ -38661,6 +38670,8 @@ const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
 const HTML_VERTEX_FORM_ID = 'vertexForm';
 const CONNECT_KEY = 'Connected';
 const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
+const ATTR_DEL_CHECK_ALL = 'delCheckAll';
+const ATTR_DEL_CHECK = 'delCheck';
 
 class Vertex {
   constructor(props) {
@@ -38688,12 +38699,21 @@ class Vertex {
    * Bind event and init data for controls on popup
    */
   bindEventForPopupVertex() {
+
     $("#vertexBtnConfirm").click(() => {
       this.confirmEditVertexInfo();
     });
 
     $("#vertexBtnCancel").click(() => {
       this.closePopVertexInfo();
+    });
+
+    $("#vertexBtnAdd").click(() => {
+      this.addDataElement();
+    });
+
+    $("#vertexBtnDelete").click(() => {
+      this.removeDataElement();
     });
 
     // Validate input number
@@ -38847,28 +38867,8 @@ class Vertex {
           ${htmlContent}
         </div>
       `);
-    if (!isImport) {
-      // this.initEventDrag();
+    if (!isImport)
       Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["k" /* setMinBoundaryGraph */])(this.dataContainer);
-    }
-  }
-
-  /**
-   * Init event drag for all vertex
-   */
-  initEventDrag() {
-    this.svgSelector.selectAll(`.${__WEBPACK_IMPORTED_MODULE_1__const_index__["j" /* HTML_VERTEX_CONTAINER_CLASS */]}`)
-      .data(this.dataContainer.vertex)
-      .call(this.handlerDragVertex);
-    __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](".drag_connect:not(.hide)").call(this.handlerDragConnectPoint)
-      .on("mouseover", () => {
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", true);
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 4);
-      })
-      .on("mouseout", () => {
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", false);
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 3);
-      });
   }
 
   /**
@@ -38969,12 +38969,7 @@ class Vertex {
     let group = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(window.vertexGroupType, (g) => {
       return g.groupType === groupType;
     });
-    const option = group.option;
-    // Set show hide group button dynamic data set
-    if(option.indexOf(__WEBPACK_IMPORTED_MODULE_1__const_index__["q" /* VERTEX_GROUP_OPTION */].DYNAMIC_DATASET) < 0)
-      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}`).hide();
-    else
-      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}`).show();
+
 
     this.currentId = id;
     // Append content to popup
@@ -38990,8 +38985,8 @@ class Vertex {
     const typeData = window.vertexFormatType[groupType];
     const dataFormat = window.vertexFormat[groupType];
 
-    let $form = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
-    let $content = $('<tbody>');
+    let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
+    let $contentHeader = $('<thead>');
     // Generate header table
     let $headerRow = $('<tr>');
     let $colGroup = $('<colgroup>');
@@ -39010,11 +39005,37 @@ class Vertex {
       let $colWidth = $('<col>').attr('width', width);
       $colWidth.appendTo($colGroup);
     }
-    $colGroup.appendTo($form);
-    $headerRow.appendTo($content);
-    $content.appendTo($form);
+
+    const option = group.option;
+    const isDynamicDataSet = option.indexOf(__WEBPACK_IMPORTED_MODULE_1__const_index__["q" /* VERTEX_GROUP_OPTION */].DYNAMIC_DATASET) > -1;
+    // Set show hide group button dynamic data set
+    if (!isDynamicDataSet) {
+      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}`).hide();
+    }
+    else {
+      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}`).show();
+      // Prepend col group del check
+      let $colWidth = $('<col>').attr('width', __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_COL_DEL_CHECK);
+      $colWidth.prependTo($colGroup);
+
+      // let $colHdr = $('<th>').text('Del');
+      // $colHdr.attr('class', 'col_header');
+      let $colHdr = this.initCellDelCheck({
+        'className': 'col_header',
+        'name': ATTR_DEL_CHECK_ALL,
+        'checked': false,
+        'colType': '<th>',
+        'isCheckAll': true,
+      });
+      $colHdr.prependTo($headerRow);
+    }
+
+    $colGroup.appendTo($table);
+    $headerRow.appendTo($contentHeader);
+    $contentHeader.appendTo($table);
 
     // Generate content table
+    let $contentBody = $('<tbody>');
     for (let i = 0; i < rows; i++) {
       const dataRow = data[i];
       const $row = $('<tr>');
@@ -39036,13 +39057,26 @@ class Vertex {
         $control.appendTo($col);
         $col.appendTo($row);
       }
-      $row.appendTo($form);
+
+      if (isDynamicDataSet) {
+        // Append del check to row
+        let $col = this.initCellDelCheck({
+          'className': 'checkbox_center',
+          'name': ATTR_DEL_CHECK,
+          'checked': false,
+          'colType': '<td>'
+        });
+        $col.prependTo($row);
+      }
+      $row.appendTo($contentBody);
     }
+
+    $contentBody.appendTo($table);
 
     let options = {
       popupId: HTML_VERTEX_INFO_ID,
       position: 'center',
-      width: $popWidth + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].PADDING_CHAR
+      width: $popWidth + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].PADDING_CHAR + (!isDynamicDataSet ? 0 : 45)
     }
     __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
   }
@@ -39061,13 +39095,33 @@ class Vertex {
    */
   confirmEditVertexInfo() {
     // Get data on form
-    let form = $(`#${HTML_VERTEX_FORM_ID}`).serializeArray();
-    let data = {};
-    $(form).each(function (index, obj) {
-      data[obj.name] = obj.value;
+    let forms = {};
+    forms.id = this.currentId;
+    forms.name = $(`#vertexName`).val();
+    forms.description = $(`#vertexDesc`).val();
+    forms.repeat = $(`#vertexRepeat`).val();
+    forms.mandatory = $(`#isVertexMandatory`).prop('checked');
+
+    const {groupType} = this.objectUtils.getVertexInfoById(this.currentId);
+    const typeData = window.vertexFormatType[groupType];
+    let elements = [];
+    // Get data element
+    $(`#${HTML_VERTEX_PROPERTIES_ID}`).find('tr').each(function () {
+      let row = {};
+      $(this).find("td input:text, td input:checkbox, td select").each(function () {
+        let prop = $(this).attr("name");
+        let type = typeData[prop];
+        if (prop != ATTR_DEL_CHECK)
+          row[prop] = type === __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].BOOLEAN ? ($(this).is(':checked') ? true : false) : this.value;
+      });
+      elements.push(row);
     });
-    data.id = this.currentId;
-    this.updateVertexInfo(data);
+    // Remove first row (header table)
+    elements.shift();
+    forms.data = elements;
+    forms.groupType = groupType;
+
+    this.updateVertexInfo(forms);
     this.closePopVertexInfo();
   }
 
@@ -39078,43 +39132,38 @@ class Vertex {
    * Update present (DOM)
    */
   updateVertexInfo(forms) {
-    const id = forms.id;
+    const {id, name, description, repeat, mandatory, data, groupType} = forms;
     let vertex = this.objectUtils.getVertexInfoById(id);
-    // Change name
-    vertex.name = forms.vertexName;
-    vertex.description = forms.vertexDesc;
-    vertex.repeat = forms.vertexRepeat;
-    vertex.mandatory = $(`#isVertexMandatory`).prop('checked');
-    let header = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${id}Name`);
-    let groupType = vertex.groupType;
-    header.text(vertex.name).attr('title', vertex.description);
-    header.style("background-color", `${this.colorHash.hex(vertex.name)}`);
+    vertex.name = name;
+    vertex.description = description;
+    vertex.repeat = repeat;
+    vertex.mandatory = mandatory;
+    vertex.data = data;
 
-    // Update properties
-    let keyHeader = window.headerForm[groupType];
-    let cols = keyHeader.length;
-    let data = vertex.data;
-    let rows = data.length;
-    const typeData = window.vertexFormatType[groupType];
-    let presentation = window.vertexPresentation[groupType];
-    for (let i = 0; i < rows; i++) {
-      const dataRow = data[i];
-      for (let j = 0; j < cols; j++) {
-        let prop = keyHeader[j];
-        let type = typeData[prop];
-        if (type === __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
-          dataRow[prop] = forms[`${prop}${i}`] ? true : false;
-        } else {
-          dataRow[prop] = forms[`${prop}${i}`];
-        }
+    let group = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(window.vertexGroupType, (g) => {
+      return g.groupType === groupType;
+    });
+    const option = group.option;
+    const isDynamicDataSet = option.indexOf(__WEBPACK_IMPORTED_MODULE_1__const_index__["q" /* VERTEX_GROUP_OPTION */].DYNAMIC_DATASET) > -1;
+    if (isDynamicDataSet) {
+      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${id}`).selectAll("*").remove();
+      this.reRenderContentInsideVertex(vertex);
+    } else {
+      // Update properties
+      let header = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${id}Name`);
+      header.text(name).attr('title', description);
+      header.style("background-color", `${this.colorHash.hex(name)}`);
+      let rows = data.length;
+      let presentation = window.vertexPresentation[groupType];
+      for (let i = 0; i < rows; i++) {
+        let dataRow = data[i];
+        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["j" /* replaceSpecialCharacter */])(`${id}${presentation.key}${i}`)}`)
+          .text(dataRow[presentation.key])
+          .attr('title', dataRow[presentation.keyTooltip]);
+        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["j" /* replaceSpecialCharacter */])(`${id}${presentation.value}${i}`)}`)
+          .text(dataRow[presentation.value])
+          .attr('title', dataRow[presentation.valueTooltip]);
       }
-
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["j" /* replaceSpecialCharacter */])(`${id}${presentation.key}${i}`)}`)
-        .text(dataRow[presentation.key])
-        .attr('title', dataRow[presentation.keyTooltip]);
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["j" /* replaceSpecialCharacter */])(`${id}${presentation.value}${i}`)}`)
-        .text(dataRow[presentation.value])
-        .attr('title', dataRow[presentation.valueTooltip]);
     }
   }
 
@@ -39249,8 +39298,8 @@ class Vertex {
    * @param self
    * @returns {Function}
    */
-  drawConnect(self) {
-    return function (d) {
+  drawConnect() {
+    return function () {
       if (window.creatingEdge) {
         let x = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('svg').node())[0];
         let y = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('svg').node())[1];
@@ -39374,20 +39423,21 @@ class Vertex {
    */
   generateControlByType(options) {
     let $control = null;
-    const {i, type, val, prop, opt, groupType} = options;
+    let {i, type, val, prop, opt, groupType} = options;
     let defaultVal = window.vertexFormat[groupType][prop];
+    i = 0;
     switch (type) {
       case __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].BOOLEAN:
         $control = $('<input>');
         $control.attr('type', 'checkbox');
-        $control.attr('name', `${prop}${i}`);
+        $control.attr('name', `${prop}`);
         $control.prop('checked', typeof(val) == 'boolean' ? val : defaultVal);
         $control.attr("value", val);
         break;
       case __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].ARRAY:
         let firstOpt = opt[0];
         $control = $('<select>');
-        $control.attr('name', `${prop}${i}`);
+        $control.attr('name', `${prop}`);
         $control.attr('class', 'form-control');
         $.each(opt, (key, value) => {
           $control
@@ -39400,7 +39450,7 @@ class Vertex {
       case __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].NUMBER:
         $control = $('<input>');
         $control.attr('type', 'text');
-        $control.attr('name', `${prop}${i}`);
+        $control.attr('name', `${prop}`);
         $control.attr("value", !isNaN(val) ? val : defaultVal);
         $control.attr('class', 'form-control');
         $control
@@ -39422,7 +39472,8 @@ class Vertex {
       default:
         $control = $('<input>');
         $control.attr('type', 'text');
-        $control.attr('name', `${prop}${i}`);
+        $control.attr('autocomplete', 'off');
+        $control.attr('name', `${prop}`);
         $control.attr("value", val != undefined ? val : defaultVal);
         $control.attr('class', 'form-control');
     }
@@ -39466,16 +39517,12 @@ class Vertex {
 
     // If type is boolean or first undefined or firstRow is empty
     if ((type === __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].BOOLEAN) || !firstRow)
-      return prop.toString().length * __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].PADDING_CHAR;
+      return this.getLongestSpecialCase(prop, def);
+    // prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
 
     //  If object firstRow hasn't it own the specified property
     if (!firstRow.hasOwnProperty(prop)) {
-      let lengthProp = prop.toString().length;
-      let lengthDef = def.toString().length;
-      let type = typeof(def);
-      if(type === "object" && Array.isArray(def))
-        lengthDef = this.getLongestContentFromArry(def).toString().length;
-      return (lengthProp > lengthDef ? lengthProp * __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR : lengthDef * __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR) + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].PADDING_CHAR;
+      return this.getLongestSpecialCase(prop, def);
     }
 
     // From an array of objects, extract value of a property as array
@@ -39497,6 +39544,200 @@ class Vertex {
       let secondTmp = b + "";
       return firstTmp.length > secondTmp.length ? firstTmp : secondTmp;
     });
+  }
+
+  getLongestSpecialCase(prop, def) {
+    let lengthProp = prop.toString().length;
+    let lengthDef = def.toString().length;
+    let type = typeof(def);
+    // Has type is array
+    if (type === "object" && Array.isArray(def)) {
+      type = __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].ARRAY
+      lengthDef = this.getLongestContentFromArry(def).toString().length;
+    }
+
+    return (lengthProp > lengthDef ? lengthProp * __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR :
+      lengthDef * (type === __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].ARRAY ? __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR_UPPER : __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].WIDTH_CHAR ))
+      + __WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* POPUP_CONFIG */].PADDING_CHAR;
+  }
+
+  addDataElement() {
+    if (!this.currentId)
+      return;
+    let {groupType} = this.objectUtils.cloneVertexInfo(this.currentId);
+    let keyHeader = window.headerForm[groupType];
+    let cols = keyHeader.length;
+    // let rows = data.length;
+    const typeData = window.vertexFormatType[groupType];
+    const dataFormat = window.vertexFormat[groupType];
+    let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID} > tbody`);
+
+    const $row = $('<tr>');
+    for (let j = 0; j < cols; j++) {
+      let prop = keyHeader[j];
+      let type = typeData[prop];
+      // let val = dataRow[prop];
+      let opt = [];
+
+      const $col = $('<td>');
+      // Get option if type is array
+      if (type === __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].ARRAY) {
+        opt = dataFormat[prop];
+      } else if (type === __WEBPACK_IMPORTED_MODULE_1__const_index__["p" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
+        $col.attr('class', 'checkbox_center');
+      }
+
+      let $control = this.generateControlByType({'i': j, type, prop, opt, groupType});
+      $control.appendTo($col);
+      $col.appendTo($row);
+    }
+
+    let group = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(window.vertexGroupType, (g) => {
+      return g.groupType === groupType;
+    });
+    let option = group.option;
+    const isDynamicDataSet = option.indexOf(__WEBPACK_IMPORTED_MODULE_1__const_index__["q" /* VERTEX_GROUP_OPTION */].DYNAMIC_DATASET) > -1;
+    if (isDynamicDataSet) {
+      // Append del check to row
+      let $col = this.initCellDelCheck({
+        'className': 'checkbox_center',
+        'name': ATTR_DEL_CHECK,
+        'checked': false,
+        'colType': '<td>'
+      });
+      $col.prependTo($row);
+    }
+
+    $row.appendTo($appendTo);
+  }
+
+  removeDataElement() {
+    $(`#${HTML_VERTEX_PROPERTIES_ID} > tbody`).find(`input[name=${ATTR_DEL_CHECK}]`).each(function () {
+      if ($(this).is(":checked")) {
+        $(this).parents("tr").remove();
+      }
+    });
+
+    // Uncheck all
+    $(`#${ATTR_DEL_CHECK_ALL}`).prop('checked', false);
+  }
+
+  initCellDelCheck(options) {
+    const {className, name, checked, colType, isCheckAll} = options;
+    let $col = $(colType);
+    $col.attr('class', className);
+    let $chk = $('<input>');
+    $chk.attr('type', 'checkbox');
+    if (isCheckAll)
+      $chk.attr('id', name);
+    $chk.prop('checked', checked);
+    $chk.attr('name', name)
+      .on('click', function () {
+        if (isCheckAll)
+          $(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}]`)
+            .prop('checked', this.checked);
+        else {
+          $(`#${ATTR_DEL_CHECK_ALL}`).prop('checked',
+            ($(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}]:checked`).length ==
+              $(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}]`).length));
+        }
+      });
+    $chk.appendTo($col);
+
+    return $col;
+  }
+
+  reRenderContentInsideVertex(options) {
+    let {name, description, data: elements, id, vertexType, connectType, groupType, parent} = options;
+
+    if (!vertexType)
+      return;
+    // To do: Read or load from config.
+    connectType = __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* CONNECT_TYPE */].BOTH;
+    let group = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${id}`);
+    // Append point connect vertex
+    if (connectType)
+      group.append("circle")
+        .attr("class", "drag_connect connect_header")
+        .attr("r", 3)
+        .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH / 2)
+        .on("mouseover", () => {
+          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", true);
+          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 4);
+        })
+        .on("mouseout", () => {
+          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", false);
+          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 3);
+        })
+        .call(this.handlerDragConnectPoint);
+
+    let htmlContent = '';
+    let len = elements.length;
+    let presentation = window.vertexPresentation[groupType];
+    for (let i = 0; i < len; i++) {
+      let data = elements[i];
+      htmlContent += `
+        <div class="property" prop="${id}${CONNECT_KEY}${i}" style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
+          <label class="key" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${data[presentation.key] || ""}</label><label> : </label>
+          <label class="data" id="${id}${presentation.value}${i}" title="${data[presentation.valueTooltip] || "No data to show"}">${data[presentation.value] || ""}</label>
+        </div>`;
+
+      // Input
+      if (connectType === __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* CONNECT_TYPE */].BOTH || connectType === __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* CONNECT_TYPE */].LEFT)
+        group.append("circle")
+          .attr("class", "drag_connect")
+          .attr("prop", `${id}${CONNECT_KEY}${i}`)
+          .attr("type", __WEBPACK_IMPORTED_MODULE_1__const_index__["n" /* TYPE_POINT */].INPUT)
+          .attr("r", 3)
+          .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * i + __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2)
+          .on("mouseover", () => {
+            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", true);
+            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 4);
+          })
+          .on("mouseout", () => {
+            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", false);
+            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 3);
+          })
+          .call(this.handlerDragConnectPoint);
+
+      // Output
+      if (connectType === __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* CONNECT_TYPE */].BOTH || connectType === __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* CONNECT_TYPE */].RIGHT)
+        group.append("circle")
+          .attr("class", "drag_connect")
+          .attr("prop", `${id}${CONNECT_KEY}${i}`)
+          .attr("type", __WEBPACK_IMPORTED_MODULE_1__const_index__["n" /* TYPE_POINT */].OUTPUT)
+          .attr("r", 3)
+          .attr("cx", __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
+          .attr("cy", __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * i + __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2)
+          .on("mouseover", () => {
+            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", true);
+            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 4);
+          })
+          .on("mouseout", () => {
+            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).classed("hight-light", false);
+            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("r", 3);
+          })
+          .call(this.handlerDragConnectPoint);
+    }
+
+    let vertexHeight = __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * len;
+
+    group.append("foreignObject")
+      .attr("width", __WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
+      .attr("height", vertexHeight)
+      .append("xhtml:div")
+      .attr("class", "vertex_content")
+      .html(`
+        <p class="header_name" id="${id}Name" title="${description}" 
+        style="height: ${__WEBPACK_IMPORTED_MODULE_1__const_index__["o" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px; background-color: ${this.colorHash.hex(name)}">${name}</p>
+        <div class="vertex_data">
+          ${htmlContent}
+        </div>
+      `);
+
+    if (parent)
+      this.mainMgmt.reorderPositionMember(parent);
+    Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["k" /* setMinBoundaryGraph */])(this.dataContainer);
   }
 }
 
@@ -54670,17 +54911,8 @@ class Boundary {
              title="${boundaryInfo.description}">${boundaryInfo.name}</p>
           </div>
       `);
-    if(!isImport){
-      // this.initEventDrag();
+    if(!isImport)
       Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["k" /* setMinBoundaryGraph */])(this.dataContainer);
-    }
-  }
-
-  initEventDrag() {
-    // Call event drag for all boundary exit.
-    this.svgSelector.selectAll(`.${__WEBPACK_IMPORTED_MODULE_1__const_index__["h" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`)
-      .data(this.dataContainer.boundary)
-      .call(this.handlerDragBoundary);
   }
 
   dragBoundaryStart(self) {
@@ -54832,7 +55064,7 @@ class Boundary {
       if (member.show) {
         let objectId = member.id;
         const {width, height} = this.objectUtils.getBBoxObject(objectId);
-        // Vertex postion center of boundary
+        // Vertex position center of boundary
         let position = {x: pos.x + 5, y: pos.y + hBeforeElements + marginTop * orderObject};
         if (member.type === "V") {
           this.mainMgmt.setVertexPosition(objectId, position);
@@ -55547,7 +55779,17 @@ class ObjectUtils {
       return e.id === vertexId;
     });
   }
-
+  /* Vertex utils (S)*/
+  /**
+   * Get vertex info by id from array
+   * @param vertexId
+   * @returns {*}
+   */
+  getVertexInfoByIdFromArray(vertexId,arrVertex) {
+    return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(arrVertex, (e) => {
+      return e.id === vertexId;
+    });
+  }
   /**
    * Find all path (edge, connect) with source from this vertex
    * @param vertexId: string, required
@@ -55562,6 +55804,17 @@ class ObjectUtils {
     );
   }
 
+  /**
+   * get root parent of Boundary
+   */
+  getRootParent(obj,arr,count=0){
+    let {parent}= this.getBoundaryInfoByIdFromArray(obj,arr);
+    if(parent!=null){
+      count++;
+     return this.getRootParent(parent,arr,count);
+    }
+    return {parent:obj,count:count};
+  }
   /**
    * Find all path (edge, connect) with target at this vertex
    * @param vertexId: string, required
@@ -55638,6 +55891,17 @@ class ObjectUtils {
    */
   getBoundaryInfoById(boundaryId) {
     return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.boundary, (e) => {
+      return e.id === boundaryId;
+    });
+  }
+
+/**
+ * Get boundary info by if from array
+ * @param {*} boundaryId 
+ * @param {*} arrBoundary 
+ */
+  getBoundaryInfoByIdFromArray(boundaryId,arrBoundary) {
+    return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(arrBoundary, (e) => {
       return e.id === boundaryId;
     });
   }

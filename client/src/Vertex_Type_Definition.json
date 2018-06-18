@@ -2,7 +2,40 @@
   "VERTEX_GROUP": [
     {
       "groupType": "OPERATION",
-      "option": ["SHOW_FULL_ALWAYS"]
+      "option": ["SHOW_FULL_ALWAYS", "DYNAMIC_DATASET"],
+      "dataElementFormat": {
+        "mandatory": false,
+        "type": [
+          "SIMPLE",
+          "COMPOSITE",
+          "COMPONENT"
+        ],
+        "name": "",
+        "format": "AN",
+        "repeat": 1,
+        "description": ""
+      },
+      "vertexPresentation": {
+        "key": "name",
+        "value": "format",
+        "keyTooltip": "description",
+        "valueTooltip": "usage"
+      }
+    },
+    {
+      "groupType": "SEGMENT",
+      "option": [],
+      "dataElementFormat": {
+        "name": "",
+        "value": "",
+        "description": ""
+      },
+      "vertexPresentation": {
+        "key": "name",
+        "value": "value",
+        "keyTooltip": "description",
+        "valueTooltip": "value"
+      }
     }
   ],
   "VERTEX": [
@@ -12,142 +45,170 @@
       "description": "concat requested strings with connector",
       "data": [
         {
-          "usage": "O",
-          "key": "CONNECTOR",
-          "mount": 10,
-          "value": "_",
+          "name": "CONNECTOR",
           "description": "connector between strings"
+        },
+        {
+          "name": "item#1",
+          "description": "first string"
+        },
+        {
+          "name": "item#2",
+          "description": "second string"
         }
       ]
     },
     {
+      "groupType": "OPERATION",
+      "vertexType": "SUBSTRING",
+      "description": "concat requested strings with connector",
+      "data": [
+      ]
+    },
+    {
+      "groupType": "SEGMENT",
       "vertexType": "BGM",
       "description": "Beginning of message",
       "data": [
         {
-          "usage": "O",
-          "key": "[C002]1001",
-          "value": "AN3",
-          "mount": 10,
+          "name": "C002",
+          "format": "",
+          "type": "COMPOSITE",
           "description": "Document/message name, coded"
         },
         {
-          "usage": "O",
-          "key": "[C002]1131",
-          "value": "AN3",
-          "mount": 10,
+          "name": "1001",
+          "format": "AN3",
+          "type": "COMPONENT",
           "description": "Code list qualifier"
         },
         {
-          "usage": "O",
-          "key": "[C002]3055",
-          "value": "AN3",
-          "mount": 10,
+          "mandatory": true,
+          "name": "1131",
+          "format": "AN17",
+          "type": "COMPONENT",
           "description": "Code list responsible agency, coded"
         },
         {
-          "usage": "O",
-          "key": "[C002]1000",
-          "value": "AN35",
-          "mount": 10,
+          "mandatory": true,
+          "name": "3055",
+          "format": "AN3",
+          "type": "COMPONENT",
+          "description": "Code list responsible agency, coded"
+        },
+        {
+          "mandatory": true,
+          "name": "1000",
+          "format": "AN35",
+          "type": "COMPONENT",
           "description": "Document/message name"
         },
         {
-          "usage": "O",
-          "key": "1004",
-          "value": "AN35",
-          "mount": 10,
-          "description": "DOCUMENT/MESSAGE NUMBER"
+          "mandatory": true,
+          "name": "C106",
+          "format": "",
+          "type": "COMPOSITE",
+          "description": "DOCUMENT/MESSAGE IDENTIFICATION"
         },
         {
-          "usage": "O",
-          "key": "1225",
-          "value": "AN3",
-          "mount": 10,
+          "mandatory": true,
+          "name": "1004",
+          "format": "AN35",
+          "type": "COMPONENT",
+          "description": "DOCUMENT/MESSAGE identifier"
+        },
+        {
+          "mandatory": true,
+          "name": "1056",
+          "format": "AN9",
+          "type": "COMPONENT",
+          "description": "Version identifier"
+        },
+        {
+          "mandatory": true,
+          "name": "1060",
+          "format": "AN6",
+          "type": "COMPONENT",
+          "description": "Revision identifier"
+        },
+        {
+          "mandatory": true,
+          "name": "1225",
+          "format": "AN3",
+          "type": "SIMPLE",
           "description": "MESSAGE FUNCTION, CODED"
         },
         {
-          "usage": "O",
-          "key": "4343",
-          "value": "AN3",
-          "mount": 10,
+          "name": "4343",
+          "format": "AN3",
+          "type": "SIMPLE",
           "description": "RESPONSE TYPE, CODED"
         }
       ]
     },
     {
+      "groupType": "SEGMENT",
       "vertexType": "DTM",
-      "description": "Beginning of message",
+      "description": "DATE/TIME",
       "data": [
         {
-          "usage": "O",
-          "key": "[C002]1001",
-          "value": "AN3",
-          "mount": 10,
+
+          "name": "C002",
+          "format": "",
+          "type":  "COMPOSITE",
           "description": "Document/message name, coded"
         },
         {
-          "usage": "O",
-          "key": "[C002]1131",
-          "value": "AN3",
-          "mount": 10,
+
+          "name": "1001",
+          "format": "AN3",
+          "type":  "COMPONENT",
+          "mandatory": false,
+          "description": "Document/message name, coded"
+        },
+        {
+
+          "name": "1131",
+          "format": "AN3",
+          "type":  "COMPONENT",
           "description": "Code list qualifier"
         },
         {
-          "usage": "O",
-          "key": "[C002]3055",
-          "value": "AN3",
-          "mount": 10,
+
+          "name": "3055",
+          "format": "AN3",
+          "type": "COMPONENT",
           "description": "Code list responsible agency, coded"
         },
         {
-          "usage": "O",
-          "key": "[C002]1000",
-          "value": "AN35",
-          "mount": 10,
+
+          "name": "1000",
+          "format": "AN35",
+          "type": "COMPONENT",
           "description": "Document/message name"
         },
         {
-          "usage": "O",
-          "key": "1004",
-          "value": "AN35",
-          "mount": 10,
+
+          "name": "1004",
+          "format": "AN35",
+          "type": "SIMPLE",
           "description": "DOCUMENT/MESSAGE NUMBER"
         },
         {
-          "usage": "O",
-          "key": "1225",
-          "value": "AN3",
-          "mount": 10,
+
+          "name": "1225",
+          "format": "AN3",
+          "type": "SIMPLE",
           "description": "MESSAGE FUNCTION, CODED"
         },
         {
-          "usage": "O",
-          "key": "4343",
-          "value": "AN3",
-          "mount": 10,
+
+          "name": "4343",
+          "format": "AN3",
+          "type": "SIMPLE",
           "description": "RESPONSE TYPE, CODED"
         }
       ]
     }
-  ],
-  "VERTEX_DATA_ELEMENT_FORMAT": {
-    "usage": [
-      "COMPOSE",
-      "COMPONENT",
-      "SIMPLE"
-    ],
-    "key": "text",
-    "value": "text",
-    "flag": true,
-    "mount" : 1,
-    "description": "text",
-    "option": "Please input option"
-  },
-  "VERTEX_PRESENTATION": {
-    "key": "key",
-    "value": "value",
-    "keyTooltip": "description",
-    "valueTooltip": "usage"
-  }
+  ]
 }

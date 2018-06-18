@@ -22,7 +22,6 @@ import {
   BOUNDARY_ATTR_SIZE,
   TYPE_POINT,
   VERTEX_FORMAT_TYPE,
-  DATA_GLOBAL,
 } from '../../const/index';
 import _ from "lodash";
 
@@ -208,6 +207,7 @@ class MainMgmt {
     // Store vertex types
     const {vertexTypes} = data;
     const {VERTEX, VERTEX_GROUP} = vertexTypes;
+    window.vertexTypesOld = VERTEX;
     this.getVertexFormatType(VERTEX_GROUP);
     this.getVertexTypesShowFull(vertexTypes);
 
@@ -295,8 +295,8 @@ class MainMgmt {
       // Validate data key between embedded vertex and vetex in graph.
       let dataSource = vertex.data;
       let dataTarget = _.find(dataTypes, {'vertexType': type});
-      let keySource = Object.keys(dataSource[0]);
-      let keyTarget = Object.keys(dataTarget.data[0]);
+      let keySource = Object.keys(dataSource[0] || {});
+      let keyTarget = Object.keys(dataTarget.data[0] || {});
       // Check length key
       if (this.checkLengthMisMatch(keySource, keyTarget)) {
         console.log("[Graph Data Structure] Data's length is different");
@@ -350,8 +350,8 @@ class MainMgmt {
       let type = current[i];
       let dataSource = _.find(source, {'vertexType': type});
       let dataTarget = _.find(target, {'vertexType': type});
-      let src = Object.keys(dataSource.data[0]);
-      let tgt = Object.keys(dataTarget.data[0]);
+      let src = Object.keys(dataSource.data[0] || {});
+      let tgt = Object.keys(dataTarget.data[0] || {});
 
       if (this.checkLengthMisMatch(src, tgt)) {
         console.log("Length of vertex element is different");
@@ -837,8 +837,6 @@ class MainMgmt {
 
       window.vertexFormatType[groupType] = formatType;
     });
-
-    console.log(window.vertexFormatType);
   }
 
   getVertexTypesShowFull(data) {
@@ -862,8 +860,6 @@ class MainMgmt {
         window.groupVertexOption[option] = groupAction;
       }
     }
-
-    console.log(window.groupVertexOption);
   }
 
   /**
@@ -895,6 +891,10 @@ class MainMgmt {
     });
 
     setMinBoundaryGraph(this.dataContainer);
+  }
+
+  reorderPositionMember(boundaryId) {
+    this.boundary.reorderPositionMember(boundaryId);
   }
 };
 export default MainMgmt;

@@ -26,7 +26,17 @@ class ObjectUtils {
       return e.id === vertexId;
     });
   }
-
+  /* Vertex utils (S)*/
+  /**
+   * Get vertex info by id from array
+   * @param vertexId
+   * @returns {*}
+   */
+  getVertexInfoByIdFromArray(vertexId,arrVertex) {
+    return _.find(arrVertex, (e) => {
+      return e.id === vertexId;
+    });
+  }
   /**
    * Find all path (edge, connect) with source from this vertex
    * @param vertexId: string, required
@@ -41,6 +51,17 @@ class ObjectUtils {
     );
   }
 
+  /**
+   * get root parent of Boundary
+   */
+  getRootParent(obj,arr,count=0){
+    let {parent}= this.getBoundaryInfoByIdFromArray(obj,arr);
+    if(parent!=null){
+      count++;
+     return this.getRootParent(parent,arr,count);
+    }
+    return {parent:obj,count:count};
+  }
   /**
    * Find all path (edge, connect) with target at this vertex
    * @param vertexId: string, required
@@ -117,6 +138,17 @@ class ObjectUtils {
    */
   getBoundaryInfoById(boundaryId) {
     return _.find(this.dataContainer.boundary, (e) => {
+      return e.id === boundaryId;
+    });
+  }
+
+/**
+ * Get boundary info by if from array
+ * @param {*} boundaryId 
+ * @param {*} arrBoundary 
+ */
+  getBoundaryInfoByIdFromArray(boundaryId,arrBoundary) {
+    return _.find(arrBoundary, (e) => {
       return e.id === boundaryId;
     });
   }
