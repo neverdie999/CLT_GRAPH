@@ -9,6 +9,7 @@ import {
   POPUP_CONFIG,
   CONNECT_TYPE,
   VERTEX_GROUP_OPTION,
+  COMMON_DATA,
 } from '../../const/index';
 import _ from "lodash";
 import PopUtils from '../../common/utilities/popup.ult';
@@ -22,14 +23,13 @@ import {
   setMinBoundaryGraph,
   allowInputNumberOnly,
   checkMinMaxValue,
-  checkIsMatchRegex,
+  checkIsMatchRegexNumber,
   comShowMessage,
 } from '../../common/utilities/common.ult';
 import ColorHash from 'color-hash';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
-const HTML_VERTEX_FORM_ID = 'vertexForm';
 const CONNECT_KEY = 'Connected';
 const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
 const ATTR_DEL_CHECK_ALL = 'delCheckAll';
@@ -168,7 +168,7 @@ class Vertex {
 
     let htmlContent = '';
     let len = vertexInfo.data.length;
-    let presentation = window.vertexPresentation[groupType];
+    let presentation = COMMON_DATA.vertexPresentation[groupType];
     for (let i = 0; i < len; i++) {
       let data = vertexInfo.data[i];
       htmlContent += `
@@ -240,7 +240,7 @@ class Vertex {
   dragstarted(self) {
     return (d) => {
       // If selected path to purpose update, but then move vertex then cancle it.
-      if (window.udpateEdge)
+      if (COMMON_DATA.isUpdateEdge)
         cancleSelectedPath();
       // Resize boundary when vertex dragged
       if (!d.parent)
@@ -275,7 +275,10 @@ class Vertex {
   dragended(self) {
     return (d) => {
       if (d.parent) {
-        self.mainMgmt.checkDragObjectOutsideBoundary(d);
+        //If object not out boundary parent , object change postion in boundary parent, so change index object
+        if (self.mainMgmt.checkDragObjectOutsideBoundary(d) == false) {
+          self.mainMgmt.changeIndexInBoundaryForObject(d, "V");
+        }
       } else {
         self.mainMgmt.checkDragObjectInsideBoundary(d, "V");
         self.mainMgmt.resetSizeBoundary();
@@ -328,7 +331,7 @@ class Vertex {
     // Use in function updateVertexInfo()
     let {name, description, repeat, mandatory, data, id, groupType} = this.objectUtils.cloneVertexInfo(vertexId);
     // Get vertex group with group type
-    let group = _.find(window.vertexGroupType, (g) => {
+    let group = _.find(COMMON_DATA.vertexGroupType, (g) => {
       return g.groupType === groupType;
     });
 
@@ -341,11 +344,11 @@ class Vertex {
     $(`#isVertexMandatory`).prop('checked', mandatory);
 
     // Generate properties vertex
-    let keyHeader = window.headerForm[groupType];
+    let keyHeader = COMMON_DATA.headerForm[groupType];
     let cols = keyHeader.length;
     let rows = data.length;
-    const typeData = window.vertexFormatType[groupType];
-    const dataFormat = window.vertexFormat[groupType];
+    const typeData = COMMON_DATA.vertexFormatType[groupType];
+    const dataFormat = COMMON_DATA.vertexFormat[groupType];
 
     let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
     let $contentHeader = $('<thead>');
@@ -465,7 +468,7 @@ class Vertex {
     forms.mandatory = $(`#isVertexMandatory`).prop('checked');
 
     const {groupType} = this.objectUtils.getVertexInfoById(this.currentId);
-    const typeData = window.vertexFormatType[groupType];
+    const typeData = COMMON_DATA.vertexFormatType[groupType];
     let elements = [];
     // Get data element
     $(`#${HTML_VERTEX_PROPERTIES_ID}`).find('tr').each(function () {
@@ -502,7 +505,7 @@ class Vertex {
     vertex.mandatory = mandatory;
     vertex.data = data;
 
-    let group = _.find(window.vertexGroupType, (g) => {
+    let group = _.find(COMMON_DATA.vertexGroupType, (g) => {
       return g.groupType === groupType;
     });
     const option = group.option;
@@ -516,7 +519,7 @@ class Vertex {
       header.text(name).attr('title', description);
       header.style("background-color", `${this.colorHash.hex(name)}`);
       let rows = data.length;
-      let presentation = window.vertexPresentation[groupType];
+      let presentation = COMMON_DATA.vertexPresentation[groupType];
       for (let i = 0; i < rows; i++) {
         let dataRow = data[i];
         d3.select(`#${replaceSpecialCharacter(`${id}${presentation.key}${i}`)}`)
@@ -643,15 +646,15 @@ class Vertex {
    */
   startConnect(self) {
     return function (d) {
-      window.creatingEdge = true;
+      COMMON_DATA.isCreatingEdge = true;
       d3.event.sourceEvent.stopPropagation();
       let sourceId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
       let prop = d3.select(d3.event.sourceEvent.target).attr("prop");
       const source = self.getCoordinateProperty(sourceId, prop, TYPE_POINT.OUTPUT);
-      window.sourceId = sourceId;
+      COMMON_DATA.sourceId = sourceId;
       source.vertexId = sourceId;
       source.prop = prop;
-      window.sourceNode = source;
+      COMMON_DATA.sourceNode = source;
     }
   }
 
@@ -662,14 +665,14 @@ class Vertex {
    */
   drawConnect() {
     return function () {
-      if (window.creatingEdge) {
+      if (COMMON_DATA.isCreatingEdge) {
         let x = d3.mouse(d3.select('svg').node())[0];
         let y = d3.mouse(d3.select('svg').node())[1];
-        let pathStr = createPath(window.sourceNode, {x, y});
+        let pathStr = createPath(COMMON_DATA.sourceNode, {x, y});
         d3.select('#dummyPath').attr('d', pathStr);
         d3.select('#dummyPath').style("display", "block");
         let d = {};
-        d.id = window.sourceId;
+        d.id = COMMON_DATA.sourceId;
         autoScrollOnMousedrag(d);
         updateGraphBoundary(d);
       }
@@ -683,21 +686,19 @@ class Vertex {
    */
   endConnect(self) {
     return function (d) {
-      window.creatingEdge = false;
-      let sCircle = d3.select(this);
-      let eCircle = d3.select(d3.event.sourceEvent.target);
+      COMMON_DATA.isCreatingEdge = false;
       if (d3.event.sourceEvent.target.tagName == "circle" && this != d3.event.sourceEvent.target) {
         let targetId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
         let prop = d3.select(d3.event.sourceEvent.target).attr("prop");
         const target = self.getCoordinateProperty(targetId, prop, TYPE_POINT.INPUT);
         target.vertexId = targetId;
         target.prop = prop;
-        let options = {source: window.sourceNode, target: target};
+        let options = {source: COMMON_DATA.sourceNode, target: target};
         self.createConnect(options);
       }
       d3.select('#dummyPath').style("display", "none");
-      window.sourceNode = null;
-      window.sourceId = null;
+      COMMON_DATA.sourceNode = null;
+      COMMON_DATA.sourceId = null;
       setMinBoundaryGraph(self.dataContainer);
     }
   }
@@ -786,8 +787,7 @@ class Vertex {
   generateControlByType(options) {
     let $control = null;
     let {i, type, val, prop, opt, groupType} = options;
-    let defaultVal = window.vertexFormat[groupType][prop];
-    i = 0;
+    let defaultVal = COMMON_DATA.vertexFormat[groupType][prop];
     switch (type) {
       case VERTEX_FORMAT_TYPE.BOOLEAN:
         $control = $('<input>');
@@ -820,7 +820,7 @@ class Vertex {
             allowInputNumberOnly(e);
           })
           .on('focusout', function (e) {
-            if (this.value && !checkIsMatchRegex(this.value)) {
+            if (this.value && !checkIsMatchRegexNumber(this.value)) {
               comShowMessage("Input invalid");
               this.value = "";
             } else {
@@ -927,11 +927,10 @@ class Vertex {
     if (!this.currentId)
       return;
     let {groupType} = this.objectUtils.cloneVertexInfo(this.currentId);
-    let keyHeader = window.headerForm[groupType];
+    let keyHeader = COMMON_DATA.headerForm[groupType];
     let cols = keyHeader.length;
-    // let rows = data.length;
-    const typeData = window.vertexFormatType[groupType];
-    const dataFormat = window.vertexFormat[groupType];
+    const typeData = COMMON_DATA.vertexFormatType[groupType];
+    const dataFormat = COMMON_DATA.vertexFormat[groupType];
     let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID} > tbody`);
 
     const $row = $('<tr>');
@@ -954,7 +953,7 @@ class Vertex {
       $col.appendTo($row);
     }
 
-    let group = _.find(window.vertexGroupType, (g) => {
+    let group = _.find(COMMON_DATA.vertexGroupType, (g) => {
       return g.groupType === groupType;
     });
     let option = group.option;
@@ -1035,7 +1034,7 @@ class Vertex {
 
     let htmlContent = '';
     let len = elements.length;
-    let presentation = window.vertexPresentation[groupType];
+    let presentation = COMMON_DATA.vertexPresentation[groupType];
     for (let i = 0; i < len; i++) {
       let data = elements[i];
       htmlContent += `

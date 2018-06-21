@@ -4,11 +4,11 @@ import {
   EDGE_LINE_TP,
   EDGE_ARROW_FLG,
   HTML_EDGE_CONTAINER_CLASS,
+  COMMON_DATA,
 } from '../../const/index';
 import _ from "lodash";
 import {
   generateObjectId
-  , comShowMessage
   , cancleSelectedPath
   , createPath
 } from '../../common/utilities/common.ult';
@@ -16,7 +16,6 @@ import {
 const HTML_EDGE_TYPE_ID = 'editEdgeType';
 const OPTIONS_EDGE_LINE_TYPE = 'edgeLineType';
 const OPTIONS_EDGE_ARROW_FLAG = 'edgeArrowFlag';
-const HTML_EDGE_FORM_ID = 'edgeForm';
 
 class Edge {
   constructor(props) {
@@ -74,7 +73,7 @@ class Edge {
       .attr('fill', 'none')
       .attr("marker-end", "url(#arrow)") // Make arrow at end path
       .on("click", () => {
-        window.udpateEdge = true;
+        COMMON_DATA.isUpdateEdge = true;
         let currentPath = d3.select(d3.event.target).attr("d");
         d3.select('#groupEdgePoint').style("display", "block");
         d3.select('#edgePath').style("display", "block");
@@ -190,7 +189,7 @@ class Edge {
 
     this.dataContainer.edge = data;
     // If edge seleted then delete so must be hidden edgePath, groupEdgePoint
-    if (window.udpateEdge)
+    if (COMMON_DATA.isUpdateEdge)
       cancleSelectedPath();
   }
 

@@ -5,6 +5,7 @@ import {
   HTML_VERTEX_CONTAINER_CLASS,
   DEFAULT_CONFIG_GRAPH,
   REPEAT_RANGE,
+  COMMON_DATA,
 } from '../../const/index';
 
 import PopUtils from '../../common/utilities/popup.ult';
@@ -16,6 +17,7 @@ import {
   setMinBoundaryGraph,
   allowInputNumberOnly,
   checkMinMaxValue,
+  arrayMove,
 } from '../../common/utilities/common.ult';
 import ColorHash from 'color-hash';
 
@@ -41,9 +43,9 @@ class Boundary {
     let {x, y, name, description, member, id, width, height, parent, mandatory, repeat, isImport} = options;
     if (!id)
       id = generateObjectId('B');
-    if(!width)
+    if (!width)
       width = BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
-    if(!height)
+    if (!height)
       height = BOUNDARY_ATTR_SIZE.BOUND_HEIGHT
 
     let boundaryInfo = {
@@ -105,13 +107,14 @@ class Boundary {
              title="${boundaryInfo.description}">${boundaryInfo.name}</p>
           </div>
       `);
-    if(!isImport)
+
+    if (!isImport)
       setMinBoundaryGraph(this.dataContainer);
   }
 
   dragBoundaryStart(self) {
     return function (d) {
-      if (window.udpateEdge)
+      if (COMMON_DATA.isUpdateEdge)
         cancleSelectedPath();
       if (!d.parent)
         self.mainMgmt.reSizeBoundaryAsObjectDragged(d);
@@ -157,7 +160,10 @@ class Boundary {
       self.mainMgmt.hiddenBBoxGroup();
 
       if (d.parent) {
-        self.mainMgmt.checkDragObjectOutsideBoundary(d);
+        //If object not out boundary parent , object change postion in boundary parent, so change index object
+        if (self.mainMgmt.checkDragObjectOutsideBoundary(d) == false) {
+          self.mainMgmt.changeIndexInBoundaryForObject(d, "B");
+        }
       } else {
         self.mainMgmt.checkDragObjectInsideBoundary(d, "B");
       }
@@ -324,6 +330,7 @@ class Boundary {
       this.resizeParentBoundary(boundaryObj.parent);
       this.reorderPositionMember(boundaryObj.parent);
     }
+    setMinBoundaryGraph(this.dataContainer);
   }
 
   /**
@@ -427,6 +434,35 @@ class Boundary {
   }
 
   /**
+   * Add memebr to boundary
+   * @param boundaryId
+   * @param child
+   * Member format
+   * {id: '', type: [V, B], show: true}
+   */
+  changeIndexMemberToBoundary(boundaryId, indexOld, indexNew) {
+    const {member} = this.objectUtils.getBoundaryInfoById(boundaryId);
+    arrayMove(member, indexOld, indexNew);
+    this.reorderPositionMember(boundaryId);
+    this.resizeParentBoundary(boundaryId);
+    setMinBoundaryGraph(this.dataContainer);
+  }
+
+  /**
+   * Add member to boundary To index
+   * @param boundaryId
+   * @param child
+   * @param index
+   */
+  addMemberToBoundaryWithIndex(boundaryId, child, index) {
+    const {member} = this.objectUtils.getBoundaryInfoById(boundaryId);
+    member.splice(index, 0, child);
+    this.reorderPositionMember(boundaryId);
+    this.resizeParentBoundary(boundaryId);
+    setMinBoundaryGraph(this.dataContainer);
+  }
+
+  /**
    * Remove member from boundary
    * @param boundaryId
    * @param objectId
@@ -512,7 +548,6 @@ class Boundary {
         let cVertex = this.objectUtils.cloneVertexInfo(objectId);
         let cVertexId = generateObjectId("V");
         cVertex.id = cVertexId;
-        console.log(`======${cVertexId}=========`);
         cVertex.parent = cloneId;
         let child = {id: cVertexId, type: "V", show: true};
         this.mainMgmt.createVertex(cVertex);
@@ -522,7 +557,6 @@ class Boundary {
         let members = cBoundary.member.slice();
         let cBoundaryId = generateObjectId("B");
         cBoundary.id = cBoundaryId;
-        console.log(`======${cBoundaryId}=========`);
         cBoundary.parent = cloneId;
         cBoundary.member = [];
         let child = {id: cBoundaryId, type: "B", show: true};

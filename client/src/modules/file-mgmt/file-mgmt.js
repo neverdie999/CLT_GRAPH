@@ -1,7 +1,8 @@
 import {
-  HTML_ALGETA_CONTAINER_ID,
+  COMMON_DATA,
 } from '../../const/index';
 import {comShowMessage} from '../../common/utilities/common.ult';
+import _ from "lodash";
 
 const HTML_INPUT_FILE_ID = 'inputFile';
 const HTML_OUTPUT_FILE_ID = 'outFile';
@@ -10,7 +11,6 @@ const HTML_BTN_EXPORT_FILE_ID = 'btnExportFile';
 const HTML_SELECTOR_MODE_GRPH = 'input:radio[name=graphMode]';
 const HTML_BTN_FILE_INTERFACE = 'btnFileInterface';
 const HTML_FILE_INTERFACE = 'fileInterface';
-import _ from "lodash";
 
 class FileMgmt {
   constructor(props) {
@@ -158,7 +158,7 @@ class FileMgmt {
       dataContent.position.push(pos);
     });
 
-    dataContent.vertexTypes = window.vertexDefine || {};
+    dataContent.vertexTypes = COMMON_DATA.vertexDefine || {};
 
     return Promise.resolve(dataContent);
   }
@@ -171,8 +171,12 @@ class FileMgmt {
     $(`#${HTML_OUTPUT_FILE_ID}`).val(null);
   }
 
+  /**
+   * Set mode graph is enable or disable edit
+   * @param modeGraph
+   */
   setGraphMode(modeGraph) {
-    window.disabledCommand = modeGraph === "S" ? true : false;
+    COMMON_DATA.isDisabledCommand = modeGraph === "S" ? true : false;
   }
 }
 
