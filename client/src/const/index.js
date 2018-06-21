@@ -87,38 +87,43 @@ export const VERTEX_GROUP_OPTION = {
 }
 
 // Global variable
-window.creatingEdge = false; // Define state creation connect (edge)
-window.sourceNode = null; // Define source node for create connect
-window.disabledCommand = false; // Use for only mode (Disable all command on menu context)
-window.disabledMenu = true; // Not show menu context
-window.vertexTypes = null; // Vertex types use in current graph
-window.vertexTypesOld = null; // Vertex types export in file Graph Data Structure => Used to validate
-window.isVertexTypeDefine = false; // If vertex type define was importted.
-window.showReduced = false; // Determine show full or reduced
-window.udpateEdge = false; // Define state update connect (edge) exited.
-window.groupVertexOption = {}; // list vertex type have same option.
-window.vertexDefine = null; //data of json file vertex type definition.
-window.vertexFormatType = {}; // Vertex group format type
-window.vertexFormat = {}; // Data element vertex format
-window.vertexGroupType = {};
-window.headerForm = {}; // Header group type
-window.vertexPresentation = {}; // Group vertex presentation
-window.xBoundary = 1900;
-window.yBoundary = 959;
+// window.creatingEdge = false; // Define state creation connect (edge)
+// window.sourceNode = null; // Define source node for create connect
+// window.disabledCommand = false; // Use for only mode (Disable all command on menu context)
+// window.vertexTypes = null; // Vertex types use in current graph
+// window.vertexTypesOld = null; // Vertex types export in file Graph Data Structure => Used to validate
+// window.isVertexTypeDefine = false; // If vertex type define was importted.
+// window.showReduced = false; // Determine show full or reduced
+// window.udpateEdge = false; // Define state update connect (edge) exited.
+// window.groupVertexOption = {}; // list vertex type have same option.
+// window.vertexDefine = null; // Data of json file vertex type definition.
+// window.vertexFormatType = {}; // Vertex group format type
+// window.vertexFormat = {}; // Data element vertex format
+// window.vertexGroupType = {};
+// window.headerForm = {}; // Header group type
+// window.vertexPresentation = {}; // Group vertex presentation
+// window.vertexGroup = null; // Group vertex
+// window.xBoundary = 1900;
+// window.yBoundary = 959;
 
-export const DATA_GLOBAL = {
-  isCreatingEdge: false,
-  srcNode: null,
-  isDisabledCommand: false,
-  isDisabledMenu: true,
-  vertexTypes: null,
-  vertexTypesOld: null,
-  IS_IMPORT_VERTEX_TYPE_DEFINE: false,
-  IS_SHOW_REDUCED: false,
-  IS_UPDATE_EDGE: false,
-  GROUP_VERTEX_OPTION: null,
-  VERTEX_DEFINE: null,
-  VERTEX_GROUP: null,
-  CURRENT_GRAPH_WIDTH: 1900,
-  CURRENT_GRAPH_HEIGHT: 959,
+export const COMMON_DATA = {
+  isCreatingEdge: false, // Define state creation connect (edge)
+  sourceNode: null, // Define source node for create connect
+  sourceId: null, // Store temporary vertex id at source when start create edge
+  isDisabledCommand: false, // Define disable or enable command on menu context)
+  vertexTypes: null, // Vertex types using in current graph
+  vertexTypesOld: null, // Vertex types export in file Graph Data Structure => Used to validate
+  isImportVertexTypeDefine: false, // If vertex type define was imported.
+  isShowReduced: false, // Determine mode show full or reduced
+  isUpdateEdge: false, // Set state is updating an edge
+  groupVertexOption: {}, // List vertex type have same option.
+  vertexDefine: null, // Data of json file vertex type definition.
+  vertexFormatType: {}, // Vertex group format type
+  vertexFormat: {}, // Data element vertex format
+  vertexGroupType: {}, // Group vertex type
+  headerForm: {}, // Header group type
+  vertexPresentation: {}, // Group vertex presentation
+  vertexGroup: null, // Group vertex
+  currentWidth: 1900, // Default current width graph
+  currentHeight: 959, // Default current height graph
 }

@@ -1,5 +1,8 @@
 import * as d3 from 'd3';
 import _ from "lodash";
+import {
+  COMMON_DATA,
+} from '../../const/index';
 
 class ObjectUtils {
   constructor(props) {
@@ -26,17 +29,19 @@ class ObjectUtils {
       return e.id === vertexId;
     });
   }
+
   /* Vertex utils (S)*/
   /**
    * Get vertex info by id from array
    * @param vertexId
    * @returns {*}
    */
-  getVertexInfoByIdFromArray(vertexId,arrVertex) {
+  getVertexInfoByIdFromArray(vertexId, arrVertex) {
     return _.find(arrVertex, (e) => {
       return e.id === vertexId;
     });
   }
+
   /**
    * Find all path (edge, connect) with source from this vertex
    * @param vertexId: string, required
@@ -54,14 +59,16 @@ class ObjectUtils {
   /**
    * get root parent of Boundary
    */
-  getRootParent(obj,arr,count=0){
-    let {parent}= this.getBoundaryInfoByIdFromArray(obj,arr);
-    if(parent!=null){
+
+  getRootParent(obj, arr, count = 0) {
+    let {parent} = this.getBoundaryInfoByIdFromArray(obj, arr);
+    if (parent != null) {
       count++;
-     return this.getRootParent(parent,arr,count);
+      return this.getRootParent(parent, arr, count);
     }
-    return {parent:obj,count:count};
+    return {parent: obj, count: count};
   }
+
   /**
    * Find all path (edge, connect) with target at this vertex
    * @param vertexId: string, required
@@ -74,6 +81,43 @@ class ObjectUtils {
         return e.target.vertexId === vertexId;
       }
     );
+  }
+
+  /**
+   * Get index of object from drop position
+   * @param boundaryId boundaryId tagert drop
+   * @param srcInfos Object drap
+   * Function using get index for insert to boundary
+   */
+  getIndexFromPositionForObject(boundaryId, srcInfos) {
+    let {member} = this.getBoundaryInfoById(boundaryId);
+    let xSrc = srcInfos.x;
+    let ySrc = srcInfos.y;
+    let index = 0;
+    let memberAvailable = _.filter(member, (e) => {
+      return e.show === true
+    });
+    for (let mem of memberAvailable) {
+      let {x, y} = this.getLocationForObject(mem);
+      if (y > ySrc) {
+        break;
+      }
+      if (mem.id === srcInfos.id) continue;
+      index++;
+    }
+    return index;
+  }
+
+  /**
+   * Get current location of object
+   */
+  getLocationForObject(member) {
+    if (member.type === "B") {
+      return this.getBoundaryInfoById(member.id);
+    }
+    else {
+      return this.getVertexInfoById(member.id);
+    }
   }
 
   /**
@@ -93,17 +137,18 @@ class ObjectUtils {
    * @returns {Array}
    */
   findEdgeRelateToVertex(vertexId) {
-    if(!vertexId)
+    if (!vertexId)
       return [];
 
-    return _.filter(this.dataContainer.edge, (e) =>
-      { return e.target.vertexId === vertexId || e.source.vertexId === vertexId; }
+    return _.filter(this.dataContainer.edge, (e) => {
+        return e.target.vertexId === vertexId || e.source.vertexId === vertexId;
+      }
     );
   }
 
   checkExitEdgeConnectToVertex(vertexId) {
     let numEdges = this.findEdgeRelateToVertex(vertexId);
-    if(numEdges.length)
+    if (numEdges.length)
       return true;
     else
       return false;
@@ -111,7 +156,7 @@ class ObjectUtils {
 
 
   getDataDefineByOption(options) {
-    return _.find(window.vertexTypes, options);
+    return _.find(COMMON_DATA.vertexTypes, options);
   }
 
   /* Vertex utils (E)*/
@@ -144,10 +189,21 @@ class ObjectUtils {
 
 /**
  * Get boundary info by if from array
- * @param {*} boundaryId 
- * @param {*} arrBoundary 
+ * @param {*} boundaryId
+ * @param {*} arrBoundary
  */
   getBoundaryInfoByIdFromArray(boundaryId,arrBoundary) {
+    return _.find(arrBoundary, (e) => {
+      return e.id === boundaryId;
+    });
+  }
+
+  /**
+   * Get boundary info by if from array
+   * @param {*} boundaryId
+   * @param {*} arrBoundary
+   */
+  getBoundaryInfoByIdFromArray(boundaryId, arrBoundary) {
     return _.find(arrBoundary, (e) => {
       return e.id === boundaryId;
     });

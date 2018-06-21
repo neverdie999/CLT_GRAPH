@@ -13,10 +13,9 @@ class BoundaryMenuItems {
       className: 'data-title',
       zIndex: 100,
       // autoHide: true,
-      build: ($trigger, e) => {
+      build: ($trigger) => {
         return {
           callback: (key, options) => {
-            let boundaryId = options.$trigger.attr('id');
           },
           items: this.initItems($trigger),
           events: {
@@ -53,7 +52,7 @@ class BoundaryMenuItems {
           }
         }
       };
-      this.dataShow[`${id}`] = mem.show;
+      this.dataShow[`${id}`] = show;
     });
     return subItems;
   }

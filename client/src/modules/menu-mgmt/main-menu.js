@@ -1,4 +1,7 @@
 import {getCoordinateMouseOnClick} from '../../common/utilities/common.ult';
+import {
+  COMMON_DATA,
+} from '../../const/index';
 
 class MainMenu {
   constructor(props) {
@@ -14,7 +17,7 @@ class MainMenu {
       selector: this.selector,
       autoHide: true,
       zIndex: 100,
-      build: ($trigger, e) => {
+      build: () => {
         return {
           callback: (key, options) => {
             switch (key) {
@@ -27,7 +30,7 @@ class MainMenu {
                 break;
 
               case "showReduced":
-                window.showReduced ? this.mainMgmt.showFull(options) : this.mainMgmt.showReduced(options);
+                COMMON_DATA.isShowReduced ? this.mainMgmt.showFull(options) : this.mainMgmt.showReduced(options);
                 break;
 
               default:
@@ -39,44 +42,26 @@ class MainMenu {
               name: "Create Vertex",
               icon: "fa-window-maximize",
               items: this.loadItems(),
-              disabled: window.disabledCommand
+              disabled: COMMON_DATA.isDisabledCommand
             },
             "sep1": "-",
             "createBoundary": {
               name: "Create Boundary",
               icon: "fa-object-group",
-              disabled: window.disabledCommand
+              disabled: COMMON_DATA.isDisabledCommand
             },
-            // "sep2": "-",
-            // "autoAlign": {
-            //   name: "Auto Align",
-            //   icon: "fa-sort-amount-desc",
-            //   disabled: window.disabledCommand
-            // },
             "sep3": "-",
             "showReduced": {
-              name: window.showReduced ? "Show Full" : "Show Reduced",
+              name: COMMON_DATA.isShowReduced ? "Show Full" : "Show Reduced",
               icon: "fa-link",
-              disabled: window.disabledCommand
+              disabled: COMMON_DATA.isDisabledCommand
             },
             "sep4": "-",
             "clearAll": {
               name: "Clear All",
               icon: "fa-times",
-              disabled: window.disabledCommand
-            },
-            // "sep5": "-",
-            // "undo": {
-            //   name: "Undo",
-            //   icon: "fa-undo",
-            //   disabled: window.disabledCommand
-            // },
-            // "sep6": "-",
-            // "redo": {
-            //   name: "Redo",
-            //   icon: "fa-repeat",
-            //   disabled: window.disabledCommand
-            // },
+              disabled: COMMON_DATA.isDisabledCommand
+            }
           },
           events: {
             show: (opt) => {
@@ -98,8 +83,12 @@ class MainMenu {
    */
   loadItems() {
     const subItems = {};
-    if (window.vertexTypes && Array.isArray(window.vertexTypes)) {
-      let vertices = window.vertexTypes;
+    // subItems.isHtmlItem = {
+    //   type: 'html',
+    //   html: '<div style="text-align: center; color: red;"><span>No member added</span></div>'
+    // };
+    if (COMMON_DATA.vertexTypes && Array.isArray(COMMON_DATA.vertexTypes)) {
+      let vertices = COMMON_DATA.vertexTypes;
       let len = vertices.length;
       for (let i = 0; i < len; i++) {
         let type = vertices[i].vertexType;

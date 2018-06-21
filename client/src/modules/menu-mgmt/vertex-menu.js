@@ -1,4 +1,6 @@
-import * as d3 from 'd3';
+import {
+  COMMON_DATA,
+} from '../../const/index';
 
 class VertexMenu {
   constructor(props) {
@@ -13,7 +15,7 @@ class VertexMenu {
     $.contextMenu({
       selector: this.selector,
       zIndex: 100,
-      build: ($trigger, e) => {
+      build: () => {
         return {
           callback: (key, options) => {
             let vertexId = options.$trigger.attr('id');
@@ -30,53 +32,30 @@ class VertexMenu {
                 this.vertex.removeVertex(vertexId);
                 break;
 
-              case "moveToFront":
-                d3.select(this.selector).moveToFront(vertexId, this.dataContainer.vertex);
-                break;
-
-              case "moveToBack":
-                d3.select(this.selector).moveToBack(vertexId, this.dataContainer.vertex);
-                break;
-
               default:
                 break;
             }
           },
-          items: this.initItemOnFlagCreateEdge($trigger)
+          items: {
+            "editVertex": {
+              name: "Edit Vertex Info",
+              icon: "fa-pencil-square-o",
+              disabled: COMMON_DATA.isDisabledCommand
+            },
+            "copyVertex": {
+              name: "Copy",
+              icon: "fa-files-o",
+              disabled: COMMON_DATA.isDisabledCommand
+            },
+            "removeVertex": {
+              name: "Delete",
+              icon: "fa-times",
+              disabled: COMMON_DATA.isDisabledCommand
+            }
+          }
         }
       }
-
     });
-  }
-
-  initItemOnFlagCreateEdge($trigger) {
-    let originItems = {
-      "editVertex": {
-        name: "Edit Vertex Info",
-        icon: "fa-pencil-square-o",
-        disabled: window.disabledCommand
-      },
-      "copyVertex": {
-        name: "Copy",
-        icon: "fa-files-o",
-        disabled: window.disabledCommand
-      },
-      "removeVertex": {
-        name: "Delete",
-        icon: "fa-times",
-        disabled: window.disabledCommand
-      },
-      // "moveToFront": {
-      //   name: "Move To Front",
-      //   icon: "fa-level-up",
-      //   disabled: window.disabledCommand},
-      // "moveToBack": {
-      //   name: "Move To Back",
-      //   icon: "fa-level-down",
-      //   disabled: window.disabledCommand
-      // },
-    };
-    return originItems;
   }
 }
 

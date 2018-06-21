@@ -22,6 +22,7 @@ import {
   BOUNDARY_ATTR_SIZE,
   TYPE_POINT,
   VERTEX_FORMAT_TYPE,
+  COMMON_DATA,
 } from '../../const/index';
 import _ from "lodash";
 
@@ -174,10 +175,10 @@ class MainMgmt {
     // give to content vertex type was import from Vertex Type Defination
     this.getVertexFormatType(VERTEX_GROUP);
     this.getVertexTypesShowFull(data);
-    window.vertexDefine = data;
-    window.vertexTypes = VERTEX;
-    window.vertexGroup = VERTEX_GROUP;
-    window.isVertexTypeDefine = true;
+    COMMON_DATA.vertexDefine = data;
+    COMMON_DATA.vertexTypes = VERTEX;
+    COMMON_DATA.vertexGroup = VERTEX_GROUP;
+    COMMON_DATA.isImportVertexTypeDefine = true;
 
     // Validate vertex type
     let isMisMatch = await this.validateVertexTypesInGraph();
@@ -207,23 +208,25 @@ class MainMgmt {
     // Store vertex types
     const {vertexTypes} = data;
     const {VERTEX, VERTEX_GROUP} = vertexTypes;
-    window.vertexTypesOld = VERTEX;
-    this.getVertexFormatType(VERTEX_GROUP);
-    this.getVertexTypesShowFull(vertexTypes);
-
-    // If still not import Vertex Type Definition then reset it.
-    if (!window.isVertexTypeDefine) {
-      window.vertexTypes = VERTEX;
-      window.vertexDefine = vertexTypes;
-      window.vertexGroup = VERTEX_GROUP;
-    }
+    COMMON_DATA.vertexTypesOld = VERTEX;
 
     // Validate vertex type
     let isMisMatch = await this.validateVertexTypesInGraph();
     // Now just show message warning for user. Not stop working
-    if (isMisMatch)
+    if (isMisMatch) {
       comShowMessage("Vertex type in Vertex Type Definition and Data Graph Structure are mismatch." +
         "\n Please check again!");
+      // return;
+    }
+
+    // If still not import Vertex Type Definition then reset it.
+    if (!COMMON_DATA.isImportVertexTypeDefine) {
+      this.getVertexFormatType(VERTEX_GROUP);
+      this.getVertexTypesShowFull(vertexTypes);
+      COMMON_DATA.vertexTypes = VERTEX;
+      COMMON_DATA.vertexDefine = vertexTypes;
+      COMMON_DATA.vertexGroup = VERTEX_GROUP;
+    }
 
     // Draw boundary
     let arrBoundary = data.boundary;
@@ -320,13 +323,13 @@ class MainMgmt {
    * with Vertex Type Definition
    */
   async validateVertexTypesInGraph() {
-    if (!window.vertexTypes || !window.vertexTypesOld) {
+    if (!COMMON_DATA.vertexTypes || !COMMON_DATA.vertexTypesOld) {
       console.log("Targe or soruce is null");
       return Promise.resolve(false);
     }
 
-    const source = window.vertexTypes;
-    const target = window.vertexTypesOld;
+    const source = COMMON_DATA.vertexTypes;
+    const target = COMMON_DATA.vertexTypesOld;
     const current = this.getListVertexType(source);
     const old = this.getListVertexType(target);
     // Compare length
@@ -510,8 +513,8 @@ class MainMgmt {
     const {height, width} = this.objectUtils.getBBoxObject(srcInfos.id);
     let xSrc = srcInfos.x;
     let ySrc = srcInfos.y;
-    let hBSrc = xSrc + width;
-    let wBSrc = ySrc + height;
+    let wBSrc = xSrc + width;
+    // let hBSrc = ySrc + height;
 
     // Define method reverse
     let reverse = (input) => {
@@ -534,16 +537,47 @@ class MainMgmt {
         let xTar = item.x;
         let yTar = item.y;
         let bBoxTar = this.objectUtils.getBBoxObject(item.id);
-        let hBTar = xTar + bBoxTar.width;
-        let wBTar = yTar + bBoxTar.height;
+        let wBTar = xTar + bBoxTar.width;
+        let hBTar = yTar + bBoxTar.height;
 
-        if ((xSrc >= xTar) && (ySrc >= yTar) && (hBSrc <= hBTar) && (wBSrc <= wBTar)) {
+        if ((xSrc >= xTar) && (ySrc >= yTar) && (wBSrc <= wBTar) && (ySrc <= hBTar)) {
           let member = {id: srcInfos.id, type, show: true};
-          this.boundary.addMemberToBoundary(boundaryId, member);
+          let index = this.objectUtils.getIndexFromPositionForObject(boundaryId, srcInfos);
+          this.boundary.addMemberToBoundaryWithIndex(boundaryId, member, index);
           srcInfos.parent = boundaryId;
         }
       }
     });
+  }
+
+  /**
+   * @param srcInfos Object drag
+   * @param type type of object drag
+   * Function using change index of object in boundary parent when drag in boundary
+   */
+  changeIndexInBoundaryForObject(srcInfos, type) {
+    let {parent, id} = srcInfos;
+    let {member} = this.objectUtils.getBoundaryInfoById(parent);
+    let indexOld = this.getIndexBy(member, "id", id);
+    // let member = { id, type, show: true };
+    let indexNew = this.objectUtils.getIndexFromPositionForObject(parent, srcInfos);
+    this.boundary.changeIndexMemberToBoundary(parent, indexOld, indexNew);
+    srcInfos.parent = parent;
+  }
+
+  /**
+   * @param arr Array object
+   * @param name key compare
+   * @param value value compare
+   * @return i (index of object match condition)
+   */
+  getIndexBy(arr, name, value) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i][name] == value) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   /**
@@ -555,8 +589,8 @@ class MainMgmt {
     let {height, width} = this.objectUtils.getBBoxObject(id);
     let xSrc = srcInfos.x;
     let ySrc = srcInfos.y;
-    let hBSrc = xSrc + width;
-    let wBSrc = ySrc + height;
+    let wBSrc = xSrc + width;
+    let hBSrc = ySrc + height;
 
     // Parent
     const {x, y} = this.objectUtils.getBoundaryInfoById(parent);
@@ -565,10 +599,14 @@ class MainMgmt {
     let yParent = y + pBox.height;
 
     // Check drag outside a boundary
-    if ((xSrc < x) || (ySrc < y) || (hBSrc > xParent) || (wBSrc > yParent)) {
+    // if ((xSrc < x) || (ySrc < y) || (wBSrc > xParent) || (hBSrc > yParent)) {
+    //Change condition object out boundary parent
+    if ((( wBSrc < x) || ( xParent < xSrc )) || ((hBSrc < y ) || ( yParent < ySrc ))) {
       this.boundary.removeMemberFromBoundary(parent, srcInfos.id);
       srcInfos.parent = null;
+      return true;
     }
+    return false;
   }
 
   // Set vertex position
@@ -587,7 +625,7 @@ class MainMgmt {
    */
   clearAll() {
     // Delete all element inside SVG
-    window.showReduced = false;
+    COMMON_DATA.isShowReduced = false;
     d3.select("svg").selectAll("*").remove();
 
     // Clear all data cotainer for vertex, boundary, edge
@@ -608,7 +646,7 @@ class MainMgmt {
    */
   dragPointStarted(self) {
     return function () {
-      window.udpateEdge = true;
+      COMMON_DATA.isUpdateEdge = true;
     }
   }
 
@@ -619,7 +657,7 @@ class MainMgmt {
    */
   draggedPoint(self) {
     return function () {
-      if (!window.udpateEdge)
+      if (!COMMON_DATA.isUpdateEdge)
         return;
 
       let pathStr = null;
@@ -651,12 +689,11 @@ class MainMgmt {
   dragPointEnded(self) {
     return function () {
       if (d3.event.sourceEvent.target.tagName == "circle" && this != d3.event.sourceEvent.target) {
-        window.udpateEdge = false;
+        COMMON_DATA.isUpdateEdge = false;
         const type = d3.select(this).attr("type");
         let refId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
         let prop = d3.select(d3.event.sourceEvent.target).attr("prop");
         let edgeId = d3.select('#edgePath').attr('ref');
-        let edgeInfo = self.objectUtils.getEdgeInfoById(edgeId);
         const refObj = self.vertex.getCoordinateProperty(refId, prop, type);
         refObj.vertexId = refId;
         refObj.prop = prop;
@@ -676,12 +713,12 @@ class MainMgmt {
    * Show graph elements connected by edges only
    * Boundary: show vertices which have any edges only and boundaries
    * Vertex: The vertices in group SHOW_FULL_ALWAYS not effected by show reduced
-   * the remain vertex then show header and connected properties only
+   * The remain vertex then show header and connected properties only
    */
   showReduced() {
-    window.showReduced = true;
+    COMMON_DATA.isShowReduced = true;
     let edge = this.dataContainer.edge;
-    let full = window.groupVertexOption["SHOW_FULL_ALWAYS"];
+    let full = COMMON_DATA.groupVertexOption["SHOW_FULL_ALWAYS"];
     let lstVer = [], lstProp = [];
 
     // Filter the vertex effected by show reduced
@@ -729,7 +766,7 @@ class MainMgmt {
    */
   showFull() {
     let edges = this.dataContainer.edge;
-    window.showReduced = false;
+    COMMON_DATA.isShowReduced = false;
     /** Vertex **/
     d3.selectAll('.drag_connect.reduced').remove();
     d3.selectAll('.property').classed("hide", false);
@@ -813,12 +850,12 @@ class MainMgmt {
   getVertexFormatType(vertexGroup) {
     vertexGroup.forEach(group => {
       const {groupType, dataElementFormat, vertexPresentation} = group;
-      window.headerForm[groupType] = Object.keys(dataElementFormat);
-      window.vertexPresentation[groupType] = vertexPresentation;
-      window.vertexFormat[groupType] = dataElementFormat;
-      window.vertexGroupType[groupType] = group;
+      COMMON_DATA.headerForm[groupType] = Object.keys(dataElementFormat);
+      COMMON_DATA.vertexPresentation[groupType] = vertexPresentation;
+      COMMON_DATA.vertexFormat[groupType] = dataElementFormat;
+      COMMON_DATA.vertexGroupType[groupType] = group;
       let formatType = {};
-      let header = window.headerForm[groupType];
+      let header = COMMON_DATA.headerForm[groupType];
       let len = header.length;
       for (let i = 0; i < len; i++) {
         let key = header[i];
@@ -835,7 +872,7 @@ class MainMgmt {
         }
       }
 
-      window.vertexFormatType[groupType] = formatType;
+      COMMON_DATA.vertexFormatType[groupType] = formatType;
     });
   }
 
@@ -857,7 +894,7 @@ class MainMgmt {
         groupVertex.forEach(e => {
           groupAction.push(e.vertexType);
         });
-        window.groupVertexOption[option] = groupAction;
+        COMMON_DATA.groupVertexOption[option] = groupAction;
       }
     }
   }

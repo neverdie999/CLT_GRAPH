@@ -1,4 +1,7 @@
 import * as d3 from 'd3';
+import {
+  COMMON_DATA,
+} from '../../const/index';
 
 class EdgeMenu {
   constructor(props) {
@@ -9,12 +12,11 @@ class EdgeMenu {
 
   initEdgeMenu() {
     // Context menu for Edge
-    let edgeMgmt = this.edgeMgmt;
     $.contextMenu({
       selector: this.selector,
       delay: 300,
       zIndex: 100,
-      build: ($trigger, e) => {
+      build: () => {
         return {
           callback: (key, options) => {
             let edgeId = options.$trigger.attr('id');
@@ -37,29 +39,29 @@ class EdgeMenu {
               type: 'text',
               value: "",
               placeholder: "Origin Note",
-              disabled: window.disabledCommand
+              disabled: COMMON_DATA.isDisabledCommand
             },
             middleNote: {
               name: "Middle Note",
               type: 'text',
               value: "",
-              disabled: window.disabledCommand
+              disabled: COMMON_DATA.isDisabledCommand
             },
             destNote: {
               name: "Destination Note",
               type: 'text',
               value: "",
-              disabled: window.disabledCommand
+              disabled: COMMON_DATA.isDisabledCommand
             },
             "openPopupEditType": {
               name: "Edit line style",
               icon: "fa-pencil-square-o",
-              disabled: window.disabledCommand
+              disabled: COMMON_DATA.isDisabledCommand
             },
             "removeEdge": {
               name: "Delete",
               icon: "fa-times",
-              disabled: window.disabledCommand
+              disabled: COMMON_DATA.isDisabledCommand
             },
           },
           events: {
