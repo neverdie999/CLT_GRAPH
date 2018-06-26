@@ -30,6 +30,7 @@ import ColorHash from 'color-hash';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
+const HTML_VERTEX_FORM_ID = 'vertexForm';
 const CONNECT_KEY = 'Connected';
 const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
 const ATTR_DEL_CHECK_ALL = 'delCheckAll';
@@ -127,8 +128,8 @@ class Vertex {
       id = generateObjectId('V');
 
     let vertexInfo = {
-      x: x,
-      y: y,
+      x: x || 0,
+      y: y || 0,
       vertexType: vertexType,
       name: name || vertexType,
       description: description || "Description",
@@ -144,7 +145,7 @@ class Vertex {
     let group = this.svgSelector.selectAll(`.${HTML_VERTEX_CONTAINER_CLASS}`)
       .data(this.dataContainer.vertex)
       .enter().append("g")
-      .attr("transform", `translate(${options.x}, ${options.y})`)
+      .attr("transform", `translate(${options.x || 0}, ${options.y  || 0})`)
       .attr("id", id)
       .attr("class", `${HTML_VERTEX_CONTAINER_CLASS}`)
       .style("cursor", "default")
@@ -687,6 +688,8 @@ class Vertex {
   endConnect(self) {
     return function (d) {
       COMMON_DATA.isCreatingEdge = false;
+      let sCircle = d3.select(this);
+      let eCircle = d3.select(d3.event.sourceEvent.target);
       if (d3.event.sourceEvent.target.tagName == "circle" && this != d3.event.sourceEvent.target) {
         let targetId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
         let prop = d3.select(d3.event.sourceEvent.target).attr("prop");
@@ -788,6 +791,7 @@ class Vertex {
     let $control = null;
     let {i, type, val, prop, opt, groupType} = options;
     let defaultVal = COMMON_DATA.vertexFormat[groupType][prop];
+    i = 0;
     switch (type) {
       case VERTEX_FORMAT_TYPE.BOOLEAN:
         $control = $('<input>');

@@ -2,6 +2,7 @@ import {getCoordinateMouseOnClick} from '../../common/utilities/common.ult';
 import {
   COMMON_DATA,
 } from '../../const/index';
+import _ from "lodash";
 
 class MainMenu {
   constructor(props) {
@@ -83,12 +84,19 @@ class MainMenu {
    */
   loadItems() {
     const subItems = {};
-    // subItems.isHtmlItem = {
-    //   type: 'html',
-    //   html: '<div style="text-align: center; color: red;"><span>No member added</span></div>'
-    // };
+    subItems.isHtmlItem = {
+      icon: "fa-search",
+      type: 'text',
+      value: '',
+      events: {
+        keyup: this.searchVertexType()
+      }
+    };
+    subItems["sep4"] = "-";
     if (COMMON_DATA.vertexTypes && Array.isArray(COMMON_DATA.vertexTypes)) {
       let vertices = COMMON_DATA.vertexTypes;
+      // Sort array object
+      vertices = _.orderBy(vertices, ['vertexType'],['asc']);
       let len = vertices.length;
       for (let i = 0; i < len; i++) {
         let type = vertices[i].vertexType;
@@ -108,6 +116,29 @@ class MainMenu {
       dfd.resolve(subItems);
     }, 10);
     return dfd.promise();
+  }
+
+  /**
+   * Filter the segment with name contain character input
+   * @returns {Function}
+   */
+  searchVertexType() {
+    return function () {
+      console.log("Called");
+      let filter = this.value.toUpperCase();
+      let li = $(this).closest('ul').find(`li`);
+      // Remove first li cause it is input search
+      let length = li.length;
+      for (let i = 1; i < length; i++) {
+        let element = li[i];
+        let text = $(element).find('span').text();
+        if (text.toUpperCase().indexOf(filter) > -1) {
+          $(element).css('display', '');
+        } else {
+          $(element).css('display', 'none');
+        }
+      }
+    }
   }
 }
 
