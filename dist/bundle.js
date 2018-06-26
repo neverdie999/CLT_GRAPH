@@ -452,7 +452,7 @@ function newInterval(floori, offseti, count, field) {
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__src_bisect__["a"]; });
 /* unused harmony reexport bisectRight */
 /* unused harmony reexport bisectLeft */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_ascending__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_ascending__ = __webpack_require__(67);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__src_ascending__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_bisector__ = __webpack_require__(231);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__src_bisector__["a"]; });
@@ -1561,7 +1561,7 @@ if (__webpack_require__(7)) {
   var createArrayIncludes = __webpack_require__(89);
   var speciesConstructor = __webpack_require__(96);
   var ArrayIterators = __webpack_require__(144);
-  var Iterators = __webpack_require__(64);
+  var Iterators = __webpack_require__(65);
   var $iterDetect = __webpack_require__(93);
   var setSpecies = __webpack_require__(52);
   var arrayFill = __webpack_require__(143);
@@ -2696,411 +2696,6 @@ var slice = array.slice;
 
 /***/ }),
 /* 61 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["g"] = comShowMessage;
-/* harmony export (immutable) */ __webpack_exports__["i"] = generateObjectId;
-/* harmony export (immutable) */ __webpack_exports__["k"] = replaceSpecialCharacter;
-/* harmony export (immutable) */ __webpack_exports__["h"] = createPath;
-/* harmony export (immutable) */ __webpack_exports__["d"] = cancleSelectedPath;
-/* harmony export (immutable) */ __webpack_exports__["j"] = getCoordinateMouseOnClick;
-/* harmony export (immutable) */ __webpack_exports__["c"] = autoScrollOnMousedrag;
-/* harmony export (immutable) */ __webpack_exports__["n"] = updateGraphBoundary;
-/* harmony export (immutable) */ __webpack_exports__["m"] = setSizeGraph;
-/* harmony export (immutable) */ __webpack_exports__["l"] = setMinBoundaryGraph;
-/* harmony export (immutable) */ __webpack_exports__["a"] = allowInputNumberOnly;
-/* harmony export (immutable) */ __webpack_exports__["b"] = arrayMove;
-/* harmony export (immutable) */ __webpack_exports__["f"] = checkMinMaxValue;
-/* harmony export (immutable) */ __webpack_exports__["e"] = checkIsMatchRegexNumber;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(18);
-
-
-
-
-/**
- * Show message alert
- * @param msg
- */
-function comShowMessage(msg = null) {
-  if (!msg)
-    return;
-  alert(msg);
-}
-
-/**
- * Gernerate object id with format 'prefix' + Date.now()
- * Ex for vertex: V1234234234
- * Ex for edge: E1234234234
- * Ex for boundary: B1234234234
- * @returns {string}
- */
-function generateObjectId(prefix = 'V') {
-  let date = new Date();
-  return `${prefix}${date.getTime()}`;
-}
-
-/**
- * Remove special character in selector query
- * @param id
- * @returns {string}
- */
-function replaceSpecialCharacter(id) {
-  // return id.replace(/(:|\.|\[|\]|,|=|@)/g, "\\\\$1");
-  return id.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
-}
-
-/**
- * Create string path
- * @param src
- * @param tar
- * @returns {string}
- */
-function createPath(src, tar) {
-  // Straight line
-  let pathStr = `M${src.x},${src.y} L${tar.x},${tar.y}`;
-
-  return pathStr;
-};
-
-/**
- * Cancle selected path when user
- * click click outside path selected or move object...
- */
-function cancleSelectedPath() {
-  __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].isUpdateEdge = false;
-  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#edgePath').style("display", "none");
-  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#groupEdgePoint').style("display", "none");
-  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#groupEdgePoint").moveToBack();
-  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#edgePath").moveToBack();
-}
-
-/**
- * Get coordinate mouse when click on SVG
- */
-function getCoordinateMouseOnClick(e) {
-  let container = $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* HTML_ALGETA_CONTAINER_ID */]}`);
-  let x = e.clientX + container.scrollLeft();
-  let y = e.clientY + container.scrollTop();
-  return {x, y};
-}
-
-/**
- * Auto scroll when drag vertex or boundary
- */
-function autoScrollOnMousedrag(d) {
-  // Autoscroll on mousedrag
-  let svg = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("svg").node();
-  const $parent = $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* HTML_ALGETA_CONTAINER_ID */]}`);
-  let w = $parent.width();
-  let h = $parent.height();
-  let sL = $parent.scrollLeft();
-  let sT = $parent.scrollTop();
-  let coordinates = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](svg);
-  let x = coordinates[0];
-  let y = coordinates[1];
-
-  if (x > w + sL) {
-    $parent.scrollLeft(x - w);
-  } else if (x < sL) {
-    $parent.scrollLeft(x);
-  }
-
-  if (y > h + sT) {
-    $parent.scrollTop(y - h);
-  } else if (y < sT) {
-    $parent.scrollTop(y);
-  }
-}
-
-function updateGraphBoundary(d) {
-  const {width, height} = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${d.id}`).node().getBBox();
-  let currentX = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
-  let currentY = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
-  let margin = 100;
-  if ((currentX + width) > __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentWidth) {
-    __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentWidth = currentX + width + margin;
-    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* SVG_CONTAINER_ID */]}`).css("min-width", __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentWidth);
-  }
-
-  if ((currentY + height) > __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentHeight) {
-    __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentHeight = currentY + height + margin;
-    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* SVG_CONTAINER_ID */]}`).css("min-height", __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentHeight);
-  }
-}
-
-function setSizeGraph(options = {
-  width: __WEBPACK_IMPORTED_MODULE_2__const_index__["d" /* DEFAULT_CONFIG_GRAPH */].MIN_WIDTH,
-  height: __WEBPACK_IMPORTED_MODULE_2__const_index__["d" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT
-}) {
-  let offer = 200;
-  if (options.width) {
-    __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentWidth = options.width + offer;
-    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* SVG_CONTAINER_ID */]}`).css("min-width", __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentWidth);
-  }
-
-  if (options.height) {
-    __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentHeight = options.height + offer;
-    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* SVG_CONTAINER_ID */]}`).css("min-height", __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentHeight);
-  }
-}
-
-/**
- * Shink graph when object drag end.
- * @param d
- */
-function setMinBoundaryGraph(data) {
-  // Array store size
-  let lstOffsetX = [1900];
-  let lstOffsetY = [959];
-
-  // Filter boundary without parent
-  let boundaries = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(data.boundary, (g) => {
-    return g.parent == null;
-  });
-
-  // Filter vertex without parent
-  let vertices = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(data.vertex, (g) => {
-    return g.parent == null;
-  });
-
-  boundaries.forEach(e => {
-    let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${e.id}`).node()
-    if (node) {
-      let {width, height} = node.getBBox();
-      lstOffsetX.push(width + e.x);
-      lstOffsetY.push(height + e.y);
-    }
-  });
-
-  vertices.forEach(e => {
-    let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${e.id}`).node()
-    if (node) {
-      let {width, height} = node.getBBox();
-      lstOffsetX.push(width + e.x);
-      lstOffsetY.push(height + e.y);
-    }
-  });
-
-  // Get max width, max height
-  let width = Math.max.apply(null, lstOffsetX);
-  let height = Math.max.apply(null, lstOffsetY);
-
-  setSizeGraph({width, height});
-}
-
-/**
- * Allow only numeric (0-9) in HTML inputbox using jQuery.
- * Allow: backspace, delete, tab, escape, enter and .
- * Allow: Ctrl+A, Command+A
- */
-function allowInputNumberOnly(e) {
-  // Allow: backspace, delete, tab, escape, enter, dot(.) and +
-  if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 187, 189]) !== -1 ||
-    // Allow: Ctrl+A, Command+A
-    (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-    // Allow: home, end, left, right, down, up
-    (e.keyCode >= 35 && e.keyCode <= 40)) {
-    // let it happen, don't do anything
-    return;
-  }
-  // Ensure that it is a number and stop the key press
-  if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-    e.preventDefault();
-  }
-}
-
-//move element in array
-function arrayMove(x, from, to) {
-  x.splice((to < 0 ? x.length + to : to), 0, x.splice(from, 1)[0]);
-}
-
-function checkMinMaxValue(val, min = __WEBPACK_IMPORTED_MODULE_2__const_index__["m" /* REPEAT_RANGE */].MIN, max = __WEBPACK_IMPORTED_MODULE_2__const_index__["m" /* REPEAT_RANGE */].MAX) {
-  if (parseInt(val) < min || isNaN(parseInt(val)))
-    return min;
-  else if (parseInt(val) > max)
-    return max;
-  else return parseInt(val);
-}
-
-function checkIsMatchRegexNumber(val) {
-  const regex = new RegExp('^(?=.)([+-]?([0-9]*)(\.([0-9]+))?)$');
-  return regex.test(val);
-}
-
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var def = __webpack_require__(8).f;
-var has = __webpack_require__(19);
-var TAG = __webpack_require__(6)('toStringTag');
-
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
-};
-
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__(0);
-var defined = __webpack_require__(30);
-var fails = __webpack_require__(4);
-var spaces = __webpack_require__(129);
-var space = '[' + spaces + ']';
-var non = '\u200b\u0085';
-var ltrim = RegExp('^' + space + space + '*');
-var rtrim = RegExp(space + space + '*$');
-
-var exporter = function (KEY, exec, ALIAS) {
-  var exp = {};
-  var FORCE = fails(function () {
-    return !!spaces[KEY]() || non[KEY]() != non;
-  });
-  var fn = exp[KEY] = FORCE ? exec(trim) : spaces[KEY];
-  if (ALIAS) exp[ALIAS] = fn;
-  $export($export.P + $export.F * FORCE, 'String', exp);
-};
-
-// 1 -> String#trimLeft
-// 2 -> String#trimRight
-// 3 -> String#trim
-var trim = exporter.trim = function (string, TYPE) {
-  string = String(defined(string));
-  if (TYPE & 1) string = string.replace(ltrim, '');
-  if (TYPE & 2) string = string.replace(rtrim, '');
-  return string;
-};
-
-module.exports = exporter;
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(5);
-module.exports = function (it, TYPE) {
-  if (!isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
-  return it;
-};
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(a, b) {
-  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-});
-
-
-/***/ }),
-/* 67 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(x) {
-  return function() {
-    return x;
-  };
-});
-
-
-/***/ }),
-/* 68 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-// Adds floating point numbers with twice the normal precision.
-// Reference: J. R. Shewchuk, Adaptive Precision Floating-Point Arithmetic and
-// Fast Robust Geometric Predicates, Discrete & Computational Geometry 18(3)
-// 305–363 (1997).
-// Code adapted from GeographicLib by Charles F. F. Karney,
-// http://geographiclib.sourceforge.net/
-
-/* harmony default export */ __webpack_exports__["a"] = (function() {
-  return new Adder;
-});
-
-function Adder() {
-  this.reset();
-}
-
-Adder.prototype = {
-  constructor: Adder,
-  reset: function() {
-    this.s = // rounded value
-    this.t = 0; // exact error
-  },
-  add: function(y) {
-    add(temp, y, this.t);
-    add(this, temp.s, this.s);
-    if (this.s) this.t += temp.t;
-    else this.s = temp.t;
-  },
-  valueOf: function() {
-    return this.s;
-  }
-};
-
-var temp = new Adder;
-
-function add(adder, a, b) {
-  var x = adder.s = a + b,
-      bv = x - a,
-      av = x - bv;
-  adder.t = (a - av) + (b - bv);
-}
-
-
-/***/ }),
-/* 69 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_color__ = __webpack_require__(181);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["e"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["g"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["f"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_lab__ = __webpack_require__(740);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["b"]; });
-/* unused harmony reexport lch */
-/* unused harmony reexport gray */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__ = __webpack_require__(741);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__["a"]; });
-
-
-
-
-
-/***/ }),
-/* 70 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function() {
-  return Math.random();
-});
-
-
-/***/ }),
-/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -20213,6 +19808,411 @@ function add(adder, a, b) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(122), __webpack_require__(852)(module)))
 
 /***/ }),
+/* 62 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["g"] = comShowMessage;
+/* harmony export (immutable) */ __webpack_exports__["i"] = generateObjectId;
+/* harmony export (immutable) */ __webpack_exports__["k"] = replaceSpecialCharacter;
+/* harmony export (immutable) */ __webpack_exports__["h"] = createPath;
+/* harmony export (immutable) */ __webpack_exports__["d"] = cancleSelectedPath;
+/* harmony export (immutable) */ __webpack_exports__["j"] = getCoordinateMouseOnClick;
+/* harmony export (immutable) */ __webpack_exports__["c"] = autoScrollOnMousedrag;
+/* harmony export (immutable) */ __webpack_exports__["n"] = updateGraphBoundary;
+/* harmony export (immutable) */ __webpack_exports__["m"] = setSizeGraph;
+/* harmony export (immutable) */ __webpack_exports__["l"] = setMinBoundaryGraph;
+/* harmony export (immutable) */ __webpack_exports__["a"] = allowInputNumberOnly;
+/* harmony export (immutable) */ __webpack_exports__["b"] = arrayMove;
+/* harmony export (immutable) */ __webpack_exports__["f"] = checkMinMaxValue;
+/* harmony export (immutable) */ __webpack_exports__["e"] = checkIsMatchRegexNumber;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(18);
+
+
+
+
+/**
+ * Show message alert
+ * @param msg
+ */
+function comShowMessage(msg = null) {
+  if (!msg)
+    return;
+  alert(msg);
+}
+
+/**
+ * Gernerate object id with format 'prefix' + Date.now()
+ * Ex for vertex: V1234234234
+ * Ex for edge: E1234234234
+ * Ex for boundary: B1234234234
+ * @returns {string}
+ */
+function generateObjectId(prefix = 'V') {
+  let date = new Date();
+  return `${prefix}${date.getTime()}`;
+}
+
+/**
+ * Remove special character in selector query
+ * @param id
+ * @returns {string}
+ */
+function replaceSpecialCharacter(id) {
+  // return id.replace(/(:|\.|\[|\]|,|=|@)/g, "\\\\$1");
+  return id.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
+}
+
+/**
+ * Create string path
+ * @param src
+ * @param tar
+ * @returns {string}
+ */
+function createPath(src, tar) {
+  // Straight line
+  let pathStr = `M${src.x},${src.y} L${tar.x},${tar.y}`;
+
+  return pathStr;
+};
+
+/**
+ * Cancle selected path when user
+ * click click outside path selected or move object...
+ */
+function cancleSelectedPath() {
+  __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].isUpdateEdge = false;
+  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#edgePath').style("display", "none");
+  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#groupEdgePoint').style("display", "none");
+  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#groupEdgePoint").moveToBack();
+  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#edgePath").moveToBack();
+}
+
+/**
+ * Get coordinate mouse when click on SVG
+ */
+function getCoordinateMouseOnClick(e) {
+  let container = $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* HTML_ALGETA_CONTAINER_ID */]}`);
+  let x = e.clientX + container.scrollLeft();
+  let y = e.clientY + container.scrollTop();
+  return {x, y};
+}
+
+/**
+ * Auto scroll when drag vertex or boundary
+ */
+function autoScrollOnMousedrag(d) {
+  // Autoscroll on mousedrag
+  let svg = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("svg").node();
+  const $parent = $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* HTML_ALGETA_CONTAINER_ID */]}`);
+  let w = $parent.width();
+  let h = $parent.height();
+  let sL = $parent.scrollLeft();
+  let sT = $parent.scrollTop();
+  let coordinates = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](svg);
+  let x = coordinates[0];
+  let y = coordinates[1];
+
+  if (x > w + sL) {
+    $parent.scrollLeft(x - w);
+  } else if (x < sL) {
+    $parent.scrollLeft(x);
+  }
+
+  if (y > h + sT) {
+    $parent.scrollTop(y - h);
+  } else if (y < sT) {
+    $parent.scrollTop(y);
+  }
+}
+
+function updateGraphBoundary(d) {
+  const {width, height} = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${d.id}`).node().getBBox();
+  let currentX = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
+  let currentY = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
+  let margin = 100;
+  if ((currentX + width) > __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentWidth) {
+    __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentWidth = currentX + width + margin;
+    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* SVG_CONTAINER_ID */]}`).css("min-width", __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentWidth);
+  }
+
+  if ((currentY + height) > __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentHeight) {
+    __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentHeight = currentY + height + margin;
+    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* SVG_CONTAINER_ID */]}`).css("min-height", __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentHeight);
+  }
+}
+
+function setSizeGraph(options = {
+  width: __WEBPACK_IMPORTED_MODULE_2__const_index__["d" /* DEFAULT_CONFIG_GRAPH */].MIN_WIDTH,
+  height: __WEBPACK_IMPORTED_MODULE_2__const_index__["d" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT
+}) {
+  let offer = 200;
+  if (options.width) {
+    __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentWidth = options.width + offer;
+    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* SVG_CONTAINER_ID */]}`).css("min-width", __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentWidth);
+  }
+
+  if (options.height) {
+    __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentHeight = options.height + offer;
+    $(`#${__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* SVG_CONTAINER_ID */]}`).css("min-height", __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].currentHeight);
+  }
+}
+
+/**
+ * Shink graph when object drag end.
+ * @param d
+ */
+function setMinBoundaryGraph(data) {
+  // Array store size
+  let lstOffsetX = [1900];
+  let lstOffsetY = [959];
+
+  // Filter boundary without parent
+  let boundaries = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(data.boundary, (g) => {
+    return g.parent == null;
+  });
+
+  // Filter vertex without parent
+  let vertices = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(data.vertex, (g) => {
+    return g.parent == null;
+  });
+
+  boundaries.forEach(e => {
+    let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${e.id}`).node()
+    if (node) {
+      let {width, height} = node.getBBox();
+      lstOffsetX.push(width + e.x);
+      lstOffsetY.push(height + e.y);
+    }
+  });
+
+  vertices.forEach(e => {
+    let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${e.id}`).node()
+    if (node) {
+      let {width, height} = node.getBBox();
+      lstOffsetX.push(width + e.x);
+      lstOffsetY.push(height + e.y);
+    }
+  });
+
+  // Get max width, max height
+  let width = Math.max.apply(null, lstOffsetX);
+  let height = Math.max.apply(null, lstOffsetY);
+
+  setSizeGraph({width, height});
+}
+
+/**
+ * Allow only numeric (0-9) in HTML inputbox using jQuery.
+ * Allow: backspace, delete, tab, escape, enter and .
+ * Allow: Ctrl+A, Command+A
+ */
+function allowInputNumberOnly(e) {
+  // Allow: backspace, delete, tab, escape, enter, dot(.) and +
+  if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 187, 189]) !== -1 ||
+    // Allow: Ctrl+A, Command+A
+    (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+    // Allow: home, end, left, right, down, up
+    (e.keyCode >= 35 && e.keyCode <= 40)) {
+    // let it happen, don't do anything
+    return;
+  }
+  // Ensure that it is a number and stop the key press
+  if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+    e.preventDefault();
+  }
+}
+
+//move element in array
+function arrayMove(x, from, to) {
+  x.splice((to < 0 ? x.length + to : to), 0, x.splice(from, 1)[0]);
+}
+
+function checkMinMaxValue(val, min = __WEBPACK_IMPORTED_MODULE_2__const_index__["m" /* REPEAT_RANGE */].MIN, max = __WEBPACK_IMPORTED_MODULE_2__const_index__["m" /* REPEAT_RANGE */].MAX) {
+  if (parseInt(val) < min || isNaN(parseInt(val)))
+    return min;
+  else if (parseInt(val) > max)
+    return max;
+  else return parseInt(val);
+}
+
+function checkIsMatchRegexNumber(val) {
+  const regex = new RegExp('^(?=.)([+-]?([0-9]*)(\.([0-9]+))?)$');
+  return regex.test(val);
+}
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var def = __webpack_require__(8).f;
+var has = __webpack_require__(19);
+var TAG = __webpack_require__(6)('toStringTag');
+
+module.exports = function (it, tag, stat) {
+  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+};
+
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export = __webpack_require__(0);
+var defined = __webpack_require__(30);
+var fails = __webpack_require__(4);
+var spaces = __webpack_require__(129);
+var space = '[' + spaces + ']';
+var non = '\u200b\u0085';
+var ltrim = RegExp('^' + space + space + '*');
+var rtrim = RegExp(space + space + '*$');
+
+var exporter = function (KEY, exec, ALIAS) {
+  var exp = {};
+  var FORCE = fails(function () {
+    return !!spaces[KEY]() || non[KEY]() != non;
+  });
+  var fn = exp[KEY] = FORCE ? exec(trim) : spaces[KEY];
+  if (ALIAS) exp[ALIAS] = fn;
+  $export($export.P + $export.F * FORCE, 'String', exp);
+};
+
+// 1 -> String#trimLeft
+// 2 -> String#trimRight
+// 3 -> String#trim
+var trim = exporter.trim = function (string, TYPE) {
+  string = String(defined(string));
+  if (TYPE & 1) string = string.replace(ltrim, '');
+  if (TYPE & 2) string = string.replace(rtrim, '');
+  return string;
+};
+
+module.exports = exporter;
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports) {
+
+module.exports = {};
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(5);
+module.exports = function (it, TYPE) {
+  if (!isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
+  return it;
+};
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(a, b) {
+  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+});
+
+
+/***/ }),
+/* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(x) {
+  return function() {
+    return x;
+  };
+});
+
+
+/***/ }),
+/* 69 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// Adds floating point numbers with twice the normal precision.
+// Reference: J. R. Shewchuk, Adaptive Precision Floating-Point Arithmetic and
+// Fast Robust Geometric Predicates, Discrete & Computational Geometry 18(3)
+// 305–363 (1997).
+// Code adapted from GeographicLib by Charles F. F. Karney,
+// http://geographiclib.sourceforge.net/
+
+/* harmony default export */ __webpack_exports__["a"] = (function() {
+  return new Adder;
+});
+
+function Adder() {
+  this.reset();
+}
+
+Adder.prototype = {
+  constructor: Adder,
+  reset: function() {
+    this.s = // rounded value
+    this.t = 0; // exact error
+  },
+  add: function(y) {
+    add(temp, y, this.t);
+    add(this, temp.s, this.s);
+    if (this.s) this.t += temp.t;
+    else this.s = temp.t;
+  },
+  valueOf: function() {
+    return this.s;
+  }
+};
+
+var temp = new Adder;
+
+function add(adder, a, b) {
+  var x = adder.s = a + b,
+      bv = x - a,
+      av = x - bv;
+  adder.t = (a - av) + (b - bv);
+}
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_color__ = __webpack_require__(181);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["e"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["g"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["f"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_lab__ = __webpack_require__(740);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["b"]; });
+/* unused harmony reexport lch */
+/* unused harmony reexport gray */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__ = __webpack_require__(741);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__["a"]; });
+
+
+
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function() {
+  return Math.random();
+});
+
+
+/***/ }),
 /* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21004,7 +21004,7 @@ var anInstance = __webpack_require__(53);
 var isObject = __webpack_require__(5);
 var fails = __webpack_require__(4);
 var $iterDetect = __webpack_require__(93);
-var setToStringTag = __webpack_require__(62);
+var setToStringTag = __webpack_require__(63);
 var inheritIfRequired = __webpack_require__(130);
 
 module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
@@ -22371,9 +22371,9 @@ var LIBRARY = __webpack_require__(41);
 var $export = __webpack_require__(0);
 var redefine = __webpack_require__(16);
 var hide = __webpack_require__(15);
-var Iterators = __webpack_require__(64);
+var Iterators = __webpack_require__(65);
 var $iterCreate = __webpack_require__(136);
-var setToStringTag = __webpack_require__(62);
+var setToStringTag = __webpack_require__(63);
 var getPrototypeOf = __webpack_require__(22);
 var ITERATOR = __webpack_require__(6)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
@@ -22445,7 +22445,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 
 var create = __webpack_require__(50);
 var descriptor = __webpack_require__(46);
-var setToStringTag = __webpack_require__(62);
+var setToStringTag = __webpack_require__(63);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
@@ -22494,7 +22494,7 @@ module.exports = function (KEY) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
-var Iterators = __webpack_require__(64);
+var Iterators = __webpack_require__(65);
 var ITERATOR = __webpack_require__(6)('iterator');
 var ArrayProto = Array.prototype;
 
@@ -22524,7 +22524,7 @@ module.exports = function (object, index, value) {
 
 var classof = __webpack_require__(74);
 var ITERATOR = __webpack_require__(6)('iterator');
-var Iterators = __webpack_require__(64);
+var Iterators = __webpack_require__(65);
 module.exports = __webpack_require__(23).getIteratorMethod = function (it) {
   if (it != undefined) return it[ITERATOR]
     || it['@@iterator']
@@ -22574,7 +22574,7 @@ module.exports = function fill(value /* , start = 0, end = @length */) {
 
 var addToUnscopables = __webpack_require__(42);
 var step = __webpack_require__(213);
-var Iterators = __webpack_require__(64);
+var Iterators = __webpack_require__(65);
 var toIObject = __webpack_require__(20);
 
 // 22.1.3.4 Array.prototype.entries()
@@ -22817,7 +22817,7 @@ var toIndex = __webpack_require__(222);
 var gOPN = __webpack_require__(51).f;
 var dP = __webpack_require__(8).f;
 var arrayFill = __webpack_require__(143);
-var setToStringTag = __webpack_require__(62);
+var setToStringTag = __webpack_require__(63);
 var ARRAY_BUFFER = 'ArrayBuffer';
 var DATA_VIEW = 'DataView';
 var PROTOTYPE = 'prototype';
@@ -24940,7 +24940,7 @@ function squarifyRatio(ratio, parent, x0, y0, x1, y1) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__rgb__ = __webpack_require__(288);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__array__ = __webpack_require__(291);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__date__ = __webpack_require__(292);
@@ -26489,7 +26489,7 @@ module.exports = function (fn, args, that) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var $parseInt = __webpack_require__(3).parseInt;
-var $trim = __webpack_require__(63).trim;
+var $trim = __webpack_require__(64).trim;
 var ws = __webpack_require__(129);
 var hex = /^[-+]?0[xX]/;
 
@@ -26504,7 +26504,7 @@ module.exports = $parseInt(ws + '08') !== 8 || $parseInt(ws + '0x16') !== 22 ? f
 /***/ (function(module, exports, __webpack_require__) {
 
 var $parseFloat = __webpack_require__(3).parseFloat;
-var $trim = __webpack_require__(63).trim;
+var $trim = __webpack_require__(64).trim;
 
 module.exports = 1 / $parseFloat(__webpack_require__(129) + '-0') !== -Infinity ? function parseFloat(str) {
   var string = $trim(String(str), 3);
@@ -26718,7 +26718,7 @@ module.exports = function (C, x) {
 "use strict";
 
 var strong = __webpack_require__(218);
-var validate = __webpack_require__(65);
+var validate = __webpack_require__(66);
 var MAP = 'Map';
 
 // 23.1 Map Objects
@@ -26754,7 +26754,7 @@ var step = __webpack_require__(213);
 var setSpecies = __webpack_require__(52);
 var DESCRIPTORS = __webpack_require__(7);
 var fastKey = __webpack_require__(40).fastKey;
-var validate = __webpack_require__(65);
+var validate = __webpack_require__(66);
 var SIZE = DESCRIPTORS ? '_s' : 'size';
 
 var getEntry = function (that, key) {
@@ -26895,7 +26895,7 @@ module.exports = {
 "use strict";
 
 var strong = __webpack_require__(218);
-var validate = __webpack_require__(65);
+var validate = __webpack_require__(66);
 var SET = 'Set';
 
 // 23.2 Set Objects
@@ -26922,7 +26922,7 @@ var assign = __webpack_require__(201);
 var weak = __webpack_require__(221);
 var isObject = __webpack_require__(5);
 var fails = __webpack_require__(4);
-var validate = __webpack_require__(65);
+var validate = __webpack_require__(66);
 var WEAK_MAP = 'WeakMap';
 var getWeak = meta.getWeak;
 var isExtensible = Object.isExtensible;
@@ -26989,7 +26989,7 @@ var anInstance = __webpack_require__(53);
 var forOf = __webpack_require__(54);
 var createArrayMethod = __webpack_require__(33);
 var $has = __webpack_require__(19);
-var validate = __webpack_require__(65);
+var validate = __webpack_require__(66);
 var arrayFind = createArrayMethod(5);
 var arrayFindIndex = createArrayMethod(6);
 var id = 0;
@@ -27248,7 +27248,7 @@ module.exports = Math.scale || function scale(x, inLow, inHigh, outLow, outHigh)
 "use strict";
 /* unused harmony export bisectRight */
 /* unused harmony export bisectLeft */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bisector__ = __webpack_require__(231);
 
 
@@ -27264,7 +27264,7 @@ var bisectLeft = ascendingBisect.left;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(67);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function(compare) {
@@ -28618,7 +28618,7 @@ var prefixExponent;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return areaRingSum; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return areaStream; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stream__ = __webpack_require__(58);
@@ -29204,7 +29204,7 @@ function link(array) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cartesian__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(1);
 
@@ -29494,7 +29494,7 @@ var coordinates = [null, null],
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stream__ = __webpack_require__(58);
@@ -29926,7 +29926,7 @@ var rad2deg = 180 / Math.PI;
 "use strict";
 /* unused harmony export rgbBasis */
 /* unused harmony export rgbBasisClosed */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__basis__ = __webpack_require__(183);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__basisClosed__ = __webpack_require__(289);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__color__ = __webpack_require__(81);
@@ -30166,7 +30166,7 @@ function one(b) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(71);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ((function sourceRandomNormal(source) {
@@ -30202,7 +30202,7 @@ function one(b) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(71);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ((function sourceRandomIrwinHall(source) {
@@ -32577,7 +32577,7 @@ var redefine = __webpack_require__(16);
 var META = __webpack_require__(40).KEY;
 var $fails = __webpack_require__(4);
 var shared = __webpack_require__(88);
-var setToStringTag = __webpack_require__(62);
+var setToStringTag = __webpack_require__(63);
 var uid = __webpack_require__(47);
 var wks = __webpack_require__(6);
 var wksExt = __webpack_require__(197);
@@ -33136,7 +33136,7 @@ var fails = __webpack_require__(4);
 var gOPN = __webpack_require__(51).f;
 var gOPD = __webpack_require__(21).f;
 var dP = __webpack_require__(8).f;
-var $trim = __webpack_require__(63).trim;
+var $trim = __webpack_require__(64).trim;
 var NUMBER = 'Number';
 var $Number = global[NUMBER];
 var Base = $Number;
@@ -33785,7 +33785,7 @@ $export($export.S, 'String', {
 "use strict";
 
 // 21.1.3.25 String.prototype.trim()
-__webpack_require__(63)('trim', function ($trim) {
+__webpack_require__(64)('trim', function ($trim) {
   return function trim() {
     return $trim(this, 3);
   };
@@ -35086,7 +35086,7 @@ if (!USE_NATIVE) {
 }
 
 $export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
-__webpack_require__(62)($Promise, PROMISE);
+__webpack_require__(63)($Promise, PROMISE);
 __webpack_require__(52)(PROMISE);
 Wrapper = __webpack_require__(23)[PROMISE];
 
@@ -35159,7 +35159,7 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(93)(function
 "use strict";
 
 var weak = __webpack_require__(221);
-var validate = __webpack_require__(65);
+var validate = __webpack_require__(66);
 var WEAK_SET = 'WeakSet';
 
 // 23.4 WeakSet Objects
@@ -35809,7 +35809,7 @@ $export($export.P + $export.F * /Version\/10\.\d+(\.\d+)? Safari\//.test(userAge
 "use strict";
 
 // https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-__webpack_require__(63)('trimLeft', function ($trim) {
+__webpack_require__(64)('trimLeft', function ($trim) {
   return function trimLeft() {
     return $trim(this, 1);
   };
@@ -35823,7 +35823,7 @@ __webpack_require__(63)('trimLeft', function ($trim) {
 "use strict";
 
 // https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-__webpack_require__(63)('trimRight', function ($trim) {
+__webpack_require__(64)('trimRight', function ($trim) {
   return function trimRight() {
     return $trim(this, 2);
   };
@@ -36814,7 +36814,7 @@ var getKeys = __webpack_require__(48);
 var redefine = __webpack_require__(16);
 var global = __webpack_require__(3);
 var hide = __webpack_require__(15);
-var Iterators = __webpack_require__(64);
+var Iterators = __webpack_require__(65);
 var wks = __webpack_require__(6);
 var ITERATOR = wks('iterator');
 var TO_STRING_TAG = wks('toStringTag');
@@ -37662,7 +37662,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_main_mgmt_main_mgmt__ = __webpack_require__(531);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_object_ult__ = __webpack_require__(862);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utilities_common_ult__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utilities_common_ult__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__const_index__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__styles_index_scss__ = __webpack_require__(863);
@@ -37759,10 +37759,10 @@ new Starter();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__object_mgmt_boundary__ = __webpack_require__(859);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__menu_mgmt_boundary_menu__ = __webpack_require__(860);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__menu_mgmt_boundary_menu_items__ = __webpack_require__(861);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_d3__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__const_index__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_lodash__);
 
 
@@ -38696,10 +38696,10 @@ class MainMgmt {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_color_hash__ = __webpack_require__(325);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_color_hash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_color_hash__);
 
@@ -38711,6 +38711,7 @@ class MainMgmt {
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
+const HTML_VERTEX_FORM_ID = 'vertexForm';
 const CONNECT_KEY = 'Connected';
 const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
 const ATTR_DEL_CHECK_ALL = 'delCheckAll';
@@ -38808,8 +38809,8 @@ class Vertex {
       id = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["i" /* generateObjectId */])('V');
 
     let vertexInfo = {
-      x: x,
-      y: y,
+      x: x || 0,
+      y: y || 0,
       vertexType: vertexType,
       name: name || vertexType,
       description: description || "Description",
@@ -38825,7 +38826,7 @@ class Vertex {
     let group = this.svgSelector.selectAll(`.${__WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* HTML_VERTEX_CONTAINER_CLASS */]}`)
       .data(this.dataContainer.vertex)
       .enter().append("g")
-      .attr("transform", `translate(${options.x}, ${options.y})`)
+      .attr("transform", `translate(${options.x || 0}, ${options.y  || 0})`)
       .attr("id", id)
       .attr("class", `${__WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* HTML_VERTEX_CONTAINER_CLASS */]}`)
       .style("cursor", "default")
@@ -39368,6 +39369,8 @@ class Vertex {
   endConnect(self) {
     return function (d) {
       __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* COMMON_DATA */].isCreatingEdge = false;
+      let sCircle = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this);
+      let eCircle = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target);
       if (__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.tagName == "circle" && this != __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target) {
         let targetId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id");
         let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr("prop");
@@ -39469,6 +39472,7 @@ class Vertex {
     let $control = null;
     let {i, type, val, prop, opt, groupType} = options;
     let defaultVal = __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* COMMON_DATA */].vertexFormat[groupType][prop];
+    i = 0;
     switch (type) {
       case __WEBPACK_IMPORTED_MODULE_1__const_index__["q" /* VERTEX_FORMAT_TYPE */].BOOLEAN:
         $control = $('<input>');
@@ -39980,7 +39984,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array__ = __webpack_require__(236);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ascending__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ascending__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__number__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__quantile__ = __webpack_require__(149);
 
@@ -40086,7 +40090,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__number__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__quantile__ = __webpack_require__(149);
 
@@ -40164,7 +40168,7 @@ var dependencies = {"d3-array":"1.2.1","d3-axis":"1.0.8","d3-brush":"1.0.4","d3-
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ascending__ = __webpack_require__(67);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = (function(values, compare) {
@@ -44805,7 +44809,7 @@ var tsvFormatRows = tsv.formatRows;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jiggle__ = __webpack_require__(168);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_quadtree__ = __webpack_require__(169);
 
@@ -45445,7 +45449,7 @@ function defaultY(d) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jiggle__ = __webpack_require__(168);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_collection__ = __webpack_require__(77);
 
@@ -45571,7 +45575,7 @@ function find(nodeById, nodeId) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jiggle__ = __webpack_require__(168);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_quadtree__ = __webpack_require__(169);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__simulation__ = __webpack_require__(263);
@@ -45696,7 +45700,7 @@ function find(nodeById, nodeId) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(68);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = (function(radius, x, y) {
@@ -45761,7 +45765,7 @@ function find(nodeById, nodeId) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(68);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = (function(x) {
@@ -45810,7 +45814,7 @@ function find(nodeById, nodeId) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(68);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = (function(y) {
@@ -46165,7 +46169,7 @@ function defaultLocale(definition) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__area__ = __webpack_require__(268);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__cartesian__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__math__ = __webpack_require__(1);
@@ -46939,7 +46943,7 @@ function graticule10() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(45);
 
@@ -47162,7 +47166,7 @@ PathContext.prototype = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adder__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__math__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__noop__ = __webpack_require__(45);
 
@@ -49482,7 +49486,7 @@ function tanh(x) {
 
 "use strict";
 /* unused harmony export hslLong */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(81);
 
 
@@ -49513,7 +49517,7 @@ var hslLong = hsl(__WEBPACK_IMPORTED_MODULE_1__color__["a" /* default */]);
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(81);
 
 
@@ -49539,7 +49543,7 @@ function lab(start, end) {
 
 "use strict";
 /* unused harmony export hclLong */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(81);
 
 
@@ -49570,7 +49574,7 @@ var hclLong = hcl(__WEBPACK_IMPORTED_MODULE_1__color__["a" /* default */]);
 
 "use strict";
 /* unused harmony export cubehelixLong */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_color__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(81);
 
 
@@ -49989,7 +49993,7 @@ var slice = [].slice;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(71);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = ((function sourceRandomUniform(source) {
@@ -50014,7 +50018,7 @@ var slice = [].slice;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__normal__ = __webpack_require__(295);
 
 
@@ -50038,7 +50042,7 @@ var slice = [].slice;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__irwinHall__ = __webpack_require__(296);
 
 
@@ -50062,7 +50066,7 @@ var slice = [].slice;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaultSource__ = __webpack_require__(71);
 
 
 /* unused harmony default export */ var _unused_webpack_default_export = ((function sourceRandomExponential(source) {
@@ -54037,8 +54041,8 @@ module.exports = BKDRHash;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__const_index__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
 
 
@@ -54228,8 +54232,11 @@ class FileMgmt {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+
 
 
 
@@ -54313,12 +54320,19 @@ class MainMenu {
    */
   loadItems() {
     const subItems = {};
-    // subItems.isHtmlItem = {
-    //   type: 'html',
-    //   html: '<div style="text-align: center; color: red;"><span>No member added</span></div>'
-    // };
+    subItems.isHtmlItem = {
+      icon: "fa-search",
+      type: 'text',
+      value: '',
+      events: {
+        keyup: this.searchVertexType()
+      }
+    };
+    subItems["sep4"] = "-";
     if (__WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* COMMON_DATA */].vertexTypes && Array.isArray(__WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* COMMON_DATA */].vertexTypes)) {
       let vertices = __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* COMMON_DATA */].vertexTypes;
+      // Sort array object
+      vertices = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.orderBy(vertices, ['vertexType'],['asc']);
       let len = vertices.length;
       for (let i = 0; i < len; i++) {
         let type = vertices[i].vertexType;
@@ -54338,6 +54352,29 @@ class MainMenu {
       dfd.resolve(subItems);
     }, 10);
     return dfd.promise();
+  }
+
+  /**
+   * Filter the segment with name contain character input
+   * @returns {Function}
+   */
+  searchVertexType() {
+    return function () {
+      console.log("Called");
+      let filter = this.value.toUpperCase();
+      let li = $(this).closest('ul').find(`li`);
+      // Remove first li cause it is input search
+      let length = li.length;
+      for (let i = 1; i < length; i++) {
+        let element = li[i];
+        let text = $(element).find('span').text();
+        if (text.toUpperCase().indexOf(filter) > -1) {
+          $(element).css('display', '');
+        } else {
+          $(element).css('display', 'none');
+        }
+      }
+    }
   }
 }
 
@@ -54420,9 +54457,9 @@ class VertexMenu {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_popup_ult__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__ = __webpack_require__(62);
 
 
 
@@ -54826,7 +54863,7 @@ class EdgeMenu {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__const_index__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utilities_popup_ult__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_color_hash__ = __webpack_require__(325);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_color_hash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_color_hash__);
 
@@ -55779,7 +55816,7 @@ class BoundaryMenuItems {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(18);
 
@@ -56064,7 +56101,7 @@ exports = module.exports = __webpack_require__(865)(false);
 
 
 // module
-exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .checkbox_center, .dialog-wrapper .dialog-search table .col_header {\n      height: 26px;\n      text-align: center; }\n    .dialog-wrapper .dialog-search table .col_header {\n      background-color: #336699;\n      color: #ffffff; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border-collapse: collapse;\n    border-spacing: 0 0.5em;\n    margin: 5px 0px 10px; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper select, .dialog-wrapper textarea {\n    height: 29px;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus, .dialog-wrapper textarea:hover, .dialog-wrapper textarea :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper textarea {\n    height: 100%;\n    resize: none; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important; }\n  .dialog-wrapper .full-width {\n    width: 100%; }\n  .dialog-wrapper .input-group-addon {\n    font-size: 12px;\n    border-radius: 0px; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: whiteSmoke; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: whiteSmoke solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555; }\n\n.my-group .form-control {\n  width: 50%; }\n\nlabel {\n  font-weight: 300 !important; }\n\n.font-weight-700 {\n  font-weight: 700 !important; }\n\n.hight-light {\n  stroke: red !important; }\n\n.hidden-object {\n  display: none; }\n\n#dummyPath {\n  stroke-width: 1px;\n  display: none; }\n\n.line {\n  stroke: blue;\n  stroke-width: 1px; }\n\n.selected {\n  stroke: #2795EE !important; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n\n.file-interface {\n  box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n  position: relative;\n  display: none;\n  z-index: 1;\n  margin-bottom: 15px; }\n  .file-interface .form-horizontal {\n    margin: 10px 0; }\n\n.algetaContainer {\n  right: 5px;\n  left: 10px;\n  top: 10px;\n  bottom: 5px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .algetaContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 959px;\n    position: absolute; }\n\n.btn-file-interface {\n  position: absolute;\n  width: 30px;\n  height: 30px;\n  bottom: 10px;\n  right: 12px;\n  font-size: 30px; }\n\n.fa-folder-open-o:hover {\n  color: #66afe9; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE;\n    stroke-width: 1;\n    cursor: crosshair; }\n  .edge:focus {\n    stroke: #2795EE;\n    stroke-width: 1;\n    cursor: crosshair; }\n\n.dummy-edge {\n  display: none;\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  display: none;\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.solid {\n  stroke: black; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.stroke-dasharray {\n  stroke-dasharray: 3 3; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black;\n  font-size: 13px;\n  background: #ffffff; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right;\n  font-weight: 300;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 85px; }\n\n.vertex_data div .data {\n  font-weight: 300;\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: calc(100% - 85px); }\n\n.drag_connect {\n  fill: white;\n  stroke-width: 1;\n  stroke: black; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  color: #ffffff;\n  border-bottom: none;\n  margin: 0;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border-left: none;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px;\n  fill-opacity: .5;\n  cursor: pointer; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #E1D5E7;\n  border: none; }\n\n.context-menu-item .context-menu-list {\n  max-height: 550px;\n  overflow-y: auto; }\n", ""]);
+exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .checkbox_center, .dialog-wrapper .dialog-search table .col_header {\n      height: 26px;\n      text-align: center; }\n    .dialog-wrapper .dialog-search table .col_header {\n      background-color: #336699;\n      color: #ffffff; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border-collapse: collapse;\n    border-spacing: 0 0.5em;\n    margin: 5px 0px 10px; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper select, .dialog-wrapper textarea {\n    height: 29px;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus, .dialog-wrapper textarea:hover, .dialog-wrapper textarea :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper textarea {\n    height: 100%;\n    resize: none; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important; }\n  .dialog-wrapper .full-width {\n    width: 100%; }\n  .dialog-wrapper .input-group-addon {\n    font-size: 12px;\n    border-radius: 0px; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: whiteSmoke; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: whiteSmoke solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555; }\n\n.my-group .form-control {\n  width: 50%; }\n\nlabel {\n  font-weight: 300 !important; }\n\n.font-weight-700 {\n  font-weight: 700 !important; }\n\n.hight-light {\n  stroke: red !important; }\n\n.hidden-object {\n  display: none; }\n\n#dummyPath {\n  stroke-width: 1px;\n  display: none; }\n\n.line {\n  stroke: blue;\n  stroke-width: 1px; }\n\n.selected {\n  stroke: #2795EE !important; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n\n.file-interface {\n  box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n  position: relative;\n  display: none;\n  z-index: 1;\n  margin-bottom: 15px; }\n  .file-interface .form-horizontal {\n    margin: 10px 0; }\n\n.algetaContainer {\n  right: 5px;\n  left: 10px;\n  top: 10px;\n  bottom: 5px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .algetaContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 959px;\n    position: absolute; }\n\n.btn-file-interface {\n  position: absolute;\n  width: 30px;\n  height: 30px;\n  bottom: 10px;\n  right: 12px;\n  font-size: 30px; }\n\n.fa-folder-open-o:hover {\n  color: #66afe9; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE;\n    stroke-width: 1;\n    cursor: crosshair; }\n  .edge:focus {\n    stroke: #2795EE;\n    stroke-width: 1;\n    cursor: crosshair; }\n\n.dummy-edge {\n  display: none;\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  display: none;\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.solid {\n  stroke: black; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.stroke-dasharray {\n  stroke-dasharray: 3 3; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black;\n  font-size: 13px;\n  background: #ffffff; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right;\n  font-weight: 300;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 85px; }\n\n.vertex_data div .data {\n  font-weight: 300;\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: calc(100% - 85px); }\n\n.drag_connect {\n  fill: white;\n  stroke-width: 1;\n  stroke: black; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  color: #ffffff;\n  border-bottom: none;\n  margin: 0;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border-left: none;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px;\n  fill-opacity: .5;\n  cursor: pointer; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #E1D5E7;\n  border: none; }\n\n.context-menu-item .context-menu-list {\n  max-height: 300px;\n  overflow-y: auto; }\n  .context-menu-item .context-menu-list li:first-child label {\n    padding-left: 20px; }\n", ""]);
 
 // exports
 
