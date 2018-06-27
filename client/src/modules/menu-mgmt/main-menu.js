@@ -10,6 +10,7 @@ class MainMenu {
     this.mainMgmt = props.mainMgmt;
     this.dataContainer = props.dataContainer;
     this.initMainMenu();
+    this.opt = {};
   }
 
   initMainMenu() {
@@ -43,6 +44,7 @@ class MainMenu {
               name: "Create Vertex",
               icon: "fa-window-maximize",
               items: this.loadItems(),
+              type: "sub",
               disabled: COMMON_DATA.isDisabledCommand
             },
             "sep1": "-",
@@ -71,6 +73,7 @@ class MainMenu {
                 opt["x"] = x;
                 opt["y"] = y;
                 opt.isMenu = true;
+                this.opt = opt;
               }
             }
           }
@@ -85,7 +88,7 @@ class MainMenu {
   loadItems() {
     const subItems = {};
     subItems.isHtmlItem = {
-      icon: "fa-search",
+      placeholder: 'Type to search',
       type: 'text',
       value: '',
       events: {
@@ -93,23 +96,27 @@ class MainMenu {
       }
     };
     subItems["sep4"] = "-";
+    const options = {};
+    // Build options
     if (COMMON_DATA.vertexTypes && Array.isArray(COMMON_DATA.vertexTypes)) {
       let vertices = COMMON_DATA.vertexTypes;
       // Sort array object
-      vertices = _.orderBy(vertices, ['vertexType'],['asc']);
+      vertices = _.orderBy(vertices, ['vertexType'], ['asc']);
       let len = vertices.length;
       for (let i = 0; i < len; i++) {
         let type = vertices[i].vertexType;
-        subItems[`${type}`] = {
-          name: `${type}`,
-          icon: "fa-window-maximize",
-          callback: (key, opt) => {
-            opt.vertexType = opt.$selected.text()
-            this.mainMgmt.createVertex(opt);
-          }
-        }
+        options[`${type}`] = type;
       }
     }
+
+    subItems.select = {
+      type: 'select',
+      size: 10,
+      options: options,
+      events: {
+        change: this.onSelectVertex(this)
+      }
+    };
 
     let dfd = jQuery.Deferred();
     setTimeout(() => {
@@ -118,26 +125,33 @@ class MainMenu {
     return dfd.promise();
   }
 
-  /**
-   * Filter the segment with name contain character input
-   * @returns {Function}
-   */
   searchVertexType() {
     return function () {
-      console.log("Called");
       let filter = this.value.toUpperCase();
-      let li = $(this).closest('ul').find(`li`);
+      let $select = $(this).closest('ul').find(`select`);
+      let options = $select.find(`option`);
       // Remove first li cause it is input search
-      let length = li.length;
-      for (let i = 1; i < length; i++) {
-        let element = li[i];
-        let text = $(element).find('span').text();
-        if (text.toUpperCase().indexOf(filter) > -1) {
+      let length = options.length;
+      for (let i = 0; i < length; i++) {
+        let element = options[i];
+        let value = $(element).val();
+        if (value.toUpperCase().indexOf(filter) > -1) {
           $(element).css('display', '');
         } else {
           $(element).css('display', 'none');
         }
       }
+
+      $($select).click();
+    }
+  }
+
+  onSelectVertex(self) {
+    return function () {
+      let opt = self.opt;
+      opt.vertexType = this.value.toUpperCase();
+      self.mainMgmt.createVertex(opt);
+      $(`${self.selector}`).contextMenu("hide");
     }
   }
 }

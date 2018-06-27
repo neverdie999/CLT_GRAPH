@@ -15,7 +15,7 @@
   <script src='assets/lib/jquery/jquery.min.js'></script>
   <script src='assets/lib/jqueryui/jquery-ui.min.js'></script>
   <script src='assets/lib/bootrap/bootstrap.js'></script>
-  <script src="assets/js/context-menu/jquery.contextMenu.min.js"></script>
+  <script src="assets/js/context-menu/jquery.contextMenu.js"></script>
   <!-- Insert this line after script imports -->
   <script>if (window.module) module = window.module;</script>
 </head>
@@ -51,10 +51,10 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label font-weight-700 col-sm-2" for="exampleInputFile">Save File</label>
+          <label class="control-label font-weight-700 col-sm-2">Save File</label>
           <div class="col-sm-6">
             <div class="input-group">
-              <input type="text" class="form-control" name="outFile" id="outFile" placeholder="Enter file name">
+              <input class="form-control" name="outFile" id="outFile" placeholder="Enter file name">
               <span class="input-group-btn">
                 <button class="btn btn-secondary" type="button" id="btnExportFile">Download</button>
               </span>
