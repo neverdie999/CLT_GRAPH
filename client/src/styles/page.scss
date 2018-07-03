@@ -7,7 +7,7 @@
 /* Track */
 ::-webkit-scrollbar-track {
   //background: #f1f1f1;
-  background: whiteSmoke;
+  background: #f5f5f5;
 }
 
 /* Handle */
@@ -15,12 +15,12 @@
   //background: #888;
   background: #c5c5c5;
   border-radius: 10px;
-  border: whiteSmoke solid 3px;
+  border: #f5f5f5 solid 3px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #555555;
 }
 
 .my-group {
@@ -39,7 +39,7 @@ label {
 
 .hight-light {
   //border: solid 1px #ac2925 !important;
-  stroke: red !important;
+  stroke: #ff0000 !important;
 }
 
 .hidden-object {
@@ -52,12 +52,12 @@ label {
 }
 
 .line {
-  stroke: blue;
+  stroke: #0000ff;
   stroke-width: 1px;
 }
 
 .selected {
-  stroke: #2795EE !important;
+  stroke: #2795ee !important;
 }
 
 .container-file {

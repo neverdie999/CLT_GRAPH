@@ -21,8 +21,7 @@ import {
   HTML_BOUNDARY_CONTAINER_CLASS,
   BOUNDARY_ATTR_SIZE,
   TYPE_POINT,
-  VERTEX_FORMAT_TYPE,
-  COMMON_DATA,
+  VERTEX_FORMAT_TYPE, COMMON_DATA,
 } from '../../const/index';
 import _ from "lodash";
 
@@ -34,7 +33,7 @@ class MainMgmt {
     this.initMarkerArrow();
     this.initPathConnect();
     this.initBBoxGroup();
-
+    this.initAreaDrawEdge();
     this.dragPointConnector = d3.drag()
       .on("start", this.dragPointStarted(this))
       .on("drag", this.draggedPoint(this))
@@ -110,6 +109,15 @@ class MainMgmt {
       .attr("class", "dummy-edge solid")
       .attr("fill", "none")
       .attr("marker-end", "url(#arrow)");
+  }
+
+  /**
+   * init area create path
+   */
+  initAreaDrawEdge() {
+    this.svgSelector.append("g")
+      .attr("id", "pivotEgde");
+
   }
 
   /**
@@ -407,13 +415,13 @@ class MainMgmt {
     d3.selectAll(".context-menu-list").remove();
 
     // Main menu
-    this.mainMenu = new MainMenu({
+    new MainMenu({
       selector: `.${HTML_ALGETA_CONTAINER_CLASS}`,
       mainMgmt: this
     });
 
     // Vertex menu
-    this.vertexMenu = new VertexMenu({
+    new VertexMenu({
       selector: `.${HTML_VERTEX_CONTAINER_CLASS}`,
       vertex: this.vertex,
       objectUtils: this.objectUtils,
@@ -421,20 +429,20 @@ class MainMgmt {
     });
 
     // Vertex menu
-    this.edgeMenu = new EdgeMenu({
+    new EdgeMenu({
       selector: `.${HTML_EDGE_CONTAINER_CLASS}`,
       edge: this.edge,
     });
 
     // Boundary menu
-    this.boundaryMenu = new BoundaryMenu({
+    new BoundaryMenu({
       selector: `.${HTML_BOUNDARY_CONTAINER_CLASS}`,
       boundary: this.boundary,
       dataContainer: this.dataContainer
     });
 
     // Boundary Menu Items
-    this.boundaryMenuItems = new BoundaryMenuItems({
+    new BoundaryMenuItems({
       selector: `.${HTML_BOUNDARY_CONTAINER_CLASS}`,
       boundary: this.boundary,
       objectUtils: this.objectUtils
@@ -636,6 +644,7 @@ class MainMgmt {
     this.initPathConnect();
     this.initEdgePath();
     this.initBBoxGroup();
+    this.initAreaDrawEdge();
     setSizeGraph();
   }
 
@@ -644,7 +653,7 @@ class MainMgmt {
    * @param self
    * @returns {Function}
    */
-  dragPointStarted(self) {
+  dragPointStarted() {
     return function () {
       COMMON_DATA.isUpdateEdge = true;
     }
@@ -677,7 +686,7 @@ class MainMgmt {
       }
 
       d3.select('#edgePath').attr('d', pathStr);
-      d3.select('#edgePath').style("display", "block");
+      d3.select('#groupEdgePath').style("display", "block");
     }
   }
 
@@ -703,7 +712,7 @@ class MainMgmt {
         d3.select("#groupEdgePoint").moveToBack();
       }
 
-      d3.select('#edgePath').style("display", "none");
+      d3.select('#groupEdgePath').style("display", "none");
       d3.select("#edgePath").moveToBack();
     }
   }

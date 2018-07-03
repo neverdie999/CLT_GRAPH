@@ -27,10 +27,6 @@ d3.selection.prototype.moveToBack = function () {
   });
 };
 
-
-
-// $('#algetaContainer').scrollLeft($(document).outerWidth());
-
 class Starter {
   constructor() {
     this.initialize();

@@ -646,7 +646,9 @@ class Vertex {
    * @returns {Function}
    */
   startConnect(self) {
-    return function (d) {
+    return function () {
+      if(COMMON_DATA.isUpdateEdge)
+        cancleSelectedPath();
       COMMON_DATA.isCreatingEdge = true;
       d3.event.sourceEvent.stopPropagation();
       let sourceId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
@@ -688,8 +690,6 @@ class Vertex {
   endConnect(self) {
     return function (d) {
       COMMON_DATA.isCreatingEdge = false;
-      let sCircle = d3.select(this);
-      let eCircle = d3.select(d3.event.sourceEvent.target);
       if (d3.event.sourceEvent.target.tagName == "circle" && this != d3.event.sourceEvent.target) {
         let targetId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
         let prop = d3.select(d3.event.sourceEvent.target).attr("prop");

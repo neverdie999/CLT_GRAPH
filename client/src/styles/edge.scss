@@ -1,44 +1,67 @@
-.edge{
-  stroke: black;
+.edge {
+  outline: none;
+  stroke: #000000;
   stroke-width: 1;
   visibility: visible;
   cursor: crosshair;
   &:hover {
-    stroke: #2795EE;
+    //stroke: #2795EE;
     stroke-width: 1;
     cursor: crosshair;
   }
   &:focus {
-    stroke: #2795EE;
+    //stroke: #2795EE;
     stroke-width: 1;
     cursor: crosshair;
   }
 }
 
-.dummy-edge{
+.dummy-edge {
   display: none;
-  stroke: black;
+  stroke: #000000;
   stroke-width: 1;
   visibility: visible;
-  //cursor: pointer;
 }
 
 .dummy-path {
-  display: none;
+  //display: none;
   stroke: #2795EE;
   stroke-width: 1;
   visibility: visible;
   cursor: default;
 }
 
-.solid{
-  stroke: black;
-}
-
-.dash {
-  stroke-dasharray: 4;
+.solid {
+  stroke: #000000;
 }
 
 .stroke-dasharray {
   stroke-dasharray: 3 3;
+}
+
+.edge-hide {
+  outline: none;
+  //stroke: #000000;
+  stroke-width: 8;
+  visibility: visible;
+  opacity: 0;
+  cursor: crosshair;
+  &:hover {
+    //stroke: #000000;
+    stroke-width: 8;
+    cursor: crosshair;
+  }
+  &:focus {
+    //stroke: #000000;
+    stroke-width: 8;
+    cursor: crosshair;
+  }
+}
+
+.hide {
+  stroke: #ffffff;
+}
+
+.dash {
+  stroke-dasharray: 4;
 }
