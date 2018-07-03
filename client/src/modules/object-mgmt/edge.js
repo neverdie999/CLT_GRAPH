@@ -39,16 +39,10 @@ class Edge {
   createEdge(options = {}) {
     let source = _.cloneDeep(options.source);
     let target = _.cloneDeep(options.target);
-    let type = options.type;
     let edgeId = options.id ? options.id : generateObjectId('E');
     // Default style is line solid with arrow at end.
     let style = options.style ? options.style : {line: "solid", arrow: "Y"};
     let note = options.note ? options.note : {originNote: '', middleNote: '', destNote: ''}; // Default note for Edge.
-
-    // if (_.isEqual(source, target)) {
-    //   comShowMessage("Connect internal is not allowed.");
-    //   return;
-    // }
 
     // Push edge info to store.
     let edgeInfo = {
@@ -60,50 +54,66 @@ class Edge {
     };
 
     this.dataContainer.edge.push(edgeInfo);
+    // Append into edge group
+    let groupPivot = d3.select('#pivotEgde').append("g")
+      .attr("transform", `translate(0.5, 0.5)`)
+    let pathStr = createPath(source, target);
+    // Egde visible to thin,very hard focus it. So append egde hide big than egde visible support focus when using mouse
+    groupPivot.append("path")
+      .attr('d', pathStr)
+      .attr("class", `${HTML_EDGE_CONTAINER_CLASS} edge-hide solid`) // Default line type is solid
+      .attr("id", edgeId)
+      .attr('fill', 'none')
+      .attr('focusable', true)
+      .attr("marker-end", "url(#arrow)") // Make arrow at end path
+      .on("click", () => {
+        this.handlerOnClickEdge(edgeId, source, target);
+      })
+      .on("focus", () => {
+        groupPivot.on("keydown", () => {
+          if (d3.event.keyCode === 46 || d3.event.keyCode === 8) {
+            this.removeEdge(edgeId);
+          }
+        })
+      });
 
-    //append into edge group
-    // let group = d3.select("#groupE").append("g");
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(0.5, 0.5)`);
-    let pathStr = createPath(source, target);
+    // Append edge visible, it show on interface.
     group.append("path")
       .attr('d', pathStr)
       .attr("class", `${HTML_EDGE_CONTAINER_CLASS} edge solid`) // Default line type is solid
+      .attr("main", "T")
       .attr("id", edgeId)
+      .attr('focusable', true)
       .attr('fill', 'none')
       .attr("marker-end", "url(#arrow)") // Make arrow at end path
       .on("click", () => {
-        COMMON_DATA.isUpdateEdge = true;
-        let currentPath = d3.select(d3.event.target).attr("d");
-        d3.select('#groupEdgePoint').style("display", "block");
-        d3.select('#edgePath').style("display", "block");
-        d3.select("#edgePath").attr("d", currentPath);
-        d3.select("#groupEdgePoint").moveToFront();
-        d3.select("#edgePath").moveToFront();
-        d3.select("#edgePath").attr("ref", edgeId);
-        d3.select("#pointStart")
-          .attr("cx", source.x)
-          .attr("cy", source.y);
-        d3.select("#pointEnd")
-          .attr("cx", target.x)
-          .attr("cy", target.y);
+        this.handlerOnClickEdge(edgeId, source, target);
+      })
+      .on("focus", () => {
+        group.on("keydown", () => {
+          if (d3.event.keyCode === 46 || d3.event.keyCode === 8) {
+            this.removeEdge(edgeId);
+          }
+        })
       });
 
     let originNote = group.append("text")
       .style("font-size", "12px")
-      .attr("x", 5)   //Move the text from the start angle of the arc
-      .attr("dy", -5); //Move the text down
+      .attr("x", 5)   // Move the text from the start angle of the arc
+      .attr("dy", -5); // Move the text down
     let middleNote = group.append("text")
       .style("font-size", "12px")
-      .attr("dy", -5); //Move the text down
+      .attr("dy", -5); // Move the text down
     let destNote = group.append("text")
       .style("font-size", "12px")
-      .attr("x", -5)   //Move the text from the start angle of the arc
-      .attr("dy", -5); //Move the text down
+      .attr("x", -5)   // Move the text from the start angle of the arc
+      .attr("dy", -5); // Move the text down
 
     originNote.append("textPath")
       .style("text-anchor", "start")
-      .attr("fill", "#000")
+      .attr("fill", "#000000")
       .attr("id", `originNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
       .attr("startOffset", "0%")
@@ -111,7 +121,7 @@ class Edge {
 
     middleNote.append("textPath")
       .style("text-anchor", "middle")
-      .attr("fill", "#000")
+      .attr("fill", "#000000")
       .attr("id", `middleNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
       .attr("startOffset", "50%")
@@ -119,7 +129,7 @@ class Edge {
 
     destNote.append("textPath")
       .style("text-anchor", "end")
-      .attr("fill", "#000")
+      .attr("fill", "#000000")
       .attr("id", `destNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
       .attr("startOffset", "100%")
@@ -134,12 +144,12 @@ class Edge {
     // Append content to edge popup
     let $line = $(`#${OPTIONS_EDGE_LINE_TYPE}`);
     EDGE_LINE_TP.forEach((elm) => {
-      const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($line);
+      $('<option>', {value: elm.value}).text(elm.name).appendTo($line);
     });
 
     let $arrow = $(`#${OPTIONS_EDGE_ARROW_FLAG}`);
     EDGE_ARROW_FLG.forEach((elm) => {
-      const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($arrow);
+      $('<option>', {value: elm.value}).text(elm.name).appendTo($arrow);
     });
 
     $("#edgeBtnConfirm").click(e => {
@@ -181,7 +191,11 @@ class Edge {
    */
   removeEdge(edgeId) {
     // Remove from DOM
-    d3.select(`#${edgeId}`).node().parentNode.remove();
+    //seleceAll because edge has 2 element ( one show and one hide)
+    d3.selectAll(`#${edgeId}`)
+      .each(function (d, i) {
+        this.parentNode.remove();
+      });
     // Remove from data container
     let data = $.grep(this.dataContainer.edge, (e) => {
       return e.id != edgeId;
@@ -191,15 +205,6 @@ class Edge {
     // If edge seleted then delete so must be hidden edgePath, groupEdgePoint
     if (COMMON_DATA.isUpdateEdge)
       cancleSelectedPath();
-  }
-
-  /**
-   * Check connect exit between source and target
-   * @param source
-   * @param target
-   */
-  checkExistEdge(source, target) {
-
   }
 
   /**
@@ -214,9 +219,11 @@ class Edge {
     this.originEdge.style = style;
     let dataEdge = this.dataContainer.edge;
     Object.assign(dataEdge[dataEdge.findIndex(el => el.id === this.originEdge.id)], this.originEdge)
-
-    d3.select(`#${edgeId}`)
-      .attr('class', `${HTML_EDGE_CONTAINER_CLASS} edge ${lineType}`)
+    //Select second element (Only update element show in monitor, not update hide element (first element))
+    let path = d3.selectAll(`#${edgeId}`).filter((d, i) => {
+      return i == 1;
+    });
+    path.attr('class', `${HTML_EDGE_CONTAINER_CLASS} edge ${lineType}`)
       .attr('marker-end', arrowFlag === 'Y' ? 'url(#arrow)' : '');
 
     this.closePopEdgeType();
@@ -287,7 +294,24 @@ class Edge {
 
     let pathStr = createPath(source, target);
     // Get DOM and update attribute
-    d3.select(`#${edgeId}`).attr('d', pathStr);
+    d3.selectAll(`#${edgeId}`).attr('d', pathStr);
+  }
+
+  handlerOnClickEdge(edgeId, source, target) {
+    COMMON_DATA.isUpdateEdge = true;
+    let currentPath = d3.select(d3.event.target).attr("d");
+    d3.select('#groupEdgePoint').style("display", "block");
+    d3.select('#groupEdgePath').style("display", "block");
+    d3.select("#edgePath").attr("d", currentPath);
+    d3.select("#groupEdgePoint").moveToFront();
+    d3.select("#groupEdgePath").moveToFront();
+    d3.select("#edgePath").attr("ref", edgeId);
+    d3.select("#pointStart")
+      .attr("cx", source.x)
+      .attr("cy", source.y);
+    d3.select("#pointEnd")
+      .attr("cx", target.x)
+      .attr("cy", target.y);
   }
 }
 

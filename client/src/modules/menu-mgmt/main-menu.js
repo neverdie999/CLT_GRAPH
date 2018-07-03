@@ -68,13 +68,14 @@ class MainMenu {
           },
           events: {
             show: (opt) => {
-              if (event) {
-                const {x, y} = getCoordinateMouseOnClick(event);
-                opt["x"] = x;
-                opt["y"] = y;
-                opt.isMenu = true;
-                this.opt = opt;
-              }
+              if (!event)
+                return;
+
+              const {x, y} = getCoordinateMouseOnClick(event);
+              opt["x"] = x;
+              opt["y"] = y;
+              opt.isMenu = true;
+              this.opt = opt;
             }
           }
         };

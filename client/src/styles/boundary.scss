@@ -1,25 +1,20 @@
 
 .boundary {
   cursor: pointer;
-  //border:solid 1px #652a82;
   padding: 8px;
 }
 
 .header_boundary {
   color: #ffffff;
-  //border-bottom:solid 1px #652a82;
   border-bottom: none;
   margin: 0;
-  //padding: 8px 0px;
   text-align: center;
   font-weight: 600;
   float: left;
 }
 
 .boundary_right {
-  //border:solid 1px #652a82;
   border-left: none;
-  //background: white;
   margin: 0;
   padding: 0px;
   text-align: center;
@@ -43,7 +38,7 @@
   top: 0;
   right: 0;
   left: 0;
-  background: #DDD;
+  background: #dddddd;
   padding: 2px;
   text-align: center;
   font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -58,6 +53,6 @@
 .input-header-boundary {
   padding: 0 5px;
   width: 150px;
-  background: #E1D5E7;
+  background: #e1d5e7;
   border: none;
 }

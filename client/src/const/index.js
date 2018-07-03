@@ -41,6 +41,7 @@ export const RECTANGLE_ATTR_SIZE = {
   RECTANGLE_HEIGHT: 20,
   RECTANGLE_WIDTH: 20,
 }
+
 // The attributes size of boundary
 export const BOUNDARY_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
@@ -85,26 +86,6 @@ export const VERTEX_GROUP_OPTION = {
   SHOW_FULL_ALWAYS: 'SHOW_FULL_ALWAYS',
   DYNAMIC_DATASET: 'DYNAMIC_DATASET',
 }
-
-// Global variable
-// window.creatingEdge = false; // Define state creation connect (edge)
-// window.sourceNode = null; // Define source node for create connect
-// window.disabledCommand = false; // Use for only mode (Disable all command on menu context)
-// window.vertexTypes = null; // Vertex types use in current graph
-// window.vertexTypesOld = null; // Vertex types export in file Graph Data Structure => Used to validate
-// window.isVertexTypeDefine = false; // If vertex type define was importted.
-// window.showReduced = false; // Determine show full or reduced
-// window.udpateEdge = false; // Define state update connect (edge) exited.
-// window.groupVertexOption = {}; // list vertex type have same option.
-// window.vertexDefine = null; // Data of json file vertex type definition.
-// window.vertexFormatType = {}; // Vertex group format type
-// window.vertexFormat = {}; // Data element vertex format
-// window.vertexGroupType = {};
-// window.headerForm = {}; // Header group type
-// window.vertexPresentation = {}; // Group vertex presentation
-// window.vertexGroup = null; // Group vertex
-// window.xBoundary = 1900;
-// window.yBoundary = 959;
 
 export const COMMON_DATA = {
   isCreatingEdge: false, // Define state creation connect (edge)

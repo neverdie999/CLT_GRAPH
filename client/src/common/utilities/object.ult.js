@@ -59,15 +59,14 @@ class ObjectUtils {
   /**
    * get root parent of Boundary
    */
-
-  getRootParent(obj, arr, count = 0) {
-    let {parent} = this.getBoundaryInfoByIdFromArray(obj, arr);
-    if (parent != null) {
-      count++;
-      return this.getRootParent(parent, arr, count);
-    }
-    return {parent: obj, count: count};
-  }
+  // getRootParent(obj, arr, count = 0) {
+  //   let {parent} = this.getBoundaryInfoByIdFromArray(obj, arr);
+  //   if (parent != null) {
+  //     count++;
+  //     return this.getRootParent(parent, arr, count);
+  //   }
+  //   return {parent: obj, count: count};
+  // }
 
   /**
    * Find all path (edge, connect) with target at this vertex
@@ -187,27 +186,16 @@ class ObjectUtils {
     });
   }
 
-/**
- * Get boundary info by if from array
- * @param {*} boundaryId
- * @param {*} arrBoundary
- */
-  getBoundaryInfoByIdFromArray(boundaryId,arrBoundary) {
-    return _.find(arrBoundary, (e) => {
-      return e.id === boundaryId;
-    });
-  }
-
   /**
    * Get boundary info by if from array
    * @param {*} boundaryId
    * @param {*} arrBoundary
    */
-  getBoundaryInfoByIdFromArray(boundaryId, arrBoundary) {
-    return _.find(arrBoundary, (e) => {
-      return e.id === boundaryId;
-    });
-  }
+  // getBoundaryInfoByIdFromArray(boundaryId, arrBoundary) {
+  //   return _.find(arrBoundary, (e) => {
+  //     return e.id === boundaryId;
+  //   });
+  // }
 
   /**
    * Clone boundary info by id

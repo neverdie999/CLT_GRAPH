@@ -683,6 +683,7 @@ const RECTANGLE_ATTR_SIZE = {
 }
 /* unused harmony export RECTANGLE_ATTR_SIZE */
 
+
 // The attributes size of boundary
 const BOUNDARY_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
@@ -739,26 +740,6 @@ const VERTEX_GROUP_OPTION = {
 }
 /* harmony export (immutable) */ __webpack_exports__["r"] = VERTEX_GROUP_OPTION;
 
-
-// Global variable
-// window.creatingEdge = false; // Define state creation connect (edge)
-// window.sourceNode = null; // Define source node for create connect
-// window.disabledCommand = false; // Use for only mode (Disable all command on menu context)
-// window.vertexTypes = null; // Vertex types use in current graph
-// window.vertexTypesOld = null; // Vertex types export in file Graph Data Structure => Used to validate
-// window.isVertexTypeDefine = false; // If vertex type define was importted.
-// window.showReduced = false; // Determine show full or reduced
-// window.udpateEdge = false; // Define state update connect (edge) exited.
-// window.groupVertexOption = {}; // list vertex type have same option.
-// window.vertexDefine = null; // Data of json file vertex type definition.
-// window.vertexFormatType = {}; // Vertex group format type
-// window.vertexFormat = {}; // Data element vertex format
-// window.vertexGroupType = {};
-// window.headerForm = {}; // Header group type
-// window.vertexPresentation = {}; // Group vertex presentation
-// window.vertexGroup = null; // Group vertex
-// window.xBoundary = 1900;
-// window.yBoundary = 959;
 
 const COMMON_DATA = {
   isCreatingEdge: false, // Define state creation connect (edge)
@@ -19884,11 +19865,11 @@ function createPath(src, tar) {
  * click click outside path selected or move object...
  */
 function cancleSelectedPath() {
-  __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].isUpdateEdge = false;
-  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#edgePath').style("display", "none");
+  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#groupEdgePath').style("display", "none");
   __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#groupEdgePoint').style("display", "none");
   __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#groupEdgePoint").moveToBack();
-  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#edgePath").moveToBack();
+  __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#groupEdgePath").moveToBack();
+  __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].isUpdateEdge = false;
 }
 
 /**
@@ -37693,10 +37674,6 @@ __WEBPACK_IMPORTED_MODULE_3_d3__["f" /* selection */].prototype.moveToBack = fun
   });
 };
 
-
-
-// $('#algetaContainer').scrollLeft($(document).outerWidth());
-
 class Starter {
   constructor() {
     this.initialize();
@@ -37786,7 +37763,7 @@ class MainMgmt {
     this.initMarkerArrow();
     this.initPathConnect();
     this.initBBoxGroup();
-
+    this.initAreaDrawEdge();
     this.dragPointConnector = __WEBPACK_IMPORTED_MODULE_10_d3__["a" /* drag */]()
       .on("start", this.dragPointStarted(this))
       .on("drag", this.draggedPoint(this))
@@ -37862,6 +37839,15 @@ class MainMgmt {
       .attr("class", "dummy-edge solid")
       .attr("fill", "none")
       .attr("marker-end", "url(#arrow)");
+  }
+
+  /**
+   * init area create path
+   */
+  initAreaDrawEdge() {
+    this.svgSelector.append("g")
+      .attr("id", "pivotEgde");
+
   }
 
   /**
@@ -38159,13 +38145,13 @@ class MainMgmt {
     __WEBPACK_IMPORTED_MODULE_10_d3__["e" /* selectAll */](".context-menu-list").remove();
 
     // Main menu
-    this.mainMenu = new __WEBPACK_IMPORTED_MODULE_2__menu_mgmt_main_menu__["a" /* default */]({
+    new __WEBPACK_IMPORTED_MODULE_2__menu_mgmt_main_menu__["a" /* default */]({
       selector: `.${__WEBPACK_IMPORTED_MODULE_11__const_index__["g" /* HTML_ALGETA_CONTAINER_CLASS */]}`,
       mainMgmt: this
     });
 
     // Vertex menu
-    this.vertexMenu = new __WEBPACK_IMPORTED_MODULE_3__menu_mgmt_vertex_menu__["a" /* default */]({
+    new __WEBPACK_IMPORTED_MODULE_3__menu_mgmt_vertex_menu__["a" /* default */]({
       selector: `.${__WEBPACK_IMPORTED_MODULE_11__const_index__["k" /* HTML_VERTEX_CONTAINER_CLASS */]}`,
       vertex: this.vertex,
       objectUtils: this.objectUtils,
@@ -38173,20 +38159,20 @@ class MainMgmt {
     });
 
     // Vertex menu
-    this.edgeMenu = new __WEBPACK_IMPORTED_MODULE_5__menu_mgmt_edge_menu__["a" /* default */]({
+    new __WEBPACK_IMPORTED_MODULE_5__menu_mgmt_edge_menu__["a" /* default */]({
       selector: `.${__WEBPACK_IMPORTED_MODULE_11__const_index__["j" /* HTML_EDGE_CONTAINER_CLASS */]}`,
       edge: this.edge,
     });
 
     // Boundary menu
-    this.boundaryMenu = new __WEBPACK_IMPORTED_MODULE_7__menu_mgmt_boundary_menu__["a" /* default */]({
+    new __WEBPACK_IMPORTED_MODULE_7__menu_mgmt_boundary_menu__["a" /* default */]({
       selector: `.${__WEBPACK_IMPORTED_MODULE_11__const_index__["i" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`,
       boundary: this.boundary,
       dataContainer: this.dataContainer
     });
 
     // Boundary Menu Items
-    this.boundaryMenuItems = new __WEBPACK_IMPORTED_MODULE_8__menu_mgmt_boundary_menu_items__["a" /* default */]({
+    new __WEBPACK_IMPORTED_MODULE_8__menu_mgmt_boundary_menu_items__["a" /* default */]({
       selector: `.${__WEBPACK_IMPORTED_MODULE_11__const_index__["i" /* HTML_BOUNDARY_CONTAINER_CLASS */]}`,
       boundary: this.boundary,
       objectUtils: this.objectUtils
@@ -38388,6 +38374,7 @@ class MainMgmt {
     this.initPathConnect();
     this.initEdgePath();
     this.initBBoxGroup();
+    this.initAreaDrawEdge();
     Object(__WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__["m" /* setSizeGraph */])();
   }
 
@@ -38396,7 +38383,7 @@ class MainMgmt {
    * @param self
    * @returns {Function}
    */
-  dragPointStarted(self) {
+  dragPointStarted() {
     return function () {
       __WEBPACK_IMPORTED_MODULE_11__const_index__["b" /* COMMON_DATA */].isUpdateEdge = true;
     }
@@ -38429,7 +38416,7 @@ class MainMgmt {
       }
 
       __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]('#edgePath').attr('d', pathStr);
-      __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]('#edgePath').style("display", "block");
+      __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]('#groupEdgePath').style("display", "block");
     }
   }
 
@@ -38455,7 +38442,7 @@ class MainMgmt {
         __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]("#groupEdgePoint").moveToBack();
       }
 
-      __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]('#edgePath').style("display", "none");
+      __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]('#groupEdgePath').style("display", "none");
       __WEBPACK_IMPORTED_MODULE_10_d3__["d" /* select */]("#edgePath").moveToBack();
     }
   }
@@ -39327,7 +39314,9 @@ class Vertex {
    * @returns {Function}
    */
   startConnect(self) {
-    return function (d) {
+    return function () {
+      if(__WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* COMMON_DATA */].isUpdateEdge)
+        Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["d" /* cancleSelectedPath */])();
       __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* COMMON_DATA */].isCreatingEdge = true;
       __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.stopPropagation();
       let sourceId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id");
@@ -39369,8 +39358,6 @@ class Vertex {
   endConnect(self) {
     return function (d) {
       __WEBPACK_IMPORTED_MODULE_1__const_index__["b" /* COMMON_DATA */].isCreatingEdge = false;
-      let sCircle = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this);
-      let eCircle = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target);
       if (__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.tagName == "circle" && this != __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target) {
         let targetId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id");
         let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr("prop");
@@ -54304,13 +54291,14 @@ class MainMenu {
           },
           events: {
             show: (opt) => {
-              if (event) {
-                const {x, y} = Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["j" /* getCoordinateMouseOnClick */])(event);
-                opt["x"] = x;
-                opt["y"] = y;
-                opt.isMenu = true;
-                this.opt = opt;
-              }
+              if (!event)
+                return;
+
+              const {x, y} = Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["j" /* getCoordinateMouseOnClick */])(event);
+              opt["x"] = x;
+              opt["y"] = y;
+              opt.isMenu = true;
+              this.opt = opt;
             }
           }
         };
@@ -54506,16 +54494,10 @@ class Edge {
   createEdge(options = {}) {
     let source = __WEBPACK_IMPORTED_MODULE_3_lodash___default.a.cloneDeep(options.source);
     let target = __WEBPACK_IMPORTED_MODULE_3_lodash___default.a.cloneDeep(options.target);
-    let type = options.type;
     let edgeId = options.id ? options.id : Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["i" /* generateObjectId */])('E');
     // Default style is line solid with arrow at end.
     let style = options.style ? options.style : {line: "solid", arrow: "Y"};
     let note = options.note ? options.note : {originNote: '', middleNote: '', destNote: ''}; // Default note for Edge.
-
-    // if (_.isEqual(source, target)) {
-    //   comShowMessage("Connect internal is not allowed.");
-    //   return;
-    // }
 
     // Push edge info to store.
     let edgeInfo = {
@@ -54527,50 +54509,66 @@ class Edge {
     };
 
     this.dataContainer.edge.push(edgeInfo);
+    // Append into edge group
+    let groupPivot = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#pivotEgde').append("g")
+      .attr("transform", `translate(0.5, 0.5)`)
+    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["h" /* createPath */])(source, target);
+    // Egde visible to thin,very hard focus it. So append egde hide big than egde visible support focus when using mouse
+    groupPivot.append("path")
+      .attr('d', pathStr)
+      .attr("class", `${__WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* HTML_EDGE_CONTAINER_CLASS */]} edge-hide solid`) // Default line type is solid
+      .attr("id", edgeId)
+      .attr('fill', 'none')
+      .attr('focusable', true)
+      .attr("marker-end", "url(#arrow)") // Make arrow at end path
+      .on("click", () => {
+        this.handlerOnClickEdge(edgeId, source, target);
+      })
+      .on("focus", () => {
+        groupPivot.on("keydown", () => {
+          if (__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].keyCode === 46 || __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].keyCode === 8) {
+            this.removeEdge(edgeId);
+          }
+        })
+      });
 
-    //append into edge group
-    // let group = d3.select("#groupE").append("g");
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(0.5, 0.5)`);
-    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["h" /* createPath */])(source, target);
+    // Append edge visible, it show on interface.
     group.append("path")
       .attr('d', pathStr)
       .attr("class", `${__WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* HTML_EDGE_CONTAINER_CLASS */]} edge solid`) // Default line type is solid
+      .attr("main", "T")
       .attr("id", edgeId)
+      .attr('focusable', true)
       .attr('fill', 'none')
       .attr("marker-end", "url(#arrow)") // Make arrow at end path
       .on("click", () => {
-        __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].isUpdateEdge = true;
-        let currentPath = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("d");
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#groupEdgePoint').style("display", "block");
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#edgePath').style("display", "block");
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#edgePath").attr("d", currentPath);
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#groupEdgePoint").moveToFront();
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#edgePath").moveToFront();
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#edgePath").attr("ref", edgeId);
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#pointStart")
-          .attr("cx", source.x)
-          .attr("cy", source.y);
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#pointEnd")
-          .attr("cx", target.x)
-          .attr("cy", target.y);
+        this.handlerOnClickEdge(edgeId, source, target);
+      })
+      .on("focus", () => {
+        group.on("keydown", () => {
+          if (__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].keyCode === 46 || __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].keyCode === 8) {
+            this.removeEdge(edgeId);
+          }
+        })
       });
 
     let originNote = group.append("text")
       .style("font-size", "12px")
-      .attr("x", 5)   //Move the text from the start angle of the arc
-      .attr("dy", -5); //Move the text down
+      .attr("x", 5)   // Move the text from the start angle of the arc
+      .attr("dy", -5); // Move the text down
     let middleNote = group.append("text")
       .style("font-size", "12px")
-      .attr("dy", -5); //Move the text down
+      .attr("dy", -5); // Move the text down
     let destNote = group.append("text")
       .style("font-size", "12px")
-      .attr("x", -5)   //Move the text from the start angle of the arc
-      .attr("dy", -5); //Move the text down
+      .attr("x", -5)   // Move the text from the start angle of the arc
+      .attr("dy", -5); // Move the text down
 
     originNote.append("textPath")
       .style("text-anchor", "start")
-      .attr("fill", "#000")
+      .attr("fill", "#000000")
       .attr("id", `originNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
       .attr("startOffset", "0%")
@@ -54578,7 +54576,7 @@ class Edge {
 
     middleNote.append("textPath")
       .style("text-anchor", "middle")
-      .attr("fill", "#000")
+      .attr("fill", "#000000")
       .attr("id", `middleNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
       .attr("startOffset", "50%")
@@ -54586,7 +54584,7 @@ class Edge {
 
     destNote.append("textPath")
       .style("text-anchor", "end")
-      .attr("fill", "#000")
+      .attr("fill", "#000000")
       .attr("id", `destNote${edgeId}`)
       .attr("xlink:href", `#${edgeId}`)
       .attr("startOffset", "100%")
@@ -54601,12 +54599,12 @@ class Edge {
     // Append content to edge popup
     let $line = $(`#${OPTIONS_EDGE_LINE_TYPE}`);
     __WEBPACK_IMPORTED_MODULE_2__const_index__["f" /* EDGE_LINE_TP */].forEach((elm) => {
-      const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($line);
+      $('<option>', {value: elm.value}).text(elm.name).appendTo($line);
     });
 
     let $arrow = $(`#${OPTIONS_EDGE_ARROW_FLAG}`);
     __WEBPACK_IMPORTED_MODULE_2__const_index__["e" /* EDGE_ARROW_FLG */].forEach((elm) => {
-      const $options = $('<option>', {value: elm.value}).text(elm.name).appendTo($arrow);
+      $('<option>', {value: elm.value}).text(elm.name).appendTo($arrow);
     });
 
     $("#edgeBtnConfirm").click(e => {
@@ -54648,7 +54646,11 @@ class Edge {
    */
   removeEdge(edgeId) {
     // Remove from DOM
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${edgeId}`).node().parentNode.remove();
+    //seleceAll because edge has 2 element ( one show and one hide)
+    __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](`#${edgeId}`)
+      .each(function (d, i) {
+        this.parentNode.remove();
+      });
     // Remove from data container
     let data = $.grep(this.dataContainer.edge, (e) => {
       return e.id != edgeId;
@@ -54658,15 +54660,6 @@ class Edge {
     // If edge seleted then delete so must be hidden edgePath, groupEdgePoint
     if (__WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].isUpdateEdge)
       Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["d" /* cancleSelectedPath */])();
-  }
-
-  /**
-   * Check connect exit between source and target
-   * @param source
-   * @param target
-   */
-  checkExistEdge(source, target) {
-
   }
 
   /**
@@ -54681,9 +54674,11 @@ class Edge {
     this.originEdge.style = style;
     let dataEdge = this.dataContainer.edge;
     Object.assign(dataEdge[dataEdge.findIndex(el => el.id === this.originEdge.id)], this.originEdge)
-
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${edgeId}`)
-      .attr('class', `${__WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* HTML_EDGE_CONTAINER_CLASS */]} edge ${lineType}`)
+    //Select second element (Only update element show in monitor, not update hide element (first element))
+    let path = __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](`#${edgeId}`).filter((d, i) => {
+      return i == 1;
+    });
+    path.attr('class', `${__WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* HTML_EDGE_CONTAINER_CLASS */]} edge ${lineType}`)
       .attr('marker-end', arrowFlag === 'Y' ? 'url(#arrow)' : '');
 
     this.closePopEdgeType();
@@ -54754,7 +54749,24 @@ class Edge {
 
     let pathStr = Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["h" /* createPath */])(source, target);
     // Get DOM and update attribute
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${edgeId}`).attr('d', pathStr);
+    __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](`#${edgeId}`).attr('d', pathStr);
+  }
+
+  handlerOnClickEdge(edgeId, source, target) {
+    __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* COMMON_DATA */].isUpdateEdge = true;
+    let currentPath = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].target).attr("d");
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#groupEdgePoint').style("display", "block");
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#groupEdgePath').style("display", "block");
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#edgePath").attr("d", currentPath);
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#groupEdgePoint").moveToFront();
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#groupEdgePath").moveToFront();
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#edgePath").attr("ref", edgeId);
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#pointStart")
+      .attr("cx", source.x)
+      .attr("cy", source.y);
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]("#pointEnd")
+      .attr("cx", target.x)
+      .attr("cy", target.y);
   }
 }
 
@@ -54973,7 +54985,6 @@ class Boundary {
              title="${boundaryInfo.description}">${boundaryInfo.name}</p>
           </div>
       `);
-
     if (!isImport)
       Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["l" /* setMinBoundaryGraph */])(this.dataContainer);
   }
@@ -55161,12 +55172,13 @@ class Boundary {
     this.objectUtils.setBoundaryMemberStatus(boundaryId, child.id, status);
     let edge = this.dataContainer.edge;
     if (child.type === "V") {
-      // set Show|hide for edge
+      // Set show|hide for edge
       edge.forEach((edgeItem) => {
         if (edgeItem.target.vertexId === child.id || edgeItem.source.vertexId === child.id) {
-          // d3.select(`#${edgeItem.id}`).classed("hide", !status);
-          let parentNode = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${edgeItem.id}`).node().parentNode;
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](parentNode).classed("hide", !status); // Set class for parent container edge
+          // Select the both hide edge and show edge
+          __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](`#${edgeItem.id}`).each(function () {
+            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this.parentNode).classed("hide", !status);// Set class for parent container edge
+          });
         }
       });
     }
@@ -55184,9 +55196,10 @@ class Boundary {
       });
       edge.forEach((edgeItem) => {
         if (arrVertex.indexOf(edgeItem.target.vertexId) !== -1 || arrVertex.indexOf(edgeItem.source.vertexId) !== -1) {
-          // d3.select(`#${edgeItem.id}`).classed("hide", !status);
-          let parentNode = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${edgeItem.id}`).node().parentNode;
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](parentNode).classed("hide", !status); // Set class for parent container edge
+          // Select the both hide edge and show edge
+          __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](`#${edgeItem.id}`).each(function () {
+            __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this.parentNode).classed("hide", !status);// Set class for parent container edge
+          });
         }
       });
     }
@@ -55435,175 +55448,6 @@ class Boundary {
   }
 
   /**
-   * Move boundary to front
-   * @param selectorBoundaryGroup
-   * @param boundaryId
-   * @param dataContainerBoundary
-   * @param dataContainerVertex
-   */
-  moveToFrontBoundary(selectorBoundaryGroup, boundaryId, dataContainerBoundary, dataContainerVertex) {
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorBoundaryGroup).moveToFront(boundaryId, dataContainerBoundary);
-
-    if (this.checkHasMember(dataContainerBoundary, boundaryId)) {
-      this.moveMemberToFront(selectorBoundaryGroup, dataContainerVertex, dataContainerBoundary, boundaryId);
-    }
-  }
-
-  /**
-   * Move boundary to back
-   * @param selectorBoundaryGroup
-   * @param boundaryId
-   * @param dataContainerBoundary
-   * @param dataContainerVertex
-   */
-  moveToBackBoundary(selectorBoundaryGroup, boundaryId, dataContainerBoundary, dataContainerVertex) {
-    if (this.checkHasMember(dataContainerBoundary, boundaryId)) {
-      this.moveMemberToBack(selectorBoundaryGroup, dataContainerVertex, dataContainerBoundary, boundaryId);
-    }
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorBoundaryGroup).moveToBack(boundaryId, dataContainerBoundary);
-  }
-
-  /**
-   * Check boundary has member or not
-   * Type must be boundary
-   * @param dataContainer
-   * @param boundaryId
-   * @returns {boolean}
-   */
-  checkHasMember(dataContainer, boundaryId) {
-    let selectedData = dataContainer.find(element => element.id === boundaryId);
-    if (typeof selectedData != "undefined" && selectedData.member.length > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * Get list of boundary element
-   * @param parentSelector
-   * @returns {Array}
-   */
-  getChildNodes(parentSelector) {
-    let childElements = [];
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](parentSelector).each(function () {
-      for (let i = 0; i < this.parentNode.childNodes.length; i++) {
-        if (this.parentNode.childNodes[i].nodeType === 1 && this.parentNode.childNodes[i].nodeName === 'g')
-          childElements.push(this.parentNode.childNodes[i]);
-      }
-    })
-    return childElements;
-  }
-
-  /**
-   * Process move to front if boundary has member
-   * @param selectorBoundaryGroup
-   * @param dataContainerVertex
-   * @param boundaryDataContainer
-   * @param parentId
-   */
-  moveMemberToFront(selectorBoundaryGroup, dataContainerVertex, boundaryDataContainer, parentId) {
-    // process when it has member
-    let listBoundaryElement = this.getChildNodes(selectorBoundaryGroup);
-    let parentDataContain = boundaryDataContainer.find(item => item.id === parentId);
-    let members = parentDataContain.member;
-    let selectorVertexGroup = `.${__WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* HTML_VERTEX_CONTAINER_CLASS */]}`;
-
-    //check child boundary has member?
-    for (let i = 0; i < members.length; i++) {
-      //if child boundary has member is vertex, move to front all of them firstly
-      //vertex always in front of boundary
-      let childElement = listBoundaryElement.find(child => child.id === members[i].id);
-      let childDataContainer = boundaryDataContainer.find(element => element.id === members[i].id);
-      let childBoundary = [];
-      if (this.checkHasMember(boundaryDataContainer, members[i].id)) {
-        let childVertexList = childDataContainer.member.filter(vertex => vertex.type === "V");
-        childBoundary = childDataContainer.member.find(item => item.type === "B");
-        this.moveChildVertexToFront(selectorVertexGroup, dataContainerVertex, childVertexList);
-
-        if (typeof childBoundary != "undefined") {
-          this.moveMemberToFront(selectorBoundaryGroup, dataContainerVertex, boundaryDataContainer, members[i].id);
-        } else {
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorBoundaryGroup).moveToFront(childElement.id, boundaryDataContainer);
-        }
-      } else {
-        if (members[i].type === "V") {
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorVertexGroup).moveToFront(members[i].id, dataContainerVertex);
-        } else {
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorBoundaryGroup).moveToFront(childElement.id, boundaryDataContainer);
-        }
-
-      }
-    }
-  }
-
-  /**
-   * Process move to back if boundary has member
-   * @param selectorBoundaryGroup
-   * @param dataContainerVertex
-   * @param boundaryDataContainer
-   * @param parentId
-   */
-  moveMemberToBack(selectorBoundaryGroup, dataContainerVertex, boundaryDataContainer, parentId) {
-    // process when it has member
-    let listBoundaryElement = this.getChildNodes(selectorBoundaryGroup);
-    let parentDataContain = boundaryDataContainer.find(item => item.id === parentId);
-    let members = parentDataContain.member;
-    let selectorVertexGroup = `.${__WEBPACK_IMPORTED_MODULE_1__const_index__["k" /* HTML_VERTEX_CONTAINER_CLASS */]}`;
-
-    for (let i = 0; i < members.length; i++) {
-      let childElement = listBoundaryElement.find(child => child.id === members[i].id);
-      let childDataContainer = boundaryDataContainer.find(element => element.id === members[i].id);
-      let childBoundary = [];
-
-      //check child boundary has member?
-      if (this.checkHasMember(boundaryDataContainer, members[i].id)) {
-        //if child boundary has member is vertex, move to back all of them firstly
-        //vertex always in front of boundary
-        let childVertexList = childDataContainer.member.filter(vertex => vertex.type === "V");
-        childBoundary = childDataContainer.member.find(item => item.type === "B");
-        this.moveChildVertexToBack(selectorVertexGroup, dataContainerVertex, childVertexList);
-
-        if (typeof childBoundary != "undefined") {
-          this.moveMemberToBack(selectorBoundaryGroup, dataContainerVertex, boundaryDataContainer, members[i].id);
-        } else {
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorBoundaryGroup).moveToBack(childElement.id, boundaryDataContainer);
-        }
-      } else {
-        if (members[i].type === "V") {
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorVertexGroup).moveToBack(members[i].id, dataContainerVertex);
-        } else {
-          __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorBoundaryGroup).moveToBack(childElement.id, boundaryDataContainer);
-        }
-      }
-    }
-  }
-
-  /**
-   * move list of child vertex to front
-   * @param selectorVertexGroup
-   * @param dataContainerVertex
-   * @param vertexList
-   */
-  moveChildVertexToFront(selectorVertexGroup, dataContainerVertex, vertexList) {
-    for (let i = 0; i < vertexList.length; i++) {
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorVertexGroup).moveToFront(vertexList[i].id, dataContainerVertex)
-    }
-  }
-
-  /**
-   * Move list of child vertex to back
-   * @param selectorVertexGroup
-   * @param dataContainerVertex
-   * @param vertexList
-   */
-  moveChildVertexToBack(selectorVertexGroup, dataContainerVertex, vertexList) {
-    for (let i = 0; i < vertexList.length; i++) {
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selectorVertexGroup).moveToBack(vertexList[i].id, dataContainerVertex)
-    }
-  }
-
-  /**
    * Make controls to edit boundary info
    * @param boundaryId
    */
@@ -55775,7 +55619,6 @@ class BoundaryMenuItems {
       selector: '.boundary_right',
       className: 'data-title',
       zIndex: 100,
-      // autoHide: true,
       build: ($trigger) => {
         return {
           callback: (key, options) => {
@@ -55794,30 +55637,96 @@ class BoundaryMenuItems {
 
   initItems($trigger) {
     this.dataShow = {};
-    // Get info of boundarys
+    // Get info of boundary
     let boundaryId = $trigger.attr('data');
     const {member} = this.objectUtils.getBoundaryInfoById(boundaryId);
     const subItems = {};
     if (member.length == 0) {
       subItems.isHtmlItem = {
         type: 'html',
-        html: '<div style="text-align: center; color: red;"><span>No member added</span></div>'
+        html: '<div style="text-align: center; color: #ff0000;"><span>No member added</span></div>'
       };
-    }
-
-    member.forEach(mem => {
-      const {type, id, show} = mem;
-      const {name} = type === "B" ? this.objectUtils.getBoundaryInfoById(id) : this.objectUtils.getVertexInfoById(id);
-      subItems[`${id}`] = {
-        name: `${name}`, type: 'checkbox', events: {
-          click: (e) => {
-            this.boundary.selectMemberVisible(boundaryId, mem, e.target.checked);
-          }
+    }else{
+      
+      subItems["showAll"] = {
+        name: `Show all`, type: 'checkbox', events: {
+          click: this.handleOnSelectAll(this, boundaryId, member)
         }
       };
-      this.dataShow[`${id}`] = show;
+
+      subItems["sep1"] = "-";
+
+      member.forEach(mem => {
+        const {type, id, show} = mem;
+        const {name} = type === "B" ? this.objectUtils.getBoundaryInfoById(id) : this.objectUtils.getVertexInfoById(id);
+        subItems[`${id}`] = {
+          name: `${name}`, type: 'checkbox', events: {
+            click: (e) => {
+              this.setStateForShowAllCheckBox(e.target);
+              this.boundary.selectMemberVisible(boundaryId, mem, e.target.checked);
+            }
+          }
+        };
+        this.dataShow[`${id}`] = show;
+      });
+    }
+
+    let bHasUncheckItem = _.find(this.dataShow, item => {
+      return item == false;
     });
+
+    if (bHasUncheckItem == false){
+      this.dataShow["showAll"] = false;
+    }else{
+      this.dataShow["showAll"] = true;
+    }
+    
     return subItems;
+  }
+
+  /**
+   * Event handle for Show all checkbox click 
+   * @param {*} owner 
+   * @param {*} boundaryId 
+   * @param {*} member 
+   */
+  handleOnSelectAll(owner, boundaryId, member) {
+    return function(e) {
+      let listBox = $(this).closest('ul').find(`li`).find(`input:checkbox`);
+
+      let length = listBox.length;
+      for (let i = 0; i < length; i++) {
+        let element = listBox[i];
+        if(element.name.indexOf("showAll") == -1 && element.checked != e.target.checked){
+          element.checked = e.target.checked;
+          owner.boundary.selectMemberVisible(boundaryId, member[i-1], e.target.checked);
+        }
+      }
+    }
+  }
+  
+ /**
+  * Change the state of Show all checkbox when others changed
+  * @param {*} owner 
+  */
+  setStateForShowAllCheckBox(owner){
+    let arrItem = $(owner).closest('ul').find(`li`).find(`input:checkbox`);
+    let length = arrItem.length;
+    let showAllItem;
+
+    for (let i = 0; i < length; i++) {
+      let element = arrItem[i];
+      if(element.name.indexOf("showAll") != -1){
+        showAllItem = element;
+      }else{
+        if (element.checked == false){
+          showAllItem.checked = false;
+          return;
+        }
+      }
+    }
+
+    showAllItem.checked = true;
   }
 }
 
@@ -55892,15 +55801,14 @@ class ObjectUtils {
   /**
    * get root parent of Boundary
    */
-
-  getRootParent(obj, arr, count = 0) {
-    let {parent} = this.getBoundaryInfoByIdFromArray(obj, arr);
-    if (parent != null) {
-      count++;
-      return this.getRootParent(parent, arr, count);
-    }
-    return {parent: obj, count: count};
-  }
+  // getRootParent(obj, arr, count = 0) {
+  //   let {parent} = this.getBoundaryInfoByIdFromArray(obj, arr);
+  //   if (parent != null) {
+  //     count++;
+  //     return this.getRootParent(parent, arr, count);
+  //   }
+  //   return {parent: obj, count: count};
+  // }
 
   /**
    * Find all path (edge, connect) with target at this vertex
@@ -56020,27 +55928,16 @@ class ObjectUtils {
     });
   }
 
-/**
- * Get boundary info by if from array
- * @param {*} boundaryId
- * @param {*} arrBoundary
- */
-  getBoundaryInfoByIdFromArray(boundaryId,arrBoundary) {
-    return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(arrBoundary, (e) => {
-      return e.id === boundaryId;
-    });
-  }
-
   /**
    * Get boundary info by if from array
    * @param {*} boundaryId
    * @param {*} arrBoundary
    */
-  getBoundaryInfoByIdFromArray(boundaryId, arrBoundary) {
-    return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(arrBoundary, (e) => {
-      return e.id === boundaryId;
-    });
-  }
+  // getBoundaryInfoByIdFromArray(boundaryId, arrBoundary) {
+  //   return _.find(arrBoundary, (e) => {
+  //     return e.id === boundaryId;
+  //   });
+  // }
 
   /**
    * Clone boundary info by id
@@ -56115,7 +56012,7 @@ exports = module.exports = __webpack_require__(865)(false);
 
 
 // module
-exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: white;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: black;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181C1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #FFFFFF !important; }\n  .btn-etc:hover {\n    background: #4181C1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .checkbox_center, .dialog-wrapper .dialog-search table .col_header {\n      height: 26px;\n      text-align: center; }\n    .dialog-wrapper .dialog-search table .col_header {\n      background-color: #336699;\n      color: #ffffff; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border-collapse: collapse;\n    border-spacing: 0 0.5em;\n    margin: 5px 0px 10px; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper select, .dialog-wrapper textarea {\n    height: 29px;\n    border-color: #b8d6f6;\n    background-color: #fff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus, .dialog-wrapper textarea:hover, .dialog-wrapper textarea :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper textarea {\n    height: 100%;\n    resize: none; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important; }\n  .dialog-wrapper .full-width {\n    width: 100%; }\n  .dialog-wrapper .input-group-addon {\n    font-size: 12px;\n    border-radius: 0px; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: whiteSmoke; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: whiteSmoke solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555; }\n\n.my-group .form-control {\n  width: 50%; }\n\nlabel {\n  font-weight: 300 !important; }\n\n.font-weight-700 {\n  font-weight: 700 !important; }\n\n.hight-light {\n  stroke: red !important; }\n\n.hidden-object {\n  display: none; }\n\n#dummyPath {\n  stroke-width: 1px;\n  display: none; }\n\n.line {\n  stroke: blue;\n  stroke-width: 1px; }\n\n.selected {\n  stroke: #2795EE !important; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n\n.file-interface {\n  box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n  position: relative;\n  display: none;\n  z-index: 1;\n  margin-bottom: 15px; }\n  .file-interface .form-horizontal {\n    margin: 10px 0; }\n\n.algetaContainer {\n  right: 5px;\n  left: 10px;\n  top: 10px;\n  bottom: 5px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .algetaContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 959px;\n    position: absolute; }\n\n.btn-file-interface {\n  position: absolute;\n  width: 30px;\n  height: 30px;\n  bottom: 10px;\n  right: 12px;\n  font-size: 30px; }\n\n.fa-folder-open-o:hover {\n  color: #66afe9; }\n\n.edge {\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke: #2795EE;\n    stroke-width: 1;\n    cursor: crosshair; }\n  .edge:focus {\n    stroke: #2795EE;\n    stroke-width: 1;\n    cursor: crosshair; }\n\n.dummy-edge {\n  display: none;\n  stroke: black;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  display: none;\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.solid {\n  stroke: black; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.stroke-dasharray {\n  stroke-dasharray: 3 3; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black;\n  font-size: 13px;\n  background: #ffffff; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid black;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right;\n  font-weight: 300;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 85px; }\n\n.vertex_data div .data {\n  font-weight: 300;\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: calc(100% - 85px); }\n\n.drag_connect {\n  fill: white;\n  stroke-width: 1;\n  stroke: black; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  color: #ffffff;\n  border-bottom: none;\n  margin: 0;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border-left: none;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px;\n  fill-opacity: .5;\n  cursor: pointer; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #DDD;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #E1D5E7;\n  border: none; }\n\n.context-menu-item .context-menu-list {\n  max-height: 300px;\n  overflow-y: auto; }\n  .context-menu-item .context-menu-list li {\n    background: none; }\n    .context-menu-item .context-menu-list li select option:hover {\n      box-shadow: 0 0 10px 100px #2980b9 inset; }\n", ""]);
+exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: #ffffff;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: #000000;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181c1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #ffffff !important; }\n  .btn-etc:hover {\n    background: #4181c1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .checkbox_center, .dialog-wrapper .dialog-search table .col_header {\n      height: 26px;\n      text-align: center; }\n    .dialog-wrapper .dialog-search table .col_header {\n      background-color: #336699;\n      color: #ffffff; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border-collapse: collapse;\n    border-spacing: 0 0.5em;\n    margin: 5px 0px 10px; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper select, .dialog-wrapper textarea {\n    height: 29px;\n    border-color: #b8d6f6;\n    background-color: #ffffff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus, .dialog-wrapper textarea:hover, .dialog-wrapper textarea :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper textarea {\n    height: 100%;\n    resize: none; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important; }\n  .dialog-wrapper .full-width {\n    width: 100%; }\n  .dialog-wrapper .input-group-addon {\n    font-size: 12px;\n    border-radius: 0px; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: #f5f5f5; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: #f5f5f5 solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555555; }\n\n.my-group .form-control {\n  width: 50%; }\n\nlabel {\n  font-weight: 300 !important; }\n\n.font-weight-700 {\n  font-weight: 700 !important; }\n\n.hight-light {\n  stroke: #ff0000 !important; }\n\n.hidden-object {\n  display: none; }\n\n#dummyPath {\n  stroke-width: 1px;\n  display: none; }\n\n.line {\n  stroke: #0000ff;\n  stroke-width: 1px; }\n\n.selected {\n  stroke: #2795ee !important; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n\n.file-interface {\n  box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n  position: relative;\n  display: none;\n  z-index: 1;\n  margin-bottom: 15px; }\n  .file-interface .form-horizontal {\n    margin: 10px 0; }\n\n.algetaContainer {\n  right: 5px;\n  left: 10px;\n  top: 10px;\n  bottom: 5px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .algetaContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 959px;\n    position: absolute; }\n\n.btn-file-interface {\n  position: absolute;\n  width: 30px;\n  height: 30px;\n  bottom: 10px;\n  right: 12px;\n  font-size: 30px; }\n\n.fa-folder-open-o:hover {\n  color: #66afe9; }\n\n.edge {\n  outline: none;\n  stroke: #000000;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: crosshair; }\n  .edge:hover {\n    stroke-width: 1;\n    cursor: crosshair; }\n  .edge:focus {\n    stroke-width: 1;\n    cursor: crosshair; }\n\n.dummy-edge {\n  display: none;\n  stroke: #000000;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.solid {\n  stroke: #000000; }\n\n.stroke-dasharray {\n  stroke-dasharray: 3 3; }\n\n.edge-hide {\n  outline: none;\n  stroke-width: 8;\n  visibility: visible;\n  opacity: 0;\n  cursor: crosshair; }\n  .edge-hide:hover {\n    stroke-width: 8;\n    cursor: crosshair; }\n  .edge-hide:focus {\n    stroke-width: 8;\n    cursor: crosshair; }\n\n.hide {\n  stroke: #ffffff; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.active {\n  border: solid 2px #3c763d; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black;\n  font-size: 13px;\n  background: #ffffff; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid #000000;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n\n.vertex_data div .key {\n  width: 85px;\n  text-align: right;\n  font-weight: 300;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 85px; }\n\n.vertex_data div .data {\n  font-weight: 300;\n  width: calc(100% - 85px);\n  margin-left: 5px;\n  border: none;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: calc(100% - 85px); }\n\n.drag_connect {\n  fill: #ffffff;\n  stroke-width: 1;\n  stroke: #000000; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  color: #ffffff;\n  border-bottom: none;\n  margin: 0;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border-left: none;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px;\n  fill-opacity: .5;\n  cursor: pointer; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #dddddd;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #e1d5e7;\n  border: none; }\n\n.context-menu-item .context-menu-list {\n  max-height: 300px;\n  overflow-y: auto; }\n  .context-menu-item .context-menu-list li {\n    background: none; }\n    .context-menu-item .context-menu-list li select option:hover {\n      box-shadow: 0 0 10px 100px #2980b9 inset; }\n", ""]);
 
 // exports
 

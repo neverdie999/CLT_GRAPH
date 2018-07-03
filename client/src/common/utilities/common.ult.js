@@ -58,11 +58,11 @@ export function createPath(src, tar) {
  * click click outside path selected or move object...
  */
 export function cancleSelectedPath() {
-  COMMON_DATA.isUpdateEdge = false;
-  d3.select('#edgePath').style("display", "none");
+  d3.select('#groupEdgePath').style("display", "none");
   d3.select('#groupEdgePoint').style("display", "none");
   d3.select("#groupEdgePoint").moveToBack();
-  d3.select("#edgePath").moveToBack();
+  d3.select("#groupEdgePath").moveToBack();
+  COMMON_DATA.isUpdateEdge = false;
 }
 
 /**
