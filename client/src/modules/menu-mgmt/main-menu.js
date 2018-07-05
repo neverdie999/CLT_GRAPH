@@ -150,7 +150,7 @@ class MainMenu {
   onSelectVertex(self) {
     return function () {
       let opt = self.opt;
-      opt.vertexType = this.value.toUpperCase();
+      opt.vertexType = this.value;
       self.mainMgmt.createVertex(opt);
       $(`${self.selector}`).contextMenu("hide");
     }
