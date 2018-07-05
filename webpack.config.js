@@ -5,16 +5,17 @@ const isDebug = !process.env.PRO ? true : false;
 
 const entry = [
   'babel-polyfill',
-  DIR_NAME + '/client/src/index.js',
+  DIR_NAME + '/client/src/messageMapping/index.js',
 ];
 
-
-
 module.exports = {
-  entry: entry,
+  entry: {
+    library: DIR_NAME + '/client/src/index.js',
+    messageMapping: entry
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].js',
   },
   module: {
     rules: [
