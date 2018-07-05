@@ -1,0 +1,58 @@
+
+.boundary {
+  cursor: pointer;
+  padding: 8px;
+}
+
+.header_boundary {
+  color: #ffffff;
+  border-bottom: none;
+  margin: 0;
+  text-align: center;
+  font-weight: 600;
+  float: left;
+}
+
+.boundary_right {
+  border-left: none;
+  margin: 0;
+  padding: 0px;
+  text-align: center;
+  font-weight: 600;
+  float: right;
+  width: 20px;
+  height: 20px;
+  fill-opacity: .5;
+  cursor: pointer;
+}
+
+.boundary_data {
+  //border: solid 1px #652a82;
+}
+
+/* menu header via data attribute */
+.data-title:before {
+  content: attr(data-menutitle);
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  background: #dddddd;
+  padding: 2px;
+  text-align: center;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.data-title li:first-child {
+  margin-top: 20px;
+}
+
+.input-header-boundary {
+  padding: 0 5px;
+  width: 150px;
+  background: #e1d5e7;
+  border: none;
+}

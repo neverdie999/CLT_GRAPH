@@ -1,0 +1,135 @@
+.web-dialog {
+  border: 2px solid #336699;
+  padding: 0px;
+  font-family: Verdana;
+  font-size: 12px;
+  border-radius: 0px;
+}
+
+.dialog-title {
+  border-bottom: solid 2px #336699;
+  background-color: #336699;
+  padding: 5px;
+  color: #ffffff;
+  cursor: move;
+}
+
+.dialog-title .title {
+  font-weight: bold;
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+.btnClose {
+  color: #000000;
+  text-decoration: none;
+  position: absolute;
+  right: -1px;
+  padding: 4px 10px 5px 10px;
+  top: -2px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.btnClose:hover {
+  background: #4181c1;
+}
+
+.btn-etc {
+  position: relative;
+  padding: 6px 10px;
+  border-style: inherit;
+  text-align: center;
+  line-height: 12px;
+  background-color: #336699;
+  color: #ffffff !important;
+  &:hover {
+    background: #4181c1;
+  }
+}
+
+.dialog-wrapper {
+  padding:10px;
+  position: relative !important;
+  .dialog-button-top {
+    padding: 0 15px;
+    margin: 5px 0;
+  }
+  .dialog-search {
+    .control-label {
+      line-height: 25px;
+      font-weight: normal;
+      text-align: right;
+    }
+    .form-group {
+      margin-bottom: 5px;
+      display: flex;
+    }
+
+    table {
+      border-collapse: separate;
+      border-spacing: 0 0.5em;
+      width:100%;
+      th, td {
+        font-weight: normal;
+      }
+      th {
+        padding: 0 10px;
+      }
+
+      .checkbox_center, .col_header {
+        height: 26px;
+        text-align: center;
+      }
+
+      .col_header {
+        background-color: #336699;
+        color: #ffffff;
+      }
+    }
+
+    .vertex-properties {
+      //border: 1px solid #336699;
+      border-collapse: collapse;
+      border-spacing: 0 0.5em;
+      margin: 5px 0px 10px;
+      //display: block;
+      //overflow-x: auto;
+      //white-space: nowrap;
+    }
+  }
+
+  input[type="text"], input[type="email"] , input[type="password"], input[type="number"], select, textarea {
+    height: 29px;
+    //margin: 0 4px 0 0;
+    border-color: #b8d6f6;
+    background-color: #ffffff;
+    line-height: 17px;
+    outline: none;
+    border-radius: 0px;
+    width: 100% !important;
+    font-size: 12px;
+    padding: 0 5px;
+    &:hover, :focus {
+      border-color: #6db3fe;
+    }
+  }
+
+  textarea {
+    height: 100%;
+    resize: none;
+  }
+
+  input[type="checkbox"] {
+    height: 13px !important;
+  }
+
+  .full-width {
+    width: 100%
+  }
+
+  .input-group-addon{
+    font-size: 12px;
+    border-radius: 0px;
+  }
+}
