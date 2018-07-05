@@ -236,8 +236,8 @@ class Vertex {
           ${htmlContent}
         </div>
       `);
-    if (!isImport)
-      setMinBoundaryGraph(dataContainer);
+    // if (!isImport)
+    //   setMinBoundaryGraph(dataContainer);
   }
 
   /**
@@ -291,7 +291,7 @@ class Vertex {
         self.mainMgmt.checkDragObjectInsideBoundary(d, "V");
         self.mainMgmt.resetSizeBoundary();
       }
-      setMinBoundaryGraph(this.objectUtils.getDataContainerFromVdertexId(d.id));
+      // setMinBoundaryGraph(this.objectUtils.getDataContainerFromVdertexId(d.id));
     }
   }
 
@@ -312,7 +312,7 @@ class Vertex {
       return e.id === vertexId;
     });
 
-    setMinBoundaryGraph(dataContainerTmp);
+    // setMinBoundaryGraph(dataContainerTmp);
 
     // Remove all edge relate to vertex
     let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId, dataContainerTmp);
@@ -650,7 +650,7 @@ class Vertex {
     _.remove(dataContainerTmp.vertex, (e) => {
       return e.id === vertexId;
     });
-    setMinBoundaryGraph(dataContainerTmp);
+    // setMinBoundaryGraph(dataContainerTmp);
     // Should consider again...
     // Remove all edge relate to vertex
     let relatePaths = this.objectUtils.findEdgeRelateToVertex(vertexId, dataContainerTmp);
@@ -1036,7 +1036,7 @@ class Vertex {
   }
 
   reRenderContentInsideVertex(options) {
-    let {name, description, data: elements, id, vertexType, connectType, groupType, parent} = options;
+    let {name, description, data: elements, id, vertexType, connectType, groupType, parent, svg} = options;
 
     if (!vertexType)
       return;
@@ -1049,6 +1049,7 @@ class Vertex {
         .attr("class", "drag_connect connect_header")
         .attr("r", 3)
         .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH / 2)
+        .attr("svg", svg)
         .on("mouseover", () => {
           d3.select(d3.event.target).classed("hight-light", true);
           d3.select(d3.event.target).attr("r", 4);
@@ -1078,6 +1079,7 @@ class Vertex {
           .attr("type", TYPE_POINT.INPUT)
           .attr("r", 3)
           .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+          .attr("svg", svg)
           .on("mouseover", () => {
             d3.select(d3.event.target).classed("hight-light", true);
             d3.select(d3.event.target).attr("r", 4);
@@ -1097,6 +1099,7 @@ class Vertex {
           .attr("r", 3)
           .attr("cx", VERTEX_ATTR_SIZE.GROUP_WIDTH)
           .attr("cy", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2)
+          .attr("svg", svg)
           .on("mouseover", () => {
             d3.select(d3.event.target).classed("hight-light", true);
             d3.select(d3.event.target).attr("r", 4);
@@ -1125,7 +1128,7 @@ class Vertex {
 
     if (parent)
       this.mainMgmt.reorderPositionMember(parent);
-    setMinBoundaryGraph(this.dataContainer);
+    // setMinBoundaryGraph(this.dataContainer);
   }
 
   /**
