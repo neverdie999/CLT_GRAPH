@@ -1,0 +1,112 @@
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  //background: #f1f1f1;
+  background: #f5f5f5;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  //background: #888;
+  background: #c5c5c5;
+  border-radius: 10px;
+  border: #f5f5f5 solid 3px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+body {
+  overflow: hidden;
+}
+
+// CSS container svg
+.wrap-container-area {
+  .container-svg {
+    top: 0;
+    bottom: 0;
+    touch-action: none;
+    overflow: auto;
+    position: absolute;
+
+    .svg {
+      width: 100%;
+      min-height: 2000px;
+    }
+  }
+
+  .left-svg {
+    left: 0;
+    width: calc(100% / 3);
+    border-right: 1px solid #c5c5c5;
+  }
+
+  .middle-svg {
+    left: calc(100% / 3);
+    width: calc(100% / 3);
+    border-right: 1px solid #c5c5c5;
+  }
+
+  .right-svg {
+    left: calc(100% - (100% / 3));
+    width: calc(100% / 3);
+  }
+
+  .connect-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+  }
+}
+
+// CSS container file management
+.container-file {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+  .fa-folder-open-o:hover {
+    color: #66afe9;
+  }
+
+  .icon-folder-file-mgmt {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    bottom: 10px;
+    right: 12px;
+    font-size: 30px;
+  }
+
+  .file-mgmt {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;
+    position: relative;
+    background-color: #ffffff;
+    display: none;
+    z-index: 10000;
+
+    .form-horizontal {
+      margin: 10px 0;
+
+      .group-type-file-input {
+        .form-control {
+          width: 50%;
+        }
+      }
+    }
+  }
+}
+
+.hidden-object {
+  display: none;
+}

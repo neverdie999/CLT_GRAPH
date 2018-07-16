@@ -3,18 +3,23 @@ const path = require('path');
 const DIR_NAME = __dirname;
 const isDebug = !process.env.PRO ? true : false;
 
-const entry = [
+const library = [
   'babel-polyfill',
-  DIR_NAME + '/client/src/messageMapping/index.js',
+  DIR_NAME + '/client/src/index.js',
+];
+
+const messageMapping = [
+  'babel-polyfill',
+  DIR_NAME + '/client/src/message-mapping/index.js',
 ];
 
 module.exports = {
   entry: {
-    library: DIR_NAME + '/client/src/index.js',
-    messageMapping: entry
+    library: library,
+    messageMapping: messageMapping,
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(DIR_NAME, 'dist'),
     filename: '[name].js',
   },
   module: {
