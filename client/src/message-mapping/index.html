@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Message Mapping</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href='styles/font-awesome/css/font-awesome.min.css'>
+    <link rel='stylesheet' href='styles/context-menu/jquery.contextMenu.css'>
+    <link rel="stylesheet" href="styles/bootstrap/bootstrap.min.css">
+
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') {
+      window.module = module;
+      module = undefined;
+    }</script>
+    <script src='assets/lib/jquery/jquery.min.js'></script>
+    <script src='assets/lib/jqueryui/jquery-ui.min.js'></script>
+    <script src='assets/lib/bootrap/bootstrap.js'></script>
+    <script src="assets/js/context-menu/jquery.contextMenu.js"></script>
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+  </head>
+  <body>
+    <div class="wrap-container-area">
+      <div id="containerInputMessage" class="left-svg container-svg" ref="svgInputMessage">
+        <svg id="svgInputMessage" class="svg"></svg>
+      </div>
+      <div id="containerOperations" class="middle-svg container-svg" ref="svgOperations">
+        <svg id="svgOperations" class="svg"></svg>
+      </div>
+      <div id="containerOutputMessage" class="right-svg container-svg" ref="svgOutputMessage">
+        <svg id="svgOutputMessage" class="svg"></svg>
+      </div>
+      <svg id="svgConnect" class="connect-svg"></svg>
+    </div>
+
+    <!-- File Management (S) -->
+    <div class="container-file">
+      <div id="folderOpenFileMgmt" class="icon-folder-file-mgmt fa fa-folder-open-o"></div>
+      <div class="container file-mgmt" id="containerFileMgmt">
+        <div>
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="control-label font-weight-700 col-sm-2">File Input</label>
+              <div class="col-sm-4">
+                <div class="input-group group-type-file-input">
+                  <select id="optionFileTypeInput" class="form-control">
+                    <option value="DATA_INPUT_MESSAGE" selected>Input Message</option>
+                    <option value="DATA_OUTPUT_MESSAGE">Output Message</option>
+                    <option value="DATA_VERTEX_DEFINE_OPERATIONS">Vertex Define Options</option>
+                  </select>
+                  <input type="file" class="form-control" id="inputFileData" name="inputFileData">
+                </div>
+              </div>
+              <label class="control-label font-weight-700 col-sm-1" style="width: 70px">Mode</label>
+              <div class="col-sm-4">
+                <label class="radio-inline">
+                  <input type="radio" name="graphMode" id="radioGraphEditMode" checked value="E">Edit Graph
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="graphMode" id="radioGraphShowMode" value="S">Show Graph
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label font-weight-700 col-sm-2">Save File</label>
+              <div class="col-sm-6">
+                <div class="input-group">
+                  <input class="form-control" name="outFile" id="outputFileName" placeholder="Enter file name">
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" id="btnDownloadFile">Download</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- File Management (E) -->
+
+    <!-- Vertex Info Popup (S) -->
+    <div id="vertexInfo" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="web-dialog modal-content">
+          <div class="dialog-title">
+            <span class="title">Vertex Info</span>
+          </div>
+
+          <div class="dialog-wrapper">
+            <form action="#" method="post">
+              <div class="dialog-search form-inline">
+                <table>
+                  <colgroup>
+                    <col width="80"/>
+                    <col width="*"/>
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <td>
+                        <input type="text" class="form-control" id="vertexName" name="vertexName">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Max repeat</th>
+                      <td class="input-group full-width">
+                        <input type="number" class="form-control" id="vertexRepeat" name="vertexRepeat" min="0" max="9999">
+                        <label class="input-group-addon">
+                          <input type="checkbox" id="isVertexMandatory" name="isVertexMandatory">
+                        </label>
+                        <label class="input-group-addon" for="isVertexMandatory">Mandatory</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Description</th>
+                      <td class="full-width">
+                        <textarea class="form-control" id="vertexDesc" name="vertexDesc" rows="4"></textarea>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </form>
+            <div class="dialog-button-top" id="groupBtnDynamicDataSet">
+              <div class="row text-right">
+                <button id="vertexBtnAdd" class="btn-etc">Add</button>
+                <button id="vertexBtnDelete" class="btn-etc">Delete</button>
+              </div>
+            </div>
+            <form id="vertexForm" action="#" method="post">
+              <div class="dialog-search form-inline">
+                <table class="vertex-properties" id="vertexProperties" border="1"></table>
+              </div>
+            </form>
+            <div class="dialog-button-top">
+              <div class="row text-right">
+                <button id="vertexBtnConfirm" class="btn-etc">Confirm</button>
+                <button id="vertexBtnCancel" class="btn-etc">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Vertex Info Popup (E) -->
+
+    <!-- Boundary Info Popup (S)-->
+    <div id="boundaryInfo" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="web-dialog modal-content">
+          <div class="dialog-title">
+            <span class="title">Boundary Info</span>
+          </div>
+          <div class="dialog-wrapper">
+            <form id="boundaryForm" action="#" method="post">
+              <div class="dialog-search form-inline">
+                <table>
+                  <colgroup>
+                    <col width="80"/>
+                    <col width="*"/>
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <td>
+                        <input type="text" class="form-control" id="boundaryName" name="boundaryName">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Max repeat</th>
+                      <td class="input-group full-width">
+                        <input type="number" class="form-control" id="maxBoundaryRepeat" name="maxBoundaryRepeat" min="0" max="9999">
+                        <label class="input-group-addon">
+                          <input type="checkbox" id="isBoundaryMandatory" name="isBoundaryMandatory">
+                        </label>
+                        <label class="input-group-addon" for="isBoundaryMandatory">Mandatory</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Description</th>
+                      <td class="full-width">
+                        <textarea class="form-control" id="boundaryDesc" name="boundaryDesc" rows="4"></textarea>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </form>
+            <div class="dialog-button-top">
+              <div class="row text-right">
+                <button id="boundaryBtnConfirm" class="btn-etc">Confirm</button>
+                <button id="boundaryBtnCancel" class="btn-etc">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Boundary Info Popup (E)-->
+  </body>
+  <script type="text/javascript" src="../../../dist/messageMapping.js"></script>
+</html>
