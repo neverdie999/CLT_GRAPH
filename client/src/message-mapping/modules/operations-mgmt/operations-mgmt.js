@@ -30,7 +30,6 @@ class OperationsMgmt {
   initialize() {
     this.svgSelector = d3.select(`#${ID_SVG_OPERATIONS}`);
     this.d3 = d3;
-    this.isShowReduced = false;
 
     this.vertexOperations = new VertexOperations({
       storeOperations: this.storeOperations,
@@ -49,7 +48,6 @@ class OperationsMgmt {
     });
 
     this.initBBoxGroup();
-    this.initScrollEvent();
   }
 
   initMenuContext() {
@@ -83,18 +81,6 @@ class OperationsMgmt {
     });
   }
 
-  initScrollEvent(){
-    $(`#${ID_SVG_OPERATIONS}`).parent().scroll(()=>{
-      this.onScrollHandle(this);
-    });
-  }
-
-  onScrollHandle(main){
-    this.storeOperations.vertex.forEach(v => {
-      this.mainMgmt.updatePathConnect(v, ID_SVG_OPERATIONS);
-    });
-  }
-
   /**
    * The box simulate new position of vertex or boundary dragged.
    */
@@ -125,29 +111,6 @@ class OperationsMgmt {
 
   hiddenBBoxGroup() {
     d3.select('#dummyBBox').style("display", "none");
-  }
-
-  getVertexTypesShowFull(data) {
-    const group = data["VERTEX_GROUP"];
-    const vertex = data["VERTEX"];
-    let len = group.length;
-    for (let i = 0; i < len; i++) {
-      let groupType = group[i].groupType;
-      let groupOption = group[i].option;
-      let lenOpt = groupOption.length;
-      for (let j = 0; j < lenOpt; j++) {
-        let option = groupOption[j];
-        let groupVertex = _.filter(vertex, (e) => {
-            return e.groupType === groupType;
-          }
-        );
-        let groupAction = [];
-        groupVertex.forEach(e => {
-          groupAction.push(e.vertexType);
-        });
-        this.operationsDefined.groupVertexOption[option] = groupAction;
-      }
-    }
   }
 
   createVertex(opt) {
@@ -374,101 +337,15 @@ class OperationsMgmt {
   }
 
   /**
-   * Show full graph
-   */
-  showFull() {
-    let edges = this.storeOperations.edge;
-    this.isShowReduced = false;
-    /** Vertex **/
-    d3.selectAll('.drag_connect.reduced').remove();
-    d3.selectAll('.property').classed("hide", false);
-    d3.selectAll('.drag_connect').classed("hide", false);
-
-    // Filter the vertex exit edge
-    // let len = edges.length;
-    // let vertices = [];
-    // for (let i = 0; i < len; i++) {
-    //   let edge = edges[i];
-    //   vertices.push(edge.source.vertexId);
-    //   vertices.push(edge.target.vertexId);
-    // }
-
-    // vertices = Array.from(new Set(vertices))
-    // len = vertices.length;
-    // Re-draw edge
-    // for (let i = 0; i < len; i++) {
-    //   let id = vertices[i];
-    //   this.vertex.updatePathConnect(id);
-    // }
-    this.vertexOperations.resetSizeVertex(true);
-    this.updateHeightBoundary();
-  }
-
-  /**
-   * Show boundary, vertex reduced as policy
-   * Show graph elements connected by edges only
-   * Boundary: show vertices which have any edges only and boundaries
-   * Vertex: The vertices in group SHOW_FULL_ALWAYS not effected by show reduced
-   * The remain vertex then show header and connected properties only
-   */
-  showReduced() {
-    this.isShowReduced = true;
-    let edge = this.storeOperations.edge;
-    let full = this.mainMgmt.operationsDefined.groupVertexOption['SHOW_FULL_ALWAYS'];
-    let lstVer = [], lstProp = [];
-
-    // Filter the vertex effected by show reduced
-    lstVer = _.filter(this.storeOperations.vertex, (e) => {
-      return full.indexOf(e.vertexType) < 0;
-    });
-    lstVer.forEach((vertex) => {
-      d3.select(`#${vertex.id}`).selectAll('.drag_connect:not(.connect_header)').classed("hide", true);
-      d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", true);
-    });
-
-    // Get vertex and property can display
-    // edge.forEach((edgeItem) => {
-    //   lstProp.push({
-    //     vert: edgeItem.source.vertexId,
-    //     prop: edgeItem.source.prop
-    //   }, {vert: edgeItem.target.vertexId, prop: edgeItem.target.prop});
-    // });
-
-    lstVer.forEach((vertexItem) => {
-      let arrPropOfVertex = [];
-      lstProp.forEach((propItem) => {
-        if (propItem.vert === vertexItem.id) {
-          if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
-            arrPropOfVertex.push(propItem.prop);
-          }
-        }
-      });
-      d3.select(`#${vertexItem.id}`).classed("hide", false); // Enable Vertex
-      arrPropOfVertex.forEach((propItem) => {
-        d3.select(`#${vertexItem.id}`).select(".property[prop='" + propItem + "']").classed("hide", false);
-        d3.select(`#${vertexItem.id}`).select(".property[prop='" + propItem + "']").classed("hide", false);
-      });
-      this.vertexOperations.updatePathConnect(vertexItem); // Re-draw edge
-      /* Update Circle */
-      //this.vertex.updatePositionConnect(arrPropOfVertex, d3.select(`#${vertexItem.id}`), vertexItem.id);
-    });
-
-    this.vertexOperations.resetSizeVertex(false);
-    this.updateHeightBoundary();
-  }
-
-  /**
    * Clear all element on graph
    * And reinit marker def
    */
   clearAll() {
     // Delete all element inside SVG
-    this.isShowReduced = false;
     this.svgSelector.selectAll("*").remove();
     this.storeOperations.vertex = [];
     this.storeOperations.boundary = [];
     this.initBBoxGroup();
-    this.mainMgmt.clearAllEdge();
     // setSizeGraph();
   }
 
@@ -489,6 +366,40 @@ class OperationsMgmt {
 
     //setMinBoundaryGraph(this.storeOperations);
   }
+
+  drawObjectsOnOperationsGraph(data) {
+    const {boundary : boundaries, vertex : vertices, position} = data;
+    // Draw boundary
+    boundaries.forEach(e => {
+      let {x, y} = position.find(pos => {
+        return pos.id === e.id;
+      });
+      e.x = x;
+      e.y = y;
+      e.idSvg = ID_SVG_OPERATIONS;
+      const originConfig = _.cloneDeep(this.defaultOptionsBoundary);
+      let options = _.merge(originConfig, e);
+      this.boundaryOperations.create(options, this.storeOperations.boundary);
+    });
+
+    // Draw vertex
+    vertices.forEach(e => {
+      const {x, y} = position.find(pos => {
+        return pos.id === e.id;
+      });
+      e.x = x;
+      e.y = y;
+      e.idSvg = ID_SVG_OPERATIONS;
+      //this.storeOperations.vertex.push(e);
+      const originConfig = _.cloneDeep(this.defaultOptionsVertex);
+      let presentation = this.operationsDefined.vertexPresentation[e.groupType];
+      let options = _.merge(originConfig, e); // Merged config
+      options.presentation = presentation;
+      this.vertexOperations.create(options, this.storeOperations.vertex);
+    });
+  }
+
+
 }
 
 export default OperationsMgmt;

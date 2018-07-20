@@ -34,7 +34,7 @@ class ObjectUtils {
    */
   getBBoxObject(selector) {
     let node = d3.select(`${selector}`);
-    if(node)
+    if (node)
       return node.node().getBBox();
     return null;
   }
@@ -87,16 +87,14 @@ class ObjectUtils {
     // Find index prop in object
     let arrayProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
     let tmpArry = arrayProp._groups[0];
-
-    let index = 0;
-    for (let ele in tmpArry) {
-      if (d3.select(tmpArry[ele]).attr('prop') === prop) {
-        break;
+    let length = tmpArry.length;
+    for (let i = 0; i < length; i++) {
+      let e = tmpArry[i];
+      if (d3.select(e).attr('prop') === prop) {
+        return i;
       }
-      index += 1;
     }
-
-    return index;
+    return null;
   }
 }
 

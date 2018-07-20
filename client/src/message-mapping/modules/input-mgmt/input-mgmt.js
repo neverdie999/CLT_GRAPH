@@ -1,5 +1,6 @@
 import Vertex from '../objects-mgmt/vertex';
 import Boundary from '../objects-mgmt/boundary';
+import setMinBoundaryGraph from '../../common/utilities/common.ult'
 import * as d3 from 'd3';
 import {
   ID_SVG_INPUT_MESSAGE,
@@ -31,20 +32,6 @@ class InputMgmt {
       svgSelector: this.svgSelector,
       containerClass: '_drag_boundary_input_message',
     };
-
-    this.initScrollEvent();
-  }
-
-  initScrollEvent(){
-    $(`#${ID_SVG_INPUT_MESSAGE}`).parent().scroll(()=>{
-      this.onScrollHandle(this);
-    });
-  }
-
-  onScrollHandle(main){
-    this.storeInputMessage.vertex.forEach(v => {
-      this.mainMgmt.updatePathConnect(v, ID_SVG_INPUT_MESSAGE);
-    });
   }
 
   drawObjectsOnInputGraph(data) {
@@ -79,6 +66,15 @@ class InputMgmt {
       this.vertex.create(options, this.storeInputMessage.vertex);
     });
   }
+
+  clearAll(){      
+      // Delete all element inside SVG
+      d3.select(`#${ID_SVG_INPUT_MESSAGE}`).selectAll("*").remove();
+      // Clear all data cotainer for vertex, boundary, edge
+      this.storeInputMessage.vertex = [];
+      this.storeInputMessage.boundary = [];
+  }
+  
 }
 
 export default InputMgmt;

@@ -13,12 +13,15 @@ import {
   ID_CONTAINER_INPUT_MESSAGE,
   ID_CONTAINER_OPERATIONS,
   ID_CONTAINER_OUTPUT_MESSAGE,
+  ID_SVG_INPUT_MESSAGE,
+  ID_SVG_OPERATIONS,
+  ID_SVG_OUTPUT_MESSAGE,
   ID_SVG_CONNECT,
 } from '../../const/index';
 import ObjectUtils from '../../common/utilities/object.ult';
 import {
   createPath,
-  removeDuplicates,
+  setMinBoundaryGraph,
 } from '../../common/utilities/common.ult';
 
 class MainMgmt {
@@ -41,10 +44,6 @@ class MainMgmt {
       .on("end", this.endConnect(this));
 
     this.objectUtils = new ObjectUtils();
-
-    new FileMgmt({
-      mainMgmt: this,
-    });
 
     this.operationsDefined = {
       groupVertexOption: {}, // List vertex type have same option.
@@ -103,8 +102,18 @@ class MainMgmt {
       storeOutputMessage: this.storeOutputMessage,
     });
 
+    new FileMgmt({
+      mainMgmt: this,
+      storeInputMessage: this.storeInputMessage,
+      storeOperations: this.storeOperations,
+      storeOutputMessage: this.storeOutputMessage,
+      inputDefined: this.inputDefined,
+      outputDefined: this.outputDefined,
+      operationsDefined: this.operationsDefined,
+    });
     this.initCustomFunctionD3();
     this.initListenerContainerSvgScroll();
+    this.initListenerOnWindowResize();
   }
 
   initCustomFunctionD3() {
@@ -134,21 +143,72 @@ class MainMgmt {
    */
   async separateDataToManagement(data, option) {
     // Todo validation data before parse
-    const {vertexTypes} = data;
+    // const {vertexTypes} = data;
     if (option === "DATA_INPUT_MESSAGE") {
-      await this.processDataVertexTypeDefine(vertexTypes, this.inputDefined);
-      this.inputMgmt.drawObjectsOnInputGraph(data);
+      await this.handleDataInputMessage(data);
     }
 
     if (option === "DATA_OUTPUT_MESSAGE") {
-      await this.processDataVertexTypeDefine(vertexTypes, this.outputDefined);
-      this.outputMgmt.drawObjectsOnOutputGraph(data);
+      await this.handleDataOutputMessage(data);
     }
 
     if (option === "DATA_VERTEX_DEFINE_OPERATIONS") {
-      await this.processDataVertexTypeDefine(data, this.operationsDefined);
-      this.operationsMgmt.initMenuContext();
+      await this.handleDataVertexDefineOperations(data);
     }
+
+    if (option === "DATA_MESSAGE_MAPPING_DEFINITION") {
+      await this.handleDataMessageMappingDefinition(data);
+      this.updatePathConnectOnWindowResize();
+      this.onContainerSvgScroll(ID_SVG_OPERATIONS);
+    }
+  }
+
+  async handleDataInputMessage(data) {
+    const {vertexTypes} = data;
+    await this.processDataVertexTypeDefine(vertexTypes, this.inputDefined);
+    this.inputMgmt.drawObjectsOnInputGraph(data);
+    setMinBoundaryGraph(this.inputMgmt.storeInputMessage,ID_SVG_INPUT_MESSAGE);
+  }
+
+  async handleDataOutputMessage(data) {
+    const {vertexTypes} = data;
+    await this.processDataVertexTypeDefine(vertexTypes, this.outputDefined);
+    this.outputMgmt.drawObjectsOnOutputGraph(data);
+    setMinBoundaryGraph(this.outputMgmt.storeOutputMessage,ID_SVG_OUTPUT_MESSAGE);
+  }
+
+  async handleDataOperations(data) {
+    const {vertexTypes} = data;
+    await this.processDataVertexTypeDefine(vertexTypes, this.operationsDefined);
+    this.operationsMgmt.initMenuContext();
+    this.operationsMgmt.drawObjectsOnOperationsGraph(data);
+    setMinBoundaryGraph(this.operationsMgmt.storeOperations,ID_SVG_OPERATIONS);
+  }
+
+  async handleDataEdges(data){
+    await this.connectMgmt.drawEdgeOnConnectGraph(data);
+  }
+
+
+  async handleDataVertexDefineOperations(data) {
+    await this.processDataVertexTypeDefine(data, this.operationsDefined);
+    this.operationsMgmt.initMenuContext();
+    setMinBoundaryGraph(this.operationsMgmt.storeOperations,ID_SVG_OPERATIONS);
+  }
+
+  async handleDataMessageMappingDefinition(data) {
+    //Clear all data
+    this.inputMgmt.clearAll();
+    this.operationsMgmt.clearAll();
+    this.outputMgmt.clearAll();
+    this.connectMgmt.clearAll();
+
+    //start to draw with new data
+    const {inputMessage, outputMessage, operations, edges} = data;
+    this.handleDataInputMessage(inputMessage);
+    this.handleDataOutputMessage(outputMessage);
+    this.handleDataOperations(operations);
+    this.handleDataEdges(edges);
   }
 
   processDataVertexTypeDefine(data, container) {
@@ -271,6 +331,8 @@ class MainMgmt {
 
   initListenerContainerSvgScroll() {
     $(`#${ID_CONTAINER_INPUT_MESSAGE}, #${ID_CONTAINER_OPERATIONS}, #${ID_CONTAINER_OUTPUT_MESSAGE}`).on('scroll', (e) => {
+      if(COMMON_DATA.isSelectingEdge)
+        this.connectMgmt.callbackOnFocusOut();
       let ref = $(e.target).attr("ref");
       this.onContainerSvgScroll(ref);
     });
@@ -290,7 +352,11 @@ class MainMgmt {
     srcEdges.forEach(e => {
       const {source: {vertexId: id, prop}, id: edgeId} = e;
       let {x, y, idSvg} = _.find(vertices, {'id': id});
-      let {x: propX, y: propY} = this.objectUtils.getCoordPropRelativeToParent({id, x, y}, prop, TYPE_CONNECT.OUTPUT, idSvg);
+      let {x: propX, y: propY} = this.objectUtils.getCoordPropRelativeToParent({
+        id,
+        x,
+        y
+      }, prop, TYPE_CONNECT.OUTPUT, idSvg);
       e.source.x = propX;
       e.source.y = propY;
       let options = {source: e.source};
@@ -301,7 +367,11 @@ class MainMgmt {
     desEdges.forEach(e => {
       const {target: {vertexId: id, prop}, id: edgeId} = e;
       let {x, y, idSvg} = _.find(vertices, {'id': id});
-      let {x: propX, y: propY} = this.objectUtils.getCoordPropRelativeToParent({id, x, y}, prop, TYPE_CONNECT.INPUT, idSvg);
+      let {x: propX, y: propY} = this.objectUtils.getCoordPropRelativeToParent({
+        id,
+        x,
+        y
+      }, prop, TYPE_CONNECT.INPUT, idSvg);
       e.target.x = propX;
       e.target.y = propY;
       let options = {target: e.target};
@@ -351,6 +421,7 @@ class MainMgmt {
       src.source.y = newPos.y;
       let options = {source: src.source};
       this.connectMgmt.updatePathConnect(edgeId, options);
+      this.setStatusEdgeOnCurrentView(src);
     });
 
     arrDesPaths.forEach(des => {
@@ -361,6 +432,7 @@ class MainMgmt {
       des.target.y = newPos.y;
       let options = {target: des.target};
       this.connectMgmt.updatePathConnect(edgeId, options);
+      this.setStatusEdgeOnCurrentView(des);
     });
   }
 
@@ -408,14 +480,6 @@ class MainMgmt {
     );
   }
 
-  clearAllEdge() {
-    this.storeConnect.edge = [];
-    d3.select(`#${ID_SVG_CONNECT}`).selectAll('*').remove();
-    this.connectMgmt.initMarkerArrow();
-    this.connectMgmt.initPathConnect();
-    this.connectMgmt.initEdgePath();
-  }
-
   hideEdgeOnBoundaryMemberVisibleClick(id, flag) {
     // Find all edge relate
     let edges = _.filter(this.storeConnect.edge, e => {
@@ -424,8 +488,64 @@ class MainMgmt {
 
     edges.forEach(e => {
       let node = d3.select(`#${e.id}`);
-      if(node.node())
+      if (node.node())
         d3.select(node.node().parentNode).classed('hide-edge-on-menu-items', !flag);
+    });
+  }
+
+  initListenerOnWindowResize() {
+    $(window).resize(() => {
+      this.updatePathConnectOnWindowResize();
+    });
+  }
+
+  updatePathConnectOnWindowResize() {
+    const edges = this.storeConnect.edge;
+    const vertices = this.storeInputMessage.vertex.concat(this.storeOperations.vertex).concat(this.storeOutputMessage.vertex);
+
+    edges.forEach(e => {
+      const {source: {vertexId: idSrc, prop: propSrc}, id: edgeId, target: {vertexId: idDes, prop: propDes}} = e;
+      let {x: sX, y: sY, idSvg: sIdSvg} = _.find(vertices, {'id': idSrc});
+      let {x: newSX, y: newSY} = this.objectUtils.getCoordPropRelativeToParent({id: idSrc, x: sX, y: sY}, propSrc, TYPE_CONNECT.OUTPUT, sIdSvg);
+      e.source.x = newSX;
+      e.source.y = newSY;
+
+      let {x: dX, y: dY, idSvg: dIdSvg} = _.find(vertices, {'id': idDes});
+      let {x: newDX, y: newDY} = this.objectUtils.getCoordPropRelativeToParent({id: idDes, x: dX, y: dY}, propDes, TYPE_CONNECT.INPUT, dIdSvg);
+      e.target.x = newDX;
+      e.target.y = newDY;
+
+      let options = {source: e.source, target: e.target};
+      this.connectMgmt.updatePathConnect(edgeId, options);
+    });
+  }
+
+  /**
+   * Remove edge that lost prop connect on vertex edit
+   * @param id
+   */
+  removeEdgeLostPropOnVertex(id) {
+    // Find edge start from this vertex
+    const arrSrcPaths = _.filter(this.storeConnect.edge, (e) => {
+      return e.source.vertexId === id;
+    });
+    // Find edge end at this vertex
+    const arrDesPaths = _.filter(this.storeConnect.edge, (e) => {
+      return e.target.vertexId === id;
+    });
+
+    arrSrcPaths.forEach(src => {
+      const {id, source: {prop, vertexId}} = src;
+
+      if(this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
+        this.connectMgmt.removeEdge(id);
+    });
+
+    arrDesPaths.forEach(des => {
+      const {id, target: {prop, vertexId}} = des;
+
+      if(this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
+        this.connectMgmt.removeEdge(id);
     });
   }
 };

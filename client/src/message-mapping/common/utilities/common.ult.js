@@ -1,3 +1,13 @@
+import * as d3 from 'd3';
+import _ from "lodash";
+import {
+  COMMON_DATA,
+  ID_SVG_OPERATIONS,
+  ID_CONTAINER_OPERATIONS,
+  AUTO_SCROLL_CONFIG,
+} from '../../const/index';
+
+
 /**
  * Read file format JSON and return
  * @param file
@@ -106,3 +116,90 @@ export function arrayMove(x, from, to) {
   x.splice((to < 0 ? x.length + to : to), 0, x.splice(from, 1)[0]);
 }
 
+export function setSizeGraph(options, SVG_CONTAINER_ID) {
+  const offer = 200;
+  const {width, height} = options;
+  if (width) {
+    COMMON_DATA.currentWidth = width + offer;
+    $(`#${SVG_CONTAINER_ID}`).css("min-width", COMMON_DATA.currentWidth);
+  }
+
+  if (height) {
+    COMMON_DATA.currentHeight = height + offer;
+    $(`#${SVG_CONTAINER_ID}`).css("min-height", COMMON_DATA.currentHeight);
+  }
+}
+
+/**
+ * Shink graph when object drag end.
+ * @param d
+ */
+export function setMinBoundaryGraph(data, SVG_CONTAINER_ID) {
+
+  // Array store size
+  let lstOffsetY = [959];
+
+  // Filter boundary without parent
+  let boundaries = _.filter(data.boundary, (g) => {
+    return g.parent == null;
+  });
+
+  // Filter vertex without parent
+  let vertices = _.filter(data.vertex, (g) => {
+    return g.parent == null;
+  });
+
+
+  boundaries.forEach(e => {
+    let node = d3.select(`#${e.id}`).node()
+    if (node) {
+      let {height} = node.getBBox();
+      lstOffsetY.push(height + e.y);
+    }
+  });
+
+  vertices.forEach(e => {
+    let node = d3.select(`#${e.id}`).node()
+    if (node) {
+      let {height} = node.getBBox();
+      lstOffsetY.push(height + e.y);
+    }
+  });
+
+  // Get max width, max height
+  let height = Math.max.apply(null, lstOffsetY);
+
+  setSizeGraph({height},SVG_CONTAINER_ID);
+}
+
+/**
+ * Auto scroll when drag vertex or boundary
+ */
+export function autoScrollOnMousedrag(d) {
+  // Auto scroll on mouse drag
+  let svg = d3.select("svg").node();
+  const $parent = $(`#${ID_CONTAINER_OPERATIONS}`);
+  let h = $parent.height();
+  let sT = $parent.scrollTop();
+  let coordinates = d3.mouse(svg);
+  // let x = coordinates[0];
+  let y = coordinates[1];
+
+  if ((y + AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL) > h) {
+    $parent.scrollTop(sT + ((y + AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL) - h));
+  } else if (y < AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL) {
+    $parent.scrollTop(sT - Math.abs(y));
+  }
+
+}
+
+export function updateGraphBoundary(d) {
+  const {height} = d3.select(`#${d.id}`).node().getBBox();
+  let currentY = d3.event.y;
+  let margin = 100;
+
+  if ((currentY + height) > COMMON_DATA.currentHeight) {
+    COMMON_DATA.currentHeight = currentY + height + margin;
+    $(`#${ID_SVG_OPERATIONS}`).css("min-height", COMMON_DATA.currentHeight);
+  }
+}

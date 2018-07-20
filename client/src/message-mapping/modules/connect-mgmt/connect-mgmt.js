@@ -1,6 +1,7 @@
 import {
   ID_SVG_CONNECT,
   TYPE_CONNECT,
+  COMMON_DATA,
 } from '../../const/index';
 import {
   generateObjectId,
@@ -171,6 +172,12 @@ class ConnectMgmt {
     this.edge.create(configs);
   }
 
+  drawEdgeOnConnectGraph(data){
+    data.forEach(e =>{
+      this.createEdge(e);
+    })
+  }
+
   callbackOnClick(id) {
     this.handlerOnClickEdge(id);
   }
@@ -182,6 +189,7 @@ class ConnectMgmt {
   }
 
   callbackOnFocusOut() {
+    COMMON_DATA.isSelectingEdge = false;
     d3.select('#groupEdgePath').style("display", "none");
     d3.select('#groupEdgePoint').style("display", "none");
     d3.select("#groupEdgePoint").moveToBack();
@@ -211,6 +219,7 @@ class ConnectMgmt {
    * @param target
    */
   handlerOnClickEdge(id) {
+    COMMON_DATA.isSelectingEdge = true;
     let selected = d3.select(`#${id}`);
     let currentPath = selected.attr("d");
     let markerEnd = selected.attr('marker-end');
@@ -253,7 +262,7 @@ class ConnectMgmt {
       main.handlerOnClickEdge(edgeId);
       let pathStr = null;
       let x = d3.mouse(d3.select(`#${ID_SVG_CONNECT}`).node())[0];
-      let y = d3.mouse(d3.select('svg').node())[1];
+      let y = d3.mouse(d3.select(`#${ID_SVG_CONNECT}`).node())[1];
       const type = d3.select(this).attr("type");
       if (type === "O") {
         let px = Number(d3.select("#pointEnd").attr("cx"));
@@ -375,6 +384,14 @@ class ConnectMgmt {
     let edge = _.find(this.storeConnect.edge, {'id': id});
     edge.useMarker = flag;
     d3.selectAll(`#${id}`).attr('marker-end', flag === 'Y' ? `url(${this.defaultConfigs.selectorArrow})` : '');
+  }
+
+  clearAll(){
+    this.storeConnect.edge = [];
+    d3.select(`#${ID_SVG_CONNECT}`).selectAll('*').remove();
+    this.initMarkerArrow();
+    this.initPathConnect();
+    this.initEdgePath();
   }
 }
 
