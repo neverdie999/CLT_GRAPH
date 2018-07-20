@@ -18,7 +18,11 @@ import {
 
 import {
   generateObjectId,
-  replaceSpecialCharacter
+  replaceSpecialCharacter,
+  checkMinMaxValue,
+  allowInputNumberOnly,
+  autoScrollOnMousedrag,
+  updateGraphBoundary
 } from '../../common/utilities/common.ult';
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
@@ -91,10 +95,6 @@ class VertexOperations {
       }
     });
 
-    $("#vertexRepeat").keydown(function (e) {
-      allowInputNumberOnly(e);
-    });
-
     $("#vertexRepeat").focusout(function () {
       let rtnVal = checkMinMaxValue(this.value, $('#isVertexMandatory').prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
       this.value = rtnVal;
@@ -141,11 +141,6 @@ class VertexOperations {
 
   startDrag(main) {
     return function (d) {
-      //console.log("startDrag VertexOperations", d);
-
-      // If selected path to purpose update, but then move vertex then cancle it.
-      // if (COMMON_DATA.isUpdateEdge)
-      //   cancleSelectedPath();
       // Resize boundary when vertex dragged
       if (!d.parent)
         main.operationsMgmt.reSizeBoundaryAsObjectDragged(d);
@@ -154,17 +149,8 @@ class VertexOperations {
 
   dragTo(main) {
     return function (d) {
-      // console.log("dragTo VertexOperations", d);
-      // let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, `#${ID_SVG_OPERATIONS}`, `#${d.id}`);
-      // d.x = x;
-      // d.y = y;
-      // // Transform group
-      // d3.select(`#${d.id}`).attr("transform", (d) => {
-      //   return "translate(" + [d.x, d.y] + ")"
-      // });
-
-      // autoScrollOnMousedrag(d);
-      // updateGraphBoundary(d);
+      autoScrollOnMousedrag(d);
+      updateGraphBoundary(d);
       // Prevent drag object outside the window
       let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, `#${ID_SVG_OPERATIONS}`, `#${d.id}`);
       d.x = x;
@@ -214,8 +200,8 @@ class VertexOperations {
       return e.id === vertexId;
     });
 
-    if (vertexInfo.parent)
-      this.operationsMgmt.boundaryOperations.removeMemberFromBoundary(vertexInfo.parent, vertexId);
+    if (vertexInfo[0].parent)
+      this.operationsMgmt.boundaryOperations.removeMemberFromBoundary(vertexInfo[0].parent, vertexId);
 
 
     //setMinBoundaryGraph(this.dataContainer);
@@ -730,8 +716,10 @@ class VertexOperations {
     }
 
     if (parent)
-      this.mainMgmt.reorderPositionMember(parent);
+      this.operationsMgmt.boundaryOperations.reorderPositionMember(parent);
     //setMinBoundaryGraph(this.dataContainer);
+
+    this.operationsMgmt.mainMgmt.removeEdgeLostPropOnVertex(id);
   }
 
   /**
@@ -753,28 +741,6 @@ class VertexOperations {
   }
 
   /**
-   * Find index of prop in vertex properties
-   * @param vertexId
-   * @param prop
-   * @returns {number}
-   */
-  findIndexPropInVertex(vertexId, prop) {
-    // Find index prop in object
-    let arrayProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
-    let tmpArry = arrayProp._groups[0];
-
-    let index = 0;
-    for (let ele in tmpArry) {
-      if (d3.select(tmpArry[ele]).attr('prop') === prop) {
-        break;
-      }
-      index += 1;
-    }
-
-    return index;
-  }
-
-  /**
    * Move to new position with parent offset(called when moving the boundary that contain this vertex)
    * @param {*} vertexId
    * @param {*} offsetX
@@ -790,7 +756,7 @@ class VertexOperations {
   }
 
   /**
-   * Calculate height vertex base properties connectted
+   * Calculate height vertex base properties connected
    * @param id
    * @param isShowFull used in case vertex just have header.
    * @returns {number}

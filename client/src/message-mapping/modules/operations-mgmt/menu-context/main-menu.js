@@ -22,14 +22,11 @@ class MainMenu {
             switch (key) {
               case "clearAll":
                 this.operationsMgmt.clearAll();
+                this.operationsMgmt.mainMgmt.connectMgmt.clearAll();
                 break;
 
               case "createBoundary":
                 this.operationsMgmt.createBoundary(options);
-                break;
-
-              case "showReduced":
-                this.operationsMgmt.isShowReduced ? this.operationsMgmt.showFull(options) : this.operationsMgmt.showReduced(options);
                 break;
 
               default:
@@ -50,13 +47,7 @@ class MainMenu {
               icon: "fa-object-group",
               // disabled: COMMON_DATA.isDisabledCommand
             },
-            "sep3": "-",
-            "showReduced": {
-              name: this.operationsMgmt.isShowReduced ? "Show Full" : "Show Reduced",
-              icon: "fa-link",
-              // disabled: COMMON_DATA.isDisabledCommand
-            },
-            "sep4": "-",
+            "sep2": "-",
             "clearAll": {
               name: "Clear All",
               icon: "fa-times",

@@ -31,20 +31,6 @@ class OutputMgmt {
       svgSelector: this.svgSelector,
       containerClass: '_drag_boundary_output_message',
     };
-
-    this.initScrollEvent();
-  }
-
-  initScrollEvent(){
-    $(`#${ID_SVG_OUTPUT_MESSAGE}`).parent().scroll(()=>{
-      this.onScrollHandle(this);
-    });
-  }
-
-  onScrollHandle(main){
-    this.storeOutputMessage.vertex.forEach(v => {
-      this.mainMgmt.updatePathConnect(v, ID_SVG_OUTPUT_MESSAGE);
-    });
   }
 
   drawObjectsOnOutputGraph(data) {
@@ -78,6 +64,14 @@ class OutputMgmt {
       options.presentation = presentation;
       this.vertex.create(options, this.storeOutputMessage.vertex);
     });
+  }
+
+  clearAll(){
+    // Delete all element inside SVG
+    d3.select(`#${ID_SVG_OUTPUT_MESSAGE}`).selectAll("*").remove();
+    // Clear all data cotainer for vertex, boundary, edge
+    this.storeOutputMessage.vertex = [];
+    this.storeOutputMessage.boundary = [];
   }
 }
 
