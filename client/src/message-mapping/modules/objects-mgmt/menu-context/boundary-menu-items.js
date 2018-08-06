@@ -1,10 +1,9 @@
 class BoundaryMenuItems {
   constructor(props) {
     this.selector = props.selector;
-    this.boundaryOperations = props.boundaryOperations;
-    this.objectUtils = props.objectUtils;
+    this.dataContainer = props.dataContainer;
     this.dataShow = {};
-    this.storeOperations = props.storeOperations;
+    
     this.initBoundaryMenuItems();
   }
 
@@ -33,7 +32,8 @@ class BoundaryMenuItems {
     this.dataShow = {};
     // Get info of boundary
     let boundaryId = $trigger.attr('data');
-    const {member} = _.find(this.storeOperations.boundary, {"id":boundaryId});
+    let boundaryObj = _.find(this.dataContainer.boundary, {"id":boundaryId});
+    const {member} = boundaryObj;
     const subItems = {};
     if (member.length == 0) {
       subItems.isHtmlItem = {
@@ -44,7 +44,7 @@ class BoundaryMenuItems {
 
       subItems["showAll"] = {
         name: `Show all`, type: 'checkbox', events: {
-          click: this.handleOnSelectAll(this, boundaryId, member)
+          click: this.handleOnSelectAll( boundaryObj, member )
         }
       };
 
@@ -52,12 +52,12 @@ class BoundaryMenuItems {
 
       member.forEach(mem => {
         const {type, id, show} = mem;
-        const {name} = type === "B" ? _.find(this.storeOperations.boundary, {"id":id}) : _.find(this.storeOperations.vertex, {"id":id});
+        const {name} = type === "B" ? _.find(this.dataContainer.boundary, {"id":id}) : _.find(this.dataContainer.vertex, {"id":id});
         subItems[`${id}`] = {
           name: `${name}`, type: 'checkbox', events: {
             click: (e) => {
               this.setStateForShowAllCheckBox(e.target);
-              this.boundaryOperations.selectMemberVisible(boundaryId, mem, e.target.checked);
+              boundaryObj.selectMemberVisible(mem, e.target.checked);
             }
           }
         };
@@ -80,11 +80,10 @@ class BoundaryMenuItems {
 
   /**
    * Event handle for Show all checkbox click
-   * @param {*} owner
    * @param {*} boundaryId
    * @param {*} member
    */
-  handleOnSelectAll(owner, boundaryId, member) {
+  handleOnSelectAll( boundary, member ) {
     return function(e) {
       let listBox = $(this).closest('ul').find(`li`).find(`input:checkbox`);
 
@@ -93,7 +92,7 @@ class BoundaryMenuItems {
         let element = listBox[i];
         if(element.name.indexOf("showAll") == -1 && element.checked != e.target.checked){
           element.checked = e.target.checked;
-          owner.boundaryOperations.selectMemberVisible(boundaryId, member[i-1], e.target.checked);
+          boundary.selectMemberVisible(member[i-1], e.target.checked);
         }
       }
     }

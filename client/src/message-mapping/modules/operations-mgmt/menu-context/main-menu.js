@@ -4,7 +4,7 @@ import _ from "lodash";
 class MainMenu {
   constructor(props) {
     this.selector = props.selector;
-    this.parentContainer = props.parentContainer;
+    this.containerId = props.containerId;
     this.operationsMgmt = props.operationsMgmt;
     this.operationsDefined = props.operationsDefined;
     this.initMainMenu();
@@ -26,7 +26,11 @@ class MainMenu {
                 break;
 
               case "createBoundary":
-                this.operationsMgmt.createBoundary(options);
+                let params = {
+                  x: options.x,
+                  y: options.y
+                };
+                this.operationsMgmt.createBoundary(params);
                 break;
 
               default:
@@ -59,7 +63,7 @@ class MainMenu {
               if (!event)
                 return;
 
-              const {x, y} = getCoorMouseClickRelativeToParent(event, this.parentContainer);
+              const {x, y} = getCoorMouseClickRelativeToParent(event, this.containerId);
               opt["x"] = x;
               opt["y"] = y;
               opt.isMenu = true;
@@ -137,9 +141,15 @@ class MainMenu {
 
   onSelectVertex(self) {
     return function () {
-      let opt = self.opt;
-      opt.vertexType = this.value;
-      self.operationsMgmt.createVertex(opt);
+
+      let params = {
+        x: self.opt.x,
+        y: self.opt.y,
+        isMenu: self.opt.isMenu,
+        vertexType: this.value,
+        isImport: false
+      };
+      self.operationsMgmt.createVertex(params);
       $(`${self.selector}`).contextMenu("hide");
     }
   }

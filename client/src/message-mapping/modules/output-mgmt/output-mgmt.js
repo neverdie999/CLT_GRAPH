@@ -1,77 +1,101 @@
-import Vertex from '../objects-mgmt/vertex';
-import Boundary from '../objects-mgmt/boundary';
-import * as d3 from 'd3';
+
+import VertexMgmt from '../objects-mgmt/vertex-mgmt';
+import BoundaryMgmt from '../objects-mgmt/boundary-mgmt';
+import ObjectUtils from '../../common/utilities/object.ult';
+
 import {
   ID_SVG_OUTPUT_MESSAGE,
   CONNECT_SIDE,
+  ID_CONTAINER_OUTPUT_MESSAGE,
+  DEFAULT_CONFIG_GRAPH,
 } from '../../const/index';
-import _ from 'lodash';
+
+import { setSizeGraph } from '../../common/utilities/common.ult';
+
 
 class OutputMgmt {
   constructor(props) {
     this.mainMgmt = props.mainMgmt;
+    this.edgeMgmt = props.edgeMgmt;
     this.storeOutputMessage = props.storeOutputMessage;
     this.outputDefined = props.outputDefined;
-    this.vertex = new Vertex();
-    this.boundary = new Boundary();
+    this.containerId = ID_CONTAINER_OUTPUT_MESSAGE;
+    this.svgId = ID_SVG_OUTPUT_MESSAGE;
+    
     this.initialize();
   }
 
   initialize() {
-    this.svgSelector = d3.select(`#${ID_SVG_OUTPUT_MESSAGE}`);
+
+    this.objectUtils = new ObjectUtils();
 
     this.defaultOptionsVertex = {
       connectSide: CONNECT_SIDE.LEFT,
-      svgSelector: this.svgSelector,
-      containerClass: '_drag_vertex_output_message',
-      callbackDragConnection: this.mainMgmt.callbackDragConnection,
     };
 
-    this.defaultOptionsBoundary = {
-      svgSelector: this.svgSelector,
-      containerClass: '_drag_boundary_output_message',
-    };
+    this.vertexMgmt = new VertexMgmt({
+      dataContainer : this.storeOutputMessage,
+      containerId : this.containerId,
+      svgId : this.svgId,
+      vertexDefinition : this.outputDefined,
+      isEnableEdit: false,
+      edgeMgmt : this.edgeMgmt
+    });
+
+    this.boundaryMgmt = new BoundaryMgmt({
+      dataContainer: this.storeOutputMessage,
+      containerId: this.containerId,
+      svgId: this.svgId,
+      isEnableEdit: false,
+      vertexMgmt: this.vertexMgmt
+    });
   }
 
-  drawObjectsOnOutputGraph(data) {
-    const {boundary : boundaries, vertex : vertices, position} = data;
+  async drawObjectsOnOutputGraph(data) {
+    const { boundary: boundaries, vertex: vertices, position } = data;
     // Draw boundary
     boundaries.forEach(e => {
-      let {x, y} = position.find(pos => {
+      let { x, y } = position.find(pos => {
         return pos.id === e.id;
       });
+
       e.x = x;
       e.y = y;
-      e.idSvg = ID_SVG_OUTPUT_MESSAGE;
-      this.storeOutputMessage.boundary.push(e);
-      const originConfig = _.cloneDeep(this.defaultOptionsBoundary);
-      let options = _.merge(originConfig, e);
-      this.boundary.create(options, this.storeOutputMessage.boundary);
+      e.isEnableDrag = false;
+      e.isEnableItemVisibleMenu = false;
+      e.isImport = true;
+
+      this.boundaryMgmt.create(e);
+      
     });
 
     // Draw vertex
     vertices.forEach(e => {
-      const {x, y} = position.find(pos => {
+      const { x, y } = position.find(pos => {
         return pos.id === e.id;
       });
+
       e.x = x;
       e.y = y;
-      e.idSvg = ID_SVG_OUTPUT_MESSAGE;
-      this.storeOutputMessage.vertex.push(e);
-      const originConfig = _.cloneDeep(this.defaultOptionsVertex);
-      let presentation = this.outputDefined.vertexPresentation[e.groupType];
-      let options = _.merge(originConfig, e); // Merged config
-      options.presentation = presentation;
-      this.vertex.create(options, this.storeOutputMessage.vertex);
+      e.connectSide = this.defaultOptionsVertex.connectSide;
+      e.isEnableDrag = false;
+      e.isImport = true;
+
+      this.vertexMgmt.create(e);
     });
+
+    if (this.storeOutputMessage.boundary && this.storeOutputMessage.boundary.length > 0) {
+      this.objectUtils.setAllChildrenToShow(this.storeOutputMessage);
+      if (this.storeOutputMessage.boundary.length > 0)
+        await this.storeOutputMessage.boundary[0].updateHeightBoundary();
+    }
   }
 
-  clearAll(){
-    // Delete all element inside SVG
-    d3.select(`#${ID_SVG_OUTPUT_MESSAGE}`).selectAll("*").remove();
-    // Clear all data cotainer for vertex, boundary, edge
-    this.storeOutputMessage.vertex = [];
-    this.storeOutputMessage.boundary = [];
+  clearAll() {
+    this.vertexMgmt.clearAll();
+    this.boundaryMgmt.clearAll();
+
+    setSizeGraph({ height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT }, this.svgId);
   }
 }
 

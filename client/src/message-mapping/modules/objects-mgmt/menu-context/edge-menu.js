@@ -1,11 +1,9 @@
-import * as d3 from 'd3';
-
 class EdgeMenu {
   constructor(props) {
+    this.dataContainer = props.dataContainer; // a reference to dataContain of Edge
     this.selector = props.selector;
-    this.connectMgmt = props.connectMgmt;
     this.initEdgeMenu();
-    this.id = null;
+    this.selectedEdge = null;
   }
 
   initEdgeMenu() {
@@ -17,10 +15,9 @@ class EdgeMenu {
       build: () => {
         return {
           callback: (key, options) => {
-            this.id = options.$trigger.attr('ref');
             switch (key) {
               case "removeEdge":
-                this.connectMgmt.removeEdge(this.id);
+                this.selectedEdge.remove();
                 break;
 
               default:
@@ -61,7 +58,7 @@ class EdgeMenu {
             },
             useMarker: {
               type: 'select',
-              options: {'Y': 'Yes', 'N': 'No'},
+              options: {'Y': 'Arrow', 'N': 'None'},
               events: {
                 change: this.onUseMarkerChanged(this)
               }
@@ -74,10 +71,10 @@ class EdgeMenu {
           events: {
             show: (opt) => {
               // Get edge notes
-              this.id = opt.$trigger.attr('ref');
-              this.connectMgmt.handlerOnClickEdge(this.id);
-              let data = this.connectMgmt.getEdgeInfo(this.id);
-              $.contextMenu.setInputValues(opt, data);
+              let edgeId = opt.$trigger.attr('ref');
+              this.selectedEdge = _.find(this.dataContainer.edge, {"id":edgeId});
+              this.selectedEdge.handlerOnClickEdge();
+              $.contextMenu.setInputValues(opt, this.selectedEdge);
             }
           }
         }
@@ -87,19 +84,19 @@ class EdgeMenu {
 
   onNoteChanged(main, targetNote) {
     return function () {
-      main.connectMgmt.setEdgeNote(main.id, this.value, targetNote);
+      main.selectedEdge.setNote(this.value, targetNote);
     }
   }
 
   onLineTypeChanged(main) {
     return function () {
-      main.connectMgmt.setLineType(main.id, this.value);
+      main.selectedEdge.setLineType(this.value);
     }
   }
 
   onUseMarkerChanged(main) {
     return function () {
-      main.connectMgmt.setUseMarker(main.id, this.value);
+      main.selectedEdge.setUseMarker(this.value);
     }
   }
 }

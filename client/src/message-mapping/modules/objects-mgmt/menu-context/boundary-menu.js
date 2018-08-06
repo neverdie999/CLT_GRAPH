@@ -5,7 +5,7 @@ import {
 class BoundaryMenu {
   constructor(props) {
     this.selector = props.selector;
-    this.boundaryOperations = props.boundaryOperations;
+    this.boundaryMgmt = props.boundaryMgmt;
     this.dataContainer = props.dataContainer;
     this.initBoundaryMenu();
   }
@@ -19,21 +19,22 @@ class BoundaryMenu {
         return {
           callback: (key, options) => {
             let boundaryId = options.$trigger.attr('id');
+            let boundary = _.find(this.dataContainer.boundary,{'id':boundaryId});
             switch (key) {
               case "removeBoundary":
-                this.boundaryOperations.removeBoundary(boundaryId);
+              boundary.remove();
                 break;
 
               case "deleteAllBoundary":
-                this.boundaryOperations.deleteAllBoundary(boundaryId);
+                boundary.deleteAll();
                 break;
 
               case "makeEditBoundaryInfo":
-                this.boundaryOperations.makeEditBoundaryInfo(boundaryId);
+                this.boundaryMgmt.makeEditBoundaryInfo(boundaryId);
                 break;
 
               case "copyAllBoundary":
-                this.boundaryOperations.copyAllBoundary(boundaryId);
+                boundary.copyAllBoundary(boundaryId);
 
                 break;
 

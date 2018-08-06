@@ -96,6 +96,211 @@ class ObjectUtils {
     }
     return null;
   }
+
+  
+  /**
+   * When a vertex|boundary move
+   * Resize if any boundary with size smaller than vertex|boundary size
+   */
+  reSizeBoundaryWhenObjectDragged(obj) {
+    // Get box object
+    const {height, width} = this.getBBoxObject(`#${obj.id}`);
+
+    obj.dataContainer.boundary.forEach(boundary => {
+      if (boundary.id != obj.id && !boundary.parent) {
+        let boundaryBox = this.getBBoxObject(`#${boundary.id}`);
+
+        if (height >= boundaryBox.height){
+          //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
+          boundary.ctrlSrcHeight = boundary.height;
+          boundary.setHeight(height + 43);
+        }
+
+        if (width >= boundaryBox.width){
+          //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
+          boundary.ctrlSrcWidth = boundary.width;
+          boundary.setWidth(width + 15);
+        }
+      }
+    });
+  }
+
+  /**
+   * Check drag outside boundary
+   */
+  checkDragObjectOutsideBoundary(obj) {
+    // Get box object
+    const {id, parent} = obj;
+    let {height, width} = this.getBBoxObject(`#${id}`);
+    let xSrc = obj.x;
+    let ySrc = obj.y;
+    let wBSrc = xSrc + width;
+    let hBSrc = ySrc + height;
+
+    // Parent
+    const {x, y} = _.find(obj.dataContainer.boundary,{"id":parent});
+    let pBox = this.getBBoxObject(`#${parent}`);
+    let xParent = x + pBox.width;
+    let yParent = y + pBox.height;
+
+    // Check drag outside a boundary
+    // if ((xSrc < x) || (ySrc < y) || (wBSrc > xParent) || (hBSrc > yParent)) {
+    //Change condition object out boundary parent
+    if ((( wBSrc < x) || ( xParent < xSrc )) || ((hBSrc < y ) || ( yParent < ySrc ))) {
+      let parentObj = _.find(obj.dataContainer.boundary,{"id": parent});
+      parentObj.removeMemberFromBoundary(obj);
+      obj.parent = null;
+      return true;
+    }
+
+    return false;
+  }
+
+  // Check drag inside boundary
+  checkDragObjectInsideBoundary(obj, type) {
+    // Get box object
+    // Get box object
+    const {height, width} = this.getBBoxObject(`#${obj.id}`);
+    let xSrc = obj.x;
+    let ySrc = obj.y;
+    let wBSrc = xSrc + width;
+    // let hBSrc = ySrc + height;
+
+    // Define method reverse
+    let reverse = (input) => {
+      let ret = new Array;
+      for (let i = input.length - 1; i >= 0; i--) {
+        ret.push(input[i]);
+      }
+      return ret;
+    };
+
+    // Cause: When multi boundary overlap that drags an object inside
+    // then it will be added to => regulation add to the highest boundary
+    let reverseBoundary = reverse(obj.dataContainer.boundary);
+    reverseBoundary.forEach((item) => {
+      // The condition d.id != srcInfos.id used to check inside boundary
+      // But it not affect to check inside vertex
+      if (!item.parent && item.id != obj.id && !obj.parent) {
+        // Calculate box for boundary
+        let xTar = item.x;
+        let yTar = item.y;
+        let bBoxTar = this.getBBoxObject(`#${item.id}`);
+        let wBTar = xTar + bBoxTar.width;
+        let hBTar = yTar + bBoxTar.height;
+
+        if ((xSrc >= xTar) && (ySrc >= yTar) && (wBSrc <= wBTar) && (ySrc <= hBTar)) {
+          let index = this.getIndexFromPositionForObject(item, obj);
+          item.addMemberToBoundaryWithIndex( obj, index );
+          obj.parent = item.id;
+        }
+      }
+    });
+  }
+
+  /**
+   * @param srcInfos Object drag
+   * @param type type of object drag
+   * Function using change index of object in boundary parent when drag in boundary
+   */
+  changeIndexInBoundaryForObject(obj) {
+    const {parent} = obj;
+    let parentObj = _.find(obj.dataContainer.boundary, {"id": parent});
+    let indexOld = this.getIndexBy(parentObj.member, "id", obj.id);
+    // let member = { id, type, show: true };
+    let indexNew = this.getIndexFromPositionForObject(parentObj, obj);
+    parentObj.changeIndexMemberToBoundary(indexOld, indexNew);
+    obj.parent = parent;
+  }
+
+  /**
+   * Get index of object from drop position
+   * @param parentObj boundary tagert drop
+   * @param srcInfos Object drap
+   * Function using get index for insert to boundary
+   */
+  getIndexFromPositionForObject(parentObj, obj) {
+    let xSrc = obj.x;
+    let ySrc = obj.y;
+    let index = 0;
+
+    let memberAvailable = _.filter(parentObj.member, (e) => {
+      return e.show === true
+    });
+
+    for (let mem of memberAvailable) {
+
+      let memObj = null;
+      if(mem.type == "V"){
+        memObj = _.find(parentObj.dataContainer.vertex,{"id": mem.id});
+      }else{
+        memObj = _.find(parentObj.dataContainer.boundary,{"id": mem.id});
+      }
+
+      let {x, y} = memObj;
+
+      if (y > ySrc) {
+        break;
+      }
+
+      if (mem.id === obj.id) continue;
+      index++;
+    }
+
+    return index;
+  }
+
+  /**
+   * Restore back the old size, dragingObject do not drag in/out these boundaries
+   * @param {*} dragingObject
+   */
+  restoreSizeBoundary(dragingObject) {
+    dragingObject.dataContainer.boundary.forEach(boundary => {
+      //do not restore for parent, it was resize by checkDragObjectOutsideBoundary() or checkDragObjectInsideBoundary()
+      if (boundary.id != dragingObject.id && (boundary.id != dragingObject.parent)){
+        if (boundary.ctrlSrcHeight != -1){
+          boundary.setHeight(boundary.ctrlSrcHeight);
+        }
+
+        if(boundary.ctrlSrcWidth != -1){
+          boundary.setWidth(boundary.ctrlSrcWidth);
+        }
+      }
+
+      boundary.ctrlSrcHeight = -1;
+      boundary.ctrlSrcWidth = -1;
+    })
+  }
+
+  /**
+   * @param arr Array object
+   * @param name key compare
+   * @param value value compare
+   * @return i (index of object match condition)
+   */
+  getIndexBy(arr, name, value) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i][name] == value) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  /** 
+   * @param dataContainer from import 
+   * Set all children of this boundary to show
+   */
+  setAllChildrenToShow(dataContainer) {
+    // Set all children of this boundary to show  
+    let arrBoundary = dataContainer.boundary;
+    arrBoundary.forEach(boundary => {
+      let members = boundary.member;
+      members.forEach(member => {
+        member.show = true;
+      });
+    });
+  }
 }
 
 export default ObjectUtils;

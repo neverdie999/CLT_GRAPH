@@ -25,6 +25,11 @@ export const TYPE_CONNECT = {
   INPUT: 'I'
 };
 
+export const LINE_TYPE = {
+  SOLID: 'S',
+  DASH: 'D'
+};
+
 // Boundary
 export const CLASS_CONTAINER_BOUNDARY = 'groupBoundary';
 export const CLASS_MENU_ITEM_BOUNDARY = 'menuItemBoundary';
@@ -54,6 +59,11 @@ export const PADDING_POSITION_SVG = {
   MIN_OFFSET_Y: 5,
 };
 
+// Graph size
+export const DEFAULT_CONFIG_GRAPH = {
+  MIN_HEIGHT: 1800,
+};
+
 export const AUTO_SCROLL_CONFIG = {
   LIMIT_TO_SCROLL: 10,
 }
@@ -75,8 +85,8 @@ export const VERTEX_GROUP_OPTION = {
 };
 
 export const COMMON_DATA = {
-  isCreatingEdge: false, // Define state creation connect (edge)
-  tmpSource: null, // Define source node for create connect
+  //isCreatingEdge: false, // Define state creation connect (edge)
+  //tmpSource: null, // Define source node for create connect
   sourceId: null, // Store temporary vertex id at source when start create edge
   isSelectingEdge: false, // Define state has an edge is selecting
   // isDisabledCommand: false, // Define disable or enable command on menu context)
@@ -93,5 +103,5 @@ export const COMMON_DATA = {
   // vertexPresentation: {}, // Group vertex presentation
   // vertexGroup: null, // Group vertex
   currentWidth: 1900, // Default current width graph
-  currentHeight: 959, // Default current height graph
+  currentHeight: 1800, // Default current height graph
 };

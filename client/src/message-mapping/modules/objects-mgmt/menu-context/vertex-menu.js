@@ -5,7 +5,8 @@ import {
 class VertexMenu {
   constructor(props) {
     this.selector = props.selector;
-    this.vertexOperations = props.vertexOperations;
+    this.vertexMgmt = props.vertexMgmt;
+    this.dataContainer = props.dataContainer;
     this.initVertexMenu();
   }
 
@@ -17,17 +18,18 @@ class VertexMenu {
         return {
           callback: (key, options) => {
             let vertexId = options.$trigger.attr('id');
+            let vertexObj = _.find(this.dataContainer.vertex, {"id": vertexId});
             switch (key) {
               case "editVertex":
-                this.vertexOperations.makePopupEditVertex(vertexId);
+                this.vertexMgmt.makePopupEditVertex(vertexId);
                 break;
 
               case "copyVertex":
-                this.vertexOperations.copyVertex(vertexId);
+                vertexObj.copy();
                 break;
 
               case "removeVertex":
-                this.vertexOperations.removeVertex(vertexId);
+                vertexObj.remove();
                 break;
 
               default:

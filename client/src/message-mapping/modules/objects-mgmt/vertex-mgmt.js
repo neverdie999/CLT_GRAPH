@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import ColorHash from 'color-hash';
 import * as d3 from 'd3';
-import Vertex from '../objects-mgmt/vertex';
+import Vertex from './vertex';
 import PopUtils from '../../common/utilities/popup.ult';
+import ObjectUtils from '../../common/utilities/object.ult';
+import VertexMenu from './menu-context/vertex-menu';
 
 import {
-  CONNECT_SIDE,
-  ID_SVG_OPERATIONS,
   REPEAT_RANGE,
   VERTEX_FORMAT_TYPE,
   POPUP_CONFIG,
@@ -17,13 +17,14 @@ import {
 } from '../../const/index';
 
 import {
-  generateObjectId,
   replaceSpecialCharacter,
   checkMinMaxValue,
   allowInputNumberOnly,
   autoScrollOnMousedrag,
-  updateGraphBoundary
+  updateGraphBoundary,
+  setMinBoundaryGraph,
 } from '../../common/utilities/common.ult';
+
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
@@ -33,37 +34,45 @@ const ATTR_DEL_CHECK_ALL = 'delCheckAll';
 const ATTR_DEL_CHECK = 'delCheck';
 const CONNECT_KEY = 'Connected';
 
-class VertexOperations {
+class VertexMgmt {
   constructor(props) {
-    this.storeOperations = props.storeOperations;
-    this.operationsMgmt = props.operationsMgmt;
-    this.operationsDefined = props.operationsDefined;
-    this.svgSelector = props.svgSelector;
-    this.objectUtils = props.objectUtils;
+    this.dataContainer        = props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
+    this.containerId          = props.containerId;
+    this.svgId                = props.svgId;
+    this.vertexDefinition     = props.vertexDefinition;
+    this.isEnableEdit         = props.isEnableEdit;
+    this.edgeMgmt             = props.edgeMgmt;
+
+    this.selectorClass = `_vertex_${this.svgId}`;
+    
+
     this.initialize();
-    this.bindEventForPopupVertex();
 
-    this.currentId = null;
-
+    this.currentId = null; //vertex is being edited
   }
 
   initialize() {
     this.colorHash = new ColorHash({lightness: 0.7});
     this.colorHashConnection = new ColorHash({lightness: 0.8});
-    this.callbackDragVertexOperations = d3.drag()
+    this.objectUtils = new ObjectUtils();
+    
+    
+    if(this.isEnableEdit){
+      // Vertex menu
+      new VertexMenu({
+        selector: `.${this.selectorClass}`,
+        vertexMgmt: this,
+        dataContainer: this.dataContainer
+      });
+
+      this.bindEventForPopupVertex();
+    }
+    
+
+    this.handleDragVertex = d3.drag()
       .on("start", this.startDrag(this))
       .on("drag", this.dragTo(this))
       .on("end", this.endDrag(this));
-
-    this.vertex = new Vertex();
-
-    this.defaultOptions = {
-      connectSide: CONNECT_SIDE.BOTH,
-      svgSelector: this.svgSelector,
-      containerClass: '_drag_vertex_operations',
-      callbackDragVertex: this.callbackDragVertexOperations,
-      callbackDragConnection: this.operationsMgmt.mainMgmt.callbackDragConnection,
-    }
   }
 
   bindEventForPopupVertex() {
@@ -102,62 +111,37 @@ class VertexOperations {
   }
 
   create(sOptions) {
-    let {x, y, name, description, data, id, parent, mandatory, repeat, isMenu, vertexType, isImport, groupType} = sOptions;
+    let {vertexType} = sOptions;
+
     if (!vertexType)
       return;
 
-    // Deep clone vertex define
-    if (isMenu) {
-      let info = _.cloneDeep(_.find(this.operationsDefined.vertexTypes, {'vertexType': vertexType}));
-      data = info.data;
-      description = info.description;
-      groupType = info.groupType;
-    }
-    if (!id)
-      id = generateObjectId('V');
+    let newVertex = new Vertex({
+      vertexMgmt: this
+    });
 
-    const info = {
-      x: x || 0,
-      y: y || 0,
-      vertexType,
-      name: name || vertexType,
-      description: description || "Description",
-      data: data || [],
-      id,
-      groupType,
-      parent: parent || null,
-      mandatory: mandatory || false,
-      repeat: repeat || 1,
-      idSvg: ID_SVG_OPERATIONS,
-    };
-    this.storeOperations.vertex.push(info);
-
-    const originConfig = _.cloneDeep(this.defaultOptions);
-    let options = _.merge(originConfig, info); // Merged config
-    let presentation = this.operationsDefined.vertexPresentation[groupType];
-    options.presentation = presentation;
-    this.vertex.create(options, this.storeOperations.vertex);
+    newVertex.create(sOptions, this.handleDragVertex, this.edgeMgmt.handleDragConnection);
   }
 
   startDrag(main) {
     return function (d) {
       // Resize boundary when vertex dragged
       if (!d.parent)
-        main.operationsMgmt.reSizeBoundaryAsObjectDragged(d);
+        main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
     }
   }
 
   dragTo(main) {
     return function (d) {
-      autoScrollOnMousedrag(d);
+      autoScrollOnMousedrag(d.svgId, d.containerId);
       updateGraphBoundary(d);
       // Prevent drag object outside the window
-      let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, `#${ID_SVG_OPERATIONS}`, `#${d.id}`);
+      let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, `#${d.svgId}`, `#${d.id}`);
       d.x = x;
       d.y = y;
       // Transform group
       d3.select(`#${d.id}`).attr("transform", "translate(" + [d.x, d.y] + ")");
-      main.operationsMgmt.mainMgmt.updatePathConnect(d, ID_SVG_OPERATIONS);
+      main.edgeMgmt.updatePathConnectForVertex(d);
     }
   }
 
@@ -165,73 +149,16 @@ class VertexOperations {
     return function (d) {
       if (d.parent) {
         //If object not out boundary parent , object change postion in boundary parent, so change index object
-        if (main.operationsMgmt.checkDragObjectOutsideBoundary(d) == false) {
-          main.operationsMgmt.changeIndexInBoundaryForObject(d, "V");
+        if (main.objectUtils.checkDragObjectOutsideBoundary(d) == false) {
+          main.objectUtils.changeIndexInBoundaryForObject(d);
         }
       } else {
-        main.operationsMgmt.checkDragObjectInsideBoundary(d, "V");
-        main.operationsMgmt.restoreSizeBoundary(d);
+        main.objectUtils.checkDragObjectInsideBoundary(d);
+        main.objectUtils.restoreSizeBoundary(d);
       }
-      // setMinBoundaryGraph(main.dataContainer);
+      
+      setMinBoundaryGraph(main.dataContainer, main.svgId);
     }
-  }
-
-  /**
-   * Copy vertex selected
-   * @param vertexId
-   */
-  copyVertex(vertexId) {
-    let {x, y, name, description, vertexType, data, repeat, mandatory, groupType} = _.cloneDeep(_.find(this.storeOperations.vertex, {"id": vertexId}));
-    x = x + VERTEX_ATTR_SIZE.SPACE_COPY;
-    y = y + VERTEX_ATTR_SIZE.SPACE_COPY;
-    this.create({x, y, name, description, vertexType, data, repeat, mandatory, groupType});
-  }
-
-  /**
-   * Remove vertex element by id
-   * @param vertexId
-   */
-  removeVertex(vertexId) {
-    // Remove from DOM
-    d3.select(`#${vertexId}`).remove();
-
-    // Remove from data container
-    let vertexInfo = _.remove(this.storeOperations.vertex, (e) => {
-      return e.id === vertexId;
-    });
-
-    if (vertexInfo[0].parent)
-      this.operationsMgmt.boundaryOperations.removeMemberFromBoundary(vertexInfo[0].parent, vertexId);
-
-
-    //setMinBoundaryGraph(this.dataContainer);
-
-    // Remove all edge relate to vertex
-    let relatePaths = this.operationsMgmt.mainMgmt.findEdgeRelateToVertex(vertexId);
-    relatePaths.forEach(path => {
-      this.operationsMgmt.mainMgmt.connectMgmt.removeEdge(path.id);
-    });
-  }
-
-  /**
-   * The function called from boundary via mainMgmt
-   * In case that delete all boundary parent of vertex
-   * @param vertexId
-   */
-  deleteVertex(vertexId) {
-    // Remove from DOM
-    d3.select(`#${vertexId}`).remove();
-    // Remove from data container
-    _.remove(this.storeOperations.vertex, (e) => {
-      return e.id === vertexId;
-    });
-    //setMinBoundaryGraph(this.dataContainer);
-    // Should consider again...
-    // Remove all edge relate to vertex
-    let relatePaths = this.operationsMgmt.mainMgmt.findEdgeRelateToVertex(vertexId);
-    relatePaths.forEach(path => {
-      this.operationsMgmt.mainMgmt.connectMgmt.removeEdge(path.id);
-    });
   }
 
   /**
@@ -239,12 +166,10 @@ class VertexOperations {
    * @param vertexId
    */
   makePopupEditVertex(vertexId) {
-    let vertexContainer = this.storeOperations.vertex;
-
     // Use in function updateVertexInfo()
-    let {name, description, repeat, mandatory, data, id, groupType} = _.cloneDeep(_.find(vertexContainer, {"id": vertexId}));
+    let {name, description, repeat, mandatory, data, id, groupType} = _.find(this.dataContainer.vertex, {"id": vertexId});
     // Get vertex group with group type
-    let group = _.find(this.operationsDefined.vertexGroupType, {"groupType": groupType});
+    let group = _.find(this.vertexDefinition.vertexGroupType, {"groupType": groupType});
 
     this.currentId = id;
     // Append content to popup
@@ -254,11 +179,11 @@ class VertexOperations {
     $(`#isVertexMandatory`).prop('checked', mandatory);
 
     // Generate properties vertex
-    let keyHeader = this.operationsDefined.headerForm[groupType];
+    let keyHeader = this.vertexDefinition.headerForm[groupType];
     let cols = keyHeader.length;
     let rows = data.length;
-    const typeData = this.operationsDefined.vertexFormatType[groupType];
-    const dataFormat = this.operationsDefined.vertexFormat[groupType];
+    const typeData = this.vertexDefinition.vertexFormatType[groupType];
+    const dataFormat = this.vertexDefinition.vertexFormat[groupType];
 
     let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
     let $contentHeader = $('<thead>');
@@ -364,7 +289,7 @@ class VertexOperations {
   generateControlByType(options) {
     let $control = null;
     let {i, type, val, prop, opt, groupType} = options;
-    let defaultVal = this.operationsDefined.vertexFormat[groupType][prop];
+    let defaultVal = this.vertexDefinition.vertexFormat[groupType][prop];
     i = 0;
     switch (type) {
       case VERTEX_FORMAT_TYPE.BOOLEAN:
@@ -482,11 +407,11 @@ class VertexOperations {
   addDataElement() {
     if (!this.currentId)
       return;
-    let {groupType} = _.cloneDeep(_.find(this.storeOperations.vertex, {"id": this.currentId}));
-    let keyHeader = this.operationsDefined.headerForm[groupType];
+    let {groupType} = _.cloneDeep(_.find(this.dataContainer.vertex, {"id": this.currentId}));
+    let keyHeader = this.vertexDefinition.headerForm[groupType];
     let cols = keyHeader.length;
-    const typeData = this.operationsDefined.vertexFormatType[groupType];
-    const dataFormat = this.operationsDefined.vertexFormat[groupType];
+    const typeData = this.vertexDefinition.vertexFormatType[groupType];
+    const dataFormat = this.vertexDefinition.vertexFormat[groupType];
     let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID} > tbody`);
 
     const $row = $('<tr>');
@@ -509,7 +434,7 @@ class VertexOperations {
       $col.appendTo($row);
     }
 
-    let group = _.find(this.operationsDefined.vertexGroupType, (g) => {
+    let group = _.find(this.vertexDefinition.vertexGroupType, (g) => {
       return g.groupType === groupType;
     });
     let option = group.option;
@@ -585,8 +510,8 @@ class VertexOperations {
     forms.repeat = $(`#vertexRepeat`).val();
     forms.mandatory = $(`#isVertexMandatory`).prop('checked');
 
-    const {groupType} = _.find(this.storeOperations.vertex, {'id': this.currentId});
-    const typeData = this.operationsDefined.vertexFormatType[groupType];
+    const {groupType} = _.find(this.dataContainer.vertex, {'id': this.currentId});
+    const typeData = this.vertexDefinition.vertexFormatType[groupType];
     let elements = [];
     // Get data element
     $(`#${HTML_VERTEX_PROPERTIES_ID}`).find('tr').each(function () {
@@ -616,14 +541,14 @@ class VertexOperations {
    */
   updateVertexInfo(forms) {
     const {id, name, description, repeat, mandatory, data, groupType} = forms;
-    let vertex = _.find(this.storeOperations.vertex, {'id': id});
+    let vertex = _.find(this.dataContainer.vertex, {'id': id});
     vertex.name = name;
     vertex.description = description;
     vertex.repeat = repeat;
     vertex.mandatory = mandatory;
     vertex.data = data;
 
-    let group = _.find(this.operationsDefined.vertexGroupType, (g) => {
+    let group = _.find(this.vertexDefinition.vertexGroupType, (g) => {
       return g.groupType === groupType;
     });
     const option = group.option;
@@ -637,7 +562,7 @@ class VertexOperations {
       header.text(name).attr('title', description);
       header.style("background-color", `${this.colorHash.hex(name)}`);
       let rows = data.length;
-      let presentation = this.operationsDefined.vertexPresentation[groupType];
+      let presentation = this.vertexDefinition.vertexPresentation[groupType];
       for (let i = 0; i < rows; i++) {
         let dataRow = data[i];
         d3.select(`#${replaceSpecialCharacter(`${id}${presentation.key}${i}`)}`)
@@ -650,8 +575,8 @@ class VertexOperations {
     }
   }
 
-  reRenderContentInsideVertex(options) {
-    let {name, description, data: elements, id, vertexType, groupType, parent} = options;
+  async reRenderContentInsideVertex(vertex) {
+    let {name, description, data: elements, id, vertexType, groupType, parent} = vertex;
 
     if (!vertexType)
       return;
@@ -661,7 +586,7 @@ class VertexOperations {
 
     let htmlContent = '';
     let len = elements.length;
-    let presentation = this.operationsDefined.vertexPresentation[groupType];
+    let presentation = this.vertexDefinition.vertexPresentation[groupType];
 
     for (let i = 0; i < len; i++) {
       let data = elements[i];
@@ -699,7 +624,7 @@ class VertexOperations {
         .attr("x", 1)
         .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
         .style("fill", this.colorHashConnection.hex(name))
-        .call(this.defaultOptions.callbackDragConnection);
+        .call(this.edgeMgmt.handleDragConnection);
 
       // Output
       group.append("rect")
@@ -712,75 +637,33 @@ class VertexOperations {
         .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
         .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
         .style("fill", this.colorHashConnection.hex(name))
-        .call(this.defaultOptions.callbackDragConnection);
+        .call(this.edgeMgmt.handleDragConnection);
     }
 
-    if (parent)
-      this.operationsMgmt.boundaryOperations.reorderPositionMember(parent);
-    //setMinBoundaryGraph(this.dataContainer);
+    if (parent){
+      let parentObj = _.find(this.dataContainer.boundary, {"id": parent});
+      let ancesstor = await parentObj.findAncestorOfMemberInNestedBoundary();
+      parentObj.updateSize();
+      ancesstor.reorderPositionMember();
+    }
+    
+    setMinBoundaryGraph(this.dataContainer, this.svgId);
 
-    this.operationsMgmt.mainMgmt.removeEdgeLostPropOnVertex(id);
+    this.edgeMgmt.removeEdgeLostPropOnVertex(vertex);
   }
 
-  /**
-   * Set position for vertex
-   * Called in function dragBoundary (Object boundary)
-   * @param vertexId
-   * @param position
-   */
-  setVertexPosition(vertexId, position) {
-    let {x, y} = position;
-    let vertexInfo = _.find(this.storeOperations.vertex, {"id": vertexId});
-    vertexInfo.x = x;
-    vertexInfo.y = y;
-    this.operationsMgmt.mainMgmt.updatePathConnect(vertexInfo, ID_SVG_OPERATIONS);
-
-    d3.select(`#${vertexId}`).attr("transform", (d, i) => {
-      return "translate(" + [x, y] + ")"
-    });
+  hideAllEdgeRelatedToVertex(vertexId, status){
+    this.edgeMgmt.hideAllEdgeRelatedToVertex(vertexId, status);
   }
 
-  /**
-   * Move to new position with parent offset(called when moving the boundary that contain this vertex)
-   * @param {*} vertexId
-   * @param {*} offsetX
-   * @param {*} offsetY
-   */
-  moveVertex(vertexId, offsetX, offsetY) {
-    let vertexInfo = _.find(this.storeOperations.vertex, {"id":vertexId});
-    vertexInfo.x = vertexInfo.x + offsetX;
-    vertexInfo.y = vertexInfo.y + offsetY;
-    this.operationsMgmt.mainMgmt.updatePathConnect(vertexInfo, ID_SVG_OPERATIONS);
-
-    d3.select(`#${vertexId}`).attr("transform", "translate(" + [vertexInfo.x, vertexInfo.y] + ")");
+  updatePathConnectForVertex(vertex){
+    this.edgeMgmt.updatePathConnectForVertex(vertex);
   }
 
-  /**
-   * Calculate height vertex base properties connected
-   * @param id
-   * @param isShowFull used in case vertex just have header.
-   * @returns {number}
-   */
-  resetSizeVertex(isShowFull = false) {
-    let vertexes = this.storeOperations.vertex;
-    vertexes.forEach(vertex => {
-      let exitConnect = false;
-      let vertexId = vertex.id;
-      // Get all prop that not hide
-      let arrProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
-      let tmpArry = arrProp._groups[0];
-      // When not any edge connect to properties of vertex,
-      // Check exit edge connect to vertex
-      // if (tmpArry.length < 1)
-      //   exitConnect = this.objectUtils.checkExitEdgeConnectToVertex(vertexId);
-
-      let element = $(`#${vertexId} .vertex_content`);
-      element.parent()
-        .attr('height', tmpArry.length ?
-          VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : isShowFull ?
-            VERTEX_ATTR_SIZE.HEADER_HEIGHT : exitConnect ? VERTEX_ATTR_SIZE.HEADER_HEIGHT : VERTEX_ATTR_SIZE.HEADER_HEIGHT);
-    });
+  clearAll(){
+    d3.select(`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
+    this.dataContainer.vertex = [];
   }
 }
 
-export default VertexOperations
+export default VertexMgmt
