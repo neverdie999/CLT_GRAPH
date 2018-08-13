@@ -1,24 +1,23 @@
-import VertexMgmt from '../objects-mgmt/vertex-mgmt';
-import BoundaryMgmt from '../objects-mgmt/boundary-mgmt';
-import ObjectUtils from '../../common/utilities/object.ult';
+import MainMenu from '../../objects-mgmt/menu-context/main-menu';
+import VertexMgmt from '../../objects-mgmt/objects/vertex-mgmt';
+import BoundaryMgmt from '../../objects-mgmt/objects/boundary-mgmt';
+import ObjectUtils from '../../../common/utilities/object.ult';
 
 import {
-  ID_SVG_INPUT_MESSAGE,
   CONNECT_SIDE,
-  ID_CONTAINER_INPUT_MESSAGE,
   DEFAULT_CONFIG_GRAPH,
-} from '../../const/index';
+} from '../../../const/index';
 
-import { setSizeGraph } from '../../common/utilities/common.ult';
+import { setSizeGraph } from '../../../common/utilities/common.ult';
 
 class InputMgmt {
   constructor(props) {
-    this.mainMgmt = props.mainMgmt;
     this.edgeMgmt = props.edgeMgmt;
-    this.storeInputMessage = props.storeInputMessage;
-    this.inputDefined = props.inputDefined;
-    this.containerId = ID_CONTAINER_INPUT_MESSAGE;
-    this.svgId = ID_SVG_INPUT_MESSAGE;
+    this.dataContainer = props.dataContainer;
+    this.vertexDefinition = props.vertexDefinition;
+    this.containerId = props.containerId;
+    this.svgId = props.svgId;
+    this.isShowReduced = false;
 
     this.initialize();
   }
@@ -32,16 +31,16 @@ class InputMgmt {
     };
 
     this.vertexMgmt = new VertexMgmt({
-      dataContainer : this.storeInputMessage,
+      dataContainer : this.dataContainer,
       containerId : this.containerId,
       svgId : this.svgId,
-      vertexDefinition : this.inputDefined,
+      vertexDefinition : this.vertexDefinition,
       isEnableEdit: false,
       edgeMgmt : this.edgeMgmt
     });
 
     this.boundaryMgmt = new BoundaryMgmt({
-      dataContainer: this.storeInputMessage,
+      dataContainer: this.dataContainer,
       containerId: this.containerId,
       svgId: this.svgId,
       isEnableEdit: false,
@@ -49,7 +48,19 @@ class InputMgmt {
     });
   }
 
+  initMenuContext() {
+    new MainMenu({
+      selector: `#${this.svgId}`,
+      containerId: `#${this.containerId}`,
+      parent: this,
+      vertexDefinition: this.vertexDefinition,
+      isEnableEdit: false
+    });
+  }
+
   async drawObjectsOnInputGraph(data) {
+    this.isShowReduced = false;
+    
     const { boundary: boundaries, vertex: vertices, position } = data;
     // Draw boundary
     boundaries.forEach(e => {
@@ -81,10 +92,10 @@ class InputMgmt {
       this.vertexMgmt.create(e);
     });
 
-    if (this.storeInputMessage.boundary && this.storeInputMessage.boundary.length > 0){
-      this.objectUtils.setAllChildrenToShow(this.storeInputMessage);
-      if (this.storeInputMessage.boundary.length > 0)
-        await this.storeInputMessage.boundary[0].updateHeightBoundary();
+    if (this.dataContainer.boundary && this.dataContainer.boundary.length > 0){
+      this.objectUtils.setAllChildrenToShow(this.dataContainer);
+      if (this.dataContainer.boundary.length > 0)
+        await this.dataContainer.boundary[0].updateHeightBoundary();
     }
   }
 
@@ -93,6 +104,16 @@ class InputMgmt {
     this.boundaryMgmt.clearAll();
 
     setSizeGraph({ height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT }, this.svgId);
+  }
+
+  showReduced(){
+    this.isShowReduced = true;
+    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+  }
+
+  showFull(){
+    this.isShowReduced = false;
+    this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
   }
 }
 

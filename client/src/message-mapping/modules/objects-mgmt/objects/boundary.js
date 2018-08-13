@@ -1,21 +1,18 @@
 import * as d3 from 'd3';
 import ColorHash from 'color-hash';
 import _ from "lodash";
-import ObjectUtils from '../../common/utilities/object.ult';
-import PopUtils from '../../common/utilities/popup.ult';
+import ObjectUtils from '../../../common/utilities/object.ult';
 
 import {
   BOUNDARY_ATTR_SIZE,
   BOUNDARY_ATTR_SIZE,
-} from '../../const/index';
+} from '../../../const/index';
 
 import {
   generateObjectId,
   setMinBoundaryGraph,
   arrayMove,
-} from '../../common/utilities/common.ult';
-
-const HTML_BOUNDARY_INFO_ID = 'boundaryInfo';
+} from '../../../common/utilities/common.ult';
 
 class Boundary {
   constructor(props) {
@@ -39,6 +36,7 @@ class Boundary {
     this.repeat;
     this.type;
     this.show;
+    this.isShowReduced = false;
 
     this.ctrlSrcX = -1;
     this.ctrlSrcY = -1;
@@ -357,7 +355,7 @@ class Boundary {
    * Copy boundary and all elements of it
    * Above vertex of boundary (Event child of boundary)
    */
-  async copyAllBoundary() {
+  async copyAll() {
     let cBoundaryId = generateObjectId("B");
     let cBoundary = _.clone(this);
     let cMembers = cBoundary.member.slice();
@@ -439,6 +437,7 @@ class Boundary {
       if (mem.type=="V") {
         //need to put deleteVertex function
         let memObj = _.find(this.dataContainer.vertex, {"id": mem.id})
+        this.removeMemberFromBoundary(memObj);
         memObj.delete();
       } else {
         // Remove all child boundary
@@ -446,52 +445,6 @@ class Boundary {
         memObj.deleteAll();
       }
     });
-  }
-
-  /**
- * Make controls to edit boundary info
- */
-  makeEditBoundaryInfo() {
-    // Append content to popup
-    $(`#boundaryName`).val(this.name);
-    $(`#boundaryDesc`).val(this.description);
-    $(`#maxBoundaryRepeat`).val(this.repeat);
-    $(`#isBoundaryMandatory`).prop('checked', this.mandatory);
-    $(`#boundaryForm`).append(`<div id="boundaryId" style="display:none">${this.id}</div>`)
-    let options = {
-      popupId: HTML_BOUNDARY_INFO_ID,
-      position: 'center',
-      width: 430
-    }
-    PopUtils.metSetShowPopup(options);
-  }
-
-
-  /**
-   * Update data boundary change
-   */
-  confirmEditBoundaryInfo() {
-    let name = $(`#boundaryName`).val();
-    this.name = name;
-    let description = $(`#boundaryDesc`).val();
-    this.description = description;
-    this.repeat = $(`#maxBoundaryRepeat`).val();
-    this.mandatory = $(`#isBoundaryMandatory`).prop('checked');
-    let header = d3.select(`#${this.id}Header`);
-    header.text(name).attr('title', description);
-    header.style("background-color", `${this.colorHash.hex(this.name)}`);
-    d3.select(`#${this.id}Button`).style("fill", `${this.colorHash.hex(this.name)}`);
-    d3.select(`#${this.id}Content`).style("border-color", `${this.colorHash.hex(this.name)}`);
-    this.closePopBoundaryInfo();
-  }
-
-  /**
- * Close popup edit boundary info
- */
-  closePopBoundaryInfo() {
-    $("#boundaryId").remove();
-    let options = { popupId: HTML_BOUNDARY_INFO_ID };
-    PopUtils.metClosePopup(options);
   }
 
   /**

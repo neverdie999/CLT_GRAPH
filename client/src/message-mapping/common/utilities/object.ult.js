@@ -3,8 +3,9 @@ import _ from "lodash";
 import {
   PADDING_POSITION_SVG,
   VERTEX_ATTR_SIZE,
-  TYPE_CONNECT,
+  TYPE_CONNECT
 } from '../../const/index';
+import { setMinBoundaryGraph } from './common.ult';
 
 class ObjectUtils {
   /**
@@ -300,6 +301,252 @@ class ObjectUtils {
         member.show = true;
       });
     });
+  }
+
+  /**
+   * Handle show/hide edge while scroll
+   * @param {*} containerId Id of container div
+   * @param {*} edgeMgmt 
+   * @param {*} arrDataContainer each SVG area has a dataContainer, this array store all dataContainer of those SVG. Purpur
+   */
+  initListenerContainerScroll(containerId, edgeMgmt, arrDataContainer) {
+    $(`#${containerId}`).on('scroll', (e) => {
+      let svgId = $(e.target).attr("ref");
+      this.onContainerSvgScroll(svgId, edgeMgmt, arrDataContainer);
+    });
+  }
+
+  onContainerSvgScroll(pSvgId, edgeMgmt, arrDataContainer) {
+
+    if (edgeMgmt.isSelectingEdge()){
+      edgeMgmt.cancelSelectingEdge();
+    }
+
+    let vertices = [];
+    for (var i = 0; i < arrDataContainer.length; i++){
+      vertices = vertices.concat(arrDataContainer[i].vertex);
+    }
+
+    // Find edge start from this SVG
+    const srcEdges = _.filter(edgeMgmt.dataContainer.edge, (e) => {
+      return e.source.svgId === pSvgId;
+    });
+    
+    // Find edge end at this SVG
+    const desEdges = _.filter(edgeMgmt.dataContainer.edge, (e) => {
+      return e.target.svgId === pSvgId;
+    });
+
+    srcEdges.forEach(e => {
+      const {source: {vertexId: id, prop}} = e;
+      let {x, y, svgId} = _.find(vertices, {'id': id});
+      let {x: propX, y: propY} = this.getCoordPropRelativeToParent({
+        id,
+        x,
+        y
+      }, prop, TYPE_CONNECT.OUTPUT, svgId);
+      e.source.x = propX;
+      e.source.y = propY;
+      let options = {source: e.source};
+      e.updatePathConnect(options);
+      e.setStatusEdgeOnCurrentView();
+    });
+
+    desEdges.forEach(e => {
+      const {target: {vertexId: id, prop}} = e;
+      let {x, y, svgId} = _.find(vertices, {'id': id});
+      let {x: propX, y: propY} = this.getCoordPropRelativeToParent({
+        id,
+        x,
+        y
+      }, prop, TYPE_CONNECT.INPUT, svgId);
+      e.target.x = propX;
+      e.target.y = propY;
+      let options = {target: e.target};
+      e.updatePathConnect(options);
+      e.setStatusEdgeOnCurrentView();
+    });
+  }
+
+  initListenerOnWindowResize(edgeMgmt, arrDataContainer) {
+    $(window).resize(() => {
+      this.updatePathConnectOnWindowResize(edgeMgmt, arrDataContainer);
+    });
+  }
+
+  updatePathConnectOnWindowResize(edgeMgmt, arrDataContainer) {
+    const edges = edgeMgmt.dataContainer.edge;
+    let vertices = [];
+    for (var i = 0; i < arrDataContainer.length; i++){
+      vertices = vertices.concat(arrDataContainer[i].vertex);
+    }
+
+    edges.forEach(e => {
+      const {source: {vertexId: idSrc, prop: propSrc}, target: {vertexId: idDes, prop: propDes}} = e;
+      let {x: sX, y: sY, svgId: sIdSvg} = _.find(vertices, {'id': idSrc});
+      let {x: newSX, y: newSY} = this.getCoordPropRelativeToParent({id: idSrc, x: sX, y: sY}, propSrc, TYPE_CONNECT.OUTPUT, sIdSvg);
+      e.source.x = newSX;
+      e.source.y = newSY;
+
+      let {x: dX, y: dY, svgId: dIdSvg} = _.find(vertices, {'id': idDes});
+      let {x: newDX, y: newDY} = this.getCoordPropRelativeToParent({id: idDes, x: dX, y: dY}, propDes, TYPE_CONNECT.INPUT, dIdSvg);
+      e.target.x = newDX;
+      e.target.y = newDY;
+
+      let options = {source: e.source, target: e.target};
+      e.updatePathConnect(options);
+    });
+  }
+
+  /**
+   * Show boundary, vertex reduced as policy
+   * Show graph elements connected by edges only
+   * Boundary: show vertices which have any edges only and boundaries
+   * Vertex: The vertices in group SHOW_FULL_ALWAYS not effected by show reduced
+   * The remain vertex then show header and connected properties only
+   */
+  async showReduced(dataContainer, edgeDataContainer, groupVertexOption, svgId) {
+    let edge = edgeDataContainer.edge;
+    let full = groupVertexOption["SHOW_FULL_ALWAYS"];
+    let lstVer = [], lstProp = [];
+
+    // Filter the vertex effected by show reduced
+    lstVer = _.filter(dataContainer.vertex, (e) => {
+      return full.indexOf(e.vertexType) < 0;
+    });
+    
+    lstVer.forEach((vertex) => {
+      d3.select(`#${vertex.id}`).selectAll('.drag_connect:not(.connect_header)').classed("hide", true);
+      d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", true);
+    });
+
+    // Get vertex and property can display
+    edge.forEach((edgeItem) => {
+      lstProp.push({
+        vert: edgeItem.source.vertexId,
+        prop: edgeItem.source.prop
+      },{
+        vert: edgeItem.target.vertexId,
+        prop: edgeItem.target.prop
+      });
+    });
+
+    lstVer.forEach((vertexItem) => {
+      let arrPropOfVertex = [];
+      lstProp.forEach((propItem) => {
+        if (propItem.vert === vertexItem.id) {
+          if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
+            arrPropOfVertex.push(propItem.prop);
+          }
+        }
+      });
+      //d3.select(`#${vertexItem.id}`).classed("hide", false); // Enable Vertex
+      arrPropOfVertex.forEach((propItem) => {
+        d3.select(`#${vertexItem.id}`).selectAll("[prop='" + propItem + "']").classed("hide", false);
+        d3.select(`#${vertexItem.id}`).selectAll(":not(.property)[prop='" + propItem + "']").classed("reduced", true);
+      });
+      
+      vertexItem.updatePathConnect(); // Re-draw edge
+      /* Update posittion of "rect" */
+      this.updatePositionRectConnect(arrPropOfVertex, vertexItem);
+    });
+
+    this.resetSizeVertex(dataContainer, false);
+    if (dataContainer.boundary.length > 0)
+      await dataContainer.boundary[0].updateHeightBoundary();
+    
+    setMinBoundaryGraph(dataContainer, svgId);
+  }
+
+  /**
+   * Show full graph
+   */
+  async showFull(dataContainer, edgeDataContainer, groupVertexOption, svgId) {
+
+    let edges = edgeDataContainer.edge;
+    let full = groupVertexOption["SHOW_FULL_ALWAYS"];
+    let lstVer = [], lstProp = [];
+
+    // Filter the vertex effected by show reduced
+    lstVer = _.filter(dataContainer.vertex, (e) => {
+      return full.indexOf(e.vertexType) < 0;
+    });
+    
+    lstVer.forEach((vertex) => {
+      d3.select(`#${vertex.id}`).selectAll('.drag_connect:not(.connect_header)').classed("hide", false);
+      d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", false);
+    });
+    
+    lstVer.forEach((vertexItem) => {
+      let arrPropOfVertex = []; //list of properties that have edge connected
+      let bFlag = false; // If this vertex has edge connected then this flag will be active
+
+      d3.select(`#${vertexItem.id}`).selectAll(".reduced")._groups[0].forEach(e => {
+        arrPropOfVertex.push($(e).attr("prop"));
+        bFlag = true;
+      });
+
+      if(bFlag){
+        d3.select(`#${vertexItem.id}`).selectAll(".reduced").classed("reduced", false);
+
+        vertexItem.updatePathConnect(); // Re-draw edge
+
+        /* Update posittion of "rect" */
+        this.updatePositionRectConnect(arrPropOfVertex, vertexItem);
+      }
+    });
+    
+    this.resetSizeVertex(dataContainer, true);
+    if (dataContainer.boundary.length > 0)
+      await dataContainer.boundary[0].updateHeightBoundary();
+
+    setMinBoundaryGraph(dataContainer, svgId);
+  }
+
+  /**
+   * Calculate height vertex base on properties connectted
+   * @param id
+   * @param isShowFull used in case vertex just have header.
+   * @returns {number}
+   */
+  resetSizeVertex(dataContainer, isShowFull = false) {
+    let vertexes = dataContainer.vertex;
+    vertexes.forEach(vertex => {
+      let exitConnect = false;
+      let vertexId = vertex.id;
+      // Get all prop that not hide
+      let arrProp = d3.select(`#${vertexId}`).selectAll('.property:not(.hide)');
+      let tmpArry = arrProp._groups[0];
+      // When not any edge connect to properties of vertex,
+      // Check exit edge connect to vertex
+      if (tmpArry.length < 1)
+        exitConnect = vertex.vertexMgmt.edgeMgmt.checkExitEdgeConnectToVertex(vertexId);
+
+      let element = $(`#${vertexId} .vertex_content`);
+      element.parent()
+        .attr('height', tmpArry.length ?
+          VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * tmpArry.length : isShowFull ?
+            VERTEX_ATTR_SIZE.HEADER_HEIGHT : exitConnect ? VERTEX_ATTR_SIZE.HEADER_HEIGHT : VERTEX_ATTR_SIZE.HEADER_HEIGHT);
+    });
+  }
+
+  /**
+   * Update position of "rect" connect on vertex
+   * @param arrProp
+   * @param vertex
+   */
+  updatePositionRectConnect(arrProp, vertex) {
+    for (var i = 0; i < arrProp.length; i++) {
+      let prop = arrProp[i];
+      if (prop != null) {
+        //get new index of this property in vertex after hiding all properties have no edge connected for updatting new position of "rect"
+        let newIndexOfPropInVertex = this.findIndexPropInVertex(vertex.id, prop);
+        let newY = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * newIndexOfPropInVertex + 1;
+
+        //update position of "rect"
+        d3.select(`#${vertex.id}`).select(`:not(.property)[prop=${prop}]`).attr("y", newY);
+      }
+    }
   }
 }
 

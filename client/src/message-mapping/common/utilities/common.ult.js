@@ -118,11 +118,12 @@ export function arrayMove(x, from, to) {
 
 export function setSizeGraph(options, svgId) {
   const offer = 200;
-  const {height} = options;
-  // if (width) {
-  //   COMMON_DATA.currentWidth = width + offer;
-  //   $(`#${svgId}`).css("min-width", COMMON_DATA.currentWidth);
-  // }
+  const {width, height} = options;
+
+  if (width) {
+    COMMON_DATA.currentWidth = width + offer;
+    $(`#${svgId}`).css("min-width", COMMON_DATA.currentWidth);
+  }
 
   if (height) {
     COMMON_DATA.currentHeight = height + offer;
@@ -170,7 +171,7 @@ export function setMinBoundaryGraph(data, svgId) {
   // Get max width, max height
   let height = Math.max.apply(null, lstOffsetY);
 
-  setSizeGraph({height},svgId);
+  setSizeGraph({width: undefined, height},svgId);
 }
 
 /**

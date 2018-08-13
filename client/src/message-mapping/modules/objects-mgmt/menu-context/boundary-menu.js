@@ -7,6 +7,7 @@ class BoundaryMenu {
     this.selector = props.selector;
     this.boundaryMgmt = props.boundaryMgmt;
     this.dataContainer = props.dataContainer;
+    this.isEnableEdit = props.isEnableEdit
     this.initBoundaryMenu();
   }
 
@@ -34,8 +35,7 @@ class BoundaryMenu {
                 break;
 
               case "copyAllBoundary":
-                boundary.copyAllBoundary(boundaryId);
-
+                boundary.copyAll(boundaryId);
                 break;
 
               default:
@@ -46,11 +46,11 @@ class BoundaryMenu {
             "makeEditBoundaryInfo": {
               name: "Edit Boundary Info",
               icon: "fa-pencil-square-o",
-              disabled: COMMON_DATA.isDisabledCommand
+              disabled: false
             },
-            "removeBoundary": {name: "Delete", icon: "fa-times", disabled: COMMON_DATA.isDisabledCommand},
-            "copyAllBoundary": {name: "Copy All", icon: "fa-files-o", disabled: COMMON_DATA.isDisabledCommand},
-            "deleteAllBoundary": {name: "Delete All", icon: "fa-square-o", disabled: COMMON_DATA.isDisabledCommand}
+            "removeBoundary": {name: "Delete", icon: "fa-times", disabled: this.isEnableEdit ? false : true},
+            "copyAllBoundary": {name: "Copy All", icon: "fa-files-o", disabled: this.isEnableEdit ? false : true},
+            "deleteAllBoundary": {name: "Delete All", icon: "fa-square-o", disabled: this.isEnableEdit ? false : true}
           }
         }
       }

@@ -2,9 +2,9 @@ import _ from 'lodash';
 import ColorHash from 'color-hash';
 import * as d3 from 'd3';
 import Vertex from './vertex';
-import PopUtils from '../../common/utilities/popup.ult';
-import ObjectUtils from '../../common/utilities/object.ult';
-import VertexMenu from './menu-context/vertex-menu';
+import PopUtils from '../../../common/utilities/popup.ult';
+import ObjectUtils from '../../../common/utilities/object.ult';
+import VertexMenu from '../menu-context/vertex-menu';
 
 import {
   REPEAT_RANGE,
@@ -14,7 +14,7 @@ import {
   TYPE_CONNECT,
   VERTEX_ATTR_SIZE,
 
-} from '../../const/index';
+} from '../../../const/index';
 
 import {
   replaceSpecialCharacter,
@@ -23,7 +23,7 @@ import {
   autoScrollOnMousedrag,
   updateGraphBoundary,
   setMinBoundaryGraph,
-} from '../../common/utilities/common.ult';
+} from '../../../common/utilities/common.ult';
 
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
@@ -43,31 +43,26 @@ class VertexMgmt {
     this.isEnableEdit         = props.isEnableEdit;
     this.edgeMgmt             = props.edgeMgmt;
 
-    this.selectorClass = `_vertex_${this.svgId}`;
-    
-
     this.initialize();
-
-    this.currentId = null; //vertex is being edited
   }
 
   initialize() {
     this.colorHash = new ColorHash({lightness: 0.7});
     this.colorHashConnection = new ColorHash({lightness: 0.8});
     this.objectUtils = new ObjectUtils();
-    
-    
-    if(this.isEnableEdit){
-      // Vertex menu
-      new VertexMenu({
-        selector: `.${this.selectorClass}`,
-        vertexMgmt: this,
-        dataContainer: this.dataContainer
-      });
 
-      this.bindEventForPopupVertex();
-    }
-    
+    this.selectorClass = `_vertex_${this.svgId}`;
+    this.currentId = null; //vertex is being edited
+
+    new VertexMenu({
+      selector: `.${this.selectorClass}`,
+      vertexMgmt: this,
+      dataContainer: this.dataContainer,
+      isEnableEdit: this.isEnableEdit
+    });
+
+    this.initVertexPopupHtml();
+    this.bindEventForPopupVertex();
 
     this.handleDragVertex = d3.drag()
       .on("start", this.startDrag(this))
@@ -75,37 +70,113 @@ class VertexMgmt {
       .on("end", this.endDrag(this));
   }
 
+  initVertexPopupHtml(){
+    let sHtml = `
+    <!-- Vertex Info Popup (S) -->
+    <div id="${HTML_VERTEX_INFO_ID}_${this.svgId}" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="web-dialog modal-content">
+          <div class="dialog-title">
+            <span class="title">Vertex Info</span>
+          </div>
+
+          <div class="dialog-wrapper">
+            <form action="#" method="post">
+              <div class="dialog-search form-inline">
+                <table>
+                  <colgroup>
+                    <col width="80"/>
+                    <col width="*"/>
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <td>
+                        <input type="text" class="form-control" id="vertexName_${this.svgId}" name="vertexName">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Max repeat</th>
+                      <td class="input-group full-width">
+                        <input type="number" class="form-control" id="vertexRepeat_${this.svgId}" name="vertexRepeat" min="0" max="9999">
+                        <label class="input-group-addon">
+                          <input type="checkbox" id="isVertexMandatory_${this.svgId}" name="isVertexMandatory">
+                        </label>
+                        <label class="input-group-addon" for="isVertexMandatory_${this.svgId}">Mandatory</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Description</th>
+                      <td class="full-width">
+                        <textarea class="form-control" id="vertexDesc_${this.svgId}" name="vertexDesc" rows="4"></textarea>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </form>
+            <div class="dialog-button-top" id="${HTML_GROUP_BTN_DYNAMIC_DATASET}_${this.svgId}">
+              <div class="row text-right">
+                <button id="vertexBtnAdd_${this.svgId}" class="btn-etc">Add</button>
+                <button id="vertexBtnDelete_${this.svgId}" class="btn-etc">Delete</button>
+              </div>
+            </div>
+            <form id="vertexForm_${this.svgId}" action="#" method="post">
+              <div class="dialog-search form-inline">
+                <table class="vertex-properties" id="${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}" border="1"></table>
+              </div>
+            </form>
+            <div class="dialog-button-top">
+              <div class="row text-right">
+                <button id="vertexBtnConfirm_${this.svgId}" class="btn-etc">Confirm</button>
+                <button id="vertexBtnCancel_${this.svgId}" class="btn-etc">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Vertex Info Popup (E) -->`;
+    $($(`#${this.svgId}`)[0].parentNode).append(sHtml);
+
+    
+  }
+
   bindEventForPopupVertex() {
 
-    $("#vertexBtnConfirm").click(() => {
-      this.confirmEditVertexInfo();
-    });
+    if (this.isEnableEdit){
+      $(`#vertexBtnConfirm_${this.svgId}`).click(() => {
+        this.confirmEditVertexInfo();
+      });
 
-    $("#vertexBtnCancel").click(() => {
+      $(`#vertexBtnAdd_${this.svgId}`).click(() => {
+        this.addDataElement();
+      });
+
+      $(`#vertexBtnDelete_${this.svgId}`).click(() => {
+        this.removeDataElement();
+      });
+    }
+    
+
+    $(`#vertexBtnCancel_${this.svgId}`).click(() => {
       this.closePopVertexInfo();
     });
-
-    $("#vertexBtnAdd").click(() => {
-      this.addDataElement();
-    });
-
-    $("#vertexBtnDelete").click(() => {
-      this.removeDataElement();
-    });
+    
 
     // Validate input number
-    $("#vertexRepeat").keydown(function (e) {
+    $(`#vertexRepeat_${this.svgId}`).keydown(function (e) {
       allowInputNumberOnly(e);
     });
 
-    $("#isVertexMandatory").change(function () {
-      if (this.checked && $("#vertexRepeat").val() < 1) {
-        $("#vertexRepeat").val(1);
+    $(`#isVertexMandatory_${this.svgId}`).change(function () {
+      if (this.checked && $(`#vertexRepeat_${this.svgId}`).val() < 1) {
+        $(`#vertexRepeat_${this.svgId}`).val(1);
       }
     });
 
-    $("#vertexRepeat").focusout(function () {
-      let rtnVal = checkMinMaxValue(this.value, $('#isVertexMandatory').prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
+    $(`#vertexRepeat_${this.svgId}`).focusout(function () {
+      let rtnVal = checkMinMaxValue(this.value, $(`#isVertexMandatory_${this.svgId}`).prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
       this.value = rtnVal;
     });
   }
@@ -173,10 +244,10 @@ class VertexMgmt {
 
     this.currentId = id;
     // Append content to popup
-    $(`#vertexName`).val(name);
-    $(`#vertexDesc`).val(description);
-    $(`#vertexRepeat`).val(repeat);
-    $(`#isVertexMandatory`).prop('checked', mandatory);
+    $(`#vertexName_${this.svgId}`).val(name);
+    $(`#vertexDesc_${this.svgId}`).val(description);
+    $(`#vertexRepeat_${this.svgId}`).val(repeat);
+    $(`#isVertexMandatory_${this.svgId}`).prop('checked', mandatory);
 
     // Generate properties vertex
     let keyHeader = this.vertexDefinition.headerForm[groupType];
@@ -185,7 +256,7 @@ class VertexMgmt {
     const typeData = this.vertexDefinition.vertexFormatType[groupType];
     const dataFormat = this.vertexDefinition.vertexFormat[groupType];
 
-    let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}`).empty();
+    let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).empty();
     let $contentHeader = $('<thead>');
     // Generate header table
     let $headerRow = $('<tr>');
@@ -210,10 +281,10 @@ class VertexMgmt {
     const isDynamicDataSet = option.indexOf(VERTEX_GROUP_OPTION.DYNAMIC_DATASET) > -1;
     // Set show hide group button dynamic data set
     if (!isDynamicDataSet) {
-      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}`).hide();
+      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}_${this.svgId}`).hide();
     }
     else {
-      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}`).show();
+      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}_${this.svgId}`).show();
       // Prepend col group del check
       let $colWidth = $('<col>').attr('width', POPUP_CONFIG.WIDTH_COL_DEL_CHECK);
       $colWidth.prependTo($colGroup);
@@ -222,7 +293,7 @@ class VertexMgmt {
       // $colHdr.attr('class', 'col_header');
       let $colHdr = this.initCellDelCheck({
         'className': 'col_header',
-        'name': ATTR_DEL_CHECK_ALL,
+        'name': `${ATTR_DEL_CHECK_ALL}_${this.svgId}`,
         'checked': false,
         'colType': '<th>',
         'isCheckAll': true,
@@ -262,7 +333,7 @@ class VertexMgmt {
         // Append del check to row
         let $col = this.initCellDelCheck({
           'className': 'checkbox_center',
-          'name': ATTR_DEL_CHECK,
+          'name': `${ATTR_DEL_CHECK}_${this.svgId}` ,
           'checked': false,
           'colType': '<td>'
         });
@@ -274,11 +345,17 @@ class VertexMgmt {
     $contentBody.appendTo($table);
 
     let options = {
-      popupId: HTML_VERTEX_INFO_ID,
+      popupId: `${HTML_VERTEX_INFO_ID}_${this.svgId}`,
       position: 'center',
       width: $popWidth + POPUP_CONFIG.PADDING_CHAR + (!isDynamicDataSet ? 0 : 45)
     }
     PopUtils.metSetShowPopup(options);
+
+    if (!this.isEnableEdit){
+      $(`#vertexBtnAdd_${this.svgId}`).hide();
+      $(`#vertexBtnDelete_${this.svgId}`).hide();
+      $(`#vertexBtnConfirm_${this.svgId}`).hide();
+    }
   }
 
   /**
@@ -412,7 +489,7 @@ class VertexMgmt {
     let cols = keyHeader.length;
     const typeData = this.vertexDefinition.vertexFormatType[groupType];
     const dataFormat = this.vertexDefinition.vertexFormat[groupType];
-    let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID} > tbody`);
+    let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`);
 
     const $row = $('<tr>');
     for (let j = 0; j < cols; j++) {
@@ -443,7 +520,7 @@ class VertexMgmt {
       // Append del check to row
       let $col = this.initCellDelCheck({
         'className': 'checkbox_center',
-        'name': ATTR_DEL_CHECK,
+        'name': `${ATTR_DEL_CHECK}_${this.svgId}`,
         'checked': false,
         'colType': '<td>'
       });
@@ -454,34 +531,38 @@ class VertexMgmt {
   }
 
   removeDataElement() {
-    $(`#${HTML_VERTEX_PROPERTIES_ID} > tbody`).find(`input[name=${ATTR_DEL_CHECK}]`).each(function () {
+    $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`).find(`input[name=${ATTR_DEL_CHECK}_${this.svgId}]`).each(function () {
       if ($(this).is(":checked")) {
         $(this).parents("tr").remove();
       }
     });
 
     // Uncheck all
-    $(`#${ATTR_DEL_CHECK_ALL}`).prop('checked', false);
+    $(`#${ATTR_DEL_CHECK_ALL}_${this.svgId}`).prop('checked', false);
   }
 
   initCellDelCheck(options) {
     const {className, name, checked, colType, isCheckAll} = options;
+    
     let $col = $(colType);
     $col.attr('class', className);
     let $chk = $('<input>');
     $chk.attr('type', 'checkbox');
-    if (isCheckAll)
+    if (isCheckAll){
       $chk.attr('id', name);
+    }
     $chk.prop('checked', checked);
+
+    const main = this;
     $chk.attr('name', name)
       .on('click', function () {
         if (isCheckAll)
-          $(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}]`)
+          $(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}_${main.svgId}]`)
             .prop('checked', this.checked);
         else {
-          $(`#${ATTR_DEL_CHECK_ALL}`).prop('checked',
-            ($(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}]:checked`).length ==
-              $(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}]`).length));
+          $(`#${ATTR_DEL_CHECK_ALL}_${main.svgId}`).prop('checked',
+            ($(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}_${main.svgId}]:checked`).length ==
+              $(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}_${main.svgId}]`).length));
         }
       });
     $chk.appendTo($col);
@@ -494,7 +575,7 @@ class VertexMgmt {
    */
   closePopVertexInfo() {
     this.currentId = null;
-    let options = {popupId: HTML_VERTEX_INFO_ID}
+    let options = {popupId: `${HTML_VERTEX_INFO_ID}_${this.svgId}`}
     PopUtils.metClosePopup(options);
   }
 
@@ -505,21 +586,21 @@ class VertexMgmt {
     // Get data on form
     let forms = {};
     forms.id = this.currentId;
-    forms.name = $(`#vertexName`).val();
-    forms.description = $(`#vertexDesc`).val();
-    forms.repeat = $(`#vertexRepeat`).val();
-    forms.mandatory = $(`#isVertexMandatory`).prop('checked');
+    forms.name = $(`#vertexName_${this.svgId}`).val();
+    forms.description = $(`#vertexDesc_${this.svgId}`).val();
+    forms.repeat = $(`#vertexRepeat_${this.svgId}`).val();
+    forms.mandatory = $(`#isVertexMandatory_${this.svgId}`).prop('checked');
 
     const {groupType} = _.find(this.dataContainer.vertex, {'id': this.currentId});
     const typeData = this.vertexDefinition.vertexFormatType[groupType];
     let elements = [];
     // Get data element
-    $(`#${HTML_VERTEX_PROPERTIES_ID}`).find('tr').each(function () {
+    $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr').each(function () {
       let row = {};
       $(this).find("td input:text, td input:checkbox, td select").each(function () {
         let prop = $(this).attr("name");
         let type = typeData[prop];
-        if (prop != ATTR_DEL_CHECK)
+        if (prop != `${ATTR_DEL_CHECK}_${this.svgId}`)
           row[prop] = type === VERTEX_FORMAT_TYPE.BOOLEAN ? ($(this).is(':checked') ? true : false) : this.value;
       });
       elements.push(row);
@@ -615,7 +696,7 @@ class VertexMgmt {
     for (let i = 0; i < len; i++) {
       // Input
       group.append("rect")
-        .attr("class", "drag_connect")
+        .attr("class", `drag_connect drag_connect_${this.svgId}`)
         .attr("type", TYPE_CONNECT.INPUT)
         .attr("prop", `${id}${CONNECT_KEY}${i}`)
         .attr("pointer-events", "all")
@@ -628,7 +709,7 @@ class VertexMgmt {
 
       // Output
       group.append("rect")
-        .attr("class", "drag_connect")
+        .attr("class", `drag_connect drag_connect_${this.svgId}`)
         .attr("prop", `${id}${CONNECT_KEY}${i}`)
         .attr("type", TYPE_CONNECT.OUTPUT)
         .attr("pointer-events", "all")

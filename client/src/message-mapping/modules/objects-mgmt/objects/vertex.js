@@ -6,12 +6,12 @@ import {
   VERTEX_ATTR_SIZE,
   CONNECT_SIDE,
   TYPE_CONNECT,
-} from '../../const/index';
+} from '../../../const/index';
 
 import { 
   generateObjectId,
   setMinBoundaryGraph,
-} from '../../common/utilities/common.ult';
+} from '../../../common/utilities/common.ult';
 
 const CONNECT_KEY = 'Connected';
 
@@ -139,7 +139,7 @@ class Vertex {
       // Input
       if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.LEFT){
        let connect = group.append("rect")
-          .attr("class", "drag_connect")
+          .attr("class", `drag_connect drag_connect_${this.svgId}`)
           .attr("type", TYPE_CONNECT.INPUT)
           .attr("prop", `${this.id}${CONNECT_KEY}${i}`)
           .attr("pointer-events", "all")
@@ -153,12 +153,11 @@ class Vertex {
           connect.call(callbackDragConnection);
         }
       }
-        
 
       // Output
       if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.RIGHT){
         let connect =  group.append("rect")
-          .attr("class", "drag_connect")
+          .attr("class", `drag_connect drag_connect_${this.svgId}`)
           .attr("prop", `${this.id}${CONNECT_KEY}${i}`)
           .attr("pointer-events", "all")
           .attr("type", TYPE_CONNECT.OUTPUT)
@@ -187,7 +186,7 @@ class Vertex {
     let {x, y} = position;
     this.x = x;
     this.y = y;
-    this.vertexMgmt.updatePathConnectForVertex(this);
+    this.updatePathConnect();
 
     d3.select(`#${this.id}`).attr("transform","translate(" + [x, y] + ")");
   }
@@ -255,7 +254,11 @@ class Vertex {
     this.y = this.y + offsetY;
     d3.select(`#${this.id}`).attr("transform", "translate(" + [this.x, this.y] + ")");
 
-    this.vertexMgmt.edgeMgmt.updatePathConnectForVertex(this);
+    this.updatePathConnect()
+  }
+
+  updatePathConnect(){
+    this.vertexMgmt.updatePathConnectForVertex(this);
   }
 }
 

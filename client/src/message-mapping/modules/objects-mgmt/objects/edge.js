@@ -1,16 +1,23 @@
 import _ from "lodash";
 import * as d3 from 'd3';
 
-import { LINE_TYPE } from "../../const";
-import { generateObjectId, createPath } from "../../common/utilities/common.ult";
+import { LINE_TYPE, ID_SVG_INPUT_MESSAGE, ID_SVG_OPERATIONS, ID_SVG_OUTPUT_MESSAGE } from "../../../const";
+import { generateObjectId, createPath } from "../../../common/utilities/common.ult";
 
 class Edge {
   constructor(props) {
     this.dataContainer      = props.edgeMgmt.dataContainer;
     this.svgId              = props.edgeMgmt.svgId;
     this.selectorClass      = props.edgeMgmt.selectorClass;
-    this.selectorArrow      = props.edgeMgmt.selectorArrow;
+    this.arrowId            = props.edgeMgmt.arrowId;
     this.edgeMgmt           = props.edgeMgmt;
+
+    this.groupEdgePathId    = props.edgeMgmt.groupEdgePathId;
+    this.edgePathId         = props.edgeMgmt.edgePathId;
+    this.groupEdgePointId   = props.edgeMgmt.groupEdgePointId;
+    this.pointStartId       = props.edgeMgmt.pointStartId;
+    this.pointEndId         = props.edgeMgmt.pointEndId;
+    this.dummyPathId        = props.edgeMgmt.dummyPathId;
 
     this.id;
     this.source;
@@ -25,9 +32,10 @@ class Edge {
   }
 
   initialize() {
-    this.windowHeight = $(window).height();
-    this.limitTop = 0;
-    this.limitBottom = this.windowHeight;
+    this.limitTop       = 0;
+    this.limitBottom    = $(window).height();
+    this.limitLeft      = 0;
+    this.limitRight     = $(window).width();
   };
 
   /**
@@ -39,7 +47,6 @@ class Edge {
    * @param callbackOnClick => type: function, require: false, default: anonymous function, purpose: call back drag connection
    * @param callbackOnKeyDown => type: function, require: false, default: anonymous function, purpose: call back drag connection
    * @param callbackOnFocusOut => type: function, require: false, default: anonymous function, purpose: call back drag connection
-   * @param selectorArrow => type: string, require: false, default: null, purpose: the selector refer to arrow.
    * @param containerClass => type: string, require: false, purpose: the class used as selector for menu context on edge
    */
   create(sOptions) {
@@ -98,7 +105,7 @@ class Edge {
       .attr('pointer-events', 'stroke')
       .attr('visibility', 'hidden')
       .attr('stroke-width', 9)
-      .attr("marker-end", `url(${this.selectorArrow})`);
+      .attr("marker-end", `url(#${this.arrowId})`);
 
     group.append("path")
       .attr('d', pathStr)
@@ -108,7 +115,7 @@ class Edge {
       .attr('stroke', '#000000')
       .attr('stroke-miterlimit', 10)
       .attr('focusable', true)
-      .attr("marker-end", this.useMarker === 'Y' ? `url(${this.selectorArrow})` : '')
+      .attr("marker-end", this.useMarker === 'Y' ? `url(#${this.arrowId})` : '')
       .attr("stroke-dasharray", this.lineType === LINE_TYPE.SOLID ? '0 0' : '3 3'); // Make arrow at end path
 
     let origin = group.append("text")
@@ -159,20 +166,20 @@ class Edge {
 
     let selected = d3.select(`#${this.id}`);
     let currentPath = selected.attr("d");
-    d3.select('#groupEdgePoint')
+    d3.select(`#${this.groupEdgePointId}`)
       .style("display", "block")
       .moveToFront();
-    d3.select('#groupEdgePath')
+    d3.select(`#${this.groupEdgePathId}`)
       .style("display", "block")
       .moveToFront();
-    d3.select("#edgePath")
+    d3.select(`#${this.edgePathId}`)
       .attr("d", currentPath)
       .attr("ref", this.id);
 
-    d3.select("#pointStart")
+    d3.select(`#${this.pointStartId}`)
       .attr("cx", this.source.x)
       .attr("cy", this.source.y);
-    d3.select("#pointEnd")
+    d3.select(`#${this.pointEndId}`)
       .attr("cx", this.target.x)
       .attr("cy", this.target.y);
   }
@@ -180,10 +187,10 @@ class Edge {
   handleOnFocusOut() {
     this.edgeMgmt.selectingEdge = null;
 
-    d3.select('#groupEdgePath').style("display", "none");
-    d3.select('#groupEdgePoint').style("display", "none");
-    d3.select("#groupEdgePoint").moveToBack();
-    d3.select("#groupEdgePath").moveToBack();
+    d3.select(`#${this.groupEdgePathId}`).style("display", "none");
+    d3.select(`#${this.groupEdgePointId}`).style("display", "none");
+    d3.select(`#${this.groupEdgePointId}`).moveToBack();
+    d3.select(`#${this.groupEdgePathId}`).moveToBack();
   }
 
   /**
@@ -215,12 +222,28 @@ class Edge {
     d3.selectAll(`#${this.id}`).attr('d', pathStr);
   }
 
+  areaRatio(svgId){
+    if(svgId == ID_SVG_INPUT_MESSAGE){
+      return 0;
+    }else if(svgId == ID_SVG_OPERATIONS){
+      return 1;
+    }else if(svgId == ID_SVG_OUTPUT_MESSAGE){
+      return 2;
+    }
+  }
+
   setStatusEdgeOnCurrentView() {
-    const {id, source: {y: ySrc, svgId: svgSrc}, target: {y: yDes, svgId: svgDes}} = this;
-    const pointSrcToTop = ySrc - $(`#${svgSrc}`).scrollTop();
-    const pointDesToTop = yDes - $(`#${svgDes}`).scrollTop();
+    const {id, source: {x: xSrc, y: ySrc, svgId: svgSrc}, target: {x: xDes, y: yDes, svgId: svgDes}} = this;
+    //const pointSrcToLeft  = xSrc - $(`#${svgSrc}`).scrollLeft() - (this.areaRatio(svgSrc) * ($(window).width()/3));
+    const pointSrcToTop   = ySrc - $(`#${svgSrc}`).scrollTop();
+    //const pointDesToLeft  = xDes - $(`#${svgDes}`).scrollLeft() - (this.areaRatio(svgDes) * ($(window).width()/3));
+    const pointDesToTop   = yDes - $(`#${svgDes}`).scrollTop();
+
     const node = d3.select(`#${id}`);
-    if ((pointSrcToTop > this.limitTop && pointSrcToTop < this.limitBottom) && (pointDesToTop > this.limitTop && pointDesToTop < this.limitBottom)) {
+    if (    //(pointSrcToLeft > this.limitLeft  && pointSrcToLeft < ((this.limitRight / 3) - 10))
+         (pointSrcToTop  > this.limitTop   && pointSrcToTop  < this.limitBottom - 10)
+         //&& (pointDesToLeft > this.limitLeft  && pointDesToLeft < ((this.limitRight / 3) - 10))
+         && (pointDesToTop  > this.limitTop   && pointDesToTop  < this.limitBottom) ) {
       if (node.node()) {
         d3.select(node.node().parentNode).classed('hide-edge-on-parent-scroll', false);
       }
@@ -262,7 +285,7 @@ class Edge {
    */
   setUseMarker(flag) {
     this.useMarker = flag;
-    d3.selectAll(`#${this.id}`).attr('marker-end', flag === 'Y' ? `url(${this.selectorArrow})` : '');
+    d3.selectAll(`#${this.id}`).attr('marker-end', flag === 'Y' ? `url(#${this.arrowId})` : '');
   }
 }
 

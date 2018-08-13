@@ -1,19 +1,20 @@
 
-import ObjectUtils from '../../common/utilities/object.ult';
-import EdgeMgmt from '../objects-mgmt/edge-mgmt';
+import ObjectUtils from '../../../common/utilities/object.ult';
+import EdgeMgmt from '../../objects-mgmt/objects/edge-mgmt';
 
 import {
   ID_SVG_CONNECT,
-} from '../../const/index';
+} from '../../../const/index';
 
 class ConnectMgmt {
   constructor(props) {
-    this.mainMgmt           = props.mainMgmt;
+    this.mainSelector       = props.mainSelector;
+    this.svgId              = props.svgId;
     this.storeConnect       = props.storeConnect;
     this.storeInputMessage  = props.storeInputMessage;
     this.storeOperations    = props.storeOperations;
     this.storeOutputMessage = props.storeOutputMessage;
-    this.svgId              = ID_SVG_CONNECT;
+    
 
     this.initialize();
   }

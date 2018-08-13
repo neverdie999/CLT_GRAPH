@@ -1,16 +1,16 @@
 import * as d3 from 'd3';
 import _ from 'lodash';
 import Edge from './edge';
-import ObjectUtils from '../../common/utilities/object.ult';
-import EdgeMenu from './menu-context/edge-menu';
+import ObjectUtils from '../../../common/utilities/object.ult';
+import EdgeMenu from '../menu-context/edge-menu';
 
 import {
   TYPE_CONNECT,
-} from '../../const/index';
+} from '../../../const/index';
 
 import {
   createPath,
-} from '../../common/utilities/common.ult';
+} from '../../../common/utilities/common.ult';
 
 class EdgeMgmt {
   constructor(props) {
@@ -18,19 +18,25 @@ class EdgeMgmt {
     this.svgId            = props.svgId;
     this.vertexContainer  = props.vertexContainer;
 
-    this.selectorArrow    = '#arrow';
-    this.selectorClass    = `_edge_${this.svgId}`;
-
-    this.isCreatingEdge   = false;
-    this.tmpSource        = null;
-    this.selectingEdge  = null;
-
     this.initialize();
   }
 
   initialize() {
     this.objectUtils = new ObjectUtils();
     this.svgSelector = d3.select(`#${this.svgId}`);
+
+    this.selectorClass    = `_edge_${this.svgId}`;
+    this.arrowId          = `arrow_${this.svgId}`;
+    this.groupEdgePathId  = `groupEdgePath_${this.svgId}`;
+    this.edgePathId       = `edgePath_${this.svgId}`;
+    this.groupEdgePointId = `groupEdgePoint_${this.svgId}`;
+    this.pointStartId     = `pointStart_${this.svgId}`;
+    this.pointEndId       = `pointEnd_${this.svgId}`;
+    this.dummyPathId      = `dummyPath_${this.svgId}`;
+
+    this.isCreatingEdge   = false;
+    this.tmpSource        = null;
+    this.selectingEdge    = null;
 
 
     this.dragPointConnector = d3.drag()
@@ -60,7 +66,7 @@ class EdgeMgmt {
    */
   initMarkerArrow() {
     this.svgSelector.append("svg:defs").append("svg:marker")
-      .attr("id", "arrow")
+      .attr("id", this.arrowId)
       .attr("viewBox", "0 0 10 10")
       .attr("refX", 10)
       .attr("refY", 5)
@@ -77,10 +83,10 @@ class EdgeMgmt {
    */
   initPathConnect() {
     this.svgSelector.append("svg:g").append("svg:path")
-      .attr("id", "dummyPath")
+      .attr("id", `${this.dummyPathId}`)
       .attr("class", "dummy-edge solid")
       .attr("fill", "none")
-      .attr("marker-end", "url(#arrow)");
+      .attr("marker-end", `url(#${this.arrowId})`);
   }
 
   /**
@@ -90,18 +96,18 @@ class EdgeMgmt {
 
     let group = this.svgSelector.append("g")
       .attr("transform", `translate(0.5, 0.5)`)
-      .attr("id", "groupEdgePath");
+      .attr("id", this.groupEdgePathId);
     group.append("path")
-      .attr("id", "edgePath")
+      .attr("id", this.edgePathId)
       .attr("class", "dummy-path dash")
       .attr("fill", "none")
       .attr("stroke", "#2795EE");
     let groupPoint = this.svgSelector.append("g")
       .attr("transform", `translate(0.5, 0.5)`)
-      .attr("id", "groupEdgePoint");
+      .attr("id", this.groupEdgePointId);
     groupPoint.append("circle")
-      .attr("id", "pointStart")
-      .attr("class", "dragPoint")
+      .attr("id", this.pointStartId)
+      .attr("class", `dragPoint dragPoint_${this.svgId}`)
       .attr("type", TYPE_CONNECT.OUTPUT)
       .attr("fill", "#2795EE")
       .attr("pointer-events", "all")
@@ -113,8 +119,8 @@ class EdgeMgmt {
       .attr("stroke", "#2795EE");
 
     groupPoint.append("circle")
-      .attr("id", "pointEnd")
-      .attr("class", "dragPoint")
+      .attr("id", this.pointEndId)
+      .attr("class", `dragPoint dragPoint_${this.svgId}`)
       .attr("type", TYPE_CONNECT.INPUT)
       .attr("fill", "#2795EE")
       .attr("pointer-events", "all")
@@ -125,8 +131,8 @@ class EdgeMgmt {
       .style("cursor", "pointer")
       .attr("stroke", "#2795EE");
 
-    d3.selectAll('.dragPoint').call(this.dragPointConnector);
-    d3.select('#groupEdgePoint').style("display", "none");
+    d3.selectAll(`.dragPoint_${this.svgId}`).call(this.dragPointConnector);
+    d3.select(`#${this.groupEdgePointId}`).style("display", "none");
   }
 
   /**
@@ -149,7 +155,7 @@ class EdgeMgmt {
 
   dragPointStarted(main) {
     return function () {
-      let edgeId = d3.select('#edgePath').attr('ref');
+      let edgeId = d3.select(`#${main.edgePathId}`).attr('ref');
       let edgeObj = _.find(main.dataContainer.edge, {"id":edgeId});
       edgeObj.handlerOnClickEdge();
     }
@@ -162,7 +168,7 @@ class EdgeMgmt {
    */
   draggedPoint(main) {
     return function () {
-      let edgeId = d3.select('#edgePath').attr('ref');
+      let edgeId = d3.select(`#${main.edgePathId}`).attr('ref');
       let edgeObj = _.find(main.dataContainer.edge, {"id":edgeId});
       edgeObj.handlerOnClickEdge();
 
@@ -171,17 +177,17 @@ class EdgeMgmt {
       let y = d3.mouse(main.svgSelector.node())[1];
       const type = d3.select(this).attr("type");
       if (type === "O") {
-        let px = Number(d3.select("#pointEnd").attr("cx"));
-        let py = Number(d3.select("#pointEnd").attr("cy"));
+        let px = Number(d3.select(`#${main.pointEndId}`).attr("cx"));
+        let py = Number(d3.select(`#${main.pointEndId}`).attr("cy"));
         pathStr = createPath({x, y}, {x: px, y: py});
       } else {
-        let px = Number(d3.select("#pointStart").attr("cx"));
-        let py = Number(d3.select("#pointStart").attr("cy"));
+        let px = Number(d3.select(`#${main.pointStartId}`).attr("cx"));
+        let py = Number(d3.select(`#${main.pointStartId}`).attr("cy"));
         pathStr = createPath({x: px, y: py}, {x, y});
       }
 
-      d3.select('#edgePath').attr('d', pathStr);
-      d3.select('#groupEdgePath').style("display", "block");
+      d3.select(`#${main.edgePathId}`).attr('d', pathStr);
+      d3.select(`#${main.groupEdgePathId}`).style("display", "block");
     }
   }
 
@@ -193,7 +199,7 @@ class EdgeMgmt {
   dragPointEnded(main) {
     return function () {
       //Editing edge
-      let edgeId = d3.select('#edgePath').attr('ref');
+      let edgeId = d3.select(`#${main.edgePathId}`).attr('ref');
       let edgeObj = _.find(main.dataContainer.edge, {"id":edgeId});
 
       if (d3.event.sourceEvent.target.tagName == "rect") {
@@ -263,8 +269,8 @@ class EdgeMgmt {
         let x2 = d3.mouse(d3.select(`#${main.svgId}`).node())[0];
         let y2 = d3.mouse(d3.select(`#${main.svgId}`).node())[1];
         let pathStr = createPath({x: x1, y: y1}, {x: x2, y: y2});
-        d3.select('#dummyPath').attr('d', pathStr);
-        d3.select('#dummyPath').style("display", "block");
+        d3.select(`#${main.dummyPathId}`).attr('d', pathStr);
+        d3.select(`#${main.dummyPathId}`).style("display", "block");
       }
     }
   }
@@ -295,8 +301,8 @@ class EdgeMgmt {
         main.create(options);
       }
 
-      d3.select('#dummyPath').attr('d', null);
-      d3.select('#dummyPath').style("display", "none");
+      d3.select(`#${main.dummyPathId}`).attr('d', null);
+      d3.select(`#${main.dummyPathId}`).style("display", "none");
       main.tmpSource = null;
     }
   }
@@ -381,6 +387,14 @@ class EdgeMgmt {
         return e.target.vertexId === vertexId || e.source.vertexId === vertexId;
       }
     );
+  }
+
+  checkExitEdgeConnectToVertex(vertexId) {
+    let numEdges = this.findEdgeRelateToVertex(vertexId);
+    if (numEdges.length)
+      return true;
+    else
+      return false;
   }
 
   /**

@@ -1,28 +1,23 @@
-import MainMenu from './menu-context/main-menu';
-import VertexMgmt from '../objects-mgmt/vertex-mgmt';
-import BoundaryMgmt from '../objects-mgmt/boundary-mgmt';
-import ObjectUtils from '../../common/utilities/object.ult';
+import MainMenu from '../../objects-mgmt/menu-context/main-menu';
+import VertexMgmt from '../../objects-mgmt/objects/vertex-mgmt';
+import BoundaryMgmt from '../../objects-mgmt/objects/boundary-mgmt';
+import ObjectUtils from '../../../common/utilities/object.ult';
 
 import {
-  ID_CONTAINER_OPERATIONS,
-  ID_SVG_OPERATIONS,
   DEFAULT_CONFIG_GRAPH
-
-} from '../../const/index';
+} from '../../../const/index';
 
 import {
   setSizeGraph
-} from '../../common/utilities/common.ult';
+} from '../../../common/utilities/common.ult';
 
 class OperationsMgmt {
   constructor(props) {
-    this.mainMgmt = props.mainMgmt;
     this.edgeMgmt = props.edgeMgmt;
-    this.storeOperations = props.storeOperations;
-    this.objectUtils = props.objectUtils;
-    this.operationsDefined = props.operationsDefined;
-    this.svgId = ID_SVG_OPERATIONS;
-    this.containerId = ID_CONTAINER_OPERATIONS;
+    this.dataContainer = props.dataContainer;
+    this.vertexDefinition = props.vertexDefinition;
+    this.svgId = props.svgId;
+    this.containerId = props.containerId;
 
     this.initialize();
   }
@@ -32,18 +27,18 @@ class OperationsMgmt {
     this.objectUtils = new ObjectUtils();
 
     this.vertexMgmt = new VertexMgmt({
-      dataContainer : this.storeOperations,
+      dataContainer : this.dataContainer,
       containerId : this.containerId,
       svgId : this.svgId,
-      vertexDefinition : this.operationsDefined,
+      vertexDefinition : this.vertexDefinition,
       isEnableEdit: true,
       edgeMgmt : this.edgeMgmt
     });
 
     this.boundaryMgmt = new BoundaryMgmt({
-      dataContainer: this.storeOperations,
-      containerId: ID_CONTAINER_OPERATIONS,
-      svgId: ID_SVG_OPERATIONS,
+      dataContainer: this.dataContainer,
+      containerId: this.containerId,
+      svgId: this.svgId,
       isEnableEdit: true,
       vertexMgmt: this.vertexMgmt
     });
@@ -53,8 +48,9 @@ class OperationsMgmt {
     new MainMenu({
       selector: `#${this.svgId}`,
       containerId: `#${this.containerId}`,
-      operationsMgmt: this,
-      operationsDefined: this.operationsDefined
+      parent: this,
+      vertexDefinition: this.vertexDefinition,
+      isEnableEdit: true
     });
   }
 
@@ -98,16 +94,16 @@ class OperationsMgmt {
 
       e.x = x;
       e.y = y;
-      e.presentation = this.operationsDefined.vertexPresentation[e.groupType];
+      e.presentation = this.vertexDefinition.vertexPresentation[e.groupType];
       e.isImport = true;
 
       this.vertexMgmt.create(e);
     });
 
-    if (this.storeOperations.boundary && this.storeOperations.boundary.length > 0){
-      this.objectUtils.setAllChildrenToShow(this.storeOperations);
-      if (this.storeOperations.boundary.length > 0)
-        await this.storeOperations.boundary[0].updateHeightBoundary();
+    if (this.dataContainer.boundary && this.dataContainer.boundary.length > 0){
+      this.objectUtils.setAllChildrenToShow(this.dataContainer);
+      if (this.dataContainer.boundary.length > 0)
+        await this.dataContainer.boundary[0].updateHeightBoundary();
     }
   }
 }

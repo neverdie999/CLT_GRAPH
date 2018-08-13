@@ -5,8 +5,9 @@ class MainMenu {
   constructor(props) {
     this.selector = props.selector;
     this.containerId = props.containerId;
-    this.operationsMgmt = props.operationsMgmt;
-    this.operationsDefined = props.operationsDefined;
+    this.parent = props.parent;
+    this.vertexDefinition = props.vertexDefinition;
+    this.isEnableEdit = props.isEnableEdit;
     this.initMainMenu();
   }
 
@@ -20,17 +21,22 @@ class MainMenu {
         return {
           callback: (key, options) => {
             switch (key) {
-              case "clearAll":
-                this.operationsMgmt.clearAll();
-                this.operationsMgmt.mainMgmt.connectMgmt.clearAll();
-                break;
-
+              
               case "createBoundary":
                 let params = {
                   x: options.x,
                   y: options.y
                 };
-                this.operationsMgmt.createBoundary(params);
+                this.parent.createBoundary(params);
+                break;
+
+              case "clearAll":
+                this.parent.clearAll();
+                this.parent.edgeMgmt.clearAll();
+                break;
+
+              case "showReduced":
+                this.parent.isShowReduced ? this.parent.showFull(options) : this.parent.showReduced(options);
                 break;
 
               default:
@@ -41,22 +47,28 @@ class MainMenu {
             "createVertex": {
               name: "Create Vertex",
               icon: "fa-window-maximize",
-              items: this.loadItems(),
+              items: this.isEnableEdit ? this.loadItems() : {},
               type: "sub",
-              // disabled: COMMON_DATA.isDisabledCommand
+              disabled: !this.isEnableEdit
             },
             "sep1": "-",
             "createBoundary": {
               name: "Create Boundary",
               icon: "fa-object-group",
-              // disabled: COMMON_DATA.isDisabledCommand
+              disabled: !this.isEnableEdit
             },
             "sep2": "-",
             "clearAll": {
               name: "Clear All",
               icon: "fa-times",
-              // disabled: COMMON_DATA.isDisabledCommand
-            }
+              disabled: !this.isEnableEdit
+            },
+            "sep3": "-",
+            "showReduced": {
+              name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
+              icon: "fa-link",
+              disabled: this.isEnableEdit
+            },
           },
           events: {
             show: (opt) => {
@@ -91,8 +103,8 @@ class MainMenu {
     subItems["sep4"] = "-";
     const options = {};
     // Build options
-    if (this.operationsDefined.vertexTypes && Array.isArray(this.operationsDefined.vertexTypes)) {
-      let vertices = this.operationsDefined.vertexTypes;
+    if (this.vertexDefinition.vertexTypes && Array.isArray(this.vertexDefinition.vertexTypes)) {
+      let vertices = this.vertexDefinition.vertexTypes;
       // Sort array object
       vertices = _.orderBy(vertices, ['vertexType'], ['asc']);
       let len = vertices.length;
@@ -149,7 +161,7 @@ class MainMenu {
         vertexType: this.value,
         isImport: false
       };
-      self.operationsMgmt.createVertex(params);
+      self.parent.createVertex(params);
       $(`${self.selector}`).contextMenu("hide");
     }
   }

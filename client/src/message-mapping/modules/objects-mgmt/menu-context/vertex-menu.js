@@ -7,6 +7,7 @@ class VertexMenu {
     this.selector = props.selector;
     this.vertexMgmt = props.vertexMgmt;
     this.dataContainer = props.dataContainer;
+    this.isEnableEdit = props.isEnableEdit;
     this.initVertexMenu();
   }
 
@@ -40,17 +41,17 @@ class VertexMenu {
             "editVertex": {
               name: "Edit Vertex Info",
               icon: "fa-pencil-square-o",
-              disabled: COMMON_DATA.isDisabledCommand
+              disabled: false
             },
             "copyVertex": {
               name: "Copy",
               icon: "fa-files-o",
-              disabled: COMMON_DATA.isDisabledCommand
+              disabled: this.isEnableEdit ? false:true
             },
             "removeVertex": {
               name: "Delete",
               icon: "fa-times",
-              disabled: COMMON_DATA.isDisabledCommand
+              disabled: this.isEnableEdit ? false:true
             }
           }
         }

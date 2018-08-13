@@ -30,6 +30,11 @@ export const LINE_TYPE = {
   DASH: 'D'
 };
 
+export const VIEW_MODE = {
+  SHOW_ONLY: 'SHOW_ONLY',
+  EDIT     : 'EDIT'
+};
+
 // Boundary
 export const CLASS_CONTAINER_BOUNDARY = 'groupBoundary';
 export const CLASS_MENU_ITEM_BOUNDARY = 'menuItemBoundary';
