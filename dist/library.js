@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 859);
+/******/ 	return __webpack_require__(__webpack_require__.s = 860);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -52407,21 +52407,12 @@ module.exports = function (css) {
 /* 856 */,
 /* 857 */,
 /* 858 */,
-/* 859 */
+/* 859 */,
+/* 860 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(328);
-module.exports = __webpack_require__(860);
-
-
-/***/ }),
-/* 860 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__starter__ = __webpack_require__(861);
-
+module.exports = __webpack_require__(861);
 
 
 /***/ }),
@@ -52429,12 +52420,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_main_mgmt_main_mgmt__ = __webpack_require__(862);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_object_ult__ = __webpack_require__(872);
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__starter__ = __webpack_require__(862);
+
+
+
+/***/ }),
+/* 862 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_main_mgmt_main_mgmt__ = __webpack_require__(863);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_utilities_object_ult__ = __webpack_require__(873);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utilities_common_ult__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__const_index__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__styles_index_scss__ = __webpack_require__(873);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__styles_index_scss__ = __webpack_require__(874);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__styles_index_scss__);
 
 
@@ -52511,19 +52512,19 @@ new Starter();
 
 
 /***/ }),
-/* 862 */
+/* 863 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__object_mgmt_vertex__ = __webpack_require__(863);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__file_mgmt_file_mgmt__ = __webpack_require__(864);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_mgmt_main_menu__ = __webpack_require__(865);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_mgmt_vertex_menu__ = __webpack_require__(866);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__object_mgmt_edge__ = __webpack_require__(867);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__menu_mgmt_edge_menu__ = __webpack_require__(868);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__object_mgmt_boundary__ = __webpack_require__(869);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__menu_mgmt_boundary_menu__ = __webpack_require__(870);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__menu_mgmt_boundary_menu_items__ = __webpack_require__(871);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__object_mgmt_vertex__ = __webpack_require__(864);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__file_mgmt_file_mgmt__ = __webpack_require__(865);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_mgmt_main_menu__ = __webpack_require__(866);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_mgmt_vertex_menu__ = __webpack_require__(867);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__object_mgmt_edge__ = __webpack_require__(868);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__menu_mgmt_edge_menu__ = __webpack_require__(869);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__object_mgmt_boundary__ = __webpack_require__(870);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__menu_mgmt_boundary_menu__ = __webpack_require__(871);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__menu_mgmt_boundary_menu_items__ = __webpack_require__(872);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_utilities_common_ult__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_d3__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__const_index__ = __webpack_require__(71);
@@ -53465,7 +53466,7 @@ class MainMgmt {
 
 
 /***/ }),
-/* 863 */
+/* 864 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54566,7 +54567,7 @@ class Vertex {
 
 
 /***/ }),
-/* 864 */
+/* 865 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54758,7 +54759,7 @@ class FileMgmt {
 
 
 /***/ }),
-/* 865 */
+/* 866 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54927,7 +54928,7 @@ class MainMenu {
 
 
 /***/ }),
-/* 866 */
+/* 867 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54995,7 +54996,7 @@ class VertexMenu {
 
 
 /***/ }),
-/* 867 */
+/* 868 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55317,7 +55318,7 @@ class Edge {
 
 
 /***/ }),
-/* 868 */
+/* 869 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55425,7 +55426,7 @@ class EdgeMenu {
 
 
 /***/ }),
-/* 869 */
+/* 870 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56078,7 +56079,7 @@ class Boundary {
 
 
 /***/ }),
-/* 870 */
+/* 871 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56144,7 +56145,7 @@ class BoundaryMenu {
 
 
 /***/ }),
-/* 871 */
+/* 872 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56277,7 +56278,7 @@ class BoundaryMenuItems {
 
 
 /***/ }),
-/* 872 */
+/* 873 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56516,13 +56517,13 @@ class ObjectUtils {
 
 
 /***/ }),
-/* 873 */
+/* 874 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(874);
+var content = __webpack_require__(875);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -56547,7 +56548,7 @@ if(false) {
 }
 
 /***/ }),
-/* 874 */
+/* 875 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(852)(false);
