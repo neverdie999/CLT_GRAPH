@@ -1,12 +1,36 @@
 import * as d3 from 'd3';
 import _ from "lodash";
+
 import {
-  HTML_ALGETA_CONTAINER_ID,
-  SVG_CONTAINER_ID,
-  DEFAULT_CONFIG_GRAPH,
-  REPEAT_RANGE,
   COMMON_DATA,
-} from '../../const/index';
+  AUTO_SCROLL_CONFIG,
+  DEFAULT_CONFIG_GRAPH,
+  VIEW_MODE
+} from '../const/index';
+
+
+/**
+ * Read file format JSON and return
+ * @param file
+ * @returns {Promise}
+ */
+export function readDataFileJson(file) {
+  return new Promise((resolve, reject) => {
+    let fileReader = new FileReader();
+    fileReader.onload = () => {
+      try {
+        let data = JSON.parse(fileReader.result);
+        resolve(data);
+      }
+      catch (ex) {
+        comShowMessage(`Read file error!\n${ex.message}`);
+      }
+    }
+
+    if (file)
+      fileReader.readAsText(file);
+  });
+}
 
 /**
  * Show message alert
@@ -19,164 +43,31 @@ export function comShowMessage(msg = null) {
 }
 
 /**
- * Gernerate object id with format 'prefix' + Date.now()
- * Ex for vertex: V1234234234
- * Ex for edge: E1234234234
- * Ex for boundary: B1234234234
- * @returns {string}
- */
-export function generateObjectId(prefix = 'V') {
-  let date = new Date();
-  return `${prefix}${date.getTime()}`;
-}
-
-/**
- * Remove special character in selector query
- * @param id
- * @returns {string}
- */
-export function replaceSpecialCharacter(id) {
-  // return id.replace(/(:|\.|\[|\]|,|=|@)/g, "\\\\$1");
-  return id.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
-}
-
-/**
- * Create string path
- * @param src
- * @param tar
- * @returns {string}
- */
-export function createPath(src, tar) {
-  // Straight line
-  let pathStr = `M${src.x},${src.y} L${tar.x},${tar.y}`;
-
-  return pathStr;
-};
-
-/**
- * Cancle selected path when user
- * click click outside path selected or move object...
- */
-export function cancleSelectedPath() {
-  d3.select('#groupEdgePath').style("display", "none");
-  d3.select('#groupEdgePoint').style("display", "none");
-  d3.select("#groupEdgePoint").moveToBack();
-  d3.select("#groupEdgePath").moveToBack();
-  COMMON_DATA.isUpdateEdge = false;
-}
-
-/**
  * Get coordinate mouse when click on SVG
+ * relation to parent
+ * @param e
+ * @param parent
+ * @returns {{x: number, y: number}}
  */
-export function getCoordinateMouseOnClick(e) {
-  let container = $(`#${HTML_ALGETA_CONTAINER_ID}`);
-  let x = e.clientX + container.scrollLeft();
-  let y = e.clientY + container.scrollTop();
+export function getCoorMouseClickRelativeToParent(e, parent) {
+  let container = $(`${parent}`);
+  let x = Math.round(e.clientX + container.scrollLeft() - container.offset().left);
+  let y = Math.round(e.clientY + container.scrollTop() - container.offset().top);
   return {x, y};
 }
 
 /**
- * Auto scroll when drag vertex or boundary
+ * Init id for object
+ * @param type
  */
-export function autoScrollOnMousedrag(d) {
-  // Autoscroll on mousedrag
-  let svg = d3.select("svg").node();
-  const $parent = $(`#${HTML_ALGETA_CONTAINER_ID}`);
-  let w = $parent.width();
-  let h = $parent.height();
-  let sL = $parent.scrollLeft();
-  let sT = $parent.scrollTop();
-  let coordinates = d3.mouse(svg);
-  let x = coordinates[0];
-  let y = coordinates[1];
-
-  if (x > w + sL) {
-    $parent.scrollLeft(x - w);
-  } else if (x < sL) {
-    $parent.scrollLeft(x);
-  }
-
-  if (y > h + sT) {
-    $parent.scrollTop(y - h);
-  } else if (y < sT) {
-    $parent.scrollTop(y);
-  }
+export function generateObjectId(type) {
+  const date = new Date();
+  return `${type}${date.getTime()}`;
 }
 
-export function updateGraphBoundary(d) {
-  const {width, height} = d3.select(`#${d.id}`).node().getBBox();
-  let currentX = d3.event.x;
-  let currentY = d3.event.y;
-  let margin = 100;
-  if ((currentX + width) > COMMON_DATA.currentWidth) {
-    COMMON_DATA.currentWidth = currentX + width + margin;
-    $(`#${SVG_CONTAINER_ID}`).css("min-width", COMMON_DATA.currentWidth);
-  }
-
-  if ((currentY + height) > COMMON_DATA.currentHeight) {
-    COMMON_DATA.currentHeight = currentY + height + margin;
-    $(`#${SVG_CONTAINER_ID}`).css("min-height", COMMON_DATA.currentHeight);
-  }
-}
-
-export function setSizeGraph(options = {
-  width: DEFAULT_CONFIG_GRAPH.MIN_WIDTH,
-  height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT
-}) {
-  let offer = 200;
-  if (options.width) {
-    COMMON_DATA.currentWidth = options.width + offer;
-    $(`#${SVG_CONTAINER_ID}`).css("min-width", COMMON_DATA.currentWidth);
-  }
-
-  if (options.height) {
-    COMMON_DATA.currentHeight = options.height + offer;
-    $(`#${SVG_CONTAINER_ID}`).css("min-height", COMMON_DATA.currentHeight);
-  }
-}
-
-/**
- * Shink graph when object drag end.
- * @param d
- */
-export function setMinBoundaryGraph(data) {
-  // Array store size
-  let lstOffsetX = [1900];
-  let lstOffsetY = [959];
-
-  // Filter boundary without parent
-  let boundaries = _.filter(data.boundary, (g) => {
-    return g.parent == null;
-  });
-
-  // Filter vertex without parent
-  let vertices = _.filter(data.vertex, (g) => {
-    return g.parent == null;
-  });
-
-  boundaries.forEach(e => {
-    let node = d3.select(`#${e.id}`).node()
-    if (node) {
-      let {width, height} = node.getBBox();
-      lstOffsetX.push(width + e.x);
-      lstOffsetY.push(height + e.y);
-    }
-  });
-
-  vertices.forEach(e => {
-    let node = d3.select(`#${e.id}`).node()
-    if (node) {
-      let {width, height} = node.getBBox();
-      lstOffsetX.push(width + e.x);
-      lstOffsetY.push(height + e.y);
-    }
-  });
-
-  // Get max width, max height
-  let width = Math.max.apply(null, lstOffsetX);
-  let height = Math.max.apply(null, lstOffsetY);
-
-  setSizeGraph({width, height});
+export function checkIsMatchRegexNumber(val) {
+  const regex = new RegExp('^(?=.)([+-]?([0-9]*)(\.([0-9]+))?)$');
+  return regex.test(val);
 }
 
 /**
@@ -200,12 +91,7 @@ export function allowInputNumberOnly(e) {
   }
 }
 
-//move element in array
-export function arrayMove(x, from, to) {
-  x.splice((to < 0 ? x.length + to : to), 0, x.splice(from, 1)[0]);
-}
-
-export function checkMinMaxValue(val, min = REPEAT_RANGE.MIN, max = REPEAT_RANGE.MAX) {
+export function checkMinMaxValue(val, min = 0, max = 9999) {
   if (parseInt(val) < min || isNaN(parseInt(val)))
     return min;
   else if (parseInt(val) > max)
@@ -213,7 +99,183 @@ export function checkMinMaxValue(val, min = REPEAT_RANGE.MIN, max = REPEAT_RANGE
   else return parseInt(val);
 }
 
-export function checkIsMatchRegexNumber(val) {
-  const regex = new RegExp('^(?=.)([+-]?([0-9]*)(\.([0-9]+))?)$');
-  return regex.test(val);
+/**
+ * Remove special character in selector query
+ * @param id
+ * @returns {string}
+ */
+export function replaceSpecialCharacter(id) {
+  return id.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
+}
+
+export function createPath(src, des) {
+  return `M${src.x},${src.y} L${des.x},${des.y}`;
+}
+
+//move element in array
+export function arrayMove(x, from, to) {
+  x.splice((to < 0 ? x.length + to : to), 0, x.splice(from, 1)[0]);
+}
+
+export function setSizeGraph(options, svgId) {
+  const offer = 200;
+  const {width, height} = options;
+
+  if (width) {
+    COMMON_DATA.currentWidth = width + offer;
+    $(`#${svgId}`).css("min-width", COMMON_DATA.currentWidth);
+  }
+
+  if (height) {
+    COMMON_DATA.currentHeight = height + offer;
+    $(`#${svgId}`).css("min-height", COMMON_DATA.currentHeight);
+  }
+}
+
+/**
+ * Shink graph when object drag end.
+ * @param {*} data 
+ * @param {*} svgId 
+ */
+export function setMinBoundaryGraph(data, svgId) {
+
+  // Array store size
+  let lstOffsetX = [DEFAULT_CONFIG_GRAPH.MIN_WIDTH];
+  let lstOffsetY = [DEFAULT_CONFIG_GRAPH.MIN_HEIGHT];
+
+  // Filter boundary without parent
+  let boundaries = _.filter(data.boundary, (g) => {
+    return g.parent == null;
+  });
+
+  // Filter vertex without parent
+  let vertices = _.filter(data.vertex, (g) => {
+    return g.parent == null;
+  });
+
+
+  boundaries.forEach(e => {
+    let node = d3.select(`#${e.id}`).node()
+    if (node) {
+      let {width, height} = node.getBBox();
+      lstOffsetX.push(width + e.x);
+      lstOffsetY.push(height + e.y);
+    }
+  });
+
+  vertices.forEach(e => {
+    let node = d3.select(`#${e.id}`).node()
+    if (node) {
+      let {width, height} = node.getBBox();
+      lstOffsetX.push(width + e.x);
+      lstOffsetY.push(height + e.y);
+    }
+  });
+
+  // Get max width, max height
+  let width = Math.max.apply(null, lstOffsetX);
+  let height = Math.max.apply(null, lstOffsetY);
+
+  if(COMMON_DATA.isEnableHorizontalScroll){
+    setSizeGraph({width, height},svgId);
+  }else{
+    setSizeGraph({width: undefined, height},svgId);
+  }
+}
+
+/**
+ * Auto scroll when drag vertex or boundary
+ */
+export function autoScrollOnMousedrag(svgId, containerId) {
+  // Auto scroll on mouse drag
+  let svg = d3.select(`#${svgId}`).node();
+  const $parent = $(`#${containerId}`);
+
+  let h = $parent.height();
+  let sT = $parent.scrollTop();
+
+  let w = $parent.width();
+  let sL = $parent.scrollLeft();
+
+  let coordinates = d3.mouse(svg);
+  let x = coordinates[0];
+  let y = coordinates[1];
+
+  if ((y + AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL) > h + sT) { 
+    $parent.scrollTop((y + AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL) - h);
+  } else if (y < AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL + sT) { 
+    $parent.scrollTop(y - AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL);
+  }
+
+  if (COMMON_DATA.isEnableHorizontalScroll){
+    if ((x + AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL) > w + sL) { 
+      $parent.scrollLeft((x + AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL) - w); 
+    } else if (x < AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL + sL) { 
+      $parent.scrollLeft(x - AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL);
+    }
+  }
+}
+
+export function updateSizeGraph(dragObj) {
+  const {width, height} = d3.select(`#${dragObj.id}`).node().getBBox();
+  let currentX = d3.event.x;
+  let currentY = d3.event.y;
+  let margin = 100;
+
+  if (COMMON_DATA.isEnableHorizontalScroll){
+    if ((currentX + width) > COMMON_DATA.currentWidth) {
+      COMMON_DATA.currentWidth = currentX + width + margin;
+      $(`#${dragObj.svgId}`).css("min-width", COMMON_DATA.currentWidth);
+    }
+  }
+
+  if ((currentY + height) > COMMON_DATA.currentHeight) {
+    COMMON_DATA.currentHeight = currentY + height + margin;
+    $(`#${dragObj.svgId}`).css("min-height", COMMON_DATA.currentHeight);
+  }
+}
+
+/**
+ * Disable horizontal scroll
+ * ex: Message Mapping GUI
+ */
+export function  disableHorizontalScroll() {
+  COMMON_DATA.isEnableHorizontalScroll = false;
+}
+
+/**
+ * Check with type is allowed in viewMode
+ * @param {*} viewMode 
+ * @param {*} type 
+ */
+export function checkModePermission(viewMode, type){
+  let data = {};
+
+  data[VIEW_MODE.SHOW_ONLY] = [
+    'showReduced',
+    'editVertex',
+    'editBoundary', 'isEnableItemVisibleMenu'];
+
+  data[VIEW_MODE.EDIT] = [
+    'createVertex', 'createBoundary', 'clearAll', 'showReduced',
+    'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
+    'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'
+  ];
+
+  data[VIEW_MODE.OPERATIONS] = [
+    'createVertex', 'createBoundary', 'clearAll',
+    'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
+    'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'
+  ];
+
+  data[VIEW_MODE.INPUT_MESSAGE] = [
+    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu'
+  ];
+
+  data[VIEW_MODE.OUTPUT_MESSAGE] = [
+    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu'
+  ];
+
+  return data[viewMode].indexOf(type) != -1;
+  
 }

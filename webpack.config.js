@@ -5,12 +5,12 @@ const isDebug = !process.env.PRO ? true : false;
 
 const library = [
   'babel-polyfill',
-  DIR_NAME + '/client/src/index.js',
+  DIR_NAME + '/client/src/modules/graph-library/index.js',
 ];
 
 const messageMapping = [
   'babel-polyfill',
-  DIR_NAME + '/client/src/message-mapping/index.js',
+  DIR_NAME + '/client/src/modules/message-mapping-gui/index.js',
 ];
 
 module.exports = {
