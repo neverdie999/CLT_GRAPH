@@ -47,22 +47,22 @@ class BoundaryMenu {
             "editBoundary": {
               name: "Edit Boundary Info",
               icon: "fa-pencil-square-o",
-              disabled: !checkModePermission(this.viewMode, "editBoundary")
+              disabled: !checkModePermission(this.viewMode.value, "editBoundary")
             },
             "removeBoundary": {
               name: "Delete",
               icon: "fa-times",
-              disabled: !checkModePermission(this.viewMode, "removeBoundary")
+              disabled: !checkModePermission(this.viewMode.value, "removeBoundary")
             },
             "copyAllBoundary": {
               name: "Copy All",
               icon: "fa-files-o",
-              disabled: !checkModePermission(this.viewMode, "copyAllBoundary")
+              disabled: !checkModePermission(this.viewMode.value, "copyAllBoundary")
             },
             "deleteAllBoundary": {
               name: "Delete All",
               icon: "fa-square-o",
-              disabled: !checkModePermission(this.viewMode, "deleteAllBoundary")
+              disabled: !checkModePermission(this.viewMode.value, "deleteAllBoundary")
             }
           }
         }

@@ -18,7 +18,7 @@ class OperationsMgmt {
     this.vertexDefinition = props.vertexDefinition;
     this.svgId = props.svgId;
     this.containerId = props.containerId;
-    this.viewMode = VIEW_MODE.OPERATIONS;
+    this.viewMode = {value: VIEW_MODE.OPERATIONS};
 
     this.initialize();
   }

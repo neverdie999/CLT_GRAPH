@@ -44,7 +44,7 @@ export const CLASS_MENU_ITEM_BOUNDARY = 'menuItemBoundary';
 export const BOUNDARY_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
   BOUND_WIDTH: 160,
-  BOUND_HEIGHT: 200,
+  BOUND_HEIGHT: 64,
 }
 
 // Repeat range

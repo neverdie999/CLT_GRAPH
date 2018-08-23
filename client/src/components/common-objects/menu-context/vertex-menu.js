@@ -39,17 +39,17 @@ class VertexMenu {
             "editVertex": {
               name: "Edit Vertex Info",
               icon: "fa-pencil-square-o",
-              disabled: !checkModePermission(this.viewMode, "editVertex")
+              disabled: !checkModePermission(this.viewMode.value, "editVertex")
             },
             "copyVertex": {
               name: "Copy",
               icon: "fa-files-o",
-              disabled: !checkModePermission(this.viewMode, "copyVertex")
+              disabled: !checkModePermission(this.viewMode.value, "copyVertex")
             },
             "removeVertex": {
               name: "Delete",
               icon: "fa-times",
-              disabled: !checkModePermission(this.viewMode, "removeVertex")
+              disabled: !checkModePermission(this.viewMode.value, "removeVertex")
             }
           }
         }

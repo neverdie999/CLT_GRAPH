@@ -13,7 +13,7 @@ import {
 } from '../../common/utilities/common.ult';
 
 import { 
-  VERTEX_FORMAT_TYPE,
+  VERTEX_FORMAT_TYPE, TYPE_CONNECT,
 } from '../../common/const/index';
 
 
@@ -127,7 +127,7 @@ class CltMessageMapping {
     this.objectUtils.initListenerContainerScroll(this.inputMessageContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     this.objectUtils.initListenerContainerScroll(this.operationsContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     this.objectUtils.initListenerContainerScroll(this.outputMessageContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
-    this.objectUtils.initListenerOnWindowResize(this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
+    this.initListenerOnWindowResize();
   };
 
   initSvgHtml(){
@@ -164,6 +164,18 @@ class CltMessageMapping {
         this.parentNode.firstChild && this.parentNode.insertBefore(this, this.parentNode.firstChild);
       });
     };
+  }
+
+  initListenerOnWindowResize() {
+    $(window).resize(() => {
+      this.inputMgmt.setCenterAlignmentGarph();
+      this.outputMgmt.setCenterAlignmentGarph();
+      
+      //update all edges for Operations area
+      this.storeOperations.vertex.forEach(e => {
+        e.updatePathConnect();
+      })
+    });
   }
 
   async LoadInputMessage(graphData){

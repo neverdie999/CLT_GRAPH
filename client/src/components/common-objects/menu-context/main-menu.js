@@ -48,27 +48,27 @@ class MainMenu {
             "createVertex": {
               name: "Create Vertex",
               icon: "fa-window-maximize",
-              items: checkModePermission(this.viewMode, "createVertex") ? this.loadItems() : {},
+              items: checkModePermission(this.viewMode.value, "createVertex") ? this.loadItems() : {},
               type: "sub",
-              disabled: !checkModePermission(this.viewMode, "createVertex")
+              disabled: !checkModePermission(this.viewMode.value, "createVertex")
             },
             "sep1": "-",
             "createBoundary": {
               name: "Create Boundary",
               icon: "fa-object-group",
-              disabled: !checkModePermission(this.viewMode, "createBoundary")
+              disabled: !checkModePermission(this.viewMode.value, "createBoundary")
             },
             "sep2": "-",
             "clearAll": {
               name: "Clear All",
               icon: "fa-times",
-              disabled: !checkModePermission(this.viewMode, "clearAll")
+              disabled: !checkModePermission(this.viewMode.value, "clearAll")
             },
             "sep3": "-",
             "showReduced": {
               name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
               icon: "fa-link",
-              disabled: !checkModePermission(this.viewMode, "showReduced")
+              disabled: !checkModePermission(this.viewMode.value, "showReduced")
             },
           },
           events: {

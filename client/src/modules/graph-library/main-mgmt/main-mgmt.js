@@ -40,7 +40,8 @@ class MainMgmt {
    * @param modeGraph
    */
   setGraphMode(modeGraph) {
-    this.viewMode = modeGraph === "S" ? VIEW_MODE.SHOW_ONLY : VIEW_MODE.EDIT;
+    let viewMode = modeGraph === "S" ? VIEW_MODE.SHOW_ONLY : VIEW_MODE.EDIT;
+    this.cltGraph.setViewMode(viewMode);
   }
 };
 export default MainMgmt;

@@ -22,7 +22,7 @@ import {
 class CltGraph {
   constructor(props) {
     this.selector = props.selector;
-    this.viewMode = props.viewMode || VIEW_MODE.EDIT;
+    this.viewMode = {value: props.viewMode || VIEW_MODE.EDIT};
 
     this.selectorName = this.selector.selector.replace(/[\.\#]/,'');
 
@@ -143,17 +143,17 @@ class CltGraph {
     this.vertexMgmt.clearAll();
     this.boundaryMgmt.clearAll();
 
-    setSizeGraph({ width: DEFAULT_CONFIG_GRAPH.MIN_WIDTH, height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT }, this.svgId);
+    setSizeGraph({ width: DEFAULT_CONFIG_GRAPH.MIN_WIDTH, height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT }, this.graphSvgId);
   }
 
   showReduced(){
     this.isShowReduced = true;
-    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.graphSvgId);
   }
 
   showFull(){
     this.isShowReduced = false;
-    this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+    this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.graphSvgId);
   }
 
   async drawObjects(data) {
@@ -639,6 +639,10 @@ class CltGraph {
         });
       }
     }
+  }
+
+  setViewMode(viewMode = VIEW_MODE.EDIT){
+    this.viewMode.value = viewMode;
   }
 }
   

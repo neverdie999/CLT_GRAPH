@@ -810,8 +810,8 @@ function checkModePermission(viewMode, type){
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].SHOW_ONLY] = [
     'showReduced',
-    'editVertex',
-    'editBoundary', 'isEnableItemVisibleMenu'];
+    'editVertex', 'isEnableDragVertex',
+    'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
@@ -918,7 +918,7 @@ const CLASS_MENU_ITEM_BOUNDARY = 'menuItemBoundary';
 const BOUNDARY_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
   BOUND_WIDTH: 160,
-  BOUND_HEIGHT: 200,
+  BOUND_HEIGHT: 64,
 }
 /* harmony export (immutable) */ __webpack_exports__["b"] = BOUNDARY_ATTR_SIZE;
 
@@ -20233,7 +20233,7 @@ class ObjectUtils {
         if (height >= boundaryBox.height){
           //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
           boundary.ctrlSrcHeight = boundary.height;
-          boundary.setHeight(height + 43);
+          boundary.setHeight(__WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT + height + 20);
         }
 
         if (width >= boundaryBox.width){
@@ -20664,7 +20664,7 @@ class ObjectUtils {
         let newY = __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * newIndexOfPropInVertex + 1;
 
         //update position of "rect"
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).select(`:not(.property)[prop=${prop}]`).attr("y", newY);
+        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll(`:not(.property)[prop=${prop}]`).attr("y", newY);
       }
     }
   }
@@ -33042,7 +33042,7 @@ class VertexMgmt {
 
   bindEventForPopupVertex() {
 
-    if (Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "vertexBtnConfirm")){
+    if (Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "vertexBtnConfirm")){
       $(`#vertexBtnConfirm_${this.svgId}`).click(() => {
         this.confirmEditVertexInfo();
       });
@@ -33097,6 +33097,8 @@ class VertexMgmt {
       // Resize boundary when vertex dragged
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
+
+      d.moveToFront();
     }
   }
 
@@ -33250,7 +33252,7 @@ class VertexMgmt {
     }
     __WEBPACK_IMPORTED_MODULE_4__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
 
-    if (!Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "vertexBtnConfirm")){
+    if (!Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "vertexBtnConfirm")){
       $(`#vertexBtnAdd_${this.svgId}`).hide();
       $(`#vertexBtnDelete_${this.svgId}`).hide();
       $(`#vertexBtnConfirm_${this.svgId}`).hide();
@@ -33626,8 +33628,8 @@ class VertexMgmt {
     if (parent){
       let parentObj = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.boundary, {"id": parent});
       let ancesstor = await parentObj.findAncestorOfMemberInNestedBoundary();
-      parentObj.updateSize();
-      ancesstor.reorderPositionMember();
+      await ancesstor.updateSize();
+      await ancesstor.reorderPositionMember();
     }
     
     Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
@@ -33767,7 +33769,7 @@ class BoundaryMgmt {
     this.bindEventForPopupBoundary();
 
     // Boundary Menu Items
-    if(Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "isEnableItemVisibleMenu")){
+    if(Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "isEnableItemVisibleMenu")){
       new __WEBPACK_IMPORTED_MODULE_7__menu_context_boundary_menu_items__["a" /* default */]({
         selector: `.${this.visibleItemSelectorClass}`,
         dataContainer: this.dataContainer
@@ -33844,7 +33846,7 @@ class BoundaryMgmt {
    */
   bindEventForPopupBoundary() {
 
-    if (Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "boundaryBtnConfirm")){
+    if (Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "boundaryBtnConfirm")){
       $(`#boundaryBtnConfirm_${this.svgId}`).click(() => {
         this.confirmEditBoundaryInfo();
       });
@@ -33888,6 +33890,8 @@ class BoundaryMgmt {
     return function (d) {
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
+      
+      d.moveToFront();
 
       // Storing start position to calculate the offset for moving members to new position
       d.ctrlSrcX = d.x;
@@ -33993,7 +33997,7 @@ class BoundaryMgmt {
     }
     __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
 
-    if(!Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "boundaryBtnConfirm")){
+    if(!Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "boundaryBtnConfirm")){
       $(`#boundaryBtnConfirm_${this.svgId}`).hide();
     }
   }
@@ -34094,27 +34098,27 @@ class MainMenu {
             "createVertex": {
               name: "Create Vertex",
               icon: "fa-window-maximize",
-              items: Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "createVertex") ? this.loadItems() : {},
+              items: Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "createVertex") ? this.loadItems() : {},
               type: "sub",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "createVertex")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "createVertex")
             },
             "sep1": "-",
             "createBoundary": {
               name: "Create Boundary",
               icon: "fa-object-group",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "createBoundary")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "createBoundary")
             },
             "sep2": "-",
             "clearAll": {
               name: "Clear All",
               icon: "fa-times",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "clearAll")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "clearAll")
             },
             "sep3": "-",
             "showReduced": {
               name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
               icon: "fa-link",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "showReduced")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "showReduced")
             },
           },
           events: {
@@ -53891,7 +53895,7 @@ class Vertex {
       .style("pointer-events", "none")
       .attr("class", `${this.selectorClass}`);
 
-      if(Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "isEnableDragVertex")){
+      if(Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "isEnableDragVertex")){
         group.call(callbackDragVertex);
       }
 
@@ -54022,8 +54026,6 @@ class Vertex {
 
     // Remove all edge relate to vertex
     this.vertexMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this);
-
-    Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }  
 
   /**
@@ -54041,6 +54043,16 @@ class Vertex {
 
   updatePathConnect(){
     this.vertexMgmt.updatePathConnectForVertex(this);
+  }
+
+  moveToFront(){
+    __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).moveToFront();
+
+    if (this.dataContainer.vertex.length > 1){
+      let curIndex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.findIndex(this.dataContainer.vertex, {"id": this.id});
+
+      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["b" /* arrayMove */])(this.dataContainer.vertex, curIndex, this.dataContainer.vertex.length - 1);
+    }
   }
 }
 
@@ -54094,17 +54106,17 @@ class VertexMenu {
             "editVertex": {
               name: "Edit Vertex Info",
               icon: "fa-pencil-square-o",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "editVertex")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "editVertex")
             },
             "copyVertex": {
               name: "Copy",
               icon: "fa-files-o",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "copyVertex")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "copyVertex")
             },
             "removeVertex": {
               name: "Delete",
               icon: "fa-times",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "removeVertex")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "removeVertex")
             }
           }
         }
@@ -54223,7 +54235,7 @@ class Boundary {
       .attr("class", `${this.selectorClass}`)
       .style("cursor", "move");
     
-    if (Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "isEnableDragBoundary")) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "isEnableDragBoundary")) {
       group.call(callbackDragBoundary);
     }
 
@@ -54248,12 +54260,11 @@ class Boundary {
     `);
 
 
-    if (Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "isEnableItemVisibleMenu")) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "isEnableItemVisibleMenu")) {
       group.append("text")
         .attr("id", `${this.id}Text`)
         .attr("x", this.width - 20)
         .attr("y", __WEBPACK_IMPORTED_MODULE_4__common_const_index__["b" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT - 14)
-        .style("fill", "#ffffff")
         .style("stroke", "#ffffff")
         .style("pointer-events", "all")
         .text("+");
@@ -54274,21 +54285,14 @@ class Boundary {
       Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
 
-  async updateHeightBoundary() {
-    // Get all boundary that without parent but have child
+  updateHeightBoundary() {
+
     let boundaries = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.filter(this.dataContainer.boundary, (g) => {
-      return g.parent != null;
-    });
-
-    boundaries.forEach(boundary => {
-      boundary.updateSize();
-    });
-
-    boundaries = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.filter(this.dataContainer.boundary, (g) => {
       return g.parent == null && g.member.length > 0;
     });
 
     boundaries.forEach(boundary => {
+      boundary.updateSize();
       boundary.reorderPositionMember();
     });
   }
@@ -54305,6 +54309,12 @@ class Boundary {
 
     this.member.forEach(mem => {
       if (mem.show) {
+
+        if (mem.type == "B"){
+          let boundaryObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": mem.id});
+          boundaryObj.updateSize();
+        }
+
         const { width, height } = this.objectUtils.getBBoxObject(`#${mem.id}`);
         orderObject++;
         hBeforeElements += height;
@@ -54313,15 +54323,10 @@ class Boundary {
       }
     });
 
-    let hBoundary = hBeforeElements + marginTop * orderObject;
+    let hBoundary = hBeforeElements + marginTop * orderObject + 2;
 
     this.setHeight(hBoundary);
     this.setWidth(wBoundary);
-
-    if (this.parent) {
-      let parentObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": this.parent})
-      parentObj.updateSize();
-    }
   }
 
   /**
@@ -54329,8 +54334,10 @@ class Boundary {
    * @param height
    */
   setHeight(height) {
+
+    let hasShowedMember = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.member, {"show": true});
     // Set height for boundary
-    if (height < __WEBPACK_IMPORTED_MODULE_4__common_const_index__["b" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT)
+    if (height < __WEBPACK_IMPORTED_MODULE_4__common_const_index__["b" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT && (this.member.length == 0 || !hasShowedMember))
       height = __WEBPACK_IMPORTED_MODULE_4__common_const_index__["b" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT;
 
     $(`#${this.id}Content`).attr('height', height);
@@ -54388,14 +54395,8 @@ class Boundary {
 
         orderObject++;
         hBeforeElements += height;
-        if (width >= wBoundary)
-          wBoundary = width + (mem.type === "B" ? 10 : 0);
       }
     });
-
-    let hBoundary = hBeforeElements + marginTop * orderObject;
-    this.setHeight(hBoundary);
-    this.setWidth(wBoundary);
   }
 
   /**
@@ -54413,9 +54414,9 @@ class Boundary {
     this.reorderPositionMember(position);
   }
 
-  async findAncestorOfMemberInNestedBoundary() { 
+  findAncestorOfMemberInNestedBoundary() { 
     if (!this.parent) 
-      return Promise.resolve(this); 
+      return this; 
  
     let parentObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": this.parent}); 
  
@@ -54425,17 +54426,18 @@ class Boundary {
   /**
  * Add memebr to boundary
  * @param member
- * @param memberObj
+ * @param isEffectToParent if Copy All, just clone from the origin Boundary, no need to calculate the position of parent
  * Member format
  * {id: '', type: [V, B], show: true}
  */
-  async addMemberToBoundary(member) {
+  async addMemberToBoundary(member, isEffectToParent = true) {
     this.member.push(member);
 
-    this.updateSize();
-    this.reorderPositionMember();
-
-    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+    if (isEffectToParent){
+      this.updateSize();
+      this.reorderPositionMember();
+      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+    }
   }
 
   /**
@@ -54447,23 +54449,27 @@ class Boundary {
       const member = cMembers[i];
       let objectId = member.id;
       if (member.type === "V") {
-        let cVertex = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, {"id": objectId}));
+        let cVertex = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, {"id": objectId}));
         let cVertexId = Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["i" /* generateObjectId */])("V");
         cVertex.id = cVertexId;
         cVertex.parent = this.id;
+        cVertex.x = cVertex.x + 5;
+        cVertex.y = cVertex.y + 5;
         let child = {id: cVertexId, type: "V", show: true};
         this.boundaryMgmt.vertexMgmt.create(cVertex);
-        this.addMemberToBoundary(child);
+        this.addMemberToBoundary(child, false);
       } else {
-        let cBoundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": objectId}));
+        let cBoundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": objectId}));
         let members = cBoundary.member.slice();
         let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["i" /* generateObjectId */])("B");
         cBoundary.id = cBoundaryId;
         cBoundary.parent = this.id;
         cBoundary.member = [];
+        cBoundary.x = cBoundary.x + 5;
+        cBoundary.y = cBoundary.y + 5;
         let child = {id: cBoundaryId, type: "B", show: true};
         this.boundaryMgmt.create(cBoundary);
-        this.addMemberToBoundary(child);
+        this.addMemberToBoundary(child, false);
 
         let boundaryObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, { "id": cBoundaryId });
         if (members.length > 0)
@@ -54496,15 +54502,26 @@ class Boundary {
    * Delete boundary and all elements of it
    * Above vertex or boundary (Event child of boundary)
    */
-  async deleteAll() {
-    // Case that delete child boundary nested in boundary
-    if(!__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.parent}`).empty()){
-      let parentObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": this.parent});
-      parentObj.removeMemberFromBoundary(this);
-    }
+  deleteAll() {
 
+    this.doDeleteAll();
+
+    let ancestor = this.findAncestorOfMemberInNestedBoundary();
+    ancestor.updateSize();
+    ancestor.reorderPositionMember();
+
+    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+  }
+
+  doDeleteAll(){
     // Remove child of boundary
-    await this.removeChildElementsBoundary();
+    this.removeChildElementsBoundary();
+
+     // Case that delete child boundary nested in boundary
+     if(this.parent){
+      let parentObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": this.parent});
+      parentObj.removeMemberFromBoundary(this, false);
+    }
 
     // Remove from DOM
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.id}`).remove();
@@ -54513,24 +54530,19 @@ class Boundary {
     __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.remove(this.dataContainer.boundary, (e) => {
       return e.id === this.id;
     });
-
-    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
 
   /**
    * Remove boundary element by id
    */
   remove() {
-    // Set visible all child
-    this.member.forEach(mem => {
-      this.selectMemberVisible(mem, true);
-    });
+
+    this.selectAllMemberVisible(true, false);
 
     if (this.parent){
       let parentObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary,{"id": this.parent});
-      parentObj.removeMemberFromBoundary(this);
+      parentObj.removeMemberFromBoundary(this, false);
     }
-      
 
     // Remove from DOM
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.id}`).remove();
@@ -54543,37 +54555,39 @@ class Boundary {
     // Reset child parent
     this.resetParentForChildBoundary();
 
-    // Remove from data container
+    let ancestor = this.findAncestorOfMemberInNestedBoundary();
+    ancestor.updateSize();
+    ancestor.reorderPositionMember();
     Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
 
-
   /**
- * Remove child boundary
- */
+   * Remove child boundary
+   */
   removeChildElementsBoundary() {
     // Get child of boundary
-    const  member  = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(this.member);
+    const  member  = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(this.member);
     member.forEach(mem => {
       if (mem.type=="V") {
         //need to put deleteVertex function
         let memObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, {"id": mem.id})
-        this.removeMemberFromBoundary(memObj);
+        this.removeMemberFromBoundary(memObj, false);
         memObj.delete();
       } else {
         // Remove all child boundary
         let memObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": mem.id})
-        memObj.deleteAll();
+        memObj.doDeleteAll();
       }
     });
   }
 
   /**
- * Selecte member show or hidden
- * @param child
- * @param status
- */
-  async selectMemberVisible(child, status) {
+   * Selecte member show or hidden
+   * @param child
+   * @param status
+   * @param isEffectToParent
+   */
+  async selectMemberVisible(child, status, isEffectToParent = true) {
     const { id: idChild, type } = child;
 
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${idChild}`).classed('hidden-object', !status);
@@ -54585,33 +54599,42 @@ class Boundary {
       // Set show|hide for edge related
       // Need to work on edge
       this.boundaryMgmt.vertexMgmt.hideAllEdgeRelatedToVertex(idChild, status);
-      
-      let vertexObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, {"id": idChild});
-      this.boundaryMgmt.vertexMgmt.updatePathConnectForVertex(vertexObj, status);
 
     }else if (type === "B"){
       // TO-DO: Need improve this code
       let childObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": child.id});
-      childObj.setObjectShowHide(status);
+      await childObj.setObjectShowHide(status);
     }
 
-    await this.updateSize();
-
-    if (this.parent) {
+    if (isEffectToParent){
       let ancestor = await this.findAncestorOfMemberInNestedBoundary();
+      await ancestor.updateSize();
       await ancestor.reorderPositionMember();
-    }else{
-      await this.reorderPositionMember();
+  
+      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
     }
-
-    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
+
+  async selectAllMemberVisible(status, isEffectToParent = true){
+    this.member.forEach(e => {
+      this.selectMemberVisible(e, status, false);
+    });
+
+    if (isEffectToParent){
+      let ancestor = await this.findAncestorOfMemberInNestedBoundary();
+      await ancestor.updateSize();
+      await ancestor.reorderPositionMember();
+
+      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+    }
+  }
+
   /**
- * Update status for child boundary
- * child match with childId
- * @param childId
- * @param status
- */
+   * Update status for child boundary
+   * child match with childId
+   * @param childId
+   * @param status
+   */
   setBoundaryMemberStatus(childId, status) {
     let select = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.member, (e) => {
       return e.id === childId;
@@ -54622,14 +54645,12 @@ class Boundary {
   }
 
   /**
- * When unslect/select a boundary (in nested boundary) then set it hidden/show
- * and set all child hidden/show
- * and resize boundary
- * @param status
- */
+   * When unslect/select a boundary (in nested boundary) then set it hidden/show
+   * and set all child hidden/show
+   * and resize boundary
+   * @param status
+   */
   async setObjectShowHide(status) {
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.id}`).classed('hidden-object', !status);
-
     // Loop child    
     this.member.forEach(member => {
       this.setBoundaryMemberStatus(member.id, status);
@@ -54651,8 +54672,8 @@ class Boundary {
   }
 
     /**
-   * Reset parent for child boundary when it deleted
-   */
+     * Reset parent for child boundary when it deleted
+     */
   resetParentForChildBoundary() {
     // Get child of boundary
     this.member.forEach(mem => {
@@ -54684,7 +54705,7 @@ class Boundary {
     });
   }
 
-    /**
+  /**
    * Move boundary with specified offset
    * @param {*} offsetX
    * @param {*} offsetY
@@ -54701,7 +54722,7 @@ class Boundary {
 
   changeIndexMemberToBoundary( indexOld, indexNew) {
     Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["b" /* arrayMove */])(this.member, indexOld, indexNew);
-    this.reorderPositionMember();    
+    this.reorderPositionMember();
   }
 
   /**
@@ -54716,21 +54737,39 @@ class Boundary {
     Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
 
-  async removeMemberFromBoundary( obj ) {
+  async removeMemberFromBoundary( obj, isEffectToParent = true ) {
     __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.remove(this.member, (e) => {
       return e.id === obj.id;
     });
 
-    // Resize parent and child of parent
-    this.updateSize();
-    
     // Resize ancestor of parent
-    if (this.parent) {
-      let ancestor = await this.findAncestorOfMemberInNestedBoundary();
-      await ancestor.reorderPositionMember();
-    }else{
-      await this.reorderPositionMember();
+    if (isEffectToParent){
+        let ancestor = await this.findAncestorOfMemberInNestedBoundary();
+        await ancestor.updateSize();
+        await ancestor.reorderPositionMember();
     }
+  }
+
+  moveToFront(){
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.id}`).moveToFront();
+
+    if (this.dataContainer.boundary.length > 1){
+      let curIndex = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.findIndex(this.dataContainer.boundary, {"id": this.id});
+
+      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["b" /* arrayMove */])(this.dataContainer.boundary, curIndex, this.dataContainer.boundary.length - 1);
+    }
+    
+    let memObj = null;
+    this.member.forEach(e => {
+      if (e.type == "V"){
+        memObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, {"id": e.id});
+      }else{
+        memObj = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": e.id});
+      }
+      
+      if (memObj)
+        memObj.moveToFront();
+    });
   }
 }
 
@@ -54791,22 +54830,22 @@ class BoundaryMenu {
             "editBoundary": {
               name: "Edit Boundary Info",
               icon: "fa-pencil-square-o",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "editBoundary")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "editBoundary")
             },
             "removeBoundary": {
               name: "Delete",
               icon: "fa-times",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "removeBoundary")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "removeBoundary")
             },
             "copyAllBoundary": {
               name: "Copy All",
               icon: "fa-files-o",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "copyAllBoundary")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "copyAllBoundary")
             },
             "deleteAllBoundary": {
               name: "Delete All",
               icon: "fa-square-o",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode, "deleteAllBoundary")
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_1__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "deleteAllBoundary")
             }
           }
         }
@@ -54869,7 +54908,7 @@ class BoundaryMenuItems {
 
       subItems["showAll"] = {
         name: `Show all`, type: 'checkbox', events: {
-          click: this.handleOnSelectAll( boundaryObj, member )
+          click: this.handleOnSelectAll( boundaryObj )
         }
       };
 
@@ -54881,7 +54920,7 @@ class BoundaryMenuItems {
         subItems[`${id}`] = {
           name: `${name}`, type: 'checkbox', events: {
             click: (e) => {
-              this.setStateForShowAllCheckBox(e.target);
+              this.setStateForShowAllCheckBox(boundaryObj, e.target);
               boundaryObj.selectMemberVisible(mem, e.target.checked);
             }
           }
@@ -54908,7 +54947,7 @@ class BoundaryMenuItems {
    * @param {*} boundaryId
    * @param {*} member
    */
-  handleOnSelectAll( boundary, member ) {
+  handleOnSelectAll( boundary ) {
     return function(e) {
       let listBox = $(this).closest('ul').find(`li`).find(`input:checkbox`);
 
@@ -54917,17 +54956,19 @@ class BoundaryMenuItems {
         let element = listBox[i];
         if(element.name.indexOf("showAll") == -1 && element.checked != e.target.checked){
           element.checked = e.target.checked;
-          boundary.selectMemberVisible(member[i-1], e.target.checked);
         }
       }
+
+      boundary.selectAllMemberVisible(e.target.checked);
     }
   }
 
   /**
    * Change the state of Show all checkbox when others changed
+   * @param {*} boundary
    * @param {*} owner
    */
-  setStateForShowAllCheckBox(owner){
+  setStateForShowAllCheckBox(boundary, owner){
     let arrItem = $(owner).closest('ul').find(`li`).find(`input:checkbox`);
     let length = arrItem.length;
     let showAllItem;
@@ -55872,7 +55913,7 @@ exports = module.exports = __webpack_require__(863)(false);
 
 
 // module
-exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: #ffffff;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: #000000;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181c1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #ffffff !important; }\n  .btn-etc:hover {\n    background: #4181c1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .checkbox_center, .dialog-wrapper .dialog-search table .col_header {\n      height: 26px;\n      text-align: center; }\n    .dialog-wrapper .dialog-search table .col_header {\n      background-color: #336699;\n      color: #ffffff; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border-collapse: collapse;\n    border-spacing: 0 0.5em;\n    margin: 5px 0px 10px; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper select, .dialog-wrapper textarea {\n    height: 29px;\n    border-color: #b8d6f6;\n    background-color: #ffffff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus, .dialog-wrapper textarea:hover, .dialog-wrapper textarea :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper textarea {\n    height: 100%;\n    resize: none; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important; }\n  .dialog-wrapper .full-width {\n    width: 100%; }\n  .dialog-wrapper .input-group-addon {\n    font-size: 12px;\n    border-radius: 0px; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: #f5f5f5; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: #f5f5f5 solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555555; }\n\nbody {\n  overflow: hidden; }\n\n.container-svg {\n  top: 0;\n  bottom: 0;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .container-svg .svg {\n    width: 100%;\n    min-height: 2000px; }\n\n.left-svg {\n  left: 0;\n  width: calc(100% / 3);\n  border-right: 1px solid #c5c5c5; }\n\n.middle-svg {\n  left: calc(100% / 3);\n  width: calc(100% / 3);\n  border-right: 1px solid #c5c5c5; }\n\n.right-svg {\n  left: calc(100% - (100% / 3));\n  width: calc(100% / 3); }\n\n.connect-svg {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  pointer-events: none; }\n\n.graphContainer {\n  right: 0px;\n  left: 0px;\n  top: 0px;\n  bottom: 0px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .graphContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 2000px;\n    position: absolute; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n  .container-file .fa-folder-open-o:hover {\n    color: #66afe9; }\n  .container-file .icon-folder-file-mgmt {\n    position: absolute;\n    width: 30px;\n    height: 30px;\n    bottom: 10px;\n    right: 12px;\n    font-size: 30px; }\n  .container-file .file-mgmt {\n    box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n    position: relative;\n    background-color: #ffffff;\n    display: none;\n    z-index: 10000; }\n    .container-file .file-mgmt .form-horizontal {\n      margin: 10px 0; }\n      .container-file .file-mgmt .form-horizontal .group-type-file-input .form-control {\n        width: 50%; }\n\n.hidden-object {\n  display: none; }\n\n.edge {\n  outline: none; }\n  .edge:focus {\n    outline: none; }\n\n.dummy-edge {\n  display: none;\n  stroke: #000000;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.stroke-dasharray {\n  stroke-dasharray: 3 3; }\n\n.edge-hide {\n  outline: none;\n  stroke-width: 8;\n  visibility: visible;\n  opacity: 0;\n  cursor: crosshair; }\n  .edge-hide:hover {\n    stroke-width: 8;\n    cursor: crosshair; }\n  .edge-hide:focus {\n    stroke-width: 8;\n    cursor: crosshair; }\n\n.hide {\n  stroke: #ffffff; }\n\n.hide-edge-on-menu-items {\n  display: none; }\n\n.hide-edge-on-parent-scroll {\n  display: none; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black;\n  font-size: 13px;\n  background: #ffffff; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid #000000;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n  .vertex_data div .key {\n    width: 85px;\n    text-align: right;\n    font-weight: 300;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 85px; }\n  .vertex_data div .data {\n    font-weight: 300;\n    width: calc(100% - 85px);\n    margin-left: 5px;\n    border: none;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: calc(100% - 85px); }\n\n.drag_connect:hover {\n  outline: -webkit-focus-ring-color auto; }\n\n.drag_connect:focus {\n  outline: -webkit-focus-ring-color auto; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  color: #ffffff;\n  border-bottom: none;\n  margin: 0;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border-left: none;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px;\n  fill-opacity: .5;\n  cursor: pointer; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #dddddd;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #e1d5e7;\n  border: none; }\n\n.context-menu-item .context-menu-list {\n  max-height: 300px;\n  overflow-y: auto; }\n  .context-menu-item .context-menu-list li {\n    background: none; }\n    .context-menu-item .context-menu-list li select option:hover {\n      box-shadow: 0 0 10px 100px #2980b9 inset; }\n\n.context-menu-item label {\n  font-weight: 300 !important; }\n\n.context-menu-item button, .context-menu-item input, .context-menu-item select, .context-menu-item textarea {\n  line-height: normal !important; }\n", ""]);
+exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: #ffffff;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: #000000;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181c1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #ffffff !important; }\n  .btn-etc:hover {\n    background: #4181c1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .checkbox_center, .dialog-wrapper .dialog-search table .col_header {\n      height: 26px;\n      text-align: center; }\n    .dialog-wrapper .dialog-search table .col_header {\n      background-color: #336699;\n      color: #ffffff; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border-collapse: collapse;\n    border-spacing: 0 0.5em;\n    margin: 5px 0px 10px; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper select, .dialog-wrapper textarea {\n    height: 29px;\n    border-color: #b8d6f6;\n    background-color: #ffffff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus, .dialog-wrapper textarea:hover, .dialog-wrapper textarea :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper textarea {\n    height: 100%;\n    resize: none; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important; }\n  .dialog-wrapper .full-width {\n    width: 100%; }\n  .dialog-wrapper .input-group-addon {\n    font-size: 12px;\n    border-radius: 0px; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: #f5f5f5; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: #f5f5f5 solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555555; }\n\nbody {\n  overflow: hidden; }\n\n.container-svg {\n  top: 0;\n  bottom: 0;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .container-svg .svg {\n    width: 100%;\n    min-height: 2000px; }\n\n.left-svg {\n  left: 0;\n  width: calc(100% / 3);\n  border-right: 1px solid #c5c5c5; }\n\n.middle-svg {\n  left: calc(100% / 3);\n  width: calc(100% / 3);\n  border-right: 1px solid #c5c5c5; }\n\n.right-svg {\n  left: calc(100% - (100% / 3));\n  width: calc(100% / 3); }\n\n.connect-svg {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  pointer-events: none; }\n\n.graphContainer {\n  right: 0px;\n  left: 0px;\n  top: 0px;\n  bottom: 0px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .graphContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 2000px;\n    position: absolute; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n  .container-file .fa-folder-open-o:hover {\n    color: #66afe9; }\n  .container-file .icon-folder-file-mgmt {\n    position: absolute;\n    width: 30px;\n    height: 30px;\n    bottom: 10px;\n    right: 12px;\n    font-size: 30px; }\n  .container-file .file-mgmt {\n    box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n    position: relative;\n    background-color: #ffffff;\n    display: none;\n    z-index: 10000; }\n    .container-file .file-mgmt .form-horizontal {\n      margin: 10px 0; }\n      .container-file .file-mgmt .form-horizontal .group-type-file-input .form-control {\n        width: 50%; }\n\n.hidden-object {\n  display: none; }\n\n.edge {\n  outline: none; }\n  .edge:focus {\n    outline: none; }\n\n.dummy-edge {\n  display: none;\n  stroke: #000000;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.stroke-dasharray {\n  stroke-dasharray: 3 3; }\n\n.edge-hide {\n  outline: none;\n  stroke-width: 8;\n  visibility: visible;\n  opacity: 0;\n  cursor: crosshair; }\n  .edge-hide:hover {\n    stroke-width: 8;\n    cursor: crosshair; }\n  .edge-hide:focus {\n    stroke-width: 8;\n    cursor: crosshair; }\n\n.hide {\n  stroke: #ffffff; }\n\n.hide-edge-on-menu-items {\n  display: none; }\n\n.hide-edge-on-parent-scroll {\n  display: none; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black;\n  font-size: 13px;\n  background: #ffffff; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid #000000;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n  .vertex_data div .key {\n    width: 85px;\n    text-align: right;\n    font-weight: 300;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 85px; }\n  .vertex_data div .data {\n    font-weight: 300;\n    width: calc(100% - 85px);\n    margin-left: 5px;\n    border: none;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: calc(100% - 85px); }\n\n.drag_connect:hover {\n  outline: -webkit-focus-ring-color auto; }\n\n.drag_connect:focus {\n  outline: -webkit-focus-ring-color auto; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  color: #ffffff;\n  border-bottom: none;\n  margin: 0;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border-left: none;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px;\n  fill-opacity: .5;\n  cursor: pointer; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #dddddd;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #e1d5e7;\n  border: none; }\n\n.context-menu-item .context-menu-list {\n  max-height: 300px;\n  max-width: 175px;\n  overflow-y: auto; }\n  .context-menu-item .context-menu-list li {\n    background: none; }\n    .context-menu-item .context-menu-list li select option:hover {\n      box-shadow: 0 0 10px 100px #2980b9 inset; }\n\n.context-menu-item label {\n  font-weight: 300 !important; }\n\n.context-menu-item button, .context-menu-item input, .context-menu-item select, .context-menu-item textarea {\n  line-height: normal !important; }\n", ""]);
 
 // exports
 
@@ -56739,7 +56780,7 @@ class CltMessageMapping {
     this.objectUtils.initListenerContainerScroll(this.inputMessageContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     this.objectUtils.initListenerContainerScroll(this.operationsContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     this.objectUtils.initListenerContainerScroll(this.outputMessageContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
-    this.objectUtils.initListenerOnWindowResize(this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
+    this.initListenerOnWindowResize();
   };
 
   initSvgHtml(){
@@ -56776,6 +56817,18 @@ class CltMessageMapping {
         this.parentNode.firstChild && this.parentNode.insertBefore(this, this.parentNode.firstChild);
       });
     };
+  }
+
+  initListenerOnWindowResize() {
+    $(window).resize(() => {
+      this.inputMgmt.setCenterAlignmentGarph();
+      this.outputMgmt.setCenterAlignmentGarph();
+      
+      //update all edges for Operations area
+      this.storeOperations.vertex.forEach(e => {
+        e.updatePathConnect();
+      })
+    });
   }
 
   async LoadInputMessage(graphData){
@@ -57447,7 +57500,7 @@ class InputMgmt {
     this.containerId = props.containerId;
     this.svgId = props.svgId;
     this.isShowReduced = false;
-    this.viewMode = __WEBPACK_IMPORTED_MODULE_4__common_const_index__["n" /* VIEW_MODE */].SHOW_ONLY;
+    this.viewMode = {value: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["n" /* VIEW_MODE */].INPUT_MESSAGE};
 
     this.initialize();
   }
@@ -57524,6 +57577,8 @@ class InputMgmt {
       if (this.dataContainer.boundary.length > 0)
         await this.dataContainer.boundary[0].updateHeightBoundary();
     }
+
+    this.setCenterAlignmentGarph();
   }
 
   clearAll() {
@@ -57541,6 +57596,34 @@ class InputMgmt {
   showFull(){
     this.isShowReduced = false;
     this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+  }
+
+  /**
+   * set position graph by center align
+   */
+  setCenterAlignmentGarph(){
+    let parentBoundary = _.find(this.dataContainer.boundary, {"parent": null});
+
+    let rightScrollWidth = 10;
+    let alignOffset = 5;
+
+    let newX = alignOffset;
+    let newY = alignOffset;
+
+    if (parentBoundary){
+      let containerRect  = $(`#${parentBoundary.svgId}`)[0].parentNode.getBoundingClientRect();
+
+      if ( containerRect.width - rightScrollWidth  - alignOffset >= parentBoundary.width ){
+        newX = newX + ((containerRect.width - rightScrollWidth  - alignOffset - parentBoundary.width) / 2)
+      }
+    }
+
+    let offsetX = newX - parentBoundary.x;
+    let offsetY = newY - parentBoundary.y;
+
+    if (offsetX != 0 || offsetY != 0){
+      parentBoundary.move(offsetX, offsetY);
+    }
   }
 }
 
@@ -57576,7 +57659,7 @@ class OutputMgmt {
     this.containerId = props.containerId;
     this.svgId = props.svgId;
     this.isShowReduced = false;
-    this.viewMode = __WEBPACK_IMPORTED_MODULE_4__common_const_index__["n" /* VIEW_MODE */].SHOW_ONLY;
+    this.viewMode = {value: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["n" /* VIEW_MODE */].OUTPUT_MESSAGE};
     
     this.initialize();
   }
@@ -57654,6 +57737,8 @@ class OutputMgmt {
       if (this.dataContainer.boundary.length > 0)
         await this.dataContainer.boundary[0].updateHeightBoundary();
     }
+
+    this.setCenterAlignmentGarph();
   }
 
   clearAll() {
@@ -57671,6 +57756,34 @@ class OutputMgmt {
   showFull(){
     this.isShowReduced = false;
     this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+  }
+
+  /**
+   * set position graph by center align
+   */
+  setCenterAlignmentGarph(){
+    let parentBoundary = _.find(this.dataContainer.boundary, {"parent": null});
+
+    let rightScrollWidth = 10;
+    let alignOffset = 5;
+
+    let newX = alignOffset;
+    let newY = alignOffset;
+
+    if (parentBoundary){
+      let containerRect  = $(`#${parentBoundary.svgId}`)[0].parentNode.getBoundingClientRect();
+
+      if ( containerRect.width - rightScrollWidth  - alignOffset >= parentBoundary.width ){
+        newX = newX + ((containerRect.width - rightScrollWidth  - alignOffset - parentBoundary.width) / 2)
+      }
+    }
+
+    let offsetX = newX - parentBoundary.x;
+    let offsetY = newY - parentBoundary.y;
+
+    if (offsetX != 0 || offsetY != 0){
+      parentBoundary.move(offsetX, offsetY);
+    }
   }
 }
 
@@ -57704,7 +57817,7 @@ class OperationsMgmt {
     this.vertexDefinition = props.vertexDefinition;
     this.svgId = props.svgId;
     this.containerId = props.containerId;
-    this.viewMode = __WEBPACK_IMPORTED_MODULE_4__common_const_index__["n" /* VIEW_MODE */].OPERATIONS;
+    this.viewMode = {value: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["n" /* VIEW_MODE */].OPERATIONS};
 
     this.initialize();
   }

@@ -4,7 +4,8 @@ import {
   PADDING_POSITION_SVG,
   VERTEX_ATTR_SIZE,
   TYPE_CONNECT,
-  COMMON_DATA
+  COMMON_DATA,
+  BOUNDARY_ATTR_SIZE
 } from '../const/index';
 import { setMinBoundaryGraph } from './common.ult';
 
@@ -118,7 +119,7 @@ class ObjectUtils {
         if (height >= boundaryBox.height){
           //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
           boundary.ctrlSrcHeight = boundary.height;
-          boundary.setHeight(height + 43);
+          boundary.setHeight(BOUNDARY_ATTR_SIZE.HEADER_HEIGHT + height + 20);
         }
 
         if (width >= boundaryBox.width){
@@ -549,7 +550,7 @@ class ObjectUtils {
         let newY = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * newIndexOfPropInVertex + 1;
 
         //update position of "rect"
-        d3.select(`#${vertex.id}`).select(`:not(.property)[prop=${prop}]`).attr("y", newY);
+        d3.select(`#${vertex.id}`).selectAll(`:not(.property)[prop=${prop}]`).attr("y", newY);
       }
     }
   }

@@ -44,7 +44,7 @@ class BoundaryMenuItems {
 
       subItems["showAll"] = {
         name: `Show all`, type: 'checkbox', events: {
-          click: this.handleOnSelectAll( boundaryObj, member )
+          click: this.handleOnSelectAll( boundaryObj )
         }
       };
 
@@ -56,7 +56,7 @@ class BoundaryMenuItems {
         subItems[`${id}`] = {
           name: `${name}`, type: 'checkbox', events: {
             click: (e) => {
-              this.setStateForShowAllCheckBox(e.target);
+              this.setStateForShowAllCheckBox(boundaryObj, e.target);
               boundaryObj.selectMemberVisible(mem, e.target.checked);
             }
           }
@@ -83,7 +83,7 @@ class BoundaryMenuItems {
    * @param {*} boundaryId
    * @param {*} member
    */
-  handleOnSelectAll( boundary, member ) {
+  handleOnSelectAll( boundary ) {
     return function(e) {
       let listBox = $(this).closest('ul').find(`li`).find(`input:checkbox`);
 
@@ -92,17 +92,19 @@ class BoundaryMenuItems {
         let element = listBox[i];
         if(element.name.indexOf("showAll") == -1 && element.checked != e.target.checked){
           element.checked = e.target.checked;
-          boundary.selectMemberVisible(member[i-1], e.target.checked);
         }
       }
+
+      boundary.selectAllMemberVisible(e.target.checked);
     }
   }
 
   /**
    * Change the state of Show all checkbox when others changed
+   * @param {*} boundary
    * @param {*} owner
    */
-  setStateForShowAllCheckBox(owner){
+  setStateForShowAllCheckBox(boundary, owner){
     let arrItem = $(owner).closest('ul').find(`li`).find(`input:checkbox`);
     let length = arrItem.length;
     let showAllItem;

@@ -145,7 +145,7 @@ class VertexMgmt {
 
   bindEventForPopupVertex() {
 
-    if (checkModePermission(this.viewMode, "vertexBtnConfirm")){
+    if (checkModePermission(this.viewMode.value, "vertexBtnConfirm")){
       $(`#vertexBtnConfirm_${this.svgId}`).click(() => {
         this.confirmEditVertexInfo();
       });
@@ -200,6 +200,8 @@ class VertexMgmt {
       // Resize boundary when vertex dragged
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
+
+      d.moveToFront();
     }
   }
 
@@ -353,7 +355,7 @@ class VertexMgmt {
     }
     PopUtils.metSetShowPopup(options);
 
-    if (!checkModePermission(this.viewMode, "vertexBtnConfirm")){
+    if (!checkModePermission(this.viewMode.value, "vertexBtnConfirm")){
       $(`#vertexBtnAdd_${this.svgId}`).hide();
       $(`#vertexBtnDelete_${this.svgId}`).hide();
       $(`#vertexBtnConfirm_${this.svgId}`).hide();
@@ -729,8 +731,8 @@ class VertexMgmt {
     if (parent){
       let parentObj = _.find(this.dataContainer.boundary, {"id": parent});
       let ancesstor = await parentObj.findAncestorOfMemberInNestedBoundary();
-      parentObj.updateSize();
-      ancesstor.reorderPositionMember();
+      await ancesstor.updateSize();
+      await ancesstor.reorderPositionMember();
     }
     
     setMinBoundaryGraph(this.dataContainer, this.svgId);

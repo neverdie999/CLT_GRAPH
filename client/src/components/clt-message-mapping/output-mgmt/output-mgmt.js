@@ -20,7 +20,7 @@ class OutputMgmt {
     this.containerId = props.containerId;
     this.svgId = props.svgId;
     this.isShowReduced = false;
-    this.viewMode = VIEW_MODE.SHOW_ONLY;
+    this.viewMode = {value: VIEW_MODE.OUTPUT_MESSAGE};
     
     this.initialize();
   }
@@ -98,6 +98,8 @@ class OutputMgmt {
       if (this.dataContainer.boundary.length > 0)
         await this.dataContainer.boundary[0].updateHeightBoundary();
     }
+
+    this.setCenterAlignmentGarph();
   }
 
   clearAll() {
@@ -115,6 +117,34 @@ class OutputMgmt {
   showFull(){
     this.isShowReduced = false;
     this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+  }
+
+  /**
+   * set position graph by center align
+   */
+  setCenterAlignmentGarph(){
+    let parentBoundary = _.find(this.dataContainer.boundary, {"parent": null});
+
+    let rightScrollWidth = 10;
+    let alignOffset = 5;
+
+    let newX = alignOffset;
+    let newY = alignOffset;
+
+    if (parentBoundary){
+      let containerRect  = $(`#${parentBoundary.svgId}`)[0].parentNode.getBoundingClientRect();
+
+      if ( containerRect.width - rightScrollWidth  - alignOffset >= parentBoundary.width ){
+        newX = newX + ((containerRect.width - rightScrollWidth  - alignOffset - parentBoundary.width) / 2)
+      }
+    }
+
+    let offsetX = newX - parentBoundary.x;
+    let offsetY = newY - parentBoundary.y;
+
+    if (offsetX != 0 || offsetY != 0){
+      parentBoundary.move(offsetX, offsetY);
+    }
   }
 }
 

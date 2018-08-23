@@ -54,7 +54,7 @@ class BoundaryMgmt {
     this.bindEventForPopupBoundary();
 
     // Boundary Menu Items
-    if(checkModePermission(this.viewMode, "isEnableItemVisibleMenu")){
+    if(checkModePermission(this.viewMode.value, "isEnableItemVisibleMenu")){
       new BoundaryMenuItems({
         selector: `.${this.visibleItemSelectorClass}`,
         dataContainer: this.dataContainer
@@ -131,7 +131,7 @@ class BoundaryMgmt {
    */
   bindEventForPopupBoundary() {
 
-    if (checkModePermission(this.viewMode, "boundaryBtnConfirm")){
+    if (checkModePermission(this.viewMode.value, "boundaryBtnConfirm")){
       $(`#boundaryBtnConfirm_${this.svgId}`).click(() => {
         this.confirmEditBoundaryInfo();
       });
@@ -175,6 +175,8 @@ class BoundaryMgmt {
     return function (d) {
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
+      
+      d.moveToFront();
 
       // Storing start position to calculate the offset for moving members to new position
       d.ctrlSrcX = d.x;
@@ -280,7 +282,7 @@ class BoundaryMgmt {
     }
     PopUtils.metSetShowPopup(options);
 
-    if(!checkModePermission(this.viewMode, "boundaryBtnConfirm")){
+    if(!checkModePermission(this.viewMode.value, "boundaryBtnConfirm")){
       $(`#boundaryBtnConfirm_${this.svgId}`).hide();
     }
   }

@@ -12,6 +12,7 @@ import {
   generateObjectId,
   setMinBoundaryGraph,
   checkModePermission,
+  arrayMove,
 } from '../../../common/utilities/common.ult';
 
 const CONNECT_KEY = 'Connected';
@@ -102,7 +103,7 @@ class Vertex {
       .style("pointer-events", "none")
       .attr("class", `${this.selectorClass}`);
 
-      if(checkModePermission(this.viewMode, "isEnableDragVertex")){
+      if(checkModePermission(this.viewMode.value, "isEnableDragVertex")){
         group.call(callbackDragVertex);
       }
 
@@ -233,8 +234,6 @@ class Vertex {
 
     // Remove all edge relate to vertex
     this.vertexMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this);
-
-    setMinBoundaryGraph(this.dataContainer, this.svgId);
   }  
 
   /**
@@ -252,6 +251,16 @@ class Vertex {
 
   updatePathConnect(){
     this.vertexMgmt.updatePathConnectForVertex(this);
+  }
+
+  moveToFront(){
+    d3.select(`#${this.id}`).moveToFront();
+
+    if (this.dataContainer.vertex.length > 1){
+      let curIndex = _.findIndex(this.dataContainer.vertex, {"id": this.id});
+
+      arrayMove(this.dataContainer.vertex, curIndex, this.dataContainer.vertex.length - 1);
+    }
   }
 }
 

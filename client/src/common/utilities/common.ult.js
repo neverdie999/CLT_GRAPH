@@ -253,8 +253,8 @@ export function checkModePermission(viewMode, type){
 
   data[VIEW_MODE.SHOW_ONLY] = [
     'showReduced',
-    'editVertex',
-    'editBoundary', 'isEnableItemVisibleMenu'];
+    'editVertex', 'isEnableDragVertex',
+    'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'];
 
   data[VIEW_MODE.EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
