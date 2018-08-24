@@ -61,6 +61,7 @@ export function getCoorMouseClickRelativeToParent(e, parent) {
  * @param type
  */
 export function generateObjectId(type) {
+  sleep(1);//Prevent duplicate Id
   const date = new Date();
   return `${type}${date.getTime()}`;
 }
@@ -130,6 +131,14 @@ export function setSizeGraph(options, svgId) {
     COMMON_DATA.currentHeight = height + offer;
     $(`#${svgId}`).css("min-height", COMMON_DATA.currentHeight);
   }
+}
+
+export function sleep(millis)
+{
+    var date = new Date();
+    var curDate = null;
+    do { curDate = new Date(); }
+    while(curDate - date < millis);
 }
 
 /**

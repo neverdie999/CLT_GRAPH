@@ -551,6 +551,7 @@ function newInterval(floori, offseti, count, field) {
 /* harmony export (immutable) */ __webpack_exports__["g"] = createPath;
 /* harmony export (immutable) */ __webpack_exports__["b"] = arrayMove;
 /* harmony export (immutable) */ __webpack_exports__["n"] = setSizeGraph;
+/* unused harmony export sleep */
 /* harmony export (immutable) */ __webpack_exports__["m"] = setMinBoundaryGraph;
 /* harmony export (immutable) */ __webpack_exports__["c"] = autoScrollOnMousedrag;
 /* harmony export (immutable) */ __webpack_exports__["o"] = updateSizeGraph;
@@ -618,6 +619,7 @@ function getCoorMouseClickRelativeToParent(e, parent) {
  * @param type
  */
 function generateObjectId(type) {
+  sleep(1);//Prevent duplicate Id
   const date = new Date();
   return `${type}${date.getTime()}`;
 }
@@ -687,6 +689,14 @@ function setSizeGraph(options, svgId) {
     __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight = height + offer;
     $(`#${svgId}`).css("min-height", __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight);
   }
+}
+
+function sleep(millis)
+{
+    var date = new Date();
+    var curDate = null;
+    do { curDate = new Date(); }
+    while(curDate - date < millis);
 }
 
 /**
