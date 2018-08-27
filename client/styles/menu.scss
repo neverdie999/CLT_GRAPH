@@ -1,0 +1,26 @@
+// Fix sub menu list too long
+.context-menu-item {
+  .context-menu-list {
+    max-height: 300px;
+    max-width: 175px;
+    overflow-y: auto;
+    li {
+      background: none;
+      select {
+        option {
+          &:hover {
+            box-shadow: 0 0 10px 100px #2980b9 inset;
+          }
+        }
+      }
+    }
+  }
+
+  label {
+    font-weight: 300 !important;
+  }
+
+  button, input, select, textarea {
+    line-height: normal !important;
+  }
+}

@@ -1,6 +1,6 @@
 import {
   POPUP_CONFIG,
-} from '../../const/index';
+} from '../const/index';
 
 class PopUtils {
   metSetShowPopup(options) {
