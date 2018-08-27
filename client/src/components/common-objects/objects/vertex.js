@@ -100,7 +100,6 @@ class Vertex {
       .enter().append("g")
       .attr("transform", `translate(${this.x}, ${this.y})`)
       .attr("id", this.id)
-      .style("pointer-events", "none")
       .attr("class", `${this.selectorClass}`);
 
       if(checkModePermission(this.viewMode.value, "isEnableDragVertex")){
@@ -130,7 +129,7 @@ class Vertex {
           style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px;
           background-color: ${this.colorHash.hex(this.name)};
           cursor: move; pointer-events: all">${this.name}</p>
-        <div class="vertex_data" style="pointer-events: none">
+        <div class="vertex_data">
           ${htmlContent}
         </div>
       `);

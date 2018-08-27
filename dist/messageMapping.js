@@ -53907,7 +53907,6 @@ class Vertex {
       .enter().append("g")
       .attr("transform", `translate(${this.x}, ${this.y})`)
       .attr("id", this.id)
-      .style("pointer-events", "none")
       .attr("class", `${this.selectorClass}`);
 
       if(Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "isEnableDragVertex")){
@@ -53937,7 +53936,7 @@ class Vertex {
           style="height: ${__WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px;
           background-color: ${this.colorHash.hex(this.name)};
           cursor: move; pointer-events: all">${this.name}</p>
-        <div class="vertex_data" style="pointer-events: none">
+        <div class="vertex_data">
           ${htmlContent}
         </div>
       `);
