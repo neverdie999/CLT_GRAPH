@@ -135,6 +135,7 @@ class ObjectUtils {
    * Check drag outside boundary
    */
   checkDragObjectOutsideBoundary(obj) {
+
     // Get box object
     const {id, parent} = obj;
     let {height, width} = this.getBBoxObject(`#${id}`);
@@ -150,12 +151,11 @@ class ObjectUtils {
     let yParent = y + pBox.height;
 
     // Check drag outside a boundary
-    // if ((xSrc < x) || (ySrc < y) || (wBSrc > xParent) || (hBSrc > yParent)) {
-    //Change condition object out boundary parent
     if ((( wBSrc < x) || ( xParent < xSrc )) || ((hBSrc < y ) || ( yParent < ySrc ))) {
       let parentObj = _.find(obj.dataContainer.boundary,{"id": parent});
       parentObj.removeMemberFromBoundary(obj);
       obj.parent = null;
+      
       return true;
     }
 
@@ -164,7 +164,8 @@ class ObjectUtils {
 
   // Check drag inside boundary
   checkDragObjectInsideBoundary(obj, type) {
-    // Get box object
+
+    let bIsInside = false;
     // Get box object
     const {height, width} = this.getBBoxObject(`#${obj.id}`);
     let xSrc = obj.x;
@@ -185,8 +186,6 @@ class ObjectUtils {
     // then it will be added to => regulation add to the highest boundary
     let reverseBoundary = reverse(obj.dataContainer.boundary);
     reverseBoundary.forEach((item) => {
-      // The condition d.id != srcInfos.id used to check inside boundary
-      // But it not affect to check inside vertex
       if (!item.parent && item.id != obj.id && !obj.parent) {
         // Calculate box for boundary
         let xTar = item.x;
@@ -199,21 +198,23 @@ class ObjectUtils {
           let index = this.getIndexFromPositionForObject(item, obj);
           item.addMemberToBoundaryWithIndex( obj, index );
           obj.parent = item.id;
+
+          bIsInside = true;
         }
       }
     });
+
+    return bIsInside;
   }
 
   /**
-   * @param srcInfos Object drag
-   * @param type type of object drag
+   * @param obj Object drag
    * Function using change index of object in boundary parent when drag in boundary
    */
   changeIndexInBoundaryForObject(obj) {
     const {parent} = obj;
     let parentObj = _.find(obj.dataContainer.boundary, {"id": parent});
     let indexOld = this.getIndexBy(parentObj.member, "id", obj.id);
-    // let member = { id, type, show: true };
     let indexNew = this.getIndexFromPositionForObject(parentObj, obj);
     parentObj.changeIndexMemberToBoundary(indexOld, indexNew);
     obj.parent = parent;
@@ -222,7 +223,7 @@ class ObjectUtils {
   /**
    * Get index of object from drop position
    * @param parentObj boundary tagert drop
-   * @param srcInfos Object drap
+   * @param obj Object drap
    * Function using get index for insert to boundary
    */
   getIndexFromPositionForObject(parentObj, obj) {

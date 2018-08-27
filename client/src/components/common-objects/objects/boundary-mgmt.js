@@ -210,17 +210,21 @@ class BoundaryMgmt {
         // Transform group
         d3.select(this).attr("transform", "translate(" + [d.x, d.y] + ")");
 
-        // Update position of child element
-        if (d.member.length > 0)
-          d.moveMember(offsetX, offsetY);
-
         if (d.parent) {
           //If object not out boundary parent , object change postion in boundary parent, so change index object
           if (main.objectUtils.checkDragObjectOutsideBoundary(d) == false) {
             main.objectUtils.changeIndexInBoundaryForObject(d, "B");
+          }else{
+            // Update position of child element
+            if (d.member.length > 0)
+              d.moveMember(offsetX, offsetY);
           }
         } else {
-          main.objectUtils.checkDragObjectInsideBoundary(d, "B");
+          if (main.objectUtils.checkDragObjectInsideBoundary(d, "B") == false){
+            // Update position of child element
+            if (d.member.length > 0)
+              d.moveMember(offsetX, offsetY);
+          }
         }
       }
 
