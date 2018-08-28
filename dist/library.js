@@ -20449,7 +20449,7 @@ class ObjectUtils {
   onContainerSvgScroll(pSvgId, edgeMgmt, arrDataContainer) {
 
     if (edgeMgmt.isSelectingEdge()){
-      edgeMgmt.cancelSelectingEdge();
+      edgeMgmt.cancleSelectedPath();
     }
 
     let vertices = [];
@@ -20500,6 +20500,11 @@ class ObjectUtils {
 
   initListenerOnWindowResize(edgeMgmt, arrDataContainer) {
     $(window).resize(() => {
+      
+      if(edgeMgmt.isSelectingEdge()){
+        edgeMgmt.cancleSelectedPath();
+      }
+
       this.updatePathConnectOnWindowResize(edgeMgmt, arrDataContainer);
     });
   }
@@ -33105,6 +33110,9 @@ class VertexMgmt {
 
   startDrag(main) {
     return function (d) {
+      if (main.edgeMgmt.isSelectingEdge())
+        main.edgeMgmt.cancleSelectedPath();
+
       // Resize boundary when vertex dragged
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
@@ -33899,6 +33907,9 @@ class BoundaryMgmt {
 
   startDrag(main) {
     return function (d) {
+      if (main.vertexMgmt.edgeMgmt.isSelectingEdge())
+        main.vertexMgmt.edgeMgmt.cancleSelectedPath();
+
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
       
@@ -55074,7 +55085,8 @@ class EdgeMgmt {
 
     new __WEBPACK_IMPORTED_MODULE_4__menu_context_edge_menu__["a" /* default */]({
       selector: `.${this.selectorClass}`,
-      dataContainer: this.dataContainer
+      dataContainer: this.dataContainer,
+      edgeMgmt: this
     });
   }
 
@@ -55172,9 +55184,6 @@ class EdgeMgmt {
 
   dragPointStarted(main) {
     return function () {
-      let edgeId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.edgePathId}`).attr('ref');
-      let edgeObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(main.dataContainer.edge, {"id":edgeId});
-      edgeObj.handlerOnClickEdge();
     }
   }
 
@@ -55187,7 +55196,6 @@ class EdgeMgmt {
     return function () {
       let edgeId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.edgePathId}`).attr('ref');
       let edgeObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(main.dataContainer.edge, {"id":edgeId});
-      edgeObj.handlerOnClickEdge();
 
       let pathStr = null;
       let x = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](main.svgSelector.node())[0];
@@ -55229,7 +55237,7 @@ class EdgeMgmt {
         if ((pointType === "O" && edgeObj.target.vertexId == dropVertexId)
             || (pointType === "I" && edgeObj.source.vertexId == dropVertexId)) 
         {
-          edgeObj.handleOnFocusOut();
+          main.handlerOnClickEdge(main.selectingEdge);
           return;
         }
 
@@ -55249,17 +55257,18 @@ class EdgeMgmt {
         newPoint.svgId = svgId;
 
         pointType === "O" ? edgeObj.updatePathConnect({source: newPoint}) : edgeObj.updatePathConnect({target: newPoint});
-
-        edgeObj.handlerOnClickEdge();
-
-      } else {
-        edgeObj.handleOnFocusOut();
       }
+
+      main.handlerOnClickEdge(main.selectingEdge);
     }
   }
 
   startConnect(main) {
     return function () {
+
+      if (main.isSelectingEdge())
+        main.cancleSelectedPath();
+
       main.isCreatingEdge = true;
       let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr("prop");
       let vertexId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id");
@@ -55461,11 +55470,52 @@ class EdgeMgmt {
     return this.selectingEdge != null;
   }
 
-  cancelSelectingEdge(){
-    if (this.selectingEdge) this.selectingEdge.handleOnFocusOut();
+  /**
+   * Handler on click a path connection
+   * @param edgeId
+   * @param source
+   * @param target
+   */
+  handlerOnClickEdge(edge) {
+    this.selectingEdge = edge;
+
+    let selected = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${edge.id}`);
+    let currentPath = selected.attr("d");
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`)
+      .style("display", "block")
+      .moveToFront();
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePathId}`)
+      .style("display", "block")
+      .moveToFront();
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.edgePathId}`)
+      .attr("d", currentPath)
+      .attr("ref", edge.id);
+
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.pointStartId}`)
+      .attr("cx", edge.source.x)
+      .attr("cy", edge.source.y);
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.pointEndId}`)
+      .attr("cx", edge.target.x)
+      .attr("cy", edge.target.y);
   }
 
-  
+  cancleSelectedPath() {
+    this.selectingEdge = null;
+
+    this.hideEdgeGroupPoint();
+    this.hideEdgeGroupPath();
+    
+  }
+
+  hideEdgeGroupPoint(){
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`).style("display", "none");
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`).moveToBack();
+  }
+
+  hideEdgeGroupPath(){
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePathId}`).style("display", "none");
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePathId}`).moveToBack();
+  }
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (EdgeMgmt);
@@ -55564,7 +55614,7 @@ class Edge {
       .style('visibility', 'visible')
       .style('cursor', 'crosshair')
       .on("click", () => {
-        this.handlerOnClickEdge();
+        this.edgeMgmt.handlerOnClickEdge(this);
       })
       .on("focus", () => {
         group.on("keydown", () => {
@@ -55574,9 +55624,6 @@ class Edge {
           }
         })
       })
-      .on("focusout", () => {
-        this.handleOnFocusOut();
-      });
 
     //hidden line, it has larger width for selecting easily
     group.append("path")
@@ -55640,44 +55687,6 @@ class Edge {
   }
 
   /**
-   * Handler on click a path connection
-   * @param edgeId
-   * @param source
-   * @param target
-   */
-  handlerOnClickEdge() {
-    this.edgeMgmt.selectingEdge = this;
-
-    let selected = __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.id}`);
-    let currentPath = selected.attr("d");
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.groupEdgePointId}`)
-      .style("display", "block")
-      .moveToFront();
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.groupEdgePathId}`)
-      .style("display", "block")
-      .moveToFront();
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.edgePathId}`)
-      .attr("d", currentPath)
-      .attr("ref", this.id);
-
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.pointStartId}`)
-      .attr("cx", this.source.x)
-      .attr("cy", this.source.y);
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.pointEndId}`)
-      .attr("cx", this.target.x)
-      .attr("cy", this.target.y);
-  }
-
-  handleOnFocusOut() {
-    this.edgeMgmt.selectingEdge = null;
-
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.groupEdgePathId}`).style("display", "none");
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.groupEdgePointId}`).style("display", "none");
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.groupEdgePointId}`).moveToBack();
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.groupEdgePathId}`).moveToBack();
-  }
-
-  /**
    * Remove edge by id
    * @param edgeId
    */
@@ -55691,6 +55700,9 @@ class Edge {
         return e.id === this.id;
       });
     }
+
+    if (this.edgeMgmt.isSelectingEdge())
+      this.edgeMgmt.cancleSelectedPath();
   }
 
   /**
@@ -55785,6 +55797,7 @@ class EdgeMenu {
   constructor(props) {
     this.dataContainer = props.dataContainer; // a reference to dataContain of Edge
     this.selector = props.selector;
+    this.edgeMgmt = props.edgeMgmt;
     this.initEdgeMenu();
     this.selectedEdge = null;
   }
@@ -55856,7 +55869,7 @@ class EdgeMenu {
               // Get edge notes
               let edgeId = opt.$trigger.attr('ref');
               this.selectedEdge = _.find(this.dataContainer.edge, {"id":edgeId});
-              this.selectedEdge.handlerOnClickEdge();
+              this.edgeMgmt.handlerOnClickEdge(this.selectedEdge);
               $.contextMenu.setInputValues(opt, this.selectedEdge);
             }
           }
@@ -56757,6 +56770,7 @@ class CltGraph {
     this.initCustomFunctionD3();
     this.objectUtils.initListenerContainerScroll(this.graphContainerId, this.edgeMgmt, [this.dataContainer]);
     this.objectUtils.initListenerOnWindowResize(this.edgeMgmt, [this.dataContainer]);
+    this.initOnMouseUpBackground();
   };
 
   initSvgHtml(){
@@ -57315,6 +57329,27 @@ class CltGraph {
 
   setViewMode(viewMode = __WEBPACK_IMPORTED_MODULE_8__common_const_index__["n" /* VIEW_MODE */].EDIT){
     this.viewMode.value = viewMode;
+  }
+
+  initOnMouseUpBackground() {
+    let selector = this.selector.prop("id");
+
+    if (selector == ""){
+      selector = `.${this.selector.prop("class")}`;
+    }else{
+      selector = `#${selector}`;
+    }
+    
+    let tmpEdgeMgmt = this.edgeMgmt;
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](selector).on("mouseup", function(){
+      let mouse = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](this);
+      let elem = document.elementFromPoint(mouse[0], mouse[1]);
+
+      //disable selecting effect if edge is selecting
+      if((!elem || !elem.tagName || elem.tagName != 'path') && tmpEdgeMgmt.isSelectingEdge()) {
+        tmpEdgeMgmt.cancleSelectedPath();
+      }
+    })
   }
 }
   

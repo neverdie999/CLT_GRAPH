@@ -85,6 +85,7 @@ class CltGraph {
     this.initCustomFunctionD3();
     this.objectUtils.initListenerContainerScroll(this.graphContainerId, this.edgeMgmt, [this.dataContainer]);
     this.objectUtils.initListenerOnWindowResize(this.edgeMgmt, [this.dataContainer]);
+    this.initOnMouseUpBackground();
   };
 
   initSvgHtml(){
@@ -643,6 +644,27 @@ class CltGraph {
 
   setViewMode(viewMode = VIEW_MODE.EDIT){
     this.viewMode.value = viewMode;
+  }
+
+  initOnMouseUpBackground() {
+    let selector = this.selector.prop("id");
+
+    if (selector == ""){
+      selector = `.${this.selector.prop("class")}`;
+    }else{
+      selector = `#${selector}`;
+    }
+    
+    let tmpEdgeMgmt = this.edgeMgmt;
+    d3.select(selector).on("mouseup", function(){
+      let mouse = d3.mouse(this);
+      let elem = document.elementFromPoint(mouse[0], mouse[1]);
+
+      //disable selecting effect if edge is selecting
+      if((!elem || !elem.tagName || elem.tagName != 'path') && tmpEdgeMgmt.isSelectingEdge()) {
+        tmpEdgeMgmt.cancleSelectedPath();
+      }
+    })
   }
 }
   

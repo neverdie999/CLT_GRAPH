@@ -173,6 +173,9 @@ class BoundaryMgmt {
 
   startDrag(main) {
     return function (d) {
+      if (main.vertexMgmt.edgeMgmt.isSelectingEdge())
+        main.vertexMgmt.edgeMgmt.cancleSelectedPath();
+
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
       

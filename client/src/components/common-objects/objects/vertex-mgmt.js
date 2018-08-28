@@ -197,6 +197,9 @@ class VertexMgmt {
 
   startDrag(main) {
     return function (d) {
+      if (main.edgeMgmt.isSelectingEdge())
+        main.edgeMgmt.cancleSelectedPath();
+
       // Resize boundary when vertex dragged
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);

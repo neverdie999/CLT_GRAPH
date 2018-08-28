@@ -128,6 +128,7 @@ class CltMessageMapping {
     this.objectUtils.initListenerContainerScroll(this.operationsContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     this.objectUtils.initListenerContainerScroll(this.outputMessageContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     this.initListenerOnWindowResize();
+    this.initOnMouseUpBackground();
   };
 
   initSvgHtml(){
@@ -168,6 +169,11 @@ class CltMessageMapping {
 
   initListenerOnWindowResize() {
     $(window).resize(() => {
+
+      if(this.connectMgmt.edgeMgmt.isSelectingEdge()){
+        this.connectMgmt.edgeMgmt.cancleSelectedPath();
+      }
+
       this.inputMgmt.setCenterAlignmentGarph();
       this.outputMgmt.setCenterAlignmentGarph();
       
@@ -176,6 +182,27 @@ class CltMessageMapping {
         e.updatePathConnect();
       })
     });
+  }
+
+  initOnMouseUpBackground() {
+    let selector = this.selector.prop("id");
+
+    if (selector == ""){
+      selector = `.${this.selector.prop("class")}`;
+    }else{
+      selector = `#${selector}`;
+    }
+    
+    let tmpEdgeMgmt = this.connectMgmt.edgeMgmt;
+    d3.select(selector).on("mouseup", function(){
+      let mouse = d3.mouse(this);
+      let elem = document.elementFromPoint(mouse[0], mouse[1]);
+
+      //disable selecting effect if edge is selecting
+      if((!elem || !elem.tagName || elem.tagName != 'path') && tmpEdgeMgmt.isSelectingEdge()) {
+        tmpEdgeMgmt.cancleSelectedPath();
+      }
+    })
   }
 
   async LoadInputMessage(graphData){
