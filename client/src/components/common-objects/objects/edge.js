@@ -81,7 +81,7 @@ class Edge {
       .style('visibility', 'visible')
       .style('cursor', 'crosshair')
       .on("click", () => {
-        this.handlerOnClickEdge();
+        this.edgeMgmt.handlerOnClickEdge(this);
       })
       .on("focus", () => {
         group.on("keydown", () => {
@@ -91,9 +91,6 @@ class Edge {
           }
         })
       })
-      .on("focusout", () => {
-        this.handleOnFocusOut();
-      });
 
     //hidden line, it has larger width for selecting easily
     group.append("path")
@@ -157,44 +154,6 @@ class Edge {
   }
 
   /**
-   * Handler on click a path connection
-   * @param edgeId
-   * @param source
-   * @param target
-   */
-  handlerOnClickEdge() {
-    this.edgeMgmt.selectingEdge = this;
-
-    let selected = d3.select(`#${this.id}`);
-    let currentPath = selected.attr("d");
-    d3.select(`#${this.groupEdgePointId}`)
-      .style("display", "block")
-      .moveToFront();
-    d3.select(`#${this.groupEdgePathId}`)
-      .style("display", "block")
-      .moveToFront();
-    d3.select(`#${this.edgePathId}`)
-      .attr("d", currentPath)
-      .attr("ref", this.id);
-
-    d3.select(`#${this.pointStartId}`)
-      .attr("cx", this.source.x)
-      .attr("cy", this.source.y);
-    d3.select(`#${this.pointEndId}`)
-      .attr("cx", this.target.x)
-      .attr("cy", this.target.y);
-  }
-
-  handleOnFocusOut() {
-    this.edgeMgmt.selectingEdge = null;
-
-    d3.select(`#${this.groupEdgePathId}`).style("display", "none");
-    d3.select(`#${this.groupEdgePointId}`).style("display", "none");
-    d3.select(`#${this.groupEdgePointId}`).moveToBack();
-    d3.select(`#${this.groupEdgePathId}`).moveToBack();
-  }
-
-  /**
    * Remove edge by id
    * @param edgeId
    */
@@ -208,6 +167,9 @@ class Edge {
         return e.id === this.id;
       });
     }
+
+    if (this.edgeMgmt.isSelectingEdge())
+      this.edgeMgmt.cancleSelectedPath();
   }
 
   /**

@@ -2,6 +2,7 @@ class EdgeMenu {
   constructor(props) {
     this.dataContainer = props.dataContainer; // a reference to dataContain of Edge
     this.selector = props.selector;
+    this.edgeMgmt = props.edgeMgmt;
     this.initEdgeMenu();
     this.selectedEdge = null;
   }
@@ -73,7 +74,7 @@ class EdgeMenu {
               // Get edge notes
               let edgeId = opt.$trigger.attr('ref');
               this.selectedEdge = _.find(this.dataContainer.edge, {"id":edgeId});
-              this.selectedEdge.handlerOnClickEdge();
+              this.edgeMgmt.handlerOnClickEdge(this.selectedEdge);
               $.contextMenu.setInputValues(opt, this.selectedEdge);
             }
           }

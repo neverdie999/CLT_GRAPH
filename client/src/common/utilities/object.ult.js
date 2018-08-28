@@ -325,7 +325,7 @@ class ObjectUtils {
   onContainerSvgScroll(pSvgId, edgeMgmt, arrDataContainer) {
 
     if (edgeMgmt.isSelectingEdge()){
-      edgeMgmt.cancelSelectingEdge();
+      edgeMgmt.cancleSelectedPath();
     }
 
     let vertices = [];
@@ -376,6 +376,11 @@ class ObjectUtils {
 
   initListenerOnWindowResize(edgeMgmt, arrDataContainer) {
     $(window).resize(() => {
+      
+      if(edgeMgmt.isSelectingEdge()){
+        edgeMgmt.cancleSelectedPath();
+      }
+
       this.updatePathConnectOnWindowResize(edgeMgmt, arrDataContainer);
     });
   }

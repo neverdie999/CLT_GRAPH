@@ -57,7 +57,8 @@ class EdgeMgmt {
 
     new EdgeMenu({
       selector: `.${this.selectorClass}`,
-      dataContainer: this.dataContainer
+      dataContainer: this.dataContainer,
+      edgeMgmt: this
     });
   }
 
@@ -155,9 +156,6 @@ class EdgeMgmt {
 
   dragPointStarted(main) {
     return function () {
-      let edgeId = d3.select(`#${main.edgePathId}`).attr('ref');
-      let edgeObj = _.find(main.dataContainer.edge, {"id":edgeId});
-      edgeObj.handlerOnClickEdge();
     }
   }
 
@@ -170,7 +168,6 @@ class EdgeMgmt {
     return function () {
       let edgeId = d3.select(`#${main.edgePathId}`).attr('ref');
       let edgeObj = _.find(main.dataContainer.edge, {"id":edgeId});
-      edgeObj.handlerOnClickEdge();
 
       let pathStr = null;
       let x = d3.mouse(main.svgSelector.node())[0];
@@ -212,7 +209,7 @@ class EdgeMgmt {
         if ((pointType === "O" && edgeObj.target.vertexId == dropVertexId)
             || (pointType === "I" && edgeObj.source.vertexId == dropVertexId)) 
         {
-          edgeObj.handleOnFocusOut();
+          main.handlerOnClickEdge(main.selectingEdge);
           return;
         }
 
@@ -232,17 +229,18 @@ class EdgeMgmt {
         newPoint.svgId = svgId;
 
         pointType === "O" ? edgeObj.updatePathConnect({source: newPoint}) : edgeObj.updatePathConnect({target: newPoint});
-
-        edgeObj.handlerOnClickEdge();
-
-      } else {
-        edgeObj.handleOnFocusOut();
       }
+
+      main.handlerOnClickEdge(main.selectingEdge);
     }
   }
 
   startConnect(main) {
     return function () {
+
+      if (main.isSelectingEdge())
+        main.cancleSelectedPath();
+
       main.isCreatingEdge = true;
       let prop = d3.select(d3.event.sourceEvent.target).attr("prop");
       let vertexId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
@@ -444,11 +442,52 @@ class EdgeMgmt {
     return this.selectingEdge != null;
   }
 
-  cancelSelectingEdge(){
-    if (this.selectingEdge) this.selectingEdge.handleOnFocusOut();
+  /**
+   * Handler on click a path connection
+   * @param edgeId
+   * @param source
+   * @param target
+   */
+  handlerOnClickEdge(edge) {
+    this.selectingEdge = edge;
+
+    let selected = d3.select(`#${edge.id}`);
+    let currentPath = selected.attr("d");
+    d3.select(`#${this.groupEdgePointId}`)
+      .style("display", "block")
+      .moveToFront();
+    d3.select(`#${this.groupEdgePathId}`)
+      .style("display", "block")
+      .moveToFront();
+    d3.select(`#${this.edgePathId}`)
+      .attr("d", currentPath)
+      .attr("ref", edge.id);
+
+    d3.select(`#${this.pointStartId}`)
+      .attr("cx", edge.source.x)
+      .attr("cy", edge.source.y);
+    d3.select(`#${this.pointEndId}`)
+      .attr("cx", edge.target.x)
+      .attr("cy", edge.target.y);
   }
 
-  
+  cancleSelectedPath() {
+    this.selectingEdge = null;
+
+    this.hideEdgeGroupPoint();
+    this.hideEdgeGroupPath();
+    
+  }
+
+  hideEdgeGroupPoint(){
+    d3.select(`#${this.groupEdgePointId}`).style("display", "none");
+    d3.select(`#${this.groupEdgePointId}`).moveToBack();
+  }
+
+  hideEdgeGroupPath(){
+    d3.select(`#${this.groupEdgePathId}`).style("display", "none");
+    d3.select(`#${this.groupEdgePathId}`).moveToBack();
+  }
 }
 
 export default EdgeMgmt;
