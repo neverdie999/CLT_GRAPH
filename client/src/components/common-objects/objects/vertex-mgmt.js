@@ -44,6 +44,7 @@ class VertexMgmt {
     this.vertexDefinition         = props.vertexDefinition;
     this.viewMode                 = props.viewMode;
     this.edgeMgmt                 = props.edgeMgmt;
+    this.connectSide              = props.connectSide || CONNECT_SIDE.BOTH;
 
     this.initialize();
   }
@@ -73,6 +74,19 @@ class VertexMgmt {
   }
 
   initVertexPopupHtml(){
+
+    const repeatHtml = `
+    <tr>
+      <th>Max repeat</th>
+      <td class="input-group full-width">
+        <input type="number" class="form-control" id="vertexRepeat_${this.svgId}" name="vertexRepeat" min="0" max="9999">
+        <label class="input-group-addon">
+          <input type="checkbox" id="isVertexMandatory_${this.svgId}" name="isVertexMandatory">
+        </label>
+        <label class="input-group-addon" for="isVertexMandatory_${this.svgId}">Mandatory</label>
+      </td>
+    </tr>`;
+
     let sHtml = `
     <!-- Vertex Info Popup (S) -->
     <div id="${HTML_VERTEX_INFO_ID}_${this.svgId}" class="modal fade" role="dialog">
@@ -97,16 +111,7 @@ class VertexMgmt {
                         <input type="text" class="form-control" id="vertexName_${this.svgId}" name="vertexName">
                       </td>
                     </tr>
-                    <tr>
-                      <th>Max repeat</th>
-                      <td class="input-group full-width">
-                        <input type="number" class="form-control" id="vertexRepeat_${this.svgId}" name="vertexRepeat" min="0" max="9999">
-                        <label class="input-group-addon">
-                          <input type="checkbox" id="isVertexMandatory_${this.svgId}" name="isVertexMandatory">
-                        </label>
-                        <label class="input-group-addon" for="isVertexMandatory_${this.svgId}">Mandatory</label>
-                      </td>
-                    </tr>
+                    ${checkModePermission(this.viewMode.value, 'vertexRepeat') ? repeatHtml: ''}
                     <tr>
                       <th>Description</th>
                       <td class="full-width">
@@ -145,42 +150,43 @@ class VertexMgmt {
   }
 
   bindEventForPopupVertex() {
-
+    const main = this;
     if (checkModePermission(this.viewMode.value, "vertexBtnConfirm")){
-      $(`#vertexBtnConfirm_${this.svgId}`).click(() => {
+      $(`#vertexBtnConfirm_${main.svgId}`).click(() => {
         this.confirmEditVertexInfo();
       });
 
-      $(`#vertexBtnAdd_${this.svgId}`).click(() => {
+      $(`#vertexBtnAdd_${main.svgId}`).click(() => {
         this.addDataElement();
       });
 
-      $(`#vertexBtnDelete_${this.svgId}`).click(() => {
+      $(`#vertexBtnDelete_${main.svgId}`).click(() => {
         this.removeDataElement();
       });
     }
-    
 
-    $(`#vertexBtnCancel_${this.svgId}`).click(() => {
+    $(`#vertexBtnCancel_${main.svgId}`).click(() => {
       this.closePopVertexInfo();
     });
-    
 
     // Validate input number
-    $(`#vertexRepeat_${this.svgId}`).keydown(function (e) {
-      allowInputNumberOnly(e);
-    });
+    if (checkModePermission(this.viewMode.value, 'vertexRepeat')){
+      $(`#vertexRepeat_${main.svgId}`).keydown(function (e) {
+        allowInputNumberOnly(e);
+      });
+      
 
-    $(`#isVertexMandatory_${this.svgId}`).change(function () {
-      if (this.checked && $(`#vertexRepeat_${this.svgId}`).val() < 1) {
-        $(`#vertexRepeat_${this.svgId}`).val(1);
-      }
-    });
-
-    $(`#vertexRepeat_${this.svgId}`).focusout(function () {
-      let rtnVal = checkMinMaxValue(this.value, $(`#isVertexMandatory_${this.svgId}`).prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
-      this.value = rtnVal;
-    });
+      $(`#isVertexMandatory_${main.svgId}`).change(function () {
+        if (this.checked && $(`#vertexRepeat_${main.svgId}`).val() < 1) {
+          $(`#vertexRepeat_${main.svgId}`).val(1);
+        }
+      });
+  
+      $(`#vertexRepeat_${main.svgId}`).focusout(function () {
+        let rtnVal = checkMinMaxValue(this.value, $(`#isVertexMandatory_${main.svgId}`).prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
+        this.value = rtnVal;
+      });
+    }
   }
 
   create(sOptions) {
@@ -254,8 +260,11 @@ class VertexMgmt {
     // Append content to popup
     $(`#vertexName_${this.svgId}`).val(name);
     $(`#vertexDesc_${this.svgId}`).val(description);
-    $(`#vertexRepeat_${this.svgId}`).val(repeat);
-    $(`#isVertexMandatory_${this.svgId}`).prop('checked', mandatory);
+
+    if (checkModePermission(this.viewMode.value, 'vertexRepeat')){
+      $(`#vertexRepeat_${this.svgId}`).val(repeat);
+      $(`#isVertexMandatory_${this.svgId}`).prop('checked', mandatory);
+    }
 
     // Generate properties vertex
     let keyHeader = this.vertexDefinition.headerForm[groupType];
@@ -596,8 +605,11 @@ class VertexMgmt {
     forms.id = this.currentId;
     forms.name = $(`#vertexName_${this.svgId}`).val();
     forms.description = $(`#vertexDesc_${this.svgId}`).val();
-    forms.repeat = $(`#vertexRepeat_${this.svgId}`).val();
-    forms.mandatory = $(`#isVertexMandatory_${this.svgId}`).prop('checked');
+
+    if (checkModePermission(this.viewMode.value, 'vertexRepeat')){
+      forms.repeat = $(`#vertexRepeat_${this.svgId}`).val();
+      forms.mandatory = $(`#isVertexMandatory_${this.svgId}`).prop('checked');
+    }
 
     const {groupType} = _.find(this.dataContainer.vertex, {'id': this.currentId});
     const typeData = this.vertexDefinition.vertexFormatType[groupType];

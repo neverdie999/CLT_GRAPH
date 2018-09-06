@@ -38,6 +38,7 @@ class InputMgmt {
       svgId : this.svgId,
       vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
+      connectSide: CONNECT_SIDE.RIGHT,
       edgeMgmt : this.edgeMgmt
     });
 
@@ -86,7 +87,6 @@ class InputMgmt {
 
       e.x = x;
       e.y = y;
-      e.connectSide = this.defaultOptionsVertex.connectSide;
       e.isImport = true;
       
       this.vertexMgmt.create(e);

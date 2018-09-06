@@ -8,6 +8,7 @@ import {
   BOUNDARY_ATTR_SIZE,
   VERTEX_ATTR_SIZE,
   TYPE_CONNECT,
+  CONNECT_SIDE,
 } from '../../../common/const/index';
 
 import {
@@ -131,16 +132,18 @@ class Boundary {
     `);
 
     if (checkModePermission(this.viewMode.value, "isEnableItemVisibleMenu")) {
+
+      const offset = this.boundaryMgmt.vertexMgmt.connectSide == CONNECT_SIDE.LEFT ? 0 : 13;
       group.append("text")
         .attr("id", `${this.id}Text`)
-        .attr("x", this.width - 20)
+        .attr("x", this.width - 20 - offset)
         .attr("y", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 14)
         .style("stroke", "#ffffff")
         .style("pointer-events", "all")
         .text("+");
 
       group.append("rect")
-        .attr("x", this.width - 25)
+        .attr("x", this.width - 25 - offset)
         .attr("y", 9)
         .attr("class", `boundary_right ${this.visibleItemSelectorClass}`)
         .attr("id", `${this.id}Button`)
@@ -151,33 +154,35 @@ class Boundary {
         .text("Right click to select visible member");
     }
 
-    //if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.LEFT){
-      // group.append("rect")
-      // .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
-      // .attr("type", TYPE_CONNECT.INPUT)
-      // .attr("prop", `${this.id}${CONNECT_KEY}title`)
-      // .attr("pointer-events", "all")
-      // .attr("width", 12)
-      // .attr("height", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 1)
-      // .attr("x", 1)
-      // .attr("y", 1)
-      // .style("fill", this.colorHashConnection.hex(this.name))
-      // .call(callbackDragConnection);
-   // }
+    if (this.boundaryMgmt.vertexMgmt.connectSide === CONNECT_SIDE.BOTH || this.boundaryMgmt.vertexMgmt.connectSide === CONNECT_SIDE.LEFT){
+      group.append("rect")
+      .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      .attr("type", TYPE_CONNECT.INPUT)
+      .attr("prop", `${this.id}${CONNECT_KEY}boundary_title`)
+      .attr("pointer-events", "all")
+      .attr("width", 12)
+      .attr("height", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 1)
+      .attr("x", 1)
+      .attr("y", 1)
+      .style("fill", this.colorHashConnection.hex(this.name))
+      .style("cursor", "default")
+      .call(callbackDragConnection);
+   }
 
-    //if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.RIGHT){
-      // group.append("rect")
-      //   .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
-      //   .attr("prop", `${this.id}${CONNECT_KEY}title`)
-      //   .attr("pointer-events", "all")
-      //   .attr("type", TYPE_CONNECT.OUTPUT)
-      //   .attr("width", 12)
-      //   .attr("height", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 1)
-      //   .attr("x", this.width - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
-      //   .attr("y", 1)
-      //   .style("fill", this.colorHashConnection.hex(this.name))
-      //   .call(callbackDragConnection);
-   // }
+    if (this.boundaryMgmt.vertexMgmt.connectSide === CONNECT_SIDE.BOTH || this.boundaryMgmt.vertexMgmt.connectSide === CONNECT_SIDE.RIGHT){
+      group.append("rect")
+        .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+        .attr("prop", `${this.id}${CONNECT_KEY}boundary_title`)
+        .attr("pointer-events", "all")
+        .attr("type", TYPE_CONNECT.OUTPUT)
+        .attr("width", 12)
+        .attr("height", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 1)
+        .attr("x", this.width - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
+        .attr("y", 1)
+        .style("fill", this.colorHashConnection.hex(this.name))
+        .style("cursor", "default")
+        .call(callbackDragConnection);
+   }
 
     if(!isImport)
       setMinBoundaryGraph(this.dataContainer, this.svgId);
@@ -253,9 +258,12 @@ class Boundary {
     if (width < BOUNDARY_ATTR_SIZE.BOUND_WIDTH)
       width = BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
 
+    const offset = this.boundaryMgmt.vertexMgmt.connectSide == CONNECT_SIDE.LEFT ? 0 : 13;
+
     $(`#${this.id}Content`).attr('width', width);
-    $(`#${this.id}Button`).attr('x', width - 25);
-    $(`#${this.id}Text`).attr('x', width - 20);
+    $(`#${this.id}Button`).attr('x', width - 25 - offset);
+    $(`#${this.id}Text`).attr('x', width - 20 - offset);
+    $(`[prop='${this.id}${CONNECT_KEY}boundary_title'][type='O']`).attr('x', width - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2));
 
     // Update data
     this.width = width;
@@ -308,6 +316,7 @@ class Boundary {
     this.y = position.y;
 
     d3.select(`#${this.id}`).attr("transform", "translate(" + [this.x, this.y] + ")");
+    this.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(this);
 
     this.reorderPositionMember(position);
   }
@@ -407,6 +416,7 @@ class Boundary {
     let ancestor = this.findAncestorOfMemberInNestedBoundary();
     ancestor.updateSize();
     ancestor.reorderPositionMember();
+    ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
 
     setMinBoundaryGraph(this.dataContainer, this.svgId);
   }
@@ -420,6 +430,9 @@ class Boundary {
       let parentObj = _.find(this.dataContainer.boundary, {"id": this.parent});
       parentObj.removeMemberFromBoundary(this, false);
     }
+
+    //remove all edge connect to this boundary
+    this.boundaryMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this);
 
     // Remove from DOM
     d3.select(`#${this.id}`).remove();
@@ -442,6 +455,9 @@ class Boundary {
       parentObj.removeMemberFromBoundary(this, false);
     }
 
+    //remove all edge connect to this boundary
+    this.boundaryMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this);
+
     // Remove from DOM
     d3.select(`#${this.id}`).remove();
 
@@ -456,6 +472,7 @@ class Boundary {
     let ancestor = this.findAncestorOfMemberInNestedBoundary();
     ancestor.updateSize();
     ancestor.reorderPositionMember();
+    ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
     setMinBoundaryGraph(this.dataContainer, this.svgId);
   }
 
@@ -508,6 +525,7 @@ class Boundary {
       let ancestor = await this.findAncestorOfMemberInNestedBoundary();
       await ancestor.updateSize();
       await ancestor.reorderPositionMember();
+      ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
   
       setMinBoundaryGraph(this.dataContainer, this.svgId);
     }
@@ -522,6 +540,7 @@ class Boundary {
       let ancestor = await this.findAncestorOfMemberInNestedBoundary();
       await ancestor.updateSize();
       await ancestor.reorderPositionMember();
+      ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
 
       setMinBoundaryGraph(this.dataContainer, this.svgId);
     }
@@ -615,6 +634,8 @@ class Boundary {
 
     d3.select(`#${this.id}`).attr("transform", "translate(" + [this.x, this.y] + ")");
 
+    this.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(this);
+
     this.moveMember(offsetX, offsetY);
   }
 
@@ -631,7 +652,8 @@ class Boundary {
   addMemberToBoundaryWithIndex( child, index) {
     this.member.splice(index, 0, {id: child.id, type: child.type, show: child.show});
     this.updateSize();
-    this.reorderPositionMember();    
+    this.reorderPositionMember();
+    this.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(this);
     setMinBoundaryGraph(this.dataContainer, this.svgId);
   }
 
@@ -645,6 +667,7 @@ class Boundary {
         let ancestor = await this.findAncestorOfMemberInNestedBoundary();
         await ancestor.updateSize();
         await ancestor.reorderPositionMember();
+        ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
     }
   }
 

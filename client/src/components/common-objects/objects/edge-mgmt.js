@@ -216,6 +216,7 @@ class EdgeMgmt {
         let vertices = [];
         main.vertexContainer.forEach(arrVertex => {
           vertices = vertices.concat(arrVertex.vertex);
+          vertices = vertices.concat(arrVertex.boundary);
         });
 
         //Vertex that draged to
@@ -223,7 +224,7 @@ class EdgeMgmt {
         const {svgId, x, y} = targetVertexObj;
 
         //Calculate new coordinate of ended point on CONNECT SVG for redraw edge
-        const newPoint = main.objectUtils.getCoordPropRelativeToParent({x, y, id: dropVertexId}, prop, pointType, svgId);
+        const newPoint = main.objectUtils.getCoordPropRelativeToParent(targetVertexObj, prop, pointType);
         newPoint.vertexId = dropVertexId;
         newPoint.prop = prop;
         newPoint.svgId = svgId;
@@ -245,17 +246,28 @@ class EdgeMgmt {
       let prop = d3.select(d3.event.sourceEvent.target).attr("prop");
       let vertexId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
 
-      let vertices = [];
-      main.vertexContainer.forEach(arrVertex => {
-        vertices = vertices.concat(arrVertex.vertex);
-      });
+      let obj;
+      if (prop.substr(0 - 'boundary_title'.length, 'boundary_title'.length) === 'boundary_title'){
+        let boudaries = [];
+        main.vertexContainer.forEach(arrBoundary => {
+          boudaries = boudaries.concat(arrBoundary.boundary);
+        });
 
-      let vertexObj = _.find(vertices, {'id': vertexId});
-      const {svgId, x, y} = vertexObj;
-      const src = main.objectUtils.getCoordPropRelativeToParent({id: vertexId, x, y}, prop, TYPE_CONNECT.OUTPUT, svgId);
+        obj = _.find(boudaries, {'id': vertexId});
+
+      }else{
+        let vertices = [];
+        main.vertexContainer.forEach(arrVertex => {
+          vertices = vertices.concat(arrVertex.vertex);
+        });
+
+        obj = _.find(vertices, {'id': vertexId});
+      }
+
+      const src = main.objectUtils.getCoordPropRelativeToParent(obj, prop, TYPE_CONNECT.OUTPUT);
       src.vertexId = vertexId;
       src.prop = prop;
-      src.svgId = svgId;
+      src.svgId = obj.svgId;
       main.tmpSource = src;
     }
   }
@@ -286,14 +298,14 @@ class EdgeMgmt {
         let vertices = [];
         main.vertexContainer.forEach(arrVertex => {
           vertices = vertices.concat(arrVertex.vertex);
+          vertices = vertices.concat(arrVertex.boundary);
         });
 
         let vertexObj = _.find(vertices, {'id': vertextId});
-        const {svgId, x, y} = vertexObj;
-        const des = main.objectUtils.getCoordPropRelativeToParent({id: vertextId, x, y}, prop, TYPE_CONNECT.INPUT, svgId);
+        const des = main.objectUtils.getCoordPropRelativeToParent(vertexObj, prop, TYPE_CONNECT.INPUT);
         des.vertexId = vertextId;
         des.prop = prop;
-        des.svgId = svgId;
+        des.svgId = vertexObj.svgId;
         let options = {source: main.tmpSource, target: des};
 
         main.create(options);
@@ -311,7 +323,7 @@ class EdgeMgmt {
   * @param dataContainer edge container
   */
   updatePathConnectForVertex(vertex) {
-    const {x, y, id, svgId} = vertex;
+    const {id} = vertex;
 
     // Find edge start from this vertex
     const arrSrcPaths = _.filter(this.dataContainer.edge, (e) => {
@@ -324,7 +336,7 @@ class EdgeMgmt {
 
     arrSrcPaths.forEach(src => {
       let prop = src.source.prop;
-      let newPos = this.objectUtils.getCoordPropRelativeToParent({x, y, id}, prop, TYPE_CONNECT.OUTPUT, svgId);
+      let newPos = this.objectUtils.getCoordPropRelativeToParent(vertex, prop, TYPE_CONNECT.OUTPUT);
       src.source.x = newPos.x;
       src.source.y = newPos.y;
       let options = {source: src.source};
@@ -334,7 +346,7 @@ class EdgeMgmt {
 
     arrDesPaths.forEach(des => {
       let prop = des.target.prop;
-      let newPos = this.objectUtils.getCoordPropRelativeToParent({x, y, id}, prop, TYPE_CONNECT.INPUT, svgId);
+      let newPos = this.objectUtils.getCoordPropRelativeToParent(vertex, prop, TYPE_CONNECT.INPUT);
       des.target.x = newPos.x;
       des.target.y = newPos.y;
       let options = {target: des.target};

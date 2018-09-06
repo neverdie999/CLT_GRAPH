@@ -54,10 +54,10 @@ class ObjectUtils {
    * @param svg => require, type: string, purpose: determined the area that object did draw on it.
    * @returns {{x: *, y: number}}
    */
-  getCoordPropRelativeToParent(info, prop, type, svg) {
+  getCoordPropRelativeToParent(info, prop, type) {
     if (!type)
       type = TYPE_CONNECT.OUTPUT;
-    const {x, y, id} = info;
+    const {x, y, id, svgId: svg} = info;
     let axisX = x;
     let axisY = y;
     // Area draw element svg
@@ -72,15 +72,23 @@ class ObjectUtils {
         y: axisY - parentSvg.scrollTop()
       };
 
-    if (prop.substr(0 - 'title'.length,'title'.length) === 'title'){
+      if (prop.substr(0 - 'boundary_title'.length,'boundary_title'.length) === 'boundary_title'){
 
-      axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT / 2;
+        axisY = axisY + BOUNDARY_ATTR_SIZE.HEADER_HEIGHT / 2;
+  
+        return {
+          x: type === TYPE_CONNECT.OUTPUT ? axisX + info.width + containerSvg.offset().left : axisX + containerSvg.offset().left,
+          y: axisY - parentSvg.scrollTop()
+        };
+      }else if (prop.substr(0 - 'title'.length,'title'.length) === 'title'){
 
-      return {
-        x: type === TYPE_CONNECT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
-        y: axisY - parentSvg.scrollTop()
-      };
-    }else{
+        axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT / 2;
+  
+        return {
+          x: type === TYPE_CONNECT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
+          y: axisY - parentSvg.scrollTop()
+        };
+      } else{
       // Get index prop in object
       let index = this.findIndexPropInVertex(id, prop);
       // Calculate coordinate of prop
@@ -126,16 +134,11 @@ class ObjectUtils {
       if (boundary.id != obj.id && !boundary.parent) {
         let boundaryBox = this.getBBoxObject(`#${boundary.id}`);
 
-        // if (height >= boundaryBox.height){
-        //   //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
-        //   boundary.ctrlSrcHeight = boundary.height;
-        //   boundary.setHeight(BOUNDARY_ATTR_SIZE.HEADER_HEIGHT + height + 20);
-        // }
-
         if (width >= boundaryBox.width){
           //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
           boundary.ctrlSrcWidth = boundary.width;
           boundary.setWidth(width + 15);
+          boundary.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(boundary);
         }
       }
     });
@@ -281,6 +284,7 @@ class ObjectUtils {
 
         if(boundary.ctrlSrcWidth != -1){
           boundary.setWidth(boundary.ctrlSrcWidth);
+          boundary.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(boundary);
         }
       }
 
@@ -341,8 +345,9 @@ class ObjectUtils {
     let vertices = [];
     for (var i = 0; i < arrDataContainer.length; i++){
       vertices = vertices.concat(arrDataContainer[i].vertex);
+      vertices = vertices.concat(arrDataContainer[i].boundary);
     }
-
+    
     // Find edge start from this SVG
     const srcEdges = _.filter(edgeMgmt.dataContainer.edge, (e) => {
       return e.source.svgId === pSvgId;
@@ -355,12 +360,8 @@ class ObjectUtils {
 
     srcEdges.forEach(e => {
       const {source: {vertexId: id, prop}} = e;
-      let {x, y, svgId} = _.find(vertices, {'id': id});
-      let {x: propX, y: propY} = this.getCoordPropRelativeToParent({
-        id,
-        x,
-        y
-      }, prop, TYPE_CONNECT.OUTPUT, svgId);
+      let obj = _.find(vertices, {'id': id});
+      let {x: propX, y: propY} = this.getCoordPropRelativeToParent(obj, prop, TYPE_CONNECT.OUTPUT);
       e.source.x = propX;
       e.source.y = propY;
       let options = {source: e.source};
@@ -370,12 +371,8 @@ class ObjectUtils {
 
     desEdges.forEach(e => {
       const {target: {vertexId: id, prop}} = e;
-      let {x, y, svgId} = _.find(vertices, {'id': id});
-      let {x: propX, y: propY} = this.getCoordPropRelativeToParent({
-        id,
-        x,
-        y
-      }, prop, TYPE_CONNECT.INPUT, svgId);
+      let obj = _.find(vertices, {'id': id});
+      let {x: propX, y: propY} = this.getCoordPropRelativeToParent(obj, prop, TYPE_CONNECT.INPUT);
       e.target.x = propX;
       e.target.y = propY;
       let options = {target: e.target};
@@ -400,17 +397,18 @@ class ObjectUtils {
     let vertices = [];
     for (var i = 0; i < arrDataContainer.length; i++){
       vertices = vertices.concat(arrDataContainer[i].vertex);
+      vertices = vertices.concat(arrDataContainer[i].boundary);
     }
 
     edges.forEach(e => {
       const {source: {vertexId: idSrc, prop: propSrc}, target: {vertexId: idDes, prop: propDes}} = e;
-      let {x: sX, y: sY, svgId: sIdSvg} = _.find(vertices, {'id': idSrc});
-      let {x: newSX, y: newSY} = this.getCoordPropRelativeToParent({id: idSrc, x: sX, y: sY}, propSrc, TYPE_CONNECT.OUTPUT, sIdSvg);
+      let srcObj = _.find(vertices, {'id': idSrc});
+      let {x: newSX, y: newSY} = this.getCoordPropRelativeToParent(srcObj, propSrc, TYPE_CONNECT.OUTPUT);
       e.source.x = newSX;
       e.source.y = newSY;
 
-      let {x: dX, y: dY, svgId: dIdSvg} = _.find(vertices, {'id': idDes});
-      let {x: newDX, y: newDY} = this.getCoordPropRelativeToParent({id: idDes, x: dX, y: dY}, propDes, TYPE_CONNECT.INPUT, dIdSvg);
+      let desObj = _.find(vertices, {'id': idDes});
+      let {x: newDX, y: newDY} = this.getCoordPropRelativeToParent(desObj, propDes, TYPE_CONNECT.INPUT);
       e.target.x = newDX;
       e.target.y = newDY;
 

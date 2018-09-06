@@ -16,9 +16,6 @@ import {
   VERTEX_FORMAT_TYPE, DEFAULT_CONFIG_GRAPH, VIEW_MODE,
 } from '../../common/const/index';
 
-
-
-
 class CltGraph {
   constructor(props) {
     this.selector = props.selector;

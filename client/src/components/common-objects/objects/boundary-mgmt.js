@@ -20,6 +20,8 @@ import {
   REPEAT_RANGE, BOUNDARY_ATTR_SIZE
 } from '../../../common/const/index';
 
+const CONNECT_KEY = 'Connected';
+
 class BoundaryMgmt {
   constructor(props) {
     this.dataContainer            = props.dataContainer;
@@ -69,6 +71,19 @@ class BoundaryMgmt {
   }
 
   initBoudaryPopupHtml(){
+
+    const repeatHtml = `
+    <tr>
+      <th>Max repeat</th>
+      <td class="input-group full-width">
+        <input type="number" class="form-control" id="maxBoundaryRepeat_${this.svgId}" name="maxBoundaryRepeat" min="0" max="9999">
+        <label class="input-group-addon">
+          <input type="checkbox" id="isBoundaryMandatory_${this.svgId}" name="isBoundaryMandatory">
+        </label>
+        <label class="input-group-addon" for="isBoundaryMandatory_${this.svgId}">Mandatory</label>
+      </td>
+    </tr>`;
+
     let sHtml = 
     `<!-- Boundary Info Popup (S)-->
     <div id="boundaryInfo_${this.svgId}" class="modal fade" role="dialog">
@@ -92,16 +107,7 @@ class BoundaryMgmt {
                         <input type="text" class="form-control" id="boundaryName_${this.svgId}" name="boundaryName">
                       </td>
                     </tr>
-                    <tr>
-                      <th>Max repeat</th>
-                      <td class="input-group full-width">
-                        <input type="number" class="form-control" id="maxBoundaryRepeat_${this.svgId}" name="maxBoundaryRepeat" min="0" max="9999">
-                        <label class="input-group-addon">
-                          <input type="checkbox" id="isBoundaryMandatory_${this.svgId}" name="isBoundaryMandatory">
-                        </label>
-                        <label class="input-group-addon" for="isBoundaryMandatory_${this.svgId}">Mandatory</label>
-                      </td>
-                    </tr>
+                    ${checkModePermission(this.viewMode.value, 'maxBoundaryRepeat') ? repeatHtml : ""}
                     <tr>
                       <th>Description</th>
                       <td class="full-width">
@@ -132,35 +138,35 @@ class BoundaryMgmt {
    */
   bindEventForPopupBoundary() {
 
+    const main = this;
+
     if (checkModePermission(this.viewMode.value, "boundaryBtnConfirm")){
-      $(`#boundaryBtnConfirm_${this.svgId}`).click(() => {
+      $(`#boundaryBtnConfirm_${main.svgId}`).click(() => {
         this.confirmEditBoundaryInfo();
       });
     }
 
-    $(`#boundaryBtnCancel_${this.svgId}`).click(() => {
+    $(`#boundaryBtnCancel_${main.svgId}`).click(() => {
       this.closePopBoundaryInfo();
     });
 
     // Validate input number
-    $(`#maxBoundaryRepeat_${this.svgId}`).keydown(function (e) {
-      allowInputNumberOnly(e);
-    });
+    if (checkModePermission(this.viewMode.value, "maxBoundaryRepeat")){
+      $(`#maxBoundaryRepeat_${main.svgId}`).keydown(function (e) {
+        allowInputNumberOnly(e);
+      });
 
-    $(`#isBoundaryMandatory_${this.svgId}`).change(function () {
-      if (this.checked && $(`#maxBoundaryRepeat_${this.svgId}`).val() < 1) {
-        $(`#maxBoundaryRepeat_${this.svgId}`).val(1);
-      }
-    });
+      $(`#maxBoundaryRepeat_${main.svgId}`).focusout(function () {
+        let rtnVal = checkMinMaxValue(this.value, $(`#isBoundaryMandatory_${main.svgId}`).prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
+        this.value = rtnVal;
+      });
 
-    $(`#maxBoundaryRepeat_${this.svgId}`).keydown(function (e) {
-      allowInputNumberOnly(e);
-    });
-
-    $(`#maxBoundaryRepeat_${this.svgId}`).focusout(function () {
-      let rtnVal = checkMinMaxValue(this.value, $(`#isBoundaryMandatory_${this.svgId}`).prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
-      this.value = rtnVal;
-    });
+      $(`#isBoundaryMandatory_${main.svgId}`).change(function () {
+        if (this.checked && $(`#maxBoundaryRepeat_${main.svgId}`).val() < 1) {
+          $(`#maxBoundaryRepeat_${main.svgId}`).val(1);
+        }
+      });
+    }
   }
 
   create(sOptions) {
@@ -194,8 +200,8 @@ class BoundaryMgmt {
       autoScrollOnMousedrag(d.svgId, d.containerId);
 
       let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, `#${d.svgId}`, `#${d.id}`);
-      d.x = x;
-      d.y = y;
+      //d.x = x;
+      //d.y = y;
 
       let {width, height} = main.objectUtils.getBBoxObject(`#${d.id}`);
       let data = {x, y, width, height};
@@ -206,6 +212,10 @@ class BoundaryMgmt {
   endDrag(main) {
     return function (d) {
 
+      let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, `#${d.svgId}`, `#${d.id}`);
+      d.x = x;
+      d.y = y;
+
       let offsetX = d.x - d.ctrlSrcX;
       let offsetY = d.y - d.ctrlSrcY;
 
@@ -213,6 +223,7 @@ class BoundaryMgmt {
       if (offsetX != 0 || offsetY != 0) {
         // Transform group
         d3.select(this).attr("transform", "translate(" + [d.x, d.y] + ")");
+        main.edgeMgmt.updatePathConnectForVertex(d);
 
         if (d.parent) {
           //If object not out boundary parent , object change postion in boundary parent, so change index object
@@ -282,8 +293,11 @@ class BoundaryMgmt {
     // Append content to popup
     $(`#boundaryName_${this.svgId}`).val(boundary.name);
     $(`#boundaryDesc_${this.svgId}`).val(boundary.description);
-    $(`#maxBoundaryRepeat_${this.svgId}`).val(boundary.repeat);
-    $(`#isBoundaryMandatory_${this.svgId}`).prop('checked', boundary.mandatory);
+
+    if(checkModePermission(this.viewMode.value, "maxBoundaryRepeat")){
+      $(`#maxBoundaryRepeat_${this.svgId}`).val(boundary.repeat);
+      $(`#isBoundaryMandatory_${this.svgId}`).prop('checked', boundary.mandatory);
+    }
 
     let options = {
       popupId: `boundaryInfo_${this.svgId}`,
@@ -301,19 +315,25 @@ class BoundaryMgmt {
    * Update data boundary change
    */
   confirmEditBoundaryInfo() {
-    const id = this.editingBoundary.id;
-    let boundary = _.find(this.dataContainer.boundary, {"id": id});
     let name = $(`#boundaryName_${this.svgId}`).val();
-    boundary.name = name;
+    this.editingBoundary.name = name;    
+
+    if(checkModePermission(this.viewMode.value, "maxBoundaryRepeat")){
+      this.editingBoundary.repeat = $(`#maxBoundaryRepeat_${this.svgId}`).val();
+      this.editingBoundary.mandatory = $(`#isBoundaryMandatory_${this.svgId}`).prop('checked');
+    }
+
     let description = $(`#boundaryDesc_${this.svgId}`).val();
-    boundary.description = description;
-    boundary.repeat = $(`#maxBoundaryRepeat_${this.svgId}`).val();
-    boundary.mandatory = $(`#isBoundaryMandatory_${this.svgId}`).prop('checked');
-    let header = d3.select(`#${id}Header`);
+    this.editingBoundary.description = description;
+
+    let header = d3.select(`#${this.editingBoundary.id}Header`);
     header.text(name).attr('title', description);
-    header.style("background-color", `${this.colorHash.hex(boundary.name)}`);
-    //d3.select(`#${id}Button`).style("fill", `${this.colorHash.hex(boundary.name)}`);
-    d3.select(`#${id}Content`).style("border-color", `${this.colorHash.hex(boundary.name)}`);
+    header.style("background-color", `${this.colorHash.hex(name)}`);
+
+    d3.select(`#${this.editingBoundary.id}Content`).style("border-color", `${this.colorHash.hex(name)}`);
+
+    d3.selectAll(`[prop='${this.editingBoundary.id}${CONNECT_KEY}boundary_title']`).style('fill', this.editingBoundary.colorHashConnection.hex(name));
+
     this.closePopBoundaryInfo();
   }
 

@@ -25,6 +25,7 @@ class Vertex {
     this.selectorClass    = props.vertexMgmt.selectorClass || "defaul_vertex_class";
     this.vertexDefinition = props.vertexMgmt.vertexDefinition;
     this.viewMode         = props.vertexMgmt.viewMode;
+    this.connectSide      = props.vertexMgmt.connectSide;
     this.vertexMgmt       = props.vertexMgmt;
 
     this.id               = null;
@@ -38,7 +39,6 @@ class Vertex {
     this.parent           = null;
     this.mandatory        = false;
     this.repeat           = 1;
-    this.connectSide      = ""; //type: string, require: false, the default value is an anonymous function not handle anything. (LEFT, RIGHT, BOTH)
     this.type;
     this.show;
 
@@ -66,7 +66,7 @@ class Vertex {
    */
   create(sOptions = {}, callbackDragVertex = ()=>{}, callbackDragConnection = ()=>{}) {
 
-    let {id, x, y, groupType, vertexType, name, description, data, parent, mandatory, repeat, connectSide, isMenu, isImport} = sOptions;
+    let {id, x, y, groupType, vertexType, name, description, data, parent, mandatory, repeat, isMenu, isImport} = sOptions;
 
     if ( isMenu ) {
       let vertexTypeInfo = _.cloneDeep(_.find(this.vertexDefinition.vertexTypes, {'vertexType': vertexType}));
@@ -88,7 +88,6 @@ class Vertex {
     this.parent       = parent || null;
     this.mandatory    = mandatory || false;
     this.repeat       = repeat || 1;
-    this.connectSide  = connectSide || CONNECT_SIDE.BOTH;
     this.type         = "V";
     this.show         = true;
 

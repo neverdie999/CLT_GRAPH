@@ -39,6 +39,7 @@ class OutputMgmt {
       svgId : this.svgId,
       vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
+      connectSide: CONNECT_SIDE.LEFT,
       edgeMgmt : this.edgeMgmt
     });
 
@@ -88,7 +89,6 @@ class OutputMgmt {
 
       e.x = x;
       e.y = y;
-      e.connectSide = this.defaultOptionsVertex.connectSide;
       e.isImport = true;
 
       this.vertexMgmt.create(e);

@@ -262,13 +262,13 @@ export function checkModePermission(viewMode, type){
 
   data[VIEW_MODE.SHOW_ONLY] = [
     'showReduced',
-    'editVertex', 'isEnableDragVertex',
-    'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'];
+    'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
+    'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory'];
 
   data[VIEW_MODE.EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
-    'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
-    'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'
+    'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
+    'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory'
   ];
 
   data[VIEW_MODE.OPERATIONS] = [
@@ -278,11 +278,15 @@ export function checkModePermission(viewMode, type){
   ];
 
   data[VIEW_MODE.INPUT_MESSAGE] = [
-    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu'
+    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu',
+    'vertexRepeat', 'isVertexMandatory',
+    'maxBoundaryRepeat', 'isBoundaryMandatory'
   ];
 
   data[VIEW_MODE.OUTPUT_MESSAGE] = [
-    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu'
+    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu',
+    'vertexRepeat', 'isVertexMandatory',
+    'maxBoundaryRepeat', 'isBoundaryMandatory'
   ];
 
   return data[viewMode].indexOf(type) != -1;

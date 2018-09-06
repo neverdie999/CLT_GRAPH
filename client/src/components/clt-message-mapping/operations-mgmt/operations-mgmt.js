@@ -4,7 +4,7 @@ import BoundaryMgmt from '../../common-objects/objects/boundary-mgmt';
 import ObjectUtils from '../../../common/utilities/object.ult';
 
 import {
-  DEFAULT_CONFIG_GRAPH, VIEW_MODE
+  DEFAULT_CONFIG_GRAPH, VIEW_MODE, CONNECT_SIDE
 } from '../../../common/const/index';
 
 import {
@@ -33,6 +33,7 @@ class OperationsMgmt {
       svgId : this.svgId,
       vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
+      connectSide: CONNECT_SIDE.BOTH,
       edgeMgmt : this.edgeMgmt
     });
 
