@@ -17,7 +17,7 @@ import {
 } from '../../../common/utilities/common.ult';
 
 import {
-  REPEAT_RANGE
+  REPEAT_RANGE, BOUNDARY_ATTR_SIZE
 } from '../../../common/const/index';
 
 class BoundaryMgmt {
@@ -27,6 +27,7 @@ class BoundaryMgmt {
     this.svgId                    = props.svgId;
     this.viewMode                 = props.viewMode;
     this.vertexMgmt               = props.vertexMgmt;
+    this.edgeMgmt                  = props.edgeMgmt;
 
     this.initialize();
   }
@@ -168,7 +169,7 @@ class BoundaryMgmt {
       boundaryMgmt: this
     });
 
-    newBoundary.create(sOptions, this.callbackDragBoundary);
+    newBoundary.create(sOptions, this.callbackDragBoundary, this.edgeMgmt.handleDragConnection);
   }
 
   startDrag(main) {
@@ -245,6 +246,8 @@ class BoundaryMgmt {
       .attr("transform", `translate(0.5, 0.5)`)
       .append("svg:rect")
       .attr("id", `${this.dummyBoxId}`)
+      .attr('width', BOUNDARY_ATTR_SIZE.BOUND_WIDTH)
+      .attr('height', BOUNDARY_ATTR_SIZE.BOUND_HEIGHT)
       .attr("class", "dummy-edge stroke-dasharray")
       // .attr("stroke-dasharray", "3 3")
       .attr("fill", "none");
@@ -263,7 +266,7 @@ class BoundaryMgmt {
     d3.select(`#${this.dummyBoxId}`).attr('height', height);
     d3.select(`#${this.dummyBoxId}`).style("display", "block");
     d3.select(d3.select(`#${this.dummyBoxId}`).node().parentNode).moveToFront();
-    }
+  }
   
   hiddenBBoxGroup() {
     d3.select(`#${this.dummyBoxId}`).style("display", "none");

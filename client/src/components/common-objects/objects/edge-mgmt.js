@@ -346,6 +346,7 @@ class EdgeMgmt {
   clearAll(){
     this.dataContainer.edge = [];
     d3.select(`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
+    d3.select(`#${this.svgId}`).select('defs').selectAll(`marker:not(#${this.arrowId})`).remove();
   }
 
   /**
@@ -413,14 +414,14 @@ class EdgeMgmt {
     arrSrcPaths.forEach(src => {
       const {source: {prop, vertexId}} = src;
 
-      if(this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
+      if(prop.substr(0 - 'title'.length, 'title'.length) != 'title' && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
         src.remove();
     });
 
     arrDesPaths.forEach(des => {
       const {target: {prop, vertexId}} = des;
 
-      if(this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
+      if(prop.substr(0 - 'title'.length, 'title'.length) != 'title' && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
         des.remove();
     });
   }

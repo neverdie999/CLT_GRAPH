@@ -106,14 +106,15 @@ class Vertex {
         group.call(callbackDragVertex);
       }
 
+    
     let htmlContent = '';
     let countData = this.data.length;
     for (let i = 0; i < countData; i++) {
       let item = this.data[i];
       htmlContent += `
         <div class="property" prop="${this.id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key" id="${this.id}_${presentation.key}_${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${item[presentation.key] || ""}</label><label> : </label>
-          <label class="data" id="${this.id}_${presentation.value}_${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
+          <label class="key" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${this.getKeyPrefix(item.type)}${item[presentation.key] || ""}</label>
+          <label class="data" id="${this.id}${presentation.value}${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
         </div>`;
     }
 
@@ -134,10 +135,41 @@ class Vertex {
         </div>
       `);
 
+    //Rect connect title INPUT
+    if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.LEFT){
+      group.append("rect")
+      .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      .attr("type", TYPE_CONNECT.INPUT)
+      .attr("prop", `${this.id}${CONNECT_KEY}title`)
+      .attr("pointer-events", "all")
+      .attr("width", 12)
+      .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
+      .attr("x", 1)
+      .attr("y", 1)
+      .style("fill", this.colorHashConnection.hex(this.name))
+      .call(callbackDragConnection);
+    }
+
+    //Rect connect title OUTPUT
+    if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.RIGHT){
+      group.append("rect")
+        .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+        .attr("prop", `${this.id}${CONNECT_KEY}title`)
+        .attr("pointer-events", "all")
+        .attr("type", TYPE_CONNECT.OUTPUT)
+        .attr("width", 12)
+        .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
+        .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
+        .attr("y", 1)
+        .style("fill", this.colorHashConnection.hex(this.name))
+        .call(callbackDragConnection);
+    }
+    
+
     for (let i = 0; i < countData; i++) {
       // Input
       if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.LEFT){
-       let connect = group.append("rect")
+        let connect = group.append("rect")
           .attr("class", `drag_connect drag_connect_${this.svgId}`)
           .attr("type", TYPE_CONNECT.INPUT)
           .attr("prop", `${this.id}${CONNECT_KEY}${i}`)
@@ -260,6 +292,12 @@ class Vertex {
 
       arrayMove(this.dataContainer.vertex, curIndex, this.dataContainer.vertex.length - 1);
     }
+  }
+
+  getKeyPrefix(type){
+    let prefix = this.vertexDefinition.keyPrefix.type[type];
+
+    return prefix != undefined ? prefix:"";
   }
 }
 

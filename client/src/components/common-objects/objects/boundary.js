@@ -6,6 +6,8 @@ import ObjectUtils from '../../../common/utilities/object.ult';
 import {
   BOUNDARY_ATTR_SIZE,
   BOUNDARY_ATTR_SIZE,
+  VERTEX_ATTR_SIZE,
+  TYPE_CONNECT,
 } from '../../../common/const/index';
 
 import {
@@ -14,6 +16,8 @@ import {
   arrayMove,
   checkModePermission,
 } from '../../../common/utilities/common.ult';
+
+const CONNECT_KEY = 'Connected';
 
 class Boundary {
   constructor(props) {
@@ -51,6 +55,8 @@ class Boundary {
   initialize() {
     this.objectUtils = new ObjectUtils();
     this.colorHash = new ColorHash({ lightness: 0.2 });
+    this.colorHashConnection = new ColorHash({lightness: 0.8});
+
     this.configsDefault = {
       width: BOUNDARY_ATTR_SIZE.BOUND_WIDTH,
       height: BOUNDARY_ATTR_SIZE.BOUND_HEIGHT
@@ -72,7 +78,7 @@ class Boundary {
    * @param mandatory => type: bool, require: false
    * @param repeat => type: number, require: false,
    */
-  create(options = {}, callbackDragBoundary = () => { }) {
+  create(options = {}, callbackDragBoundary = () => { },  callbackDragConnection = ()=>{}) {
     let { id, x, y, name, description, member, width, height, parent, mandatory, repeat, isImport} = options;
     this.id             = id || generateObjectId('B');
     this.x              = x || 0;
@@ -124,7 +130,6 @@ class Boundary {
           </div>
     `);
 
-
     if (checkModePermission(this.viewMode.value, "isEnableItemVisibleMenu")) {
       group.append("text")
         .attr("id", `${this.id}Text`)
@@ -145,6 +150,34 @@ class Boundary {
         .append("title")
         .text("Right click to select visible member");
     }
+
+    //if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.LEFT){
+      // group.append("rect")
+      // .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      // .attr("type", TYPE_CONNECT.INPUT)
+      // .attr("prop", `${this.id}${CONNECT_KEY}title`)
+      // .attr("pointer-events", "all")
+      // .attr("width", 12)
+      // .attr("height", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 1)
+      // .attr("x", 1)
+      // .attr("y", 1)
+      // .style("fill", this.colorHashConnection.hex(this.name))
+      // .call(callbackDragConnection);
+   // }
+
+    //if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.RIGHT){
+      // group.append("rect")
+      //   .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      //   .attr("prop", `${this.id}${CONNECT_KEY}title`)
+      //   .attr("pointer-events", "all")
+      //   .attr("type", TYPE_CONNECT.OUTPUT)
+      //   .attr("width", 12)
+      //   .attr("height", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 1)
+      //   .attr("x", this.width - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
+      //   .attr("y", 1)
+      //   .style("fill", this.colorHashConnection.hex(this.name))
+      //   .call(callbackDragConnection);
+   // }
 
     if(!isImport)
       setMinBoundaryGraph(this.dataContainer, this.svgId);
@@ -184,7 +217,7 @@ class Boundary {
         orderObject++;
         hBeforeElements += height;
         if (width >= wBoundary)
-          wBoundary = width + (mem.type === "B" ? 10 : 0);
+          wBoundary = width + 10;
       }
     });
 

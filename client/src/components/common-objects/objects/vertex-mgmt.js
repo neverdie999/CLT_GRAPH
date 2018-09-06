@@ -13,6 +13,7 @@ import {
   VERTEX_GROUP_OPTION,
   TYPE_CONNECT,
   VERTEX_ATTR_SIZE,
+  CONNECT_SIDE,
 
 } from '../../../common/const/index';
 
@@ -667,7 +668,7 @@ class VertexMgmt {
   }
 
   async reRenderContentInsideVertex(vertex) {
-    let {name, description, data: elements, id, vertexType, groupType, parent} = vertex;
+    const {name, description, data: elements, id, vertexType, groupType, parent, connectSide} = vertex;
 
     if (!vertexType)
       return;
@@ -683,7 +684,7 @@ class VertexMgmt {
       let data = elements[i];
       htmlContent += `
         <div class="property" prop="${id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${data[presentation.key] || ""}</label><label> : </label>
+          <label class="key" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${this.getKeyPrefix(data.type)}${data[presentation.key] || ""}</label>
           <label class="data" id="${id}${presentation.value}${i}" title="${data[presentation.valueTooltip] || "No data to show"}">${data[presentation.value] || ""}</label>
         </div>`;
     }
@@ -698,37 +699,71 @@ class VertexMgmt {
         <p class="header_name" id="${id}Name" title="${description}"
           style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px; background-color: ${this.colorHash.hex(name)};
           cursor: move; pointer-events: all">${name}</p>
-        <div class="vertex_data" style="pointer-events: none">
+        <div class="vertex_data">
           ${htmlContent}
         </div>`
-      );
+    );
+    
+    //Rect connect title INPUT
+    if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.LEFT){
+      group.append("rect")
+      .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      .attr("type", TYPE_CONNECT.INPUT)
+      .attr("prop", `${id}${CONNECT_KEY}title`)
+      .attr("pointer-events", "all")
+      .attr("width", 12)
+      .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
+      .attr("x", 1)
+      .attr("y", 1)
+      .style("fill", this.colorHashConnection.hex(name))
+      .call(this.edgeMgmt.handleDragConnection);
+    }
+
+    //Rect connect title OUTPUT
+    if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.RIGHT){
+      group.append("rect")
+        .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+        .attr("prop", `${id}${CONNECT_KEY}title`)
+        .attr("pointer-events", "all")
+        .attr("type", TYPE_CONNECT.OUTPUT)
+        .attr("width", 12)
+        .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
+        .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
+        .attr("y", 1)
+        .style("fill", this.colorHashConnection.hex(name))
+        .call(this.edgeMgmt.handleDragConnection);
+    }
 
     for (let i = 0; i < len; i++) {
       // Input
-      group.append("rect")
-        .attr("class", `drag_connect drag_connect_${this.svgId}`)
-        .attr("type", TYPE_CONNECT.INPUT)
-        .attr("prop", `${id}${CONNECT_KEY}${i}`)
-        .attr("pointer-events", "all")
-        .attr("width", 12)
-        .attr("height", 25)
-        .attr("x", 1)
-        .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-        .style("fill", this.colorHashConnection.hex(name))
-        .call(this.edgeMgmt.handleDragConnection);
+      if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.LEFT){
+        group.append("rect")
+          .attr("class", `drag_connect drag_connect_${this.svgId}`)
+          .attr("type", TYPE_CONNECT.INPUT)
+          .attr("prop", `${id}${CONNECT_KEY}${i}`)
+          .attr("pointer-events", "all")
+          .attr("width", 12)
+          .attr("height", 25)
+          .attr("x", 1)
+          .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
+          .style("fill", this.colorHashConnection.hex(name))
+          .call(this.edgeMgmt.handleDragConnection);
+      }
 
       // Output
-      group.append("rect")
-        .attr("class", `drag_connect drag_connect_${this.svgId}`)
-        .attr("prop", `${id}${CONNECT_KEY}${i}`)
-        .attr("type", TYPE_CONNECT.OUTPUT)
-        .attr("pointer-events", "all")
-        .attr("width", 12)
-        .attr("height", 25)
-        .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
-        .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-        .style("fill", this.colorHashConnection.hex(name))
-        .call(this.edgeMgmt.handleDragConnection);
+      if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.RIGHT){
+        group.append("rect")
+          .attr("class", `drag_connect drag_connect_${this.svgId}`)
+          .attr("prop", `${id}${CONNECT_KEY}${i}`)
+          .attr("type", TYPE_CONNECT.OUTPUT)
+          .attr("pointer-events", "all")
+          .attr("width", 12)
+          .attr("height", 25)
+          .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
+          .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
+          .style("fill", this.colorHashConnection.hex(name))
+          .call(this.edgeMgmt.handleDragConnection);
+      }
     }
 
     if (parent){
@@ -754,6 +789,12 @@ class VertexMgmt {
   clearAll(){
     d3.select(`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
     this.dataContainer.vertex = [];
+  }
+
+  getKeyPrefix(type){
+    let prefix = this.vertexDefinition.keyPrefix.type[type];
+
+    return prefix != undefined ? prefix:"";
   }
 }
 

@@ -72,15 +72,25 @@ class ObjectUtils {
         y: axisY - parentSvg.scrollTop()
       };
 
-    // Get index prop in object
-    let index = this.findIndexPropInVertex(id, prop);
-    // Calculate coordinate of prop
-    // Get coordinate
-    axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT + index * VERTEX_ATTR_SIZE.PROP_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2;
-    return {
-      x: type === TYPE_CONNECT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
-      y: axisY - parentSvg.scrollTop()
-    };
+    if (prop.substr(0 - 'title'.length,'title'.length) === 'title'){
+
+      axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT / 2;
+
+      return {
+        x: type === TYPE_CONNECT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
+        y: axisY - parentSvg.scrollTop()
+      };
+    }else{
+      // Get index prop in object
+      let index = this.findIndexPropInVertex(id, prop);
+      // Calculate coordinate of prop
+      // Get coordinate
+      axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT + index * VERTEX_ATTR_SIZE.PROP_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2;
+      return {
+        x: type === TYPE_CONNECT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
+        y: axisY - parentSvg.scrollTop()
+      };
+    }
   }
 
   /**
@@ -116,11 +126,11 @@ class ObjectUtils {
       if (boundary.id != obj.id && !boundary.parent) {
         let boundaryBox = this.getBBoxObject(`#${boundary.id}`);
 
-        if (height >= boundaryBox.height){
-          //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
-          boundary.ctrlSrcHeight = boundary.height;
-          boundary.setHeight(BOUNDARY_ATTR_SIZE.HEADER_HEIGHT + height + 20);
-        }
+        // if (height >= boundaryBox.height){
+        //   //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
+        //   boundary.ctrlSrcHeight = boundary.height;
+        //   boundary.setHeight(BOUNDARY_ATTR_SIZE.HEADER_HEIGHT + height + 20);
+        // }
 
         if (width >= boundaryBox.width){
           //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
@@ -447,7 +457,7 @@ class ObjectUtils {
       let arrPropOfVertex = [];
       lstProp.forEach((propItem) => {
         if (propItem.vert === vertexItem.id) {
-          if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
+          if (arrPropOfVertex.indexOf(propItem.prop) === -1 && propItem.prop.substr(0 - 'title'.length, 'title'.length) != 'title') {
             arrPropOfVertex.push(propItem.prop);
           }
         }

@@ -41,7 +41,8 @@ class OperationsMgmt {
       containerId: this.containerId,
       svgId: this.svgId,
       viewMode: this.viewMode,
-      vertexMgmt: this.vertexMgmt
+      vertexMgmt: this.vertexMgmt,
+      edgeMgmt: this.edgeMgmt
     });
   }
 

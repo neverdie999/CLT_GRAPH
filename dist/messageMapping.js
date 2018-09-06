@@ -882,7 +882,7 @@ const CLASS_CONTAINER_VERTEX = 'groupVertex';
 const VERTEX_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
   PROP_HEIGHT: 26,
-  GROUP_WIDTH: 150,
+  GROUP_WIDTH: 220,
   SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
 }
 /* harmony export (immutable) */ __webpack_exports__["k"] = VERTEX_ATTR_SIZE;
@@ -20196,15 +20196,25 @@ class ObjectUtils {
         y: axisY - parentSvg.scrollTop()
       };
 
-    // Get index prop in object
-    let index = this.findIndexPropInVertex(id, prop);
-    // Calculate coordinate of prop
-    // Get coordinate
-    axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index * __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2;
-    return {
-      x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* TYPE_CONNECT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
-      y: axisY - parentSvg.scrollTop()
-    };
+    if (prop.substr(0 - 'title'.length,'title'.length) === 'title'){
+
+      axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT / 2;
+
+      return {
+        x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* TYPE_CONNECT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
+        y: axisY - parentSvg.scrollTop()
+      };
+    }else{
+      // Get index prop in object
+      let index = this.findIndexPropInVertex(id, prop);
+      // Calculate coordinate of prop
+      // Get coordinate
+      axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index * __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2;
+      return {
+        x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* TYPE_CONNECT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
+        y: axisY - parentSvg.scrollTop()
+      };
+    }
   }
 
   /**
@@ -20240,11 +20250,11 @@ class ObjectUtils {
       if (boundary.id != obj.id && !boundary.parent) {
         let boundaryBox = this.getBBoxObject(`#${boundary.id}`);
 
-        if (height >= boundaryBox.height){
-          //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
-          boundary.ctrlSrcHeight = boundary.height;
-          boundary.setHeight(__WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT + height + 20);
-        }
+        // if (height >= boundaryBox.height){
+        //   //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
+        //   boundary.ctrlSrcHeight = boundary.height;
+        //   boundary.setHeight(BOUNDARY_ATTR_SIZE.HEADER_HEIGHT + height + 20);
+        // }
 
         if (width >= boundaryBox.width){
           //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
@@ -20571,7 +20581,7 @@ class ObjectUtils {
       let arrPropOfVertex = [];
       lstProp.forEach((propItem) => {
         if (propItem.vert === vertexItem.id) {
-          if (arrPropOfVertex.indexOf(propItem.prop) === -1) {
+          if (arrPropOfVertex.indexOf(propItem.prop) === -1 && propItem.prop.substr(0 - 'title'.length, 'title'.length) != 'title') {
             arrPropOfVertex.push(propItem.prop);
           }
         }
@@ -33580,7 +33590,7 @@ class VertexMgmt {
   }
 
   async reRenderContentInsideVertex(vertex) {
-    let {name, description, data: elements, id, vertexType, groupType, parent} = vertex;
+    const {name, description, data: elements, id, vertexType, groupType, parent, connectSide} = vertex;
 
     if (!vertexType)
       return;
@@ -33596,7 +33606,7 @@ class VertexMgmt {
       let data = elements[i];
       htmlContent += `
         <div class="property" prop="${id}${CONNECT_KEY}${i}" style="height: ${__WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
-          <label class="key" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${data[presentation.key] || ""}</label><label> : </label>
+          <label class="key" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${this.getKeyPrefix(data.type)}${data[presentation.key] || ""}</label>
           <label class="data" id="${id}${presentation.value}${i}" title="${data[presentation.valueTooltip] || "No data to show"}">${data[presentation.value] || ""}</label>
         </div>`;
     }
@@ -33611,37 +33621,71 @@ class VertexMgmt {
         <p class="header_name" id="${id}Name" title="${description}"
           style="height: ${__WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px; background-color: ${this.colorHash.hex(name)};
           cursor: move; pointer-events: all">${name}</p>
-        <div class="vertex_data" style="pointer-events: none">
+        <div class="vertex_data">
           ${htmlContent}
         </div>`
-      );
+    );
+    
+    //Rect connect title INPUT
+    if (connectSide === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH || connectSide === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].LEFT){
+      group.append("rect")
+      .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      .attr("type", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["j" /* TYPE_CONNECT */].INPUT)
+      .attr("prop", `${id}${CONNECT_KEY}title`)
+      .attr("pointer-events", "all")
+      .attr("width", 12)
+      .attr("height", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT - 1)
+      .attr("x", 1)
+      .attr("y", 1)
+      .style("fill", this.colorHashConnection.hex(name))
+      .call(this.edgeMgmt.handleDragConnection);
+    }
+
+    //Rect connect title OUTPUT
+    if (connectSide === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH || connectSide === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].RIGHT){
+      group.append("rect")
+        .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+        .attr("prop", `${id}${CONNECT_KEY}title`)
+        .attr("pointer-events", "all")
+        .attr("type", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["j" /* TYPE_CONNECT */].OUTPUT)
+        .attr("width", 12)
+        .attr("height", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT - 1)
+        .attr("x", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH - (__WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2))
+        .attr("y", 1)
+        .style("fill", this.colorHashConnection.hex(name))
+        .call(this.edgeMgmt.handleDragConnection);
+    }
 
     for (let i = 0; i < len; i++) {
       // Input
-      group.append("rect")
-        .attr("class", `drag_connect drag_connect_${this.svgId}`)
-        .attr("type", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["j" /* TYPE_CONNECT */].INPUT)
-        .attr("prop", `${id}${CONNECT_KEY}${i}`)
-        .attr("pointer-events", "all")
-        .attr("width", 12)
-        .attr("height", 25)
-        .attr("x", 1)
-        .attr("y", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * i + 1)
-        .style("fill", this.colorHashConnection.hex(name))
-        .call(this.edgeMgmt.handleDragConnection);
+      if (connectSide === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH || connectSide === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].LEFT){
+        group.append("rect")
+          .attr("class", `drag_connect drag_connect_${this.svgId}`)
+          .attr("type", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["j" /* TYPE_CONNECT */].INPUT)
+          .attr("prop", `${id}${CONNECT_KEY}${i}`)
+          .attr("pointer-events", "all")
+          .attr("width", 12)
+          .attr("height", 25)
+          .attr("x", 1)
+          .attr("y", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * i + 1)
+          .style("fill", this.colorHashConnection.hex(name))
+          .call(this.edgeMgmt.handleDragConnection);
+      }
 
       // Output
-      group.append("rect")
-        .attr("class", `drag_connect drag_connect_${this.svgId}`)
-        .attr("prop", `${id}${CONNECT_KEY}${i}`)
-        .attr("type", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["j" /* TYPE_CONNECT */].OUTPUT)
-        .attr("pointer-events", "all")
-        .attr("width", 12)
-        .attr("height", 25)
-        .attr("x", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH - (__WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2))
-        .attr("y", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * i + 1)
-        .style("fill", this.colorHashConnection.hex(name))
-        .call(this.edgeMgmt.handleDragConnection);
+      if (connectSide === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH || connectSide === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].RIGHT){
+        group.append("rect")
+          .attr("class", `drag_connect drag_connect_${this.svgId}`)
+          .attr("prop", `${id}${CONNECT_KEY}${i}`)
+          .attr("type", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["j" /* TYPE_CONNECT */].OUTPUT)
+          .attr("pointer-events", "all")
+          .attr("width", 12)
+          .attr("height", 25)
+          .attr("x", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH - (__WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2))
+          .attr("y", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * i + 1)
+          .style("fill", this.colorHashConnection.hex(name))
+          .call(this.edgeMgmt.handleDragConnection);
+      }
     }
 
     if (parent){
@@ -33667,6 +33711,12 @@ class VertexMgmt {
   clearAll(){
     __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
     this.dataContainer.vertex = [];
+  }
+
+  getKeyPrefix(type){
+    let prefix = this.vertexDefinition.keyPrefix.type[type];
+
+    return prefix != undefined ? prefix:"";
   }
 }
 
@@ -33761,6 +33811,7 @@ class BoundaryMgmt {
     this.svgId                    = props.svgId;
     this.viewMode                 = props.viewMode;
     this.vertexMgmt               = props.vertexMgmt;
+    this.edgeMgmt                  = props.edgeMgmt;
 
     this.initialize();
   }
@@ -33902,7 +33953,7 @@ class BoundaryMgmt {
       boundaryMgmt: this
     });
 
-    newBoundary.create(sOptions, this.callbackDragBoundary);
+    newBoundary.create(sOptions, this.callbackDragBoundary, this.edgeMgmt.handleDragConnection);
   }
 
   startDrag(main) {
@@ -33979,6 +34030,8 @@ class BoundaryMgmt {
       .attr("transform", `translate(0.5, 0.5)`)
       .append("svg:rect")
       .attr("id", `${this.dummyBoxId}`)
+      .attr('width', __WEBPACK_IMPORTED_MODULE_9__common_const_index__["b" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH)
+      .attr('height', __WEBPACK_IMPORTED_MODULE_9__common_const_index__["b" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT)
       .attr("class", "dummy-edge stroke-dasharray")
       // .attr("stroke-dasharray", "3 3")
       .attr("fill", "none");
@@ -33997,7 +34050,7 @@ class BoundaryMgmt {
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.dummyBoxId}`).attr('height', height);
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.dummyBoxId}`).style("display", "block");
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.dummyBoxId}`).node().parentNode).moveToFront();
-    }
+  }
   
   hiddenBBoxGroup() {
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.dummyBoxId}`).style("display", "none");
@@ -53924,14 +53977,15 @@ class Vertex {
         group.call(callbackDragVertex);
       }
 
+    
     let htmlContent = '';
     let countData = this.data.length;
     for (let i = 0; i < countData; i++) {
       let item = this.data[i];
       htmlContent += `
         <div class="property" prop="${this.id}${CONNECT_KEY}${i}" style="height: ${__WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
-          <label class="key" id="${this.id}_${presentation.key}_${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${item[presentation.key] || ""}</label><label> : </label>
-          <label class="data" id="${this.id}_${presentation.value}_${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
+          <label class="key" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${this.getKeyPrefix(item.type)}${item[presentation.key] || ""}</label>
+          <label class="data" id="${this.id}${presentation.value}${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
         </div>`;
     }
 
@@ -53952,10 +54006,41 @@ class Vertex {
         </div>
       `);
 
+    //Rect connect title INPUT
+    if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].LEFT){
+      group.append("rect")
+      .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      .attr("type", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["j" /* TYPE_CONNECT */].INPUT)
+      .attr("prop", `${this.id}${CONNECT_KEY}title`)
+      .attr("pointer-events", "all")
+      .attr("width", 12)
+      .attr("height", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT - 1)
+      .attr("x", 1)
+      .attr("y", 1)
+      .style("fill", this.colorHashConnection.hex(this.name))
+      .call(callbackDragConnection);
+    }
+
+    //Rect connect title OUTPUT
+    if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].RIGHT){
+      group.append("rect")
+        .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+        .attr("prop", `${this.id}${CONNECT_KEY}title`)
+        .attr("pointer-events", "all")
+        .attr("type", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["j" /* TYPE_CONNECT */].OUTPUT)
+        .attr("width", 12)
+        .attr("height", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT - 1)
+        .attr("x", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH - (__WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2))
+        .attr("y", 1)
+        .style("fill", this.colorHashConnection.hex(this.name))
+        .call(callbackDragConnection);
+    }
+    
+
     for (let i = 0; i < countData; i++) {
       // Input
       if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].LEFT){
-       let connect = group.append("rect")
+        let connect = group.append("rect")
           .attr("class", `drag_connect drag_connect_${this.svgId}`)
           .attr("type", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["j" /* TYPE_CONNECT */].INPUT)
           .attr("prop", `${this.id}${CONNECT_KEY}${i}`)
@@ -54079,6 +54164,12 @@ class Vertex {
       Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["b" /* arrayMove */])(this.dataContainer.vertex, curIndex, this.dataContainer.vertex.length - 1);
     }
   }
+
+  getKeyPrefix(type){
+    let prefix = this.vertexDefinition.keyPrefix.type[type];
+
+    return prefix != undefined ? prefix:"";
+  }
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Vertex);
@@ -54175,6 +54266,8 @@ class VertexMenu {
 
 
 
+const CONNECT_KEY = 'Connected';
+
 class Boundary {
   constructor(props) {
     this.dataContainer              = props.boundaryMgmt.dataContainer;
@@ -54211,6 +54304,8 @@ class Boundary {
   initialize() {
     this.objectUtils = new __WEBPACK_IMPORTED_MODULE_3__common_utilities_object_ult__["a" /* default */]();
     this.colorHash = new __WEBPACK_IMPORTED_MODULE_1_color_hash___default.a({ lightness: 0.2 });
+    this.colorHashConnection = new __WEBPACK_IMPORTED_MODULE_1_color_hash___default.a({lightness: 0.8});
+
     this.configsDefault = {
       width: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["b" /* BOUNDARY_ATTR_SIZE */].BOUND_WIDTH,
       height: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["b" /* BOUNDARY_ATTR_SIZE */].BOUND_HEIGHT
@@ -54232,7 +54327,7 @@ class Boundary {
    * @param mandatory => type: bool, require: false
    * @param repeat => type: number, require: false,
    */
-  create(options = {}, callbackDragBoundary = () => { }) {
+  create(options = {}, callbackDragBoundary = () => { },  callbackDragConnection = ()=>{}) {
     let { id, x, y, name, description, member, width, height, parent, mandatory, repeat, isImport} = options;
     this.id             = id || Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["i" /* generateObjectId */])('B');
     this.x              = x || 0;
@@ -54284,7 +54379,6 @@ class Boundary {
           </div>
     `);
 
-
     if (Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["e" /* checkModePermission */])(this.viewMode.value, "isEnableItemVisibleMenu")) {
       group.append("text")
         .attr("id", `${this.id}Text`)
@@ -54305,6 +54399,34 @@ class Boundary {
         .append("title")
         .text("Right click to select visible member");
     }
+
+    //if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.LEFT){
+      // group.append("rect")
+      // .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      // .attr("type", TYPE_CONNECT.INPUT)
+      // .attr("prop", `${this.id}${CONNECT_KEY}title`)
+      // .attr("pointer-events", "all")
+      // .attr("width", 12)
+      // .attr("height", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 1)
+      // .attr("x", 1)
+      // .attr("y", 1)
+      // .style("fill", this.colorHashConnection.hex(this.name))
+      // .call(callbackDragConnection);
+   // }
+
+    //if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.RIGHT){
+      // group.append("rect")
+      //   .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      //   .attr("prop", `${this.id}${CONNECT_KEY}title`)
+      //   .attr("pointer-events", "all")
+      //   .attr("type", TYPE_CONNECT.OUTPUT)
+      //   .attr("width", 12)
+      //   .attr("height", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 1)
+      //   .attr("x", this.width - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
+      //   .attr("y", 1)
+      //   .style("fill", this.colorHashConnection.hex(this.name))
+      //   .call(callbackDragConnection);
+   // }
 
     if(!isImport)
       Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["m" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
@@ -54344,7 +54466,7 @@ class Boundary {
         orderObject++;
         hBeforeElements += height;
         if (width >= wBoundary)
-          wBoundary = width + (mem.type === "B" ? 10 : 0);
+          wBoundary = width + 10;
       }
     });
 
@@ -55374,6 +55496,7 @@ class EdgeMgmt {
   clearAll(){
     this.dataContainer.edge = [];
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
+    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`).select('defs').selectAll(`marker:not(#${this.arrowId})`).remove();
   }
 
   /**
@@ -55441,14 +55564,14 @@ class EdgeMgmt {
     arrSrcPaths.forEach(src => {
       const {source: {prop, vertexId}} = src;
 
-      if(this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
+      if(prop.substr(0 - 'title'.length, 'title'.length) != 'title' && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
         src.remove();
     });
 
     arrDesPaths.forEach(des => {
       const {target: {prop, vertexId}} = des;
 
-      if(this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
+      if(prop.substr(0 - 'title'.length, 'title'.length) != 'title' && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
         des.remove();
     });
   }
@@ -55560,6 +55683,8 @@ class Edge {
     this.originNote = '';
     this.middleNote = '';
     this.destNote = '';
+    this.color = '000000';
+    this.thickness = 1;
 
     this.initialize();
   }
@@ -55592,8 +55717,10 @@ class Edge {
     this.target = target;
 
     if(style){
-      this.lineType = style.line;
-      this.useMarker = style.arrow;
+      this.lineType = style.line || this.lineType;
+      this.useMarker = style.arrow || this.useMarker;
+      this.color = style.color || this.color;
+      this.thickness = style.thickness || this.thickness;
     }
     if(note){
       this.originNote = note.originNote;
@@ -55625,6 +55752,18 @@ class Edge {
         })
       })
 
+    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.svgId}`).select('defs').append("marker")
+      .attr("id", `arrow${this.id}`)
+      .attr("viewBox", "0 0 10 10")
+      .attr("refX", 10)
+      .attr("refY", 5)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", "M 0 0 L 10 5 L 0 10 z")
+      .attr("fill", `#${this.color}`);
+
     //hidden line, it has larger width for selecting easily
     group.append("path")
       .attr('d', pathStr)
@@ -55636,17 +55775,18 @@ class Edge {
       .attr('pointer-events', 'stroke')
       .attr('visibility', 'hidden')
       .attr('stroke-width', 9)
-      .attr("marker-end", `url(#${this.arrowId})`);
+      .attr("marker-end", `url(#arrow${this.id})`);
 
     group.append("path")
       .attr('d', pathStr)
       .attr("id", this.id)
       .attr('focusable', true)
       .attr('fill', 'none')
-      .attr('stroke', '#000000')
+      .attr('stroke', `#${this.color}`)
+      .attr('stroke-width', this.thickness)
       .attr('stroke-miterlimit', 10)
       .attr('focusable', true)
-      .attr("marker-end", this.useMarker === 'Y' ? `url(#${this.arrowId})` : '')
+      .attr("marker-end", this.useMarker === 'Y' ? `url(#arrow${this.id})` : '')
       .attr("stroke-dasharray", this.lineType === __WEBPACK_IMPORTED_MODULE_2__common_const_index__["f" /* LINE_TYPE */].SOLID ? '0 0' : '3 3'); // Make arrow at end path
 
     let origin = group.append("text")
@@ -55700,6 +55840,8 @@ class Edge {
         return e.id === this.id;
       });
     }
+
+    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#arrow${this.id}`).remove();
 
     if (this.edgeMgmt.isSelectingEdge())
       this.edgeMgmt.cancleSelectedPath();
@@ -55781,8 +55923,37 @@ class Edge {
    */
   setUseMarker(flag) {
     this.useMarker = flag;
-    __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('marker-end', flag === 'Y' ? `url(#${this.arrowId})` : '');
+    __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('marker-end', flag === 'Y' ? `url(#arrow${this.id})` : '');
   }
+
+  /**
+   * 
+   * @param {*} hex 
+   */
+  setColor(hex){
+    this.color = hex;
+    let path = __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).filter((d, i) => {
+      return i == 1;
+    });
+    path.style('stroke', `#${hex}`);
+
+    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#arrow${this.id}`).select('path').attr('fill', `#${hex}`);
+  }
+
+  /**
+   * 
+   * @param {*} hex 
+   */
+  setThickness(size){
+    this.thickness = size;
+    
+    let path = __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).filter((d, i) => {
+      return i == 1;
+    });
+
+    path.style('stroke-width', `${size}`);
+  }
+
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Edge);
@@ -55859,6 +56030,20 @@ class EdgeMenu {
                 change: this.onUseMarkerChanged(this)
               }
             },
+            color: {
+              type: 'select',
+              options: this.getColorOptions(),
+              events: {
+                change: this.onColorChanged(this)
+              }
+            },
+            thickness: {
+              type: 'select',
+              options: {1: '1', 2: '2', 3: '3', 4: '4', 5: '5'},
+              events: {
+                change: this.onThickChanged(this)
+              }
+            },
             removeEdge: {
               name: "Delete",
               icon: "fa-times"
@@ -55893,6 +56078,171 @@ class EdgeMenu {
   onUseMarkerChanged(main) {
     return function () {
       main.selectedEdge.setUseMarker(this.value);
+    }
+  }
+
+  onColorChanged(main) {
+    return function () {
+      main.selectedEdge.setColor(this.value);
+    }
+  }
+
+  onThickChanged(main) {
+    return function () {
+      main.selectedEdge.setThickness(this.value);
+    }
+  }
+
+  getColorOptions(){
+    return {
+      'F0F8FF': 'AliceBlue',
+      'FAEBD7': 'AntiqueWhite',
+      '00FFFF': 'Aqua',
+      '7FFFD4': 'Aquamarine',
+      'F0FFFF': 'Azure',
+      'F5F5DC': 'Beige',
+      'FFE4C4': 'Bisque',
+      '000000': 'Black',
+      'FFEBCD': 'BlanchedAlmond',
+      '0000FF': 'Blue',
+      '8A2BE2': 'BlueViolet',
+      'A52A2A': 'Brown',
+      'DEB887': 'BurlyWood',
+      '5F9EA0': 'CadetBlue',
+      '7FFF00': 'Chartreuse',
+      'D2691E': 'Chocolate',
+      'FF7F50': 'Coral',
+      '6495ED': 'CornflowerBlue',
+      'FFF8DC': 'Cornsilk',
+      'DC143C': 'Crimson',
+      '00FFFF': 'Cyan',
+      '00008B': 'DarkBlue',
+      '008B8B': 'DarkCyan',
+      'B8860B': 'DarkGoldenRod',
+      'A9A9A9': 'DarkGray',
+      'A9A9A9': 'DarkGrey',
+      '006400': 'DarkGreen',
+      'BDB76B': 'DarkKhaki',
+      '8B008B': 'DarkMagenta',
+      '556B2F': 'DarkOliveGreen',
+      'FF8C00': 'DarkOrange',
+      '9932CC': 'DarkOrchid',
+      '8B0000': 'DarkRed',
+      'E9967A': 'DarkSalmon',
+      '8FBC8F': 'DarkSeaGreen',
+      '483D8B': 'DarkSlateBlue',
+      '2F4F4F': 'DarkSlateGray',
+      '2F4F4F': 'DarkSlateGrey',
+      '00CED1': 'DarkTurquoise',
+      '9400D3': 'DarkViolet',
+      'FF1493': 'DeepPink',
+      '00BFFF': 'DeepSkyBlue',
+      '696969': 'DimGray',
+      '696969': 'DimGrey',
+      '1E90FF': 'DodgerBlue',
+      'B22222': 'FireBrick',
+      'FFFAF0': 'FloralWhite',
+      '228B22': 'ForestGreen',
+      'FF00FF': 'Fuchsia',
+      'DCDCDC': 'Gainsboro',
+      'F8F8FF': 'GhostWhite',
+      'FFD700': 'Gold',
+      'DAA520': 'GoldenRod',
+      '808080': 'Gray',
+      '808080': 'Grey',
+      '008000': 'Green',
+      'ADFF2F': 'GreenYellow',
+      'F0FFF0': 'HoneyDew',
+      'FF69B4': 'HotPink',
+      'CD5C5C': 'IndianRed',
+      '4B0082': 'Indigo',
+      'FFFFF0': 'Ivory',
+      'F0E68C': 'Khaki',
+      'E6E6FA': 'Lavender',
+      'FFF0F5': 'LavenderBlush',
+      '7CFC00': 'LawnGreen',
+      'FFFACD': 'LemonChiffon',
+      'ADD8E6': 'LightBlue',
+      'F08080': 'LightCoral',
+      'E0FFFF': 'LightCyan',
+      'FAFAD2': 'LightGoldenRodYellow',
+      'D3D3D3': 'LightGray',
+      'D3D3D3': 'LightGrey',
+      '90EE90': 'LightGreen',
+      'FFB6C1': 'LightPink',
+      'FFA07A': 'LightSalmon',
+      '20B2AA': 'LightSeaGreen',
+      '87CEFA': 'LightSkyBlue',
+      '778899': 'LightSlateGray',
+      '778899': 'LightSlateGrey',
+      'B0C4DE': 'LightSteelBlue',
+      'FFFFE0': 'LightYellow',
+      '00FF00': 'Lime',
+      '32CD32': 'LimeGreen',
+      'FAF0E6': 'Linen',
+      'FF00FF': 'Magenta',
+      '800000': 'Maroon',
+      '66CDAA': 'MediumAquaMarine',
+      '0000CD': 'MediumBlue',
+      'BA55D3': 'MediumOrchid',
+      '9370DB': 'MediumPurple',
+      '3CB371': 'MediumSeaGreen',
+      '7B68EE': 'MediumSlateBlue',
+      '00FA9A': 'MediumSpringGreen',
+      '48D1CC': 'MediumTurquoise',
+      'C71585': 'MediumVioletRed',
+      '191970': 'MidnightBlue',
+      'F5FFFA': 'MintCream',
+      'FFE4E1': 'MistyRose',
+      'FFE4B5': 'Moccasin',
+      'FFDEAD': 'NavajoWhite',
+      '000080': 'Navy',
+      'FDF5E6': 'OldLace',
+      '808000': 'Olive',
+      '6B8E23': 'OliveDrab',
+      'FFA500': 'Orange',
+      'FF4500': 'OrangeRed',
+      'DA70D6': 'Orchid',
+      'EEE8AA': 'PaleGoldenRod',
+      '98FB98': 'PaleGreen',
+      'AFEEEE': 'PaleTurquoise',
+      'DB7093': 'PaleVioletRed',
+      'FFEFD5': 'PapayaWhip',
+      'FFDAB9': 'PeachPuff',
+      'CD853F': 'Peru',
+      'FFC0CB': 'Pink',
+      'DDA0DD': 'Plum',
+      'B0E0E6': 'PowderBlue',
+      '800080': 'Purple',
+      '663399': 'RebeccaPurple',
+      'FF0000': 'Red',
+      'BC8F8F': 'RosyBrown',
+      '4169E1': 'RoyalBlue',
+      '8B4513': 'SaddleBrown',
+      'FA8072': 'Salmon',
+      'F4A460': 'SandyBrown',
+      '2E8B57': 'SeaGreen',
+      'FFF5EE': 'SeaShell',
+      'A0522D': 'Sienna',
+      'C0C0C0': 'Silver',
+      '87CEEB': 'SkyBlue',
+      '6A5ACD': 'SlateBlue',
+      '708090': 'SlateGray',
+      '708090': 'SlateGrey',
+      'FFFAFA': 'Snow',
+      '00FF7F': 'SpringGreen',
+      '4682B4': 'SteelBlue',
+      'D2B48C': 'Tan',
+      '008080': 'Teal',
+      'D8BFD8': 'Thistle',
+      'FF6347': 'Tomato',
+      '40E0D0': 'Turquoise',
+      'EE82EE': 'Violet',
+      'F5DEB3': 'Wheat',
+      'FFFFFF': 'White',
+      'F5F5F5': 'WhiteSmoke',
+      'FFFF00': 'Yellow',
+      '9ACD32': 'YellowGreen',
     }
   }
 }
@@ -55940,7 +56290,7 @@ exports = module.exports = __webpack_require__(863)(false);
 
 
 // module
-exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: #ffffff;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: #000000;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181c1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #ffffff !important; }\n  .btn-etc:hover {\n    background: #4181c1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .checkbox_center, .dialog-wrapper .dialog-search table .col_header {\n      height: 26px;\n      text-align: center; }\n    .dialog-wrapper .dialog-search table .col_header {\n      background-color: #336699;\n      color: #ffffff; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border-collapse: collapse;\n    border-spacing: 0 0.5em;\n    margin: 5px 0px 10px; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper select, .dialog-wrapper textarea {\n    height: 29px;\n    border-color: #b8d6f6;\n    background-color: #ffffff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus, .dialog-wrapper textarea:hover, .dialog-wrapper textarea :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper textarea {\n    height: 100%;\n    resize: none; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important; }\n  .dialog-wrapper .full-width {\n    width: 100%; }\n  .dialog-wrapper .input-group-addon {\n    font-size: 12px;\n    border-radius: 0px; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: #f5f5f5; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: #f5f5f5 solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555555; }\n\nbody {\n  overflow: hidden; }\n\n.container-svg {\n  top: 0;\n  bottom: 0;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .container-svg .svg {\n    width: 100%;\n    min-height: 2000px; }\n\n.left-svg {\n  left: 0;\n  width: calc(100% / 3);\n  border-right: 1px solid #c5c5c5; }\n\n.middle-svg {\n  left: calc(100% / 3);\n  width: calc(100% / 3);\n  border-right: 1px solid #c5c5c5; }\n\n.right-svg {\n  left: calc(100% - (100% / 3));\n  width: calc(100% / 3); }\n\n.connect-svg {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  pointer-events: none; }\n\n.graphContainer {\n  right: 0px;\n  left: 0px;\n  top: 0px;\n  bottom: 0px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .graphContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 2000px;\n    position: absolute; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n  .container-file .fa-folder-open-o:hover {\n    color: #66afe9; }\n  .container-file .icon-folder-file-mgmt {\n    position: absolute;\n    width: 30px;\n    height: 30px;\n    bottom: 10px;\n    right: 12px;\n    font-size: 30px; }\n  .container-file .file-mgmt {\n    box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n    position: relative;\n    background-color: #ffffff;\n    display: none;\n    z-index: 10000; }\n    .container-file .file-mgmt .form-horizontal {\n      margin: 10px 0; }\n      .container-file .file-mgmt .form-horizontal .group-type-file-input .form-control {\n        width: 50%; }\n\n.hidden-object {\n  display: none; }\n\n.edge {\n  outline: none; }\n  .edge:focus {\n    outline: none; }\n\n.dummy-edge {\n  display: none;\n  stroke: #000000;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.stroke-dasharray {\n  stroke-dasharray: 3 3; }\n\n.edge-hide {\n  outline: none;\n  stroke-width: 8;\n  visibility: visible;\n  opacity: 0;\n  cursor: crosshair; }\n  .edge-hide:hover {\n    stroke-width: 8;\n    cursor: crosshair; }\n  .edge-hide:focus {\n    stroke-width: 8;\n    cursor: crosshair; }\n\n.hide {\n  stroke: #ffffff; }\n\n.hide-edge-on-menu-items {\n  display: none; }\n\n.hide-edge-on-parent-scroll {\n  display: none; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black;\n  font-size: 13px;\n  background: #ffffff; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid #000000;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n  .vertex_data div .key {\n    width: 85px;\n    text-align: right;\n    font-weight: 300;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 85px; }\n  .vertex_data div .data {\n    font-weight: 300;\n    width: calc(100% - 85px);\n    margin-left: 5px;\n    border: none;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: calc(100% - 85px); }\n\n.drag_connect:hover {\n  outline: -webkit-focus-ring-color auto; }\n\n.drag_connect:focus {\n  outline: -webkit-focus-ring-color auto; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  color: #ffffff;\n  border-bottom: none;\n  margin: 0;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border-left: none;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px;\n  fill-opacity: .5;\n  cursor: pointer; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #dddddd;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #e1d5e7;\n  border: none; }\n\n.context-menu-item .context-menu-list {\n  max-height: 300px;\n  max-width: 175px;\n  overflow-y: auto; }\n  .context-menu-item .context-menu-list li {\n    background: none; }\n    .context-menu-item .context-menu-list li select option:hover {\n      box-shadow: 0 0 10px 100px #2980b9 inset; }\n\n.context-menu-item label {\n  font-weight: 300 !important; }\n\n.context-menu-item button, .context-menu-item input, .context-menu-item select, .context-menu-item textarea {\n  line-height: normal !important; }\n", ""]);
+exports.push([module.i, ".web-dialog {\n  border: 2px solid #336699;\n  padding: 0px;\n  font-family: Verdana;\n  font-size: 12px;\n  border-radius: 0px; }\n\n.dialog-title {\n  border-bottom: solid 2px #336699;\n  background-color: #336699;\n  padding: 5px;\n  color: #ffffff;\n  cursor: move; }\n\n.dialog-title .title {\n  font-weight: bold;\n  font-family: Verdana;\n  font-size: 12px; }\n\n.btnClose {\n  color: #000000;\n  text-decoration: none;\n  position: absolute;\n  right: -1px;\n  padding: 4px 10px 5px 10px;\n  top: -2px;\n  font-weight: bold;\n  font-size: 16px; }\n\n.btnClose:hover {\n  background: #4181c1; }\n\n.btn-etc {\n  position: relative;\n  padding: 6px 10px;\n  border-style: inherit;\n  text-align: center;\n  line-height: 12px;\n  background-color: #336699;\n  color: #ffffff !important; }\n  .btn-etc:hover {\n    background: #4181c1; }\n\n.dialog-wrapper {\n  padding: 10px;\n  position: relative !important; }\n  .dialog-wrapper .dialog-button-top {\n    padding: 0 15px;\n    margin: 5px 0; }\n  .dialog-wrapper .dialog-search .control-label {\n    line-height: 25px;\n    font-weight: normal;\n    text-align: right; }\n  .dialog-wrapper .dialog-search .form-group {\n    margin-bottom: 5px;\n    display: flex; }\n  .dialog-wrapper .dialog-search table {\n    border-collapse: separate;\n    border-spacing: 0 0.5em;\n    width: 100%; }\n    .dialog-wrapper .dialog-search table th, .dialog-wrapper .dialog-search table td {\n      font-weight: normal; }\n    .dialog-wrapper .dialog-search table th {\n      padding: 0 10px; }\n    .dialog-wrapper .dialog-search table .checkbox_center, .dialog-wrapper .dialog-search table .col_header {\n      height: 26px;\n      text-align: center; }\n    .dialog-wrapper .dialog-search table .col_header {\n      background-color: #336699;\n      color: #ffffff; }\n  .dialog-wrapper .dialog-search .vertex-properties {\n    border-collapse: collapse;\n    border-spacing: 0 0.5em;\n    margin: 5px 0px 10px; }\n  .dialog-wrapper input[type=\"text\"], .dialog-wrapper input[type=\"email\"], .dialog-wrapper input[type=\"password\"], .dialog-wrapper input[type=\"number\"], .dialog-wrapper select, .dialog-wrapper textarea {\n    height: 29px;\n    border-color: #b8d6f6;\n    background-color: #ffffff;\n    line-height: 17px;\n    outline: none;\n    border-radius: 0px;\n    width: 100% !important;\n    font-size: 12px;\n    padding: 0 5px; }\n    .dialog-wrapper input[type=\"text\"]:hover, .dialog-wrapper input[type=\"text\"] :focus, .dialog-wrapper input[type=\"email\"]:hover, .dialog-wrapper input[type=\"email\"] :focus, .dialog-wrapper input[type=\"password\"]:hover, .dialog-wrapper input[type=\"password\"] :focus, .dialog-wrapper input[type=\"number\"]:hover, .dialog-wrapper input[type=\"number\"] :focus, .dialog-wrapper select:hover, .dialog-wrapper select :focus, .dialog-wrapper textarea:hover, .dialog-wrapper textarea :focus {\n      border-color: #6db3fe; }\n  .dialog-wrapper textarea {\n    height: 100%;\n    resize: none; }\n  .dialog-wrapper input[type=\"checkbox\"] {\n    height: 13px !important; }\n  .dialog-wrapper .full-width {\n    width: 100%; }\n  .dialog-wrapper .input-group-addon {\n    font-size: 12px;\n    border-radius: 0px; }\n\n/* width */\n::-webkit-scrollbar {\n  width: 12px;\n  height: 12px; }\n\n/* Track */\n::-webkit-scrollbar-track {\n  background: #f5f5f5; }\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n  background: #c5c5c5;\n  border-radius: 10px;\n  border: #f5f5f5 solid 3px; }\n\n/* Handle on hover */\n::-webkit-scrollbar-thumb:hover {\n  background: #555555; }\n\nbody {\n  overflow: hidden; }\n\n.container-svg {\n  top: 0;\n  bottom: 0;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .container-svg .svg {\n    width: 100%;\n    min-height: 2000px; }\n\n.left-svg {\n  left: 0;\n  width: calc(100% / 3);\n  border-right: 1px solid #c5c5c5; }\n\n.middle-svg {\n  left: calc(100% / 3);\n  width: calc(100% / 3);\n  border-right: 1px solid #c5c5c5; }\n\n.right-svg {\n  left: calc(100% - (100% / 3));\n  width: calc(100% / 3); }\n\n.connect-svg {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n  width: 100%;\n  pointer-events: none; }\n\n.graphContainer {\n  right: 0px;\n  left: 0px;\n  top: 0px;\n  bottom: 0px;\n  touch-action: none;\n  overflow: auto;\n  position: absolute; }\n  .graphContainer .svg {\n    width: 100%;\n    height: 100%;\n    display: block;\n    min-width: 1900px;\n    min-height: 2000px;\n    position: absolute; }\n\n.container-file {\n  position: absolute;\n  bottom: 0;\n  width: 100%; }\n  .container-file .fa-folder-open-o:hover {\n    color: #66afe9; }\n  .container-file .icon-folder-file-mgmt {\n    position: absolute;\n    width: 30px;\n    height: 30px;\n    bottom: 10px;\n    right: 12px;\n    font-size: 30px; }\n  .container-file .file-mgmt {\n    box-shadow: rgba(0, 0, 0, 0.24) 0px 11px 24px 3px;\n    position: relative;\n    background-color: #ffffff;\n    display: none;\n    z-index: 10000; }\n    .container-file .file-mgmt .form-horizontal {\n      margin: 10px 0; }\n      .container-file .file-mgmt .form-horizontal .group-type-file-input .form-control {\n        width: 50%; }\n\n.hidden-object {\n  display: none; }\n\n.edge {\n  outline: none; }\n  .edge:focus {\n    outline: none; }\n\n.dummy-edge {\n  display: none;\n  stroke: #000000;\n  stroke-width: 1;\n  visibility: visible; }\n\n.dummy-path {\n  stroke: #2795EE;\n  stroke-width: 1;\n  visibility: visible;\n  cursor: default; }\n\n.stroke-dasharray {\n  stroke-dasharray: 3 3; }\n\n.edge-hide {\n  outline: none;\n  stroke-width: 8;\n  visibility: visible;\n  opacity: 0;\n  cursor: crosshair; }\n  .edge-hide:hover {\n    stroke-width: 8;\n    cursor: crosshair; }\n  .edge-hide:focus {\n    stroke-width: 8;\n    cursor: crosshair; }\n\n.hide {\n  stroke: #ffffff; }\n\n.hide-edge-on-menu-items {\n  display: none; }\n\n.hide-edge-on-parent-scroll {\n  display: none; }\n\n.dash {\n  stroke-dasharray: 4; }\n\n.vertex_content {\n  border-top: 1px solid black;\n  border-left: 1px solid black;\n  border-right: 1px solid black;\n  font-size: 13px;\n  background: #ffffff; }\n\n.header_name {\n  margin: 0;\n  padding: 10px 0px;\n  text-align: center;\n  border-bottom: 1px black solid;\n  font-weight: 600;\n  font-size: 13px; }\n\n.vertex_data div {\n  height: 25px;\n  border-bottom: 1px solid #000000;\n  display: inline-flex;\n  width: 100%;\n  line-height: 25px; }\n  .vertex_data div .key {\n    width: 145px;\n    text-align: left;\n    margin-left: 13px;\n    font-weight: 300;\n    font-size: 9px;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 145px; }\n  .vertex_data div .data {\n    font-weight: 300;\n    font-size: 9px;\n    width: calc(100% - 162px);\n    margin-left: 5px;\n    margin-right: 13px;\n    text-align: right;\n    border: none;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: calc(100% - 162px); }\n\n.drag_connect:hover {\n  outline: -webkit-focus-ring-color auto; }\n\n.drag_connect:focus {\n  outline: -webkit-focus-ring-color auto; }\n\n.boundary {\n  cursor: pointer;\n  padding: 8px; }\n\n.header_boundary {\n  color: #ffffff;\n  border-bottom: none;\n  margin: 0;\n  text-align: center;\n  font-weight: 600;\n  float: left; }\n\n.boundary_right {\n  border-left: none;\n  margin: 0;\n  padding: 0px;\n  text-align: center;\n  font-weight: 600;\n  float: right;\n  width: 20px;\n  height: 20px;\n  fill-opacity: .5;\n  cursor: pointer; }\n\n/* menu header via data attribute */\n.data-title:before {\n  content: attr(data-menutitle);\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  background: #dddddd;\n  padding: 2px;\n  text-align: center;\n  font-family: Verdana, Arial, Helvetica, sans-serif;\n  font-size: 11px;\n  font-weight: bold; }\n\n.data-title li:first-child {\n  margin-top: 20px; }\n\n.input-header-boundary {\n  padding: 0 5px;\n  width: 150px;\n  background: #e1d5e7;\n  border: none; }\n\n.context-menu-item .context-menu-list {\n  max-height: 300px;\n  max-width: 175px;\n  overflow-y: auto; }\n  .context-menu-item .context-menu-list li {\n    background: none; }\n    .context-menu-item .context-menu-list li select option:hover {\n      box-shadow: 0 0 10px 100px #2980b9 inset; }\n\n.context-menu-item label {\n  font-weight: 300 !important; }\n\n.context-menu-item button, .context-menu-item input, .context-menu-item select, .context-menu-item textarea {\n  line-height: normal !important; }\n", ""]);
 
 // exports
 
@@ -56744,6 +57094,7 @@ class CltMessageMapping {
       headerForm: {}, // Header group type
       vertexPresentation: {}, // Group vertex presentation
       vertexGroup: null, // Group vertex
+      keyPrefix: {type:{}}
     };
 
     this.inputDefined = {
@@ -56754,6 +57105,7 @@ class CltMessageMapping {
       headerForm: {}, // Header group type
       vertexPresentation: {}, // Group vertex presentation
       vertexGroup: null, // Group vertex
+      keyPrefix: {type:{}}
     };
 
     this.outputDefined = {
@@ -56764,6 +57116,7 @@ class CltMessageMapping {
       headerForm: {}, // Header group type
       vertexPresentation: {}, // Group vertex presentation
       vertexGroup: null, // Group vertex
+      keyPrefix: {type:{}}
     };
 
     this.connectMgmt = new __WEBPACK_IMPORTED_MODULE_5__connect_mgmt_connect_mgmt__["a" /* default */]({
@@ -56861,6 +57214,12 @@ class CltMessageMapping {
       this.storeOperations.vertex.forEach(e => {
         e.updatePathConnect();
       })
+
+      //update all edges for Operations area
+      this.storeOutputMessage.vertex.forEach(e => {
+        e.updatePathConnect();
+      })
+
     });
   }
 
@@ -57065,10 +57424,13 @@ class CltMessageMapping {
 
   getVertexFormatType(vertexGroup, container) {
     vertexGroup.forEach(group => {
-      const {groupType, dataElementFormat, vertexPresentation} = group;
+      const {groupType, dataElementFormat, vertexPresentation, keyPrefix} = group;
       container.headerForm[groupType] = Object.keys(dataElementFormat);
       container.vertexPresentation[groupType] = vertexPresentation;
       container.vertexFormat[groupType] = dataElementFormat;
+      if(keyPrefix){
+        container.keyPrefix = keyPrefix;
+      }
       container.vertexGroupType[groupType] = group;
       let formatType = {};
       let header = container.headerForm[groupType];
@@ -57491,11 +57853,14 @@ class CltMessageMapping {
       note: {
         originNote: edge.originNote,
         middleNote: edge.middleNote,
-        destNote: edge.destNote
+        destNote: edge.destNote,
+
       },
       style:{
         line: edge.lineType,
-        arrow: edge.useMarker
+        arrow: edge.useMarker,
+        color: edge.color,
+        thickness: edge.thickness
       }
     };
   }
@@ -57581,7 +57946,8 @@ class InputMgmt {
       containerId: this.containerId,
       svgId: this.svgId,
       viewMode: this.viewMode,
-      vertexMgmt: this.vertexMgmt
+      vertexMgmt: this.vertexMgmt,
+      edgeMgmt: this.edgeMgmt
     });
   }
 
@@ -57656,24 +58022,35 @@ class InputMgmt {
    * set position graph by center align
    */
   setCenterAlignmentGarph(){
-    let parentBoundary = _.find(this.dataContainer.boundary, {"parent": null});
+    const parentBoundary = _.find(this.dataContainer.boundary, {"parent": null});
 
-    let rightScrollWidth = 10;
-    let alignOffset = 5;
+    const rightScrollWidth = 10;
+    const marginTop = 10;
+    const marginLeft = 5;
+    const marginRight = 5;
 
-    let newX = alignOffset;
-    let newY = alignOffset;
+    let newX = marginLeft;
+    let newY = marginTop;
 
     if (parentBoundary){
-      let containerRect  = $(`#${parentBoundary.svgId}`)[0].parentNode.getBoundingClientRect();
 
-      if ( containerRect.width - rightScrollWidth  - alignOffset >= parentBoundary.width ){
-        newX = newX + ((containerRect.width - rightScrollWidth  - alignOffset - parentBoundary.width) / 2)
+      $('.left-svg').css('width', parentBoundary.width + rightScrollWidth + marginLeft + marginRight);
+      $('.middle-svg').css('left', parentBoundary.width + rightScrollWidth + marginLeft + marginRight);
+
+      const inputRec = $('.left-svg')[0].getBoundingClientRect();
+      const outputRec = $('.right-svg')[0].getBoundingClientRect();
+      $('.middle-svg').css('width', `calc(100% - ${inputRec.width + outputRec.width}px)`);
+      
+
+      const containerRect  = $(`#${parentBoundary.svgId}`)[0].parentNode.getBoundingClientRect();
+
+      if ( containerRect.width - rightScrollWidth - marginLeft - marginRight >= parentBoundary.width ){
+        newX = newX + ((containerRect.width - rightScrollWidth  - marginLeft - marginRight - parentBoundary.width) / 2)
       }
     }
 
-    let offsetX = newX - parentBoundary.x;
-    let offsetY = newY - parentBoundary.y;
+    const offsetX = newX - parentBoundary.x;
+    const offsetY = newY - parentBoundary.y;
 
     if (offsetX != 0 || offsetY != 0){
       parentBoundary.move(offsetX, offsetY);
@@ -57740,7 +58117,8 @@ class OutputMgmt {
       containerId: this.containerId,
       svgId: this.svgId,
       viewMode: this.viewMode,
-      vertexMgmt: this.vertexMgmt
+      vertexMgmt: this.vertexMgmt,
+      edgeMgmt: this.edgeMgmt
     });
   }
 
@@ -57816,24 +58194,34 @@ class OutputMgmt {
    * set position graph by center align
    */
   setCenterAlignmentGarph(){
-    let parentBoundary = _.find(this.dataContainer.boundary, {"parent": null});
+    const parentBoundary = _.find(this.dataContainer.boundary, {"parent": null});
 
-    let rightScrollWidth = 10;
-    let alignOffset = 5;
+    const rightScrollWidth = 10;
+    const marginTop = 10;
+    const marginLeft = 5;
+    const marginRight = 5;
 
-    let newX = alignOffset;
-    let newY = alignOffset;
+    let newX = marginLeft;
+    let newY = marginTop;
 
     if (parentBoundary){
-      let containerRect  = $(`#${parentBoundary.svgId}`)[0].parentNode.getBoundingClientRect();
 
-      if ( containerRect.width - rightScrollWidth  - alignOffset >= parentBoundary.width ){
-        newX = newX + ((containerRect.width - rightScrollWidth  - alignOffset - parentBoundary.width) / 2)
+      $('.right-svg').css('left', `calc(100% - ${parentBoundary.width + rightScrollWidth + marginLeft + marginRight}px)`);
+      $('.right-svg').css('width', `${parentBoundary.width + rightScrollWidth + marginLeft + marginRight}px`);
+
+      const inputRec = $('.left-svg')[0].getBoundingClientRect();
+      const outputRec = $('.right-svg')[0].getBoundingClientRect();
+      $('.middle-svg').css('width', `calc(100% - ${inputRec.width + outputRec.width}px)`);
+
+      const containerRect  = $(`#${parentBoundary.svgId}`)[0].parentNode.getBoundingClientRect();
+
+      if ( containerRect.width - rightScrollWidth  - marginLeft - marginRight >= parentBoundary.width ){
+        newX = newX + ((containerRect.width - rightScrollWidth  - marginLeft - marginRight - parentBoundary.width) / 2)
       }
     }
 
-    let offsetX = newX - parentBoundary.x;
-    let offsetY = newY - parentBoundary.y;
+    const offsetX = newX - parentBoundary.x;
+    const offsetY = newY - parentBoundary.y;
 
     if (offsetX != 0 || offsetY != 0){
       parentBoundary.move(offsetX, offsetY);
@@ -57894,7 +58282,8 @@ class OperationsMgmt {
       containerId: this.containerId,
       svgId: this.svgId,
       viewMode: this.viewMode,
-      vertexMgmt: this.vertexMgmt
+      vertexMgmt: this.vertexMgmt,
+      edgeMgmt: this.edgeMgmt
     });
   }
 

@@ -64,6 +64,7 @@ class CltMessageMapping {
       headerForm: {}, // Header group type
       vertexPresentation: {}, // Group vertex presentation
       vertexGroup: null, // Group vertex
+      keyPrefix: {type:{}}
     };
 
     this.inputDefined = {
@@ -74,6 +75,7 @@ class CltMessageMapping {
       headerForm: {}, // Header group type
       vertexPresentation: {}, // Group vertex presentation
       vertexGroup: null, // Group vertex
+      keyPrefix: {type:{}}
     };
 
     this.outputDefined = {
@@ -84,6 +86,7 @@ class CltMessageMapping {
       headerForm: {}, // Header group type
       vertexPresentation: {}, // Group vertex presentation
       vertexGroup: null, // Group vertex
+      keyPrefix: {type:{}}
     };
 
     this.connectMgmt = new ConnectMgmt({
@@ -181,6 +184,12 @@ class CltMessageMapping {
       this.storeOperations.vertex.forEach(e => {
         e.updatePathConnect();
       })
+
+      //update all edges for Operations area
+      this.storeOutputMessage.vertex.forEach(e => {
+        e.updatePathConnect();
+      })
+
     });
   }
 
@@ -385,10 +394,13 @@ class CltMessageMapping {
 
   getVertexFormatType(vertexGroup, container) {
     vertexGroup.forEach(group => {
-      const {groupType, dataElementFormat, vertexPresentation} = group;
+      const {groupType, dataElementFormat, vertexPresentation, keyPrefix} = group;
       container.headerForm[groupType] = Object.keys(dataElementFormat);
       container.vertexPresentation[groupType] = vertexPresentation;
       container.vertexFormat[groupType] = dataElementFormat;
+      if(keyPrefix){
+        container.keyPrefix = keyPrefix;
+      }
       container.vertexGroupType[groupType] = group;
       let formatType = {};
       let header = container.headerForm[groupType];
@@ -811,11 +823,14 @@ class CltMessageMapping {
       note: {
         originNote: edge.originNote,
         middleNote: edge.middleNote,
-        destNote: edge.destNote
+        destNote: edge.destNote,
+
       },
       style:{
         line: edge.lineType,
-        arrow: edge.useMarker
+        arrow: edge.useMarker,
+        color: edge.color,
+        thickness: edge.thickness
       }
     };
   }

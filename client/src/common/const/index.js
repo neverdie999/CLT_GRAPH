@@ -12,7 +12,7 @@ export const CLASS_CONTAINER_VERTEX = 'groupVertex';
 export const VERTEX_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
   PROP_HEIGHT: 26,
-  GROUP_WIDTH: 150,
+  GROUP_WIDTH: 220,
   SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
 }
 export const CONNECT_SIDE = {

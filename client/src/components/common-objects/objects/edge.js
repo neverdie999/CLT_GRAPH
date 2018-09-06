@@ -27,6 +27,8 @@ class Edge {
     this.originNote = '';
     this.middleNote = '';
     this.destNote = '';
+    this.color = '000000';
+    this.thickness = 1;
 
     this.initialize();
   }
@@ -59,8 +61,10 @@ class Edge {
     this.target = target;
 
     if(style){
-      this.lineType = style.line;
-      this.useMarker = style.arrow;
+      this.lineType = style.line || this.lineType;
+      this.useMarker = style.arrow || this.useMarker;
+      this.color = style.color || this.color;
+      this.thickness = style.thickness || this.thickness;
     }
     if(note){
       this.originNote = note.originNote;
@@ -92,6 +96,18 @@ class Edge {
         })
       })
 
+    d3.select(`#${this.svgId}`).select('defs').append("marker")
+      .attr("id", `arrow${this.id}`)
+      .attr("viewBox", "0 0 10 10")
+      .attr("refX", 10)
+      .attr("refY", 5)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", "M 0 0 L 10 5 L 0 10 z")
+      .attr("fill", `#${this.color}`);
+
     //hidden line, it has larger width for selecting easily
     group.append("path")
       .attr('d', pathStr)
@@ -103,17 +119,18 @@ class Edge {
       .attr('pointer-events', 'stroke')
       .attr('visibility', 'hidden')
       .attr('stroke-width', 9)
-      .attr("marker-end", `url(#${this.arrowId})`);
+      .attr("marker-end", `url(#arrow${this.id})`);
 
     group.append("path")
       .attr('d', pathStr)
       .attr("id", this.id)
       .attr('focusable', true)
       .attr('fill', 'none')
-      .attr('stroke', '#000000')
+      .attr('stroke', `#${this.color}`)
+      .attr('stroke-width', this.thickness)
       .attr('stroke-miterlimit', 10)
       .attr('focusable', true)
-      .attr("marker-end", this.useMarker === 'Y' ? `url(#${this.arrowId})` : '')
+      .attr("marker-end", this.useMarker === 'Y' ? `url(#arrow${this.id})` : '')
       .attr("stroke-dasharray", this.lineType === LINE_TYPE.SOLID ? '0 0' : '3 3'); // Make arrow at end path
 
     let origin = group.append("text")
@@ -167,6 +184,8 @@ class Edge {
         return e.id === this.id;
       });
     }
+
+    d3.select(`#arrow${this.id}`).remove();
 
     if (this.edgeMgmt.isSelectingEdge())
       this.edgeMgmt.cancleSelectedPath();
@@ -248,8 +267,37 @@ class Edge {
    */
   setUseMarker(flag) {
     this.useMarker = flag;
-    d3.selectAll(`#${this.id}`).attr('marker-end', flag === 'Y' ? `url(#${this.arrowId})` : '');
+    d3.selectAll(`#${this.id}`).attr('marker-end', flag === 'Y' ? `url(#arrow${this.id})` : '');
   }
+
+  /**
+   * 
+   * @param {*} hex 
+   */
+  setColor(hex){
+    this.color = hex;
+    let path = d3.selectAll(`#${this.id}`).filter((d, i) => {
+      return i == 1;
+    });
+    path.style('stroke', `#${hex}`);
+
+    d3.select(`#arrow${this.id}`).select('path').attr('fill', `#${hex}`);
+  }
+
+  /**
+   * 
+   * @param {*} hex 
+   */
+  setThickness(size){
+    this.thickness = size;
+    
+    let path = d3.selectAll(`#${this.id}`).filter((d, i) => {
+      return i == 1;
+    });
+
+    path.style('stroke-width', `${size}`);
+  }
+
 }
 
 export default Edge;
