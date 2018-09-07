@@ -133,7 +133,7 @@ class Boundary {
 
     if (checkModePermission(this.viewMode.value, "isEnableItemVisibleMenu")) {
 
-      const offset = this.boundaryMgmt.vertexMgmt.connectSide == CONNECT_SIDE.LEFT ? 0 : 13;
+      const offset = this.boundaryMgmt.vertexMgmt.connectSide == CONNECT_SIDE.LEFT ? 0 : 7;
       group.append("text")
         .attr("id", `${this.id}Text`)
         .attr("x", this.width - 20 - offset)
@@ -154,6 +154,7 @@ class Boundary {
         .text("Right click to select visible member");
     }
 
+    // Rect connect title INPUT
     if (this.boundaryMgmt.vertexMgmt.connectSide === CONNECT_SIDE.BOTH || this.boundaryMgmt.vertexMgmt.connectSide === CONNECT_SIDE.LEFT){
       group.append("rect")
       .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
@@ -164,11 +165,12 @@ class Boundary {
       .attr("height", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 1)
       .attr("x", 1)
       .attr("y", 1)
-      .style("fill", this.colorHashConnection.hex(this.name))
+      .style("fill", this.colorHash.hex(this.name))
       .style("cursor", "default")
       .call(callbackDragConnection);
-   }
+    }
 
+    // Rect connect title OUTPUT
     if (this.boundaryMgmt.vertexMgmt.connectSide === CONNECT_SIDE.BOTH || this.boundaryMgmt.vertexMgmt.connectSide === CONNECT_SIDE.RIGHT){
       group.append("rect")
         .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
@@ -179,7 +181,7 @@ class Boundary {
         .attr("height", BOUNDARY_ATTR_SIZE.HEADER_HEIGHT - 1)
         .attr("x", this.width - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
         .attr("y", 1)
-        .style("fill", this.colorHashConnection.hex(this.name))
+        .style("fill", this.colorHash.hex(this.name))
         .style("cursor", "default")
         .call(callbackDragConnection);
    }
@@ -258,7 +260,7 @@ class Boundary {
     if (width < BOUNDARY_ATTR_SIZE.BOUND_WIDTH)
       width = BOUNDARY_ATTR_SIZE.BOUND_WIDTH;
 
-    const offset = this.boundaryMgmt.vertexMgmt.connectSide == CONNECT_SIDE.LEFT ? 0 : 13;
+    const offset = this.boundaryMgmt.vertexMgmt.connectSide == CONNECT_SIDE.LEFT ? 0 : 7;
 
     $(`#${this.id}Content`).attr('width', width);
     $(`#${this.id}Button`).attr('x', width - 25 - offset);

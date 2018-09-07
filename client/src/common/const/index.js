@@ -43,7 +43,7 @@ export const CLASS_CONTAINER_BOUNDARY = 'groupBoundary';
 export const CLASS_MENU_ITEM_BOUNDARY = 'menuItemBoundary';
 export const BOUNDARY_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
-  BOUND_WIDTH: 160,
+  BOUND_WIDTH: 230,
   BOUND_HEIGHT: 64,
 }
 

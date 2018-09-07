@@ -13,6 +13,8 @@ import {
   setMinBoundaryGraph,
   checkModePermission,
   arrayMove,
+  getKeyPrefix,
+  htmlDecode,
 } from '../../../common/utilities/common.ult';
 
 const CONNECT_KEY = 'Connected';
@@ -104,7 +106,6 @@ class Vertex {
       if(checkModePermission(this.viewMode.value, "isEnableDragVertex")){
         group.call(callbackDragVertex);
       }
-
     
     let htmlContent = '';
     let countData = this.data.length;
@@ -112,7 +113,7 @@ class Vertex {
       let item = this.data[i];
       htmlContent += `
         <div class="property" prop="${this.id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${this.getKeyPrefix(item.type)}${item[presentation.key] || ""}</label>
+          <label class="key" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${htmlDecode(getKeyPrefix(item, this.vertexDefinition, this.groupType))}${item[presentation.key] || ""}</label>
           <label class="data" id="${this.id}${presentation.value}${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
         </div>`;
     }
@@ -145,7 +146,7 @@ class Vertex {
       .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
       .attr("x", 1)
       .attr("y", 1)
-      .style("fill", this.colorHashConnection.hex(this.name))
+      .style("fill", this.colorHash.hex(this.name))
       .call(callbackDragConnection);
     }
 
@@ -160,7 +161,7 @@ class Vertex {
         .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
         .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
         .attr("y", 1)
-        .style("fill", this.colorHashConnection.hex(this.name))
+        .style("fill", this.colorHash.hex(this.name))
         .call(callbackDragConnection);
     }
     
@@ -291,12 +292,6 @@ class Vertex {
 
       arrayMove(this.dataContainer.vertex, curIndex, this.dataContainer.vertex.length - 1);
     }
-  }
-
-  getKeyPrefix(type){
-    let prefix = this.vertexDefinition.keyPrefix.type[type];
-
-    return prefix != undefined ? prefix:"";
   }
 }
 

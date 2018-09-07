@@ -147,13 +147,13 @@ class InputMgmt {
       if ( containerRect.width - rightScrollWidth - marginLeft - marginRight >= parentBoundary.width ){
         newX = newX + ((containerRect.width - rightScrollWidth  - marginLeft - marginRight - parentBoundary.width) / 2)
       }
-    }
 
-    const offsetX = newX - parentBoundary.x;
-    const offsetY = newY - parentBoundary.y;
+      const offsetX = newX - parentBoundary.x;
+      const offsetY = newY - parentBoundary.y;
 
-    if (offsetX != 0 || offsetY != 0){
-      parentBoundary.move(offsetX, offsetY);
+      if (offsetX != 0 || offsetY != 0){
+        parentBoundary.move(offsetX, offsetY);
+      }
     }
   }
 }

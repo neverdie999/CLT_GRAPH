@@ -298,6 +298,14 @@ class Edge {
     path.style('stroke-width', `${size}`);
   }
 
+  emphasize(){
+    let path = d3.selectAll(`#${this.id}`).filter((d, i) => {
+      return i == 1;
+    });
+
+    path.classed('emphasizePath', true);
+    d3.select(`#arrow${this.id}`).select('path').classed('emphasizeArrow', true);
+  }
 }
 
 export default Edge;

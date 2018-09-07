@@ -332,7 +332,7 @@ class BoundaryMgmt {
 
     d3.select(`#${this.editingBoundary.id}Content`).style("border-color", `${this.colorHash.hex(name)}`);
 
-    d3.selectAll(`[prop='${this.editingBoundary.id}${CONNECT_KEY}boundary_title']`).style('fill', this.editingBoundary.colorHashConnection.hex(name));
+    d3.selectAll(`[prop='${this.editingBoundary.id}${CONNECT_KEY}boundary_title']`).style('fill', this.colorHash.hex(name));
 
     this.closePopBoundaryInfo();
   }

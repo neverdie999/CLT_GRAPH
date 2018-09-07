@@ -272,13 +272,15 @@ class CltGraph {
 
   getVertexFormatType(vertexGroup, container) {
     vertexGroup.forEach(group => {
-      const {groupType, dataElementFormat, vertexPresentation, keyPrefix} = group;
+      const {groupType, dataElementFormat, vertexPresentation} = group;
       container.headerForm[groupType] = Object.keys(dataElementFormat);
+      
       container.vertexPresentation[groupType] = vertexPresentation;
-      container.vertexFormat[groupType] = dataElementFormat;
-      if(keyPrefix){
-        container.keyPrefix = keyPrefix;
+      if (!container.vertexPresentation[groupType]["keyPrefix"]) {
+        container.vertexPresentation[groupType]["keyPrefix"] = {};
       }
+
+      container.vertexFormat[groupType] = dataElementFormat;
       container.vertexGroupType[groupType] = group;
       let formatType = {};
       let header = container.headerForm[groupType];

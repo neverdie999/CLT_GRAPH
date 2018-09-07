@@ -25,6 +25,8 @@ import {
   updateSizeGraph,
   setMinBoundaryGraph,
   checkModePermission,
+  getKeyPrefix,
+  htmlDecode,
 } from '../../../common/utilities/common.ult';
 
 
@@ -210,6 +212,8 @@ class VertexMgmt {
       // Resize boundary when vertex dragged
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
+
+      main.edgeMgmt.emphasizePathConnectForVertex(this);
 
       d.moveToFront();
     }
@@ -667,7 +671,7 @@ class VertexMgmt {
       for (let i = 0; i < rows; i++) {
         let dataRow = data[i];
         d3.select(`#${replaceSpecialCharacter(`${id}${presentation.key}${i}`)}`)
-          .text(dataRow[presentation.key])
+          .text(getKeyPrefix(dataRow, this.vertexDefinition, groupType) + dataRow[presentation.key])
           .attr('title', dataRow[presentation.keyTooltip]);
         d3.select(`#${replaceSpecialCharacter(`${id}${presentation.value}${i}`)}`)
           .text(dataRow[presentation.value])
@@ -696,7 +700,7 @@ class VertexMgmt {
       let data = elements[i];
       htmlContent += `
         <div class="property" prop="${id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${this.getKeyPrefix(data.type)}${data[presentation.key] || ""}</label>
+          <label class="key" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${htmlDecode(getKeyPrefix(data, this.vertexDefinition, groupType))}${data[presentation.key] || ""}</label>
           <label class="data" id="${id}${presentation.value}${i}" title="${data[presentation.valueTooltip] || "No data to show"}">${data[presentation.value] || ""}</label>
         </div>`;
     }
@@ -727,7 +731,7 @@ class VertexMgmt {
       .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
       .attr("x", 1)
       .attr("y", 1)
-      .style("fill", this.colorHashConnection.hex(name))
+      .style("fill", this.colorHash.hex(name))
       .call(this.edgeMgmt.handleDragConnection);
     }
 
@@ -742,7 +746,7 @@ class VertexMgmt {
         .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
         .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
         .attr("y", 1)
-        .style("fill", this.colorHashConnection.hex(name))
+        .style("fill", this.colorHash.hex(name))
         .call(this.edgeMgmt.handleDragConnection);
     }
 
@@ -801,12 +805,6 @@ class VertexMgmt {
   clearAll(){
     d3.select(`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
     this.dataContainer.vertex = [];
-  }
-
-  getKeyPrefix(type){
-    let prefix = this.vertexDefinition.keyPrefix.type[type];
-
-    return prefix != undefined ? prefix:"";
   }
 }
 

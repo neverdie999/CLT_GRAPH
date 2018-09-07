@@ -355,6 +355,35 @@ class EdgeMgmt {
     });
   }
 
+  /**
+  * Find and update position connect to vertex when in move
+  * @param vertex
+  * @param dataContainer edge container
+  */
+ emphasizePathConnectForVertex(vertex) {
+    const {id} = vertex;
+
+    d3.selectAll('.emphasizePath').classed('emphasizePath', false);
+    d3.selectAll('.emphasizeArrow').classed('emphasizeArrow', false);
+
+    // Find edge start from this vertex
+    const arrSrcPaths = _.filter(this.dataContainer.edge, (e) => {
+      return e.source.vertexId === id;
+    });
+    // Find edge end at this vertex
+    const arrDesPaths = _.filter(this.dataContainer.edge, (e) => {
+      return e.target.vertexId === id;
+    });
+
+    arrSrcPaths.forEach(src => {
+      src.emphasize();
+    });
+
+    arrDesPaths.forEach(des => {
+      des.emphasize();
+    });
+  }
+
   clearAll(){
     this.dataContainer.edge = [];
     d3.select(`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
