@@ -109,6 +109,10 @@ class Boundary {
     
     if (checkModePermission(this.viewMode.value, "isEnableDragBoundary")) {
       group.call(callbackDragBoundary);
+    }else{
+      $(`#${this.id}`).click( () => {
+        this.boundaryMgmt.edgeMgmt.emphasizePathConnectForBoundary(this);
+      })
     }
 
     group.append("foreignObject")

@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import {
   VERTEX_ATTR_SIZE,
   CONNECT_SIDE,
-  TYPE_CONNECT,
+  TYPE_CONNECT
 } from '../../../common/const/index';
 
 import { 
@@ -105,6 +105,10 @@ class Vertex {
 
       if(checkModePermission(this.viewMode.value, "isEnableDragVertex")){
         group.call(callbackDragVertex);
+      }else{
+        $(`#${this.id}`).click( () => {
+          this.vertexMgmt.edgeMgmt.emphasizePathConnectForVertex(this);
+        })
       }
     
     let htmlContent = '';
@@ -146,7 +150,7 @@ class Vertex {
       .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
       .attr("x", 1)
       .attr("y", 1)
-      .style("fill", this.colorHash.hex(this.name))
+      .attr("fill", this.colorHash.hex(this.name))
       .call(callbackDragConnection);
     }
 
@@ -161,7 +165,7 @@ class Vertex {
         .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
         .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
         .attr("y", 1)
-        .style("fill", this.colorHash.hex(this.name))
+        .attr("fill", this.colorHash.hex(this.name))
         .call(callbackDragConnection);
     }
     
@@ -178,7 +182,7 @@ class Vertex {
           .attr("height", 25)
           .attr("x", 1)
           .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-          .style("fill", this.colorHashConnection.hex(this.name))
+          .attr("fill", this.colorHashConnection.hex(this.name))
           .call(callbackDragConnection);
       }
 
@@ -193,7 +197,7 @@ class Vertex {
           .attr("height", 25)
           .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
           .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-          .style("fill", this.colorHashConnection.hex(this.name))
+          .attr("fill", this.colorHashConnection.hex(this.name))
           .call(callbackDragConnection);
       }
     }
@@ -256,15 +260,15 @@ class Vertex {
    * Different between this func and remove func is, in this case we don't care the parent, because it was deleted 
    */
   delete() {
+    // Remove all edge relate to vertex
+    this.vertexMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this);
+
     // Remove from DOM
     d3.select(`#${this.id}`).remove();
     // Remove from data container
     _.remove(this.dataContainer.vertex, (e) => {
       return e.id === this.id;
     });
-
-    // Remove all edge relate to vertex
-    this.vertexMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this);
   }  
 
   /**
@@ -292,6 +296,40 @@ class Vertex {
 
       arrayMove(this.dataContainer.vertex, curIndex, this.dataContainer.vertex.length - 1);
     }
+  }
+
+  /**
+   * 
+   * @param {*} prop 
+   * @param {*} type 
+   */
+  markedConnectorByProp(prop, type){
+    d3.select(`[prop="${prop}"][type=${type}]`).classed("marked_connector", true);
+  }
+
+  /**
+   * Checked connected and marked connector for vertex
+   */
+  markedAllConnector(){
+
+    let lstMarkedInput = [];
+    let lstMarkedOutput = [];
+
+    lstMarkedOutput = this.vertexMgmt.edgeMgmt.dataContainer.edge.filter(e => {
+      return  e.source.prop.indexOf('title') == -1 && e.source.vertexId == this.id;
+    });
+
+    lstMarkedInput = this.vertexMgmt.edgeMgmt.dataContainer.edge.filter(e => {
+      return e.target.prop.indexOf('title') == -1 && e.target.vertexId == this.id;
+    });
+
+    lstMarkedInput.forEach(e => {
+      d3.select(`[prop="${e.target.prop}"][type="I"]`).classed("marked_connector", true);
+    });
+
+    lstMarkedOutput.forEach(e => {
+      d3.select(`[prop="${e.source.prop}"][type="O"]`).classed("marked_connector", true);
+    });
   }
 }
 

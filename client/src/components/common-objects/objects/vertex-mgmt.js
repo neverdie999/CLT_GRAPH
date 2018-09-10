@@ -615,7 +615,9 @@ class VertexMgmt {
       forms.mandatory = $(`#isVertexMandatory_${this.svgId}`).prop('checked');
     }
 
-    const {groupType} = _.find(this.dataContainer.vertex, {'id': this.currentId});
+    const vertex = _.find(this.dataContainer.vertex, {'id': this.currentId});
+    const {groupType} = vertex;
+    
     const typeData = this.vertexDefinition.vertexFormatType[groupType];
     let elements = [];
     // Get data element
@@ -635,6 +637,10 @@ class VertexMgmt {
     forms.groupType = groupType;
 
     this.updateVertexInfo(forms);
+
+    //Check and mark connector if has connection
+    vertex.markedAllConnector();
+
     this.closePopVertexInfo();
   }
 
@@ -670,16 +676,21 @@ class VertexMgmt {
       let presentation = this.vertexDefinition.vertexPresentation[groupType];
       for (let i = 0; i < rows; i++) {
         let dataRow = data[i];
+
+        //Key
         d3.select(`#${replaceSpecialCharacter(`${id}${presentation.key}${i}`)}`)
-          .text(getKeyPrefix(dataRow, this.vertexDefinition, groupType) + dataRow[presentation.key])
+          .html(htmlDecode(getKeyPrefix(dataRow, this.vertexDefinition, groupType)) + dataRow[presentation.key])
           .attr('title', dataRow[presentation.keyTooltip]);
+
+        //Value
         d3.select(`#${replaceSpecialCharacter(`${id}${presentation.value}${i}`)}`)
           .text(dataRow[presentation.value])
           .attr('title', dataRow[presentation.valueTooltip]);
       }
 
       //update color for "rect"
-      d3.select(`#${id}`).selectAll('.drag_connect').style("fill", this.colorHashConnection.hex(name));
+      d3.select(`#${id}`).selectAll('.drag_connect:not(.connect_header)').attr("fill", this.colorHashConnection.hex(name));
+      d3.select(`#${id}`).selectAll('.drag_connect.connect_header').attr("fill", this.colorHash.hex(name));
     }
   }
 
@@ -731,7 +742,7 @@ class VertexMgmt {
       .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
       .attr("x", 1)
       .attr("y", 1)
-      .style("fill", this.colorHash.hex(name))
+      .attr("fill", this.colorHash.hex(name))
       .call(this.edgeMgmt.handleDragConnection);
     }
 
@@ -746,7 +757,7 @@ class VertexMgmt {
         .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
         .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
         .attr("y", 1)
-        .style("fill", this.colorHash.hex(name))
+        .attr("fill", this.colorHash.hex(name))
         .call(this.edgeMgmt.handleDragConnection);
     }
 
@@ -762,7 +773,7 @@ class VertexMgmt {
           .attr("height", 25)
           .attr("x", 1)
           .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-          .style("fill", this.colorHashConnection.hex(name))
+          .attr("fill", this.colorHashConnection.hex(name))
           .call(this.edgeMgmt.handleDragConnection);
       }
 
@@ -777,7 +788,7 @@ class VertexMgmt {
           .attr("height", 25)
           .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
           .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-          .style("fill", this.colorHashConnection.hex(name))
+          .attr("fill", this.colorHashConnection.hex(name))
           .call(this.edgeMgmt.handleDragConnection);
       }
     }

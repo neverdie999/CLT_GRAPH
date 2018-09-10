@@ -183,6 +183,8 @@ class BoundaryMgmt {
       if (main.vertexMgmt.edgeMgmt.isSelectingEdge())
         main.vertexMgmt.edgeMgmt.cancleSelectedPath();
 
+      main.edgeMgmt.emphasizePathConnectForBoundary(d);
+
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
       

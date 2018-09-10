@@ -72,7 +72,7 @@ class ObjectUtils {
         y: axisY - parentSvg.scrollTop()
       };
 
-      if (prop.substr(0 - 'boundary_title'.length,'boundary_title'.length) === 'boundary_title'){
+      if (prop.indexOf('boundary_title') != -1){
 
         axisY = axisY + BOUNDARY_ATTR_SIZE.HEADER_HEIGHT / 2;
   
@@ -80,7 +80,7 @@ class ObjectUtils {
           x: type === TYPE_CONNECT.OUTPUT ? axisX + info.width + containerSvg.offset().left : axisX + containerSvg.offset().left,
           y: axisY - parentSvg.scrollTop()
         };
-      }else if (prop.substr(0 - 'title'.length,'title'.length) === 'title'){
+      }else if (prop.indexOf('title') != -1){
 
         axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT / 2;
   
@@ -455,7 +455,7 @@ class ObjectUtils {
       let arrPropOfVertex = [];
       lstProp.forEach((propItem) => {
         if (propItem.vert === vertexItem.id) {
-          if (arrPropOfVertex.indexOf(propItem.prop) === -1 && propItem.prop.substr(0 - 'title'.length, 'title'.length) != 'title') {
+          if (arrPropOfVertex.indexOf(propItem.prop) === -1 && propItem.prop.indexOf('title') == -1) {
             arrPropOfVertex.push(propItem.prop);
           }
         }

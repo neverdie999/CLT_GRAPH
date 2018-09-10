@@ -247,7 +247,7 @@ class EdgeMgmt {
       let vertexId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
 
       let obj;
-      if (prop.substr(0 - 'boundary_title'.length, 'boundary_title'.length) === 'boundary_title'){
+      if (prop.indexOf('boundary_title') != -1){
         let boudaries = [];
         main.vertexContainer.forEach(arrBoundary => {
           boudaries = boudaries.concat(arrBoundary.boundary);
@@ -356,15 +356,16 @@ class EdgeMgmt {
   }
 
   /**
-  * Find and update position connect to vertex when in move
-  * @param vertex
-  * @param dataContainer edge container
-  */
- emphasizePathConnectForVertex(vertex) {
+   * 
+   * @param {*} vertex 
+   */
+ emphasizePathConnectForVertex(vertex, isEffectFromParent = false) {
     const {id} = vertex;
 
-    d3.selectAll('.emphasizePath').classed('emphasizePath', false);
-    d3.selectAll('.emphasizeArrow').classed('emphasizeArrow', false);
+    if (!isEffectFromParent){
+      d3.selectAll('.emphasizePath').classed('emphasizePath', false);
+      d3.selectAll('.emphasizeArrow').classed('emphasizeArrow', false);
+    }
 
     // Find edge start from this vertex
     const arrSrcPaths = _.filter(this.dataContainer.edge, (e) => {
@@ -384,10 +385,60 @@ class EdgeMgmt {
     });
   }
 
+  /**
+   * 
+   * @param {*} boundary 
+   */
+ emphasizePathConnectForBoundary(boundary, isEffectFromParent = false) {
+  const {id} = boundary;
+
+  if (!isEffectFromParent){
+    d3.selectAll('.emphasizePath').classed('emphasizePath', false);
+    d3.selectAll('.emphasizeArrow').classed('emphasizeArrow', false);
+  }
+
+  // Find edge start from this vertex
+  const arrSrcPaths = _.filter(this.dataContainer.edge, (e) => {
+    return e.source.vertexId === id;
+  });
+  // Find edge end at this vertex
+  const arrDesPaths = _.filter(this.dataContainer.edge, (e) => {
+    return e.target.vertexId === id;
+  });
+
+  arrSrcPaths.forEach(src => {
+    src.emphasize();
+  });
+
+  arrDesPaths.forEach(des => {
+    des.emphasize();
+  });
+
+  boundary.member.forEach(e => {
+    if (e.type === 'V'){
+      let vertices = [];
+      this.vertexContainer.forEach(e=>{
+        vertices = vertices.concat(e.vertex);
+      })
+
+      const childVertex = _.find(vertices, {"id": e.id});
+      this.emphasizePathConnectForVertex(childVertex, true);
+    }else{
+      let boudaries = [];
+      this.vertexContainer.forEach(e=>{
+        boudaries = boudaries.concat(e.boundary);
+      })
+      const childBoundary = _.find(boudaries, {"id": e.id});
+      this.emphasizePathConnectForBoundary(childBoundary, true);
+    }
+  });
+}
+
   clearAll(){
     this.dataContainer.edge = [];
     d3.select(`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
     d3.select(`#${this.svgId}`).select('defs').selectAll(`marker:not(#${this.arrowId})`).remove();
+    d3.selectAll(`.marked_connector`).classed('marked_connector', false);
   }
 
   /**
@@ -455,14 +506,14 @@ class EdgeMgmt {
     arrSrcPaths.forEach(src => {
       const {source: {prop, vertexId}} = src;
 
-      if(prop.substr(0 - 'title'.length, 'title'.length) != 'title' && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
+      if(prop.indexOf('title') == -1 && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
         src.remove();
     });
 
     arrDesPaths.forEach(des => {
       const {target: {prop, vertexId}} = des;
 
-      if(prop.substr(0 - 'title'.length, 'title'.length) != 'title' && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
+      if(prop.indexOf('title') == -1 && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
         des.remove();
     });
   }

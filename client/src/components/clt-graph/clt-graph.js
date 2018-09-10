@@ -619,9 +619,7 @@ class CltGraph {
       },
       style:{
         line: edge.lineType,
-        arrow: edge.useMarker,
-        color: edge.color,
-        thickness: edge.thickness
+        arrow: edge.useMarker
       }
     };
   }
