@@ -39,6 +39,7 @@ class OutputMgmt {
       svgId : this.svgId,
       vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
+      connectSide: CONNECT_SIDE.LEFT,
       edgeMgmt : this.edgeMgmt
     });
 
@@ -47,7 +48,8 @@ class OutputMgmt {
       containerId: this.containerId,
       svgId: this.svgId,
       viewMode: this.viewMode,
-      vertexMgmt: this.vertexMgmt
+      vertexMgmt: this.vertexMgmt,
+      edgeMgmt: this.edgeMgmt
     });
   }
 
@@ -87,7 +89,6 @@ class OutputMgmt {
 
       e.x = x;
       e.y = y;
-      e.connectSide = this.defaultOptionsVertex.connectSide;
       e.isImport = true;
 
       this.vertexMgmt.create(e);
@@ -123,27 +124,37 @@ class OutputMgmt {
    * set position graph by center align
    */
   setCenterAlignmentGarph(){
-    let parentBoundary = _.find(this.dataContainer.boundary, {"parent": null});
+    const parentBoundary = _.find(this.dataContainer.boundary, {"parent": null});
 
-    let rightScrollWidth = 10;
-    let alignOffset = 5;
+    const rightScrollWidth = 10;
+    const marginTop = 10;
+    const marginLeft = 5;
+    const marginRight = 5;
 
-    let newX = alignOffset;
-    let newY = alignOffset;
+    let newX = marginLeft;
+    let newY = marginTop;
 
     if (parentBoundary){
-      let containerRect  = $(`#${parentBoundary.svgId}`)[0].parentNode.getBoundingClientRect();
 
-      if ( containerRect.width - rightScrollWidth  - alignOffset >= parentBoundary.width ){
-        newX = newX + ((containerRect.width - rightScrollWidth  - alignOffset - parentBoundary.width) / 2)
+      $('.right-svg').css('left', `calc(100% - ${parentBoundary.width + rightScrollWidth + marginLeft + marginRight}px)`);
+      $('.right-svg').css('width', `${parentBoundary.width + rightScrollWidth + marginLeft + marginRight}px`);
+
+      const inputRec = $('.left-svg')[0].getBoundingClientRect();
+      const outputRec = $('.right-svg')[0].getBoundingClientRect();
+      $('.middle-svg').css('width', `calc(100% - ${inputRec.width + outputRec.width}px)`);
+
+      const containerRect  = $(`#${parentBoundary.svgId}`)[0].parentNode.getBoundingClientRect();
+
+      if ( containerRect.width - rightScrollWidth  - marginLeft - marginRight >= parentBoundary.width ){
+        newX = newX + ((containerRect.width - rightScrollWidth  - marginLeft - marginRight - parentBoundary.width) / 2)
       }
-    }
 
-    let offsetX = newX - parentBoundary.x;
-    let offsetY = newY - parentBoundary.y;
+      const offsetX = newX - parentBoundary.x;
+      const offsetY = newY - parentBoundary.y;
 
-    if (offsetX != 0 || offsetY != 0){
-      parentBoundary.move(offsetX, offsetY);
+      if (offsetX != 0 || offsetY != 0){
+        parentBoundary.move(offsetX, offsetY);
+      }
     }
   }
 }

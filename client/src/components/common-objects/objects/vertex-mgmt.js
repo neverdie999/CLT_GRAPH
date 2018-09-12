@@ -13,6 +13,7 @@ import {
   VERTEX_GROUP_OPTION,
   TYPE_CONNECT,
   VERTEX_ATTR_SIZE,
+  CONNECT_SIDE,
 
 } from '../../../common/const/index';
 
@@ -24,6 +25,8 @@ import {
   updateSizeGraph,
   setMinBoundaryGraph,
   checkModePermission,
+  getKeyPrefix,
+  htmlDecode,
 } from '../../../common/utilities/common.ult';
 
 
@@ -43,6 +46,7 @@ class VertexMgmt {
     this.vertexDefinition         = props.vertexDefinition;
     this.viewMode                 = props.viewMode;
     this.edgeMgmt                 = props.edgeMgmt;
+    this.connectSide              = props.connectSide || CONNECT_SIDE.BOTH;
 
     this.initialize();
   }
@@ -72,6 +76,19 @@ class VertexMgmt {
   }
 
   initVertexPopupHtml(){
+
+    const repeatHtml = `
+    <tr>
+      <th>Max repeat</th>
+      <td class="input-group full-width">
+        <input type="number" class="form-control" id="vertexRepeat_${this.svgId}" name="vertexRepeat" min="0" max="9999">
+        <label class="input-group-addon">
+          <input type="checkbox" id="isVertexMandatory_${this.svgId}" name="isVertexMandatory">
+        </label>
+        <label class="input-group-addon" for="isVertexMandatory_${this.svgId}">Mandatory</label>
+      </td>
+    </tr>`;
+
     let sHtml = `
     <!-- Vertex Info Popup (S) -->
     <div id="${HTML_VERTEX_INFO_ID}_${this.svgId}" class="modal fade" role="dialog">
@@ -96,16 +113,7 @@ class VertexMgmt {
                         <input type="text" class="form-control" id="vertexName_${this.svgId}" name="vertexName">
                       </td>
                     </tr>
-                    <tr>
-                      <th>Max repeat</th>
-                      <td class="input-group full-width">
-                        <input type="number" class="form-control" id="vertexRepeat_${this.svgId}" name="vertexRepeat" min="0" max="9999">
-                        <label class="input-group-addon">
-                          <input type="checkbox" id="isVertexMandatory_${this.svgId}" name="isVertexMandatory">
-                        </label>
-                        <label class="input-group-addon" for="isVertexMandatory_${this.svgId}">Mandatory</label>
-                      </td>
-                    </tr>
+                    ${checkModePermission(this.viewMode.value, 'vertexRepeat') ? repeatHtml: ''}
                     <tr>
                       <th>Description</th>
                       <td class="full-width">
@@ -144,42 +152,43 @@ class VertexMgmt {
   }
 
   bindEventForPopupVertex() {
-
+    const main = this;
     if (checkModePermission(this.viewMode.value, "vertexBtnConfirm")){
-      $(`#vertexBtnConfirm_${this.svgId}`).click(() => {
+      $(`#vertexBtnConfirm_${main.svgId}`).click(() => {
         this.confirmEditVertexInfo();
       });
 
-      $(`#vertexBtnAdd_${this.svgId}`).click(() => {
+      $(`#vertexBtnAdd_${main.svgId}`).click(() => {
         this.addDataElement();
       });
 
-      $(`#vertexBtnDelete_${this.svgId}`).click(() => {
+      $(`#vertexBtnDelete_${main.svgId}`).click(() => {
         this.removeDataElement();
       });
     }
-    
 
-    $(`#vertexBtnCancel_${this.svgId}`).click(() => {
+    $(`#vertexBtnCancel_${main.svgId}`).click(() => {
       this.closePopVertexInfo();
     });
-    
 
     // Validate input number
-    $(`#vertexRepeat_${this.svgId}`).keydown(function (e) {
-      allowInputNumberOnly(e);
-    });
+    if (checkModePermission(this.viewMode.value, 'vertexRepeat')){
+      $(`#vertexRepeat_${main.svgId}`).keydown(function (e) {
+        allowInputNumberOnly(e);
+      });
+      
 
-    $(`#isVertexMandatory_${this.svgId}`).change(function () {
-      if (this.checked && $(`#vertexRepeat_${this.svgId}`).val() < 1) {
-        $(`#vertexRepeat_${this.svgId}`).val(1);
-      }
-    });
-
-    $(`#vertexRepeat_${this.svgId}`).focusout(function () {
-      let rtnVal = checkMinMaxValue(this.value, $(`#isVertexMandatory_${this.svgId}`).prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
-      this.value = rtnVal;
-    });
+      $(`#isVertexMandatory_${main.svgId}`).change(function () {
+        if (this.checked && $(`#vertexRepeat_${main.svgId}`).val() < 1) {
+          $(`#vertexRepeat_${main.svgId}`).val(1);
+        }
+      });
+  
+      $(`#vertexRepeat_${main.svgId}`).focusout(function () {
+        let rtnVal = checkMinMaxValue(this.value, $(`#isVertexMandatory_${main.svgId}`).prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
+        this.value = rtnVal;
+      });
+    }
   }
 
   create(sOptions) {
@@ -203,6 +212,8 @@ class VertexMgmt {
       // Resize boundary when vertex dragged
       if (!d.parent)
         main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
+
+      main.edgeMgmt.emphasizePathConnectForVertex(this);
 
       d.moveToFront();
     }
@@ -253,8 +264,11 @@ class VertexMgmt {
     // Append content to popup
     $(`#vertexName_${this.svgId}`).val(name);
     $(`#vertexDesc_${this.svgId}`).val(description);
-    $(`#vertexRepeat_${this.svgId}`).val(repeat);
-    $(`#isVertexMandatory_${this.svgId}`).prop('checked', mandatory);
+
+    if (checkModePermission(this.viewMode.value, 'vertexRepeat')){
+      $(`#vertexRepeat_${this.svgId}`).val(repeat);
+      $(`#isVertexMandatory_${this.svgId}`).prop('checked', mandatory);
+    }
 
     // Generate properties vertex
     let keyHeader = this.vertexDefinition.headerForm[groupType];
@@ -595,10 +609,15 @@ class VertexMgmt {
     forms.id = this.currentId;
     forms.name = $(`#vertexName_${this.svgId}`).val();
     forms.description = $(`#vertexDesc_${this.svgId}`).val();
-    forms.repeat = $(`#vertexRepeat_${this.svgId}`).val();
-    forms.mandatory = $(`#isVertexMandatory_${this.svgId}`).prop('checked');
 
-    const {groupType} = _.find(this.dataContainer.vertex, {'id': this.currentId});
+    if (checkModePermission(this.viewMode.value, 'vertexRepeat')){
+      forms.repeat = $(`#vertexRepeat_${this.svgId}`).val();
+      forms.mandatory = $(`#isVertexMandatory_${this.svgId}`).prop('checked');
+    }
+
+    const vertex = _.find(this.dataContainer.vertex, {'id': this.currentId});
+    const {groupType} = vertex;
+    
     const typeData = this.vertexDefinition.vertexFormatType[groupType];
     let elements = [];
     // Get data element
@@ -618,6 +637,10 @@ class VertexMgmt {
     forms.groupType = groupType;
 
     this.updateVertexInfo(forms);
+
+    //Check and mark connector if has connection
+    vertex.markedAllConnector();
+
     this.closePopVertexInfo();
   }
 
@@ -653,21 +676,26 @@ class VertexMgmt {
       let presentation = this.vertexDefinition.vertexPresentation[groupType];
       for (let i = 0; i < rows; i++) {
         let dataRow = data[i];
+
+        //Key
         d3.select(`#${replaceSpecialCharacter(`${id}${presentation.key}${i}`)}`)
-          .text(dataRow[presentation.key])
+          .html(htmlDecode(getKeyPrefix(dataRow, this.vertexDefinition, groupType)) + dataRow[presentation.key])
           .attr('title', dataRow[presentation.keyTooltip]);
+
+        //Value
         d3.select(`#${replaceSpecialCharacter(`${id}${presentation.value}${i}`)}`)
           .text(dataRow[presentation.value])
           .attr('title', dataRow[presentation.valueTooltip]);
       }
 
       //update color for "rect"
-      d3.select(`#${id}`).selectAll('.drag_connect').style("fill", this.colorHashConnection.hex(name));
+      d3.select(`#${id}`).selectAll('.drag_connect:not(.connect_header)').attr("fill", this.colorHashConnection.hex(name));
+      d3.select(`#${id}`).selectAll('.drag_connect.connect_header').attr("fill", this.colorHash.hex(name));
     }
   }
 
   async reRenderContentInsideVertex(vertex) {
-    let {name, description, data: elements, id, vertexType, groupType, parent} = vertex;
+    const {name, description, data: elements, id, vertexType, groupType, parent, connectSide} = vertex;
 
     if (!vertexType)
       return;
@@ -683,7 +711,7 @@ class VertexMgmt {
       let data = elements[i];
       htmlContent += `
         <div class="property" prop="${id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${data[presentation.key] || ""}</label><label> : </label>
+          <label class="key" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${htmlDecode(getKeyPrefix(data, this.vertexDefinition, groupType))}${data[presentation.key] || ""}</label>
           <label class="data" id="${id}${presentation.value}${i}" title="${data[presentation.valueTooltip] || "No data to show"}">${data[presentation.value] || ""}</label>
         </div>`;
     }
@@ -698,37 +726,71 @@ class VertexMgmt {
         <p class="header_name" id="${id}Name" title="${description}"
           style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px; background-color: ${this.colorHash.hex(name)};
           cursor: move; pointer-events: all">${name}</p>
-        <div class="vertex_data" style="pointer-events: none">
+        <div class="vertex_data">
           ${htmlContent}
         </div>`
-      );
+    );
+    
+    //Rect connect title INPUT
+    if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.LEFT){
+      group.append("rect")
+      .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      .attr("type", TYPE_CONNECT.INPUT)
+      .attr("prop", `${id}${CONNECT_KEY}title`)
+      .attr("pointer-events", "all")
+      .attr("width", 12)
+      .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
+      .attr("x", 1)
+      .attr("y", 1)
+      .attr("fill", this.colorHash.hex(name))
+      .call(this.edgeMgmt.handleDragConnection);
+    }
+
+    //Rect connect title OUTPUT
+    if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.RIGHT){
+      group.append("rect")
+        .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+        .attr("prop", `${id}${CONNECT_KEY}title`)
+        .attr("pointer-events", "all")
+        .attr("type", TYPE_CONNECT.OUTPUT)
+        .attr("width", 12)
+        .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
+        .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
+        .attr("y", 1)
+        .attr("fill", this.colorHash.hex(name))
+        .call(this.edgeMgmt.handleDragConnection);
+    }
 
     for (let i = 0; i < len; i++) {
       // Input
-      group.append("rect")
-        .attr("class", `drag_connect drag_connect_${this.svgId}`)
-        .attr("type", TYPE_CONNECT.INPUT)
-        .attr("prop", `${id}${CONNECT_KEY}${i}`)
-        .attr("pointer-events", "all")
-        .attr("width", 12)
-        .attr("height", 25)
-        .attr("x", 1)
-        .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-        .style("fill", this.colorHashConnection.hex(name))
-        .call(this.edgeMgmt.handleDragConnection);
+      if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.LEFT){
+        group.append("rect")
+          .attr("class", `drag_connect drag_connect_${this.svgId}`)
+          .attr("type", TYPE_CONNECT.INPUT)
+          .attr("prop", `${id}${CONNECT_KEY}${i}`)
+          .attr("pointer-events", "all")
+          .attr("width", 12)
+          .attr("height", 25)
+          .attr("x", 1)
+          .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
+          .attr("fill", this.colorHashConnection.hex(name))
+          .call(this.edgeMgmt.handleDragConnection);
+      }
 
       // Output
-      group.append("rect")
-        .attr("class", `drag_connect drag_connect_${this.svgId}`)
-        .attr("prop", `${id}${CONNECT_KEY}${i}`)
-        .attr("type", TYPE_CONNECT.OUTPUT)
-        .attr("pointer-events", "all")
-        .attr("width", 12)
-        .attr("height", 25)
-        .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
-        .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-        .style("fill", this.colorHashConnection.hex(name))
-        .call(this.edgeMgmt.handleDragConnection);
+      if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.RIGHT){
+        group.append("rect")
+          .attr("class", `drag_connect drag_connect_${this.svgId}`)
+          .attr("prop", `${id}${CONNECT_KEY}${i}`)
+          .attr("type", TYPE_CONNECT.OUTPUT)
+          .attr("pointer-events", "all")
+          .attr("width", 12)
+          .attr("height", 25)
+          .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
+          .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
+          .attr("fill", this.colorHashConnection.hex(name))
+          .call(this.edgeMgmt.handleDragConnection);
+      }
     }
 
     if (parent){

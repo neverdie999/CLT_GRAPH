@@ -64,6 +64,7 @@ class CltMessageMapping {
       headerForm: {}, // Header group type
       vertexPresentation: {}, // Group vertex presentation
       vertexGroup: null, // Group vertex
+      keyPrefix: {type:{}}
     };
 
     this.inputDefined = {
@@ -74,6 +75,7 @@ class CltMessageMapping {
       headerForm: {}, // Header group type
       vertexPresentation: {}, // Group vertex presentation
       vertexGroup: null, // Group vertex
+      keyPrefix: {type:{}}
     };
 
     this.outputDefined = {
@@ -84,6 +86,7 @@ class CltMessageMapping {
       headerForm: {}, // Header group type
       vertexPresentation: {}, // Group vertex presentation
       vertexGroup: null, // Group vertex
+      keyPrefix: {type:{}}
     };
 
     this.connectMgmt = new ConnectMgmt({
@@ -181,6 +184,12 @@ class CltMessageMapping {
       this.storeOperations.vertex.forEach(e => {
         e.updatePathConnect();
       })
+
+      //update all edges for Operations area
+      this.storeOutputMessage.vertex.forEach(e => {
+        e.updatePathConnect();
+      })
+
     });
   }
 
@@ -387,7 +396,12 @@ class CltMessageMapping {
     vertexGroup.forEach(group => {
       const {groupType, dataElementFormat, vertexPresentation} = group;
       container.headerForm[groupType] = Object.keys(dataElementFormat);
+
       container.vertexPresentation[groupType] = vertexPresentation;
+      if (!container.vertexPresentation[groupType]["keyPrefix"]) {
+        container.vertexPresentation[groupType]["keyPrefix"] = {};
+      }
+      
       container.vertexFormat[groupType] = dataElementFormat;
       container.vertexGroupType[groupType] = group;
       let formatType = {};
@@ -811,7 +825,8 @@ class CltMessageMapping {
       note: {
         originNote: edge.originNote,
         middleNote: edge.middleNote,
-        destNote: edge.destNote
+        destNote: edge.destNote,
+
       },
       style:{
         line: edge.lineType,

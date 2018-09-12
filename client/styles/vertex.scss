@@ -24,24 +24,30 @@
     line-height: 25px;
 
     .key{
-      width: 85px;
-      text-align: right;
+      width: 145px;
+      text-align: left;
+      margin-left: 13px;
       font-weight: 300;
+      font-size: 9px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 85px;
+      max-width: 145px;
+      
     }
 
     .data{
       font-weight: 300;
-      width: calc(100% - 85px);
+      font-size: 9px;
+      width: calc(100% - 162px);
       margin-left: 5px;
+      margin-right: 13px;
+      text-align: right;
       border: none;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: calc(100% - 85px);
+      max-width: calc(100% - 162px);
     }
   }
 }
@@ -54,4 +60,8 @@
   &:focus {
     outline: -webkit-focus-ring-color auto;
   }
+}
+
+.marked_connector {
+  fill: #ff4828
 }

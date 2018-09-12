@@ -59,8 +59,8 @@ class Edge {
     this.target = target;
 
     if(style){
-      this.lineType = style.line;
-      this.useMarker = style.arrow;
+      this.lineType = style.line || this.lineType;
+      this.useMarker = style.arrow || this.useMarker;
     }
     if(note){
       this.originNote = note.originNote;
@@ -92,28 +92,38 @@ class Edge {
         })
       })
 
+    d3.select(`#${this.svgId}`).select('defs').append("marker")
+      .attr("id", `arrow${this.id}`)
+      .attr("viewBox", "0 0 10 10")
+      .attr("refX", 10)
+      .attr("refY", 5)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", "M 0 0 L 10 5 L 0 10 z")
+      .attr("fill", `black`);
+
     //hidden line, it has larger width for selecting easily
     group.append("path")
       .attr('d', pathStr)
       .attr("id", this.id)
       .attr('focusable', true)
-      .attr('fill', 'none')
       .attr('stroke', 'white')
       .attr('stroke-miterlimit', 10)
       .attr('pointer-events', 'stroke')
       .attr('visibility', 'hidden')
       .attr('stroke-width', 9)
-      .attr("marker-end", `url(#${this.arrowId})`);
+      .attr("marker-end", `url(#arrow${this.id})`);
 
     group.append("path")
       .attr('d', pathStr)
       .attr("id", this.id)
       .attr('focusable', true)
-      .attr('fill', 'none')
-      .attr('stroke', '#000000')
+      .attr('stroke', `black`)
       .attr('stroke-miterlimit', 10)
       .attr('focusable', true)
-      .attr("marker-end", this.useMarker === 'Y' ? `url(#${this.arrowId})` : '')
+      .attr("marker-end", this.useMarker === 'Y' ? `url(#arrow${this.id})` : '')
       .attr("stroke-dasharray", this.lineType === LINE_TYPE.SOLID ? '0 0' : '3 3'); // Make arrow at end path
 
     let origin = group.append("text")
@@ -151,6 +161,14 @@ class Edge {
       .attr("xlink:href", `#${this.id}`)
       .attr("startOffset", "100%")
       .text(this.destNote);
+
+    //Marked connector as connected
+    if (this.source.prop.indexOf('title') == -1){
+      d3.select(`[prop="${this.source.prop}"][type="O"]`).classed("marked_connector", true);
+    }
+    if (this.target.prop.indexOf('title') == -1){
+      d3.select(`[prop="${this.target.prop}"][type="I"]`).classed("marked_connector", true);
+    }
   }
 
   /**
@@ -168,8 +186,59 @@ class Edge {
       });
     }
 
+    d3.select(`#arrow${this.id}`).remove();
+
     if (this.edgeMgmt.isSelectingEdge())
       this.edgeMgmt.cancleSelectedPath();
+
+    //Unmarked connector
+    if (this.source.prop.indexOf('title') == -1){
+      let isSrcExist = false;
+      this.dataContainer.edge.forEach(e => {
+        if (e.source.prop == this.source.prop){
+          isSrcExist = true;
+        }
+      });
+
+      if (!isSrcExist){
+        let vertices = [];
+        this.edgeMgmt.vertexContainer.forEach(e=>{
+          vertices = vertices.concat(e.vertex);
+        })
+        
+        const propNode = $(`rect[prop=${this.source.prop}][type='O']`)[0];
+        //In case of updated vertex and poperties lost => propNode will not exist
+        if (propNode){
+          const vertexId = $(propNode.parentNode).attr('id');
+          const vertex = _.find(vertices, {"id":vertexId});
+          d3.select(`rect[prop=${this.source.prop}][type='O']`).classed('marked_connector',false);
+        }
+      }
+    }
+    
+    if (this.target.prop.indexOf('title') == -1){
+      let isTagExist = false;
+      this.dataContainer.edge.forEach(e => {
+        if (e.target.prop == this.target.prop){
+          isTagExist = true;
+        }
+      });
+
+      if (!isTagExist){
+        let vertices = [];
+        this.edgeMgmt.vertexContainer.forEach(e=>{
+          vertices = vertices.concat(e.vertex);
+        })
+        
+        const propNode = $(`rect[prop=${this.target.prop}][type='I']`)[0];
+        //In case of updated vertex and poperties lost => propNode will not exist
+        if (propNode){
+          const vertexId = $(propNode.parentNode).attr('id');
+          const vertex = _.find(vertices, {"id":vertexId});
+          d3.select(`rect[prop=${this.target.prop}][type='I']`).classed('marked_connector',false);
+        }
+      }
+    }
   }
 
   /**
@@ -248,7 +317,19 @@ class Edge {
    */
   setUseMarker(flag) {
     this.useMarker = flag;
-    d3.selectAll(`#${this.id}`).attr('marker-end', flag === 'Y' ? `url(#${this.arrowId})` : '');
+    d3.selectAll(`#${this.id}`).attr('marker-end', flag === 'Y' ? `url(#arrow${this.id})` : '');
+  }
+
+  /**
+   * emphasize edge for selected Object (Vertex, Boundary)
+   */
+  emphasize(){
+    let path = d3.selectAll(`#${this.id}`).filter((d, i) => {
+      return i == 1;
+    });
+
+    path.classed('emphasizePath', true);
+    d3.select(`#arrow${this.id}`).select('path').classed('emphasizeArrow', true);
   }
 }
 

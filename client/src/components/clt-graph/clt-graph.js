@@ -16,9 +16,6 @@ import {
   VERTEX_FORMAT_TYPE, DEFAULT_CONFIG_GRAPH, VIEW_MODE,
 } from '../../common/const/index';
 
-
-
-
 class CltGraph {
   constructor(props) {
     this.selector = props.selector;
@@ -55,6 +52,7 @@ class CltGraph {
       headerForm: {}, // Header group type
       vertexPresentation: {}, // Group vertex presentation
       vertexGroup: null, // Group vertex
+      keyPrefix: {type:{}}
     };
 
     this.edgeMgmt = new EdgeMgmt({
@@ -79,7 +77,8 @@ class CltGraph {
       containerId: this.graphContainerId,
       svgId: this.graphSvgId,
       viewMode: this.viewMode,
-      vertexMgmt: this.vertexMgmt
+      vertexMgmt: this.vertexMgmt,
+      edgeMgmt: this.edgeMgmt
     });
 
     this.initCustomFunctionD3();
@@ -275,7 +274,12 @@ class CltGraph {
     vertexGroup.forEach(group => {
       const {groupType, dataElementFormat, vertexPresentation} = group;
       container.headerForm[groupType] = Object.keys(dataElementFormat);
+      
       container.vertexPresentation[groupType] = vertexPresentation;
+      if (!container.vertexPresentation[groupType]["keyPrefix"]) {
+        container.vertexPresentation[groupType]["keyPrefix"] = {};
+      }
+
       container.vertexFormat[groupType] = dataElementFormat;
       container.vertexGroupType[groupType] = group;
       let formatType = {};

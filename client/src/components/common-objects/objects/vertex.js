@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import {
   VERTEX_ATTR_SIZE,
   CONNECT_SIDE,
-  TYPE_CONNECT,
+  TYPE_CONNECT
 } from '../../../common/const/index';
 
 import { 
@@ -13,6 +13,8 @@ import {
   setMinBoundaryGraph,
   checkModePermission,
   arrayMove,
+  getKeyPrefix,
+  htmlDecode,
 } from '../../../common/utilities/common.ult';
 
 const CONNECT_KEY = 'Connected';
@@ -25,6 +27,7 @@ class Vertex {
     this.selectorClass    = props.vertexMgmt.selectorClass || "defaul_vertex_class";
     this.vertexDefinition = props.vertexMgmt.vertexDefinition;
     this.viewMode         = props.vertexMgmt.viewMode;
+    this.connectSide      = props.vertexMgmt.connectSide;
     this.vertexMgmt       = props.vertexMgmt;
 
     this.id               = null;
@@ -38,7 +41,6 @@ class Vertex {
     this.parent           = null;
     this.mandatory        = false;
     this.repeat           = 1;
-    this.connectSide      = ""; //type: string, require: false, the default value is an anonymous function not handle anything. (LEFT, RIGHT, BOTH)
     this.type;
     this.show;
 
@@ -66,7 +68,7 @@ class Vertex {
    */
   create(sOptions = {}, callbackDragVertex = ()=>{}, callbackDragConnection = ()=>{}) {
 
-    let {id, x, y, groupType, vertexType, name, description, data, parent, mandatory, repeat, connectSide, isMenu, isImport} = sOptions;
+    let {id, x, y, groupType, vertexType, name, description, data, parent, mandatory, repeat, isMenu, isImport} = sOptions;
 
     if ( isMenu ) {
       let vertexTypeInfo = _.cloneDeep(_.find(this.vertexDefinition.vertexTypes, {'vertexType': vertexType}));
@@ -88,7 +90,6 @@ class Vertex {
     this.parent       = parent || null;
     this.mandatory    = mandatory || false;
     this.repeat       = repeat || 1;
-    this.connectSide  = connectSide || CONNECT_SIDE.BOTH;
     this.type         = "V";
     this.show         = true;
 
@@ -104,16 +105,20 @@ class Vertex {
 
       if(checkModePermission(this.viewMode.value, "isEnableDragVertex")){
         group.call(callbackDragVertex);
+      }else{
+        $(`#${this.id}`).click( () => {
+          this.vertexMgmt.edgeMgmt.emphasizePathConnectForVertex(this);
+        })
       }
-
+    
     let htmlContent = '';
     let countData = this.data.length;
     for (let i = 0; i < countData; i++) {
       let item = this.data[i];
       htmlContent += `
         <div class="property" prop="${this.id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key" id="${this.id}_${presentation.key}_${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${item[presentation.key] || ""}</label><label> : </label>
-          <label class="data" id="${this.id}_${presentation.value}_${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
+          <label class="key" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${htmlDecode(getKeyPrefix(item, this.vertexDefinition, this.groupType))}${item[presentation.key] || ""}</label>
+          <label class="data" id="${this.id}${presentation.value}${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
         </div>`;
     }
 
@@ -134,10 +139,41 @@ class Vertex {
         </div>
       `);
 
+    //Rect connect title INPUT
+    if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.LEFT){
+      group.append("rect")
+      .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+      .attr("type", TYPE_CONNECT.INPUT)
+      .attr("prop", `${this.id}${CONNECT_KEY}title`)
+      .attr("pointer-events", "all")
+      .attr("width", 12)
+      .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
+      .attr("x", 1)
+      .attr("y", 1)
+      .attr("fill", this.colorHash.hex(this.name))
+      .call(callbackDragConnection);
+    }
+
+    //Rect connect title OUTPUT
+    if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.RIGHT){
+      group.append("rect")
+        .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+        .attr("prop", `${this.id}${CONNECT_KEY}title`)
+        .attr("pointer-events", "all")
+        .attr("type", TYPE_CONNECT.OUTPUT)
+        .attr("width", 12)
+        .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
+        .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
+        .attr("y", 1)
+        .attr("fill", this.colorHash.hex(this.name))
+        .call(callbackDragConnection);
+    }
+    
+
     for (let i = 0; i < countData; i++) {
       // Input
       if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.LEFT){
-       let connect = group.append("rect")
+        let connect = group.append("rect")
           .attr("class", `drag_connect drag_connect_${this.svgId}`)
           .attr("type", TYPE_CONNECT.INPUT)
           .attr("prop", `${this.id}${CONNECT_KEY}${i}`)
@@ -146,7 +182,7 @@ class Vertex {
           .attr("height", 25)
           .attr("x", 1)
           .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-          .style("fill", this.colorHashConnection.hex(this.name))
+          .attr("fill", this.colorHashConnection.hex(this.name))
           .call(callbackDragConnection);
       }
 
@@ -161,7 +197,7 @@ class Vertex {
           .attr("height", 25)
           .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
           .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-          .style("fill", this.colorHashConnection.hex(this.name))
+          .attr("fill", this.colorHashConnection.hex(this.name))
           .call(callbackDragConnection);
       }
     }
@@ -224,15 +260,15 @@ class Vertex {
    * Different between this func and remove func is, in this case we don't care the parent, because it was deleted 
    */
   delete() {
+    // Remove all edge relate to vertex
+    this.vertexMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this);
+
     // Remove from DOM
     d3.select(`#${this.id}`).remove();
     // Remove from data container
     _.remove(this.dataContainer.vertex, (e) => {
       return e.id === this.id;
     });
-
-    // Remove all edge relate to vertex
-    this.vertexMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this);
   }  
 
   /**
@@ -260,6 +296,40 @@ class Vertex {
 
       arrayMove(this.dataContainer.vertex, curIndex, this.dataContainer.vertex.length - 1);
     }
+  }
+
+  /**
+   * 
+   * @param {*} prop 
+   * @param {*} type 
+   */
+  markedConnectorByProp(prop, type){
+    d3.select(`[prop="${prop}"][type=${type}]`).classed("marked_connector", true);
+  }
+
+  /**
+   * Checked connected and marked connector for vertex
+   */
+  markedAllConnector(){
+
+    let lstMarkedInput = [];
+    let lstMarkedOutput = [];
+
+    lstMarkedOutput = this.vertexMgmt.edgeMgmt.dataContainer.edge.filter(e => {
+      return  e.source.prop.indexOf('title') == -1 && e.source.vertexId == this.id;
+    });
+
+    lstMarkedInput = this.vertexMgmt.edgeMgmt.dataContainer.edge.filter(e => {
+      return e.target.prop.indexOf('title') == -1 && e.target.vertexId == this.id;
+    });
+
+    lstMarkedInput.forEach(e => {
+      d3.select(`[prop="${e.target.prop}"][type="I"]`).classed("marked_connector", true);
+    });
+
+    lstMarkedOutput.forEach(e => {
+      d3.select(`[prop="${e.source.prop}"][type="O"]`).classed("marked_connector", true);
+    });
   }
 }
 

@@ -262,13 +262,13 @@ export function checkModePermission(viewMode, type){
 
   data[VIEW_MODE.SHOW_ONLY] = [
     'showReduced',
-    'editVertex', 'isEnableDragVertex',
-    'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'];
+    'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
+    'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory'];
 
   data[VIEW_MODE.EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
-    'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
-    'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'
+    'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
+    'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory'
   ];
 
   data[VIEW_MODE.OPERATIONS] = [
@@ -278,13 +278,59 @@ export function checkModePermission(viewMode, type){
   ];
 
   data[VIEW_MODE.INPUT_MESSAGE] = [
-    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu'
+    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu',
+    'vertexRepeat', 'isVertexMandatory',
+    'maxBoundaryRepeat', 'isBoundaryMandatory'
   ];
 
   data[VIEW_MODE.OUTPUT_MESSAGE] = [
-    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu'
+    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu',
+    'vertexRepeat', 'isVertexMandatory',
+    'maxBoundaryRepeat', 'isBoundaryMandatory'
   ];
 
   return data[viewMode].indexOf(type) != -1;
   
+}
+
+/**
+ * get prefix for key of data-element Vertex
+ * @param {*} dataElement 
+ * @param {*} vertexDefinition 
+ * @param {*} groupType 
+ */
+export function getKeyPrefix(dataElement, vertexDefinition, groupType){
+
+  const keyPrefix = vertexDefinition.vertexPresentation[groupType]["keyPrefix"];
+  if (!keyPrefix) return "";
+
+  let res = "";
+  for (let propName in keyPrefix){
+    if (dataElement[propName]){
+      res += keyPrefix[propName][dataElement[propName]] ? keyPrefix[propName][dataElement[propName]] : "";
+    }
+  }
+
+  return res;
+}
+
+export function htmlDecode (s) {
+  var translate = {
+     " "  : "&nbsp;",
+     "&"  : "&amp;",
+     "\\" : "&quot;",
+     "<"  : "&lt;",
+     ">"  : "&gt;"  
+  };
+
+  let res = "";
+  s.split('').forEach(e => {
+    if (translate[e]){
+      res += translate[e]
+    }else{
+      res+= e;
+    }
+  })
+
+  return res;
 }

@@ -12,7 +12,7 @@ export const CLASS_CONTAINER_VERTEX = 'groupVertex';
 export const VERTEX_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
   PROP_HEIGHT: 26,
-  GROUP_WIDTH: 150,
+  GROUP_WIDTH: 220,
   SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
 }
 export const CONNECT_SIDE = {
@@ -43,7 +43,7 @@ export const CLASS_CONTAINER_BOUNDARY = 'groupBoundary';
 export const CLASS_MENU_ITEM_BOUNDARY = 'menuItemBoundary';
 export const BOUNDARY_ATTR_SIZE = {
   HEADER_HEIGHT: 38,
-  BOUND_WIDTH: 160,
+  BOUND_WIDTH: 230,
   BOUND_HEIGHT: 64,
 }
 
