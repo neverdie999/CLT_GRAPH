@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import Vertex from './vertex';
 import PopUtils from '../../../common/utilities/popup.ult';
 import ObjectUtils from '../../../common/utilities/object.ult';
-import VertexMenu from '../menu-context/vertex-menu';
+import SegmentMenu from '../menu-context/segment-menu';
 
 import {
   REPEAT_RANGE,
@@ -14,6 +14,7 @@ import {
   TYPE_CONNECT,
   VERTEX_ATTR_SIZE,
   CONNECT_SIDE,
+  VIEW_MODE,
 
 } from '../../../common/const/index';
 
@@ -34,21 +35,20 @@ import {
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
-const HTML_VERTEX_FORM_ID = 'vertexForm';
 const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
 const ATTR_DEL_CHECK_ALL = 'delCheckAll';
 const ATTR_DEL_CHECK = 'delCheck';
 const CONNECT_KEY = 'Connected';
 
-class VertexMgmt {
+class SegmentMgmt {
   constructor(props) {
     this.dataContainer            = props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
     this.containerId              = props.containerId;
     this.svgId                    = props.svgId;
     this.vertexDefinition         = props.vertexDefinition;
-    this.viewMode                 = props.viewMode;
+    this.viewMode                 = {value: VIEW_MODE.SEGMENT};
     this.edgeMgmt                 = props.edgeMgmt;
-    this.connectSide              = props.connectSide || CONNECT_SIDE.BOTH;
+    this.connectSide              = CONNECT_SIDE.NONE;
 
     this.initialize();
   }
@@ -59,9 +59,9 @@ class VertexMgmt {
     this.objectUtils = new ObjectUtils();
 
     this.selectorClass = `_vertex_${this.svgId}`;
-    this.currentId = null; //vertex is being edited
+    this.currentVertex = null; //vertex is being edited
 
-    new VertexMenu({
+    new SegmentMenu({
       selector: `.${this.selectorClass}`,
       vertexMgmt: this,
       dataContainer: this.dataContainer,
@@ -78,18 +78,6 @@ class VertexMgmt {
   }
 
   initVertexPopupHtml(){
-
-    const repeatHtml = `
-    <tr>
-      <th>Max repeat</th>
-      <td class="input-group full-width">
-        <input type="number" class="form-control" id="vertexRepeat_${this.svgId}" name="vertexRepeat" min="0" max="9999">
-        <label class="input-group-addon">
-          <input type="checkbox" id="isVertexMandatory_${this.svgId}" name="isVertexMandatory">
-        </label>
-        <label class="input-group-addon" for="isVertexMandatory_${this.svgId}">Mandatory</label>
-      </td>
-    </tr>`;
 
     let sHtml = `
     <!-- Vertex Info Popup (S) -->
@@ -115,7 +103,6 @@ class VertexMgmt {
                         <input type="text" class="form-control" id="vertexName_${this.svgId}" name="vertexName">
                       </td>
                     </tr>
-                    ${checkModePermission(this.viewMode.value, 'vertexRepeat') ? repeatHtml: ''}
                     <tr>
                       <th>Description</th>
                       <td class="full-width">
@@ -155,42 +142,22 @@ class VertexMgmt {
 
   bindEventForPopupVertex() {
     const main = this;
-    if (checkModePermission(this.viewMode.value, "vertexBtnConfirm")){
-      $(`#vertexBtnConfirm_${main.svgId}`).click(() => {
-        this.confirmEditVertexInfo();
-      });
+    
+    $(`#vertexBtnConfirm_${main.svgId}`).click(() => {
+      this.confirmEditVertexInfo();
+    });
 
-      $(`#vertexBtnAdd_${main.svgId}`).click(() => {
-        this.addDataElement();
-      });
+    $(`#vertexBtnAdd_${main.svgId}`).click(() => {
+      this.addDataElement();
+    });
 
-      $(`#vertexBtnDelete_${main.svgId}`).click(() => {
-        this.removeDataElement();
-      });
-    }
+    $(`#vertexBtnDelete_${main.svgId}`).click(() => {
+      this.removeDataElement();
+    });
 
     $(`#vertexBtnCancel_${main.svgId}`).click(() => {
       this.closePopVertexInfo();
     });
-
-    // Validate input number
-    if (checkModePermission(this.viewMode.value, 'vertexRepeat')){
-      $(`#vertexRepeat_${main.svgId}`).keydown(function (e) {
-        allowInputNumberOnly(e);
-      });
-      
-
-      $(`#isVertexMandatory_${main.svgId}`).change(function () {
-        if (this.checked && $(`#vertexRepeat_${main.svgId}`).val() < 1) {
-          $(`#vertexRepeat_${main.svgId}`).val(1);
-        }
-      });
-  
-      $(`#vertexRepeat_${main.svgId}`).focusout(function () {
-        let rtnVal = checkMinMaxValue(this.value, $(`#isVertexMandatory_${main.svgId}`).prop('checked') == true ? 1 : REPEAT_RANGE.MIN, REPEAT_RANGE.MAX);
-        this.value = rtnVal;
-      });
-    }
   }
 
   create(sOptions) {
@@ -254,23 +221,23 @@ class VertexMgmt {
 
   /**
    * Make popup edit vertex info
-   * @param vertexId
+   * @param vertex
    */
-  makePopupEditVertex(vertexId) {
-    // Use in function updateVertexInfo()
-    let {name, description, repeat, mandatory, data, id, groupType} = _.find(this.dataContainer.vertex, {"id": vertexId});
-    // Get vertex group with group type
-    let group = _.find(this.vertexDefinition.vertexGroupType, {"groupType": groupType});
+  makePopupEditVertex(vertex) {
 
-    this.currentId = id;
+    this.currentVertex = vertex;
+    // Use in function updateVertexInfo()
+    let {name, description, data, groupType} = vertex;
+
+    // Get vertex group with group type
+    if (!groupType) {
+      groupType = this.vertexDefinition.vertexGroupType[Object.keys(this.vertexDefinition.vertexGroupType)[0]].groupType;
+    }
+    this.currentVertex.groupType = groupType;
+
     // Append content to popup
     $(`#vertexName_${this.svgId}`).val(name);
     $(`#vertexDesc_${this.svgId}`).val(description);
-
-    if (checkModePermission(this.viewMode.value, 'vertexRepeat')){
-      $(`#vertexRepeat_${this.svgId}`).val(repeat);
-      $(`#isVertexMandatory_${this.svgId}`).prop('checked', mandatory);
-    }
 
     // Generate properties vertex
     let keyHeader = this.vertexDefinition.headerForm[groupType];
@@ -300,29 +267,18 @@ class VertexMgmt {
       $colWidth.appendTo($colGroup);
     }
 
-    const option = group.option;
-    const isDynamicDataSet = option.indexOf(VERTEX_GROUP_OPTION.DYNAMIC_DATASET) > -1;
-    // Set show hide group button dynamic data set
-    if (!isDynamicDataSet) {
-      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}_${this.svgId}`).hide();
-    }
-    else {
-      $(`#${HTML_GROUP_BTN_DYNAMIC_DATASET}_${this.svgId}`).show();
-      // Prepend col group del check
-      let $colWidth = $('<col>').attr('width', POPUP_CONFIG.WIDTH_COL_DEL_CHECK);
-      $colWidth.prependTo($colGroup);
+    // Prepend col group del check
+    let $colWidth = $('<col>').attr('width', POPUP_CONFIG.WIDTH_COL_DEL_CHECK);
+    $colWidth.prependTo($colGroup);
 
-      // let $colHdr = $('<th>').text('Del');
-      // $colHdr.attr('class', 'col_header');
-      let $colHdr = this.initCellDelCheck({
-        'className': 'col_header',
-        'name': `${ATTR_DEL_CHECK_ALL}_${this.svgId}`,
-        'checked': false,
-        'colType': '<th>',
-        'isCheckAll': true,
-      });
-      $colHdr.prependTo($headerRow);
-    }
+    let $colHdr = this.initCellDelCheck({
+      'className': 'col_header',
+      'name': `${ATTR_DEL_CHECK_ALL}_${this.svgId}`,
+      'checked': false,
+      'colType': '<th>',
+      'isCheckAll': true,
+    });
+    $colHdr.prependTo($headerRow);
 
     $colGroup.appendTo($table);
     $headerRow.appendTo($contentHeader);
@@ -352,16 +308,15 @@ class VertexMgmt {
         $col.appendTo($row);
       }
 
-      if (isDynamicDataSet) {
-        // Append del check to row
-        let $col = this.initCellDelCheck({
-          'className': 'checkbox_center',
-          'name': `${ATTR_DEL_CHECK}_${this.svgId}` ,
-          'checked': false,
-          'colType': '<td>'
-        });
-        $col.prependTo($row);
-      }
+      // Append del check to row
+      let $col = this.initCellDelCheck({
+        'className': 'checkbox_center',
+        'name': `${ATTR_DEL_CHECK}_${this.svgId}` ,
+        'checked': false,
+        'colType': '<td>'
+      });
+      $col.prependTo($row);
+
       $row.appendTo($contentBody);
     }
 
@@ -370,15 +325,10 @@ class VertexMgmt {
     let options = {
       popupId: `${HTML_VERTEX_INFO_ID}_${this.svgId}`,
       position: 'center',
-      width: $popWidth + POPUP_CONFIG.PADDING_CHAR + (!isDynamicDataSet ? 0 : 45)
+      width: $popWidth + POPUP_CONFIG.PADDING_CHAR + 45
     }
-    PopUtils.metSetShowPopup(options);
 
-    if (!checkModePermission(this.viewMode.value, "vertexBtnConfirm")){
-      $(`#vertexBtnAdd_${this.svgId}`).hide();
-      $(`#vertexBtnDelete_${this.svgId}`).hide();
-      $(`#vertexBtnConfirm_${this.svgId}`).hide();
-    }
+    PopUtils.metSetShowPopup(options);
   }
 
   /**
@@ -505,10 +455,8 @@ class VertexMgmt {
   }
 
   addDataElement() {
-    if (!this.currentId)
-      return;
-    let {groupType} = _.cloneDeep(_.find(this.dataContainer.vertex, {"id": this.currentId}));
-    let keyHeader = this.vertexDefinition.headerForm[groupType];
+    const groupType = this.currentVertex.groupType;
+    const keyHeader = this.vertexDefinition.headerForm[groupType];
     let cols = keyHeader.length;
     const typeData = this.vertexDefinition.vertexFormatType[groupType];
     const dataFormat = this.vertexDefinition.vertexFormat[groupType];
@@ -534,21 +482,14 @@ class VertexMgmt {
       $col.appendTo($row);
     }
 
-    let group = _.find(this.vertexDefinition.vertexGroupType, (g) => {
-      return g.groupType === groupType;
+    // Append del check to row
+    let $col = this.initCellDelCheck({
+      'className': 'checkbox_center',
+      'name': `${ATTR_DEL_CHECK}_${this.svgId}`,
+      'checked': false,
+      'colType': '<td>'
     });
-    let option = group.option;
-    const isDynamicDataSet = option.indexOf(VERTEX_GROUP_OPTION.DYNAMIC_DATASET) > -1;
-    if (isDynamicDataSet) {
-      // Append del check to row
-      let $col = this.initCellDelCheck({
-        'className': 'checkbox_center',
-        'name': `${ATTR_DEL_CHECK}_${this.svgId}`,
-        'checked': false,
-        'colType': '<td>'
-      });
-      $col.prependTo($row);
-    }
+    $col.prependTo($row);
 
     $row.appendTo($appendTo);
   }
@@ -597,7 +538,7 @@ class VertexMgmt {
    * Close popup edit vertex info
    */
   closePopVertexInfo() {
-    this.currentId = null;
+    this.currentVertex = null;
     let options = {popupId: `${HTML_VERTEX_INFO_ID}_${this.svgId}`}
     PopUtils.metClosePopup(options);
   }
@@ -606,21 +547,19 @@ class VertexMgmt {
    * Get data vertex change
    */
   confirmEditVertexInfo() {
-    // Get data on form
-    let forms = {};
-    forms.id = this.currentId;
-    forms.name = $(`#vertexName_${this.svgId}`).val();
-    forms.description = $(`#vertexDesc_${this.svgId}`).val();
 
-    if (checkModePermission(this.viewMode.value, 'vertexRepeat')){
-      forms.repeat = $(`#vertexRepeat_${this.svgId}`).val();
-      forms.mandatory = $(`#isVertexMandatory_${this.svgId}`).prop('checked');
+    if ($(`#vertexName_${this.svgId}`).val() === ''){
+      comShowMessage("Please enter Name.");
+      $(`#vertexName_${this.svgId}`).focus();
+      return;
     }
 
-    const vertex = _.find(this.dataContainer.vertex, {'id': this.currentId});
-    const {groupType} = vertex;
-    
+    // Get data on form
+    this.currentVertex.name = this.currentVertex.vertexType = $(`#vertexName_${this.svgId}`).val();
+    this.currentVertex.description = $(`#vertexDesc_${this.svgId}`).val();
+    const groupType = this.currentVertex.groupType;    
     const typeData = this.vertexDefinition.vertexFormatType[groupType];
+    
     let elements = [];
     // Get data element
     $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr').each(function () {
@@ -633,15 +572,19 @@ class VertexMgmt {
       });
       elements.push(row);
     });
+
     // Remove first row (header table)
     elements.shift();
-    forms.data = elements;
-    forms.groupType = groupType;
 
-    this.updateVertexInfo(forms);
+    this.currentVertex.data = elements;
+    this.currentVertex.groupType = groupType;
 
-    //Check and mark connector if has connection
-    vertex.markedAllConnector();
+    if (this.currentVertex.id) {
+      this.updateVertexInfo(this.currentVertex);
+    } else {
+      //Create New
+      this.create(this.currentVertex);
+    }
 
     this.closePopVertexInfo();
   }
@@ -653,51 +596,14 @@ class VertexMgmt {
    * Update present (DOM)
    */
   updateVertexInfo(forms) {
-    const {id, name, description, repeat, mandatory, data, groupType} = forms;
-    let vertex = _.find(this.dataContainer.vertex, {'id': id});
-    vertex.name = name;
-    vertex.description = description;
-    vertex.repeat = repeat;
-    vertex.mandatory = mandatory;
-    vertex.data = data;
+    const {id} = forms;
 
-    let group = _.find(this.vertexDefinition.vertexGroupType, (g) => {
-      return g.groupType === groupType;
-    });
-    const option = group.option;
-    const isDynamicDataSet = option.indexOf(VERTEX_GROUP_OPTION.DYNAMIC_DATASET) > -1;
-    if (isDynamicDataSet) {
-      d3.select(`#${id}`).selectAll("*").remove();
-      this.reRenderContentInsideVertex(vertex);
-    } else {
-      // Update properties
-      let header = d3.select(`#${id}Name`);
-      header.text(name).attr('title', description);
-      header.style("background-color", `${this.colorHash.hex(name)}`);
-      let rows = data.length;
-      let presentation = this.vertexDefinition.vertexPresentation[groupType];
-      for (let i = 0; i < rows; i++) {
-        let dataRow = data[i];
-
-        //Key
-        d3.select(`#${replaceSpecialCharacter(`${id}${presentation.key}${i}`)}`)
-          .html(htmlDecode(getKeyPrefix(dataRow, this.vertexDefinition, groupType)) + dataRow[presentation.key])
-          .attr('title', dataRow[presentation.keyTooltip]);
-
-        //Value
-        d3.select(`#${replaceSpecialCharacter(`${id}${presentation.value}${i}`)}`)
-          .text(dataRow[presentation.value])
-          .attr('title', dataRow[presentation.valueTooltip]);
-      }
-
-      //update color for "rect"
-      d3.select(`#${id}`).selectAll('.drag_connect:not(.connect_header)').attr("fill", this.colorHashConnection.hex(name));
-      d3.select(`#${id}`).selectAll('.drag_connect.connect_header').attr("fill", this.colorHash.hex(name));
-    }
+    d3.select(`#${id}`).selectAll("*").remove();
+    this.reRenderContentInsideVertex(this.currentVertex);
   }
 
   async reRenderContentInsideVertex(vertex) {
-    const {name, description, data: elements, id, vertexType, groupType, parent, connectSide} = vertex;
+    const {name, description, data: elements, id, vertexType, groupType, connectSide} = vertex;
 
     if (!vertexType)
       return;
@@ -735,79 +641,8 @@ class VertexMgmt {
           ${htmlContent}
         </div>`
     );
-    
-    //Rect connect title INPUT
-    if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.LEFT){
-      group.append("rect")
-      .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
-      .attr("type", TYPE_CONNECT.INPUT)
-      .attr("prop", `${id}${CONNECT_KEY}title`)
-      .attr("pointer-events", "all")
-      .attr("width", 12)
-      .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
-      .attr("x", 1)
-      .attr("y", 1)
-      .attr("fill", this.colorHash.hex(name))
-      .call(this.edgeMgmt.handleDragConnection);
-    }
 
-    //Rect connect title OUTPUT
-    if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.RIGHT){
-      group.append("rect")
-        .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
-        .attr("prop", `${id}${CONNECT_KEY}title`)
-        .attr("pointer-events", "all")
-        .attr("type", TYPE_CONNECT.OUTPUT)
-        .attr("width", 12)
-        .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
-        .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
-        .attr("y", 1)
-        .attr("fill", this.colorHash.hex(name))
-        .call(this.edgeMgmt.handleDragConnection);
-    }
-
-    for (let i = 0; i < len; i++) {
-      // Input
-      if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.LEFT){
-        group.append("rect")
-          .attr("class", `drag_connect drag_connect_${this.svgId}`)
-          .attr("type", TYPE_CONNECT.INPUT)
-          .attr("prop", `${id}${CONNECT_KEY}${i}`)
-          .attr("pointer-events", "all")
-          .attr("width", 12)
-          .attr("height", 25)
-          .attr("x", 1)
-          .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-          .attr("fill", this.colorHashConnection.hex(name))
-          .call(this.edgeMgmt.handleDragConnection);
-      }
-
-      // Output
-      if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.RIGHT){
-        group.append("rect")
-          .attr("class", `drag_connect drag_connect_${this.svgId}`)
-          .attr("prop", `${id}${CONNECT_KEY}${i}`)
-          .attr("type", TYPE_CONNECT.OUTPUT)
-          .attr("pointer-events", "all")
-          .attr("width", 12)
-          .attr("height", 25)
-          .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
-          .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-          .attr("fill", this.colorHashConnection.hex(name))
-          .call(this.edgeMgmt.handleDragConnection);
-      }
-    }
-
-    if (parent){
-      let parentObj = _.find(this.dataContainer.boundary, {"id": parent});
-      let ancesstor = await parentObj.findAncestorOfMemberInNestedBoundary();
-      await ancesstor.updateSize();
-      await ancesstor.reorderPositionMember();
-    }
-    
     setMinBoundaryGraph(this.dataContainer, this.svgId);
-
-    this.edgeMgmt.removeEdgeLostPropOnVertex(vertex);
   }
 
   hideAllEdgeRelatedToVertex(vertexId, status){
@@ -824,4 +659,4 @@ class VertexMgmt {
   }
 }
 
-export default VertexMgmt
+export default SegmentMgmt;

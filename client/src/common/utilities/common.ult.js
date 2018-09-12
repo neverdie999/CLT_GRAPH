@@ -278,15 +278,20 @@ export function checkModePermission(viewMode, type){
   ];
 
   data[VIEW_MODE.INPUT_MESSAGE] = [
-    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu',
-    'vertexRepeat', 'isVertexMandatory',
-    'maxBoundaryRepeat', 'isBoundaryMandatory'
+    'showReduced',
+    'editVertex', 'vertexRepeat', 'isVertexMandatory',
+    'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu'
   ];
 
   data[VIEW_MODE.OUTPUT_MESSAGE] = [
-    'showReduced', 'editVertex', 'editBoundary', 'isEnableItemVisibleMenu',
-    'vertexRepeat', 'isVertexMandatory',
-    'maxBoundaryRepeat', 'isBoundaryMandatory'
+    'showReduced',
+    'editVertex', 'vertexRepeat', 'isVertexMandatory',
+    'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu'
+  ];
+
+  data[VIEW_MODE.SEGMENT] = [
+    'createVertex', 'clearAll', 'showReduced',
+    'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex'
   ];
 
   return data[viewMode].indexOf(type) != -1;

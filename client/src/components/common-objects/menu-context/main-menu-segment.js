@@ -1,12 +1,11 @@
 import {getCoorMouseClickRelativeToParent, checkModePermission} from '../../../common/utilities/common.ult';
 import _ from "lodash";
 
-class MainMenu {
+class MainMenuSegment {
   constructor(props) {
     this.selector = props.selector;
     this.containerId = props.containerId;
     this.parent = props.parent;
-    this.vertexDefinition = props.vertexDefinition;
     this.viewMode = props.viewMode;
     
     this.initMainMenu();
@@ -23,21 +22,17 @@ class MainMenu {
           callback: (key, options) => {
             switch (key) {
               
-              case "createBoundary":
+              case "createNew":
                 let params = {
                   x: options.x,
-                  y: options.y
+                  y: options.y,
+                  data: {}
                 };
-                this.parent.createBoundary(params);
-                break;
-
-              case "clearAll":
-                this.parent.clearAll();
-                this.parent.edgeMgmt.clearAll();
+                this.parent.segmentMgmt.makePopupEditVertex(params);
                 break;
 
               case "showReduced":
-                this.parent.isShowReduced ? this.parent.showFull(options) : this.parent.showReduced(options);
+                this.parent.isShowReduced ? this.parent.showFull() : this.parent.showReduced();
                 break;
 
               default:
@@ -45,30 +40,21 @@ class MainMenu {
             }
           },
           items: {
-            "createVertex": {
-              name: "Create Vertex",
+            "createNew": {
+              name: "Create New",
               icon: "fa-window-maximize",
-              items: checkModePermission(this.viewMode.value, "createVertex") ? this.loadItems() : {},
-              type: "sub",
-              disabled: !checkModePermission(this.viewMode.value, "createVertex")
             },
             "sep1": "-",
-            "createBoundary": {
-              name: "Create Boundary",
-              icon: "fa-object-group",
-              disabled: !checkModePermission(this.viewMode.value, "createBoundary")
+            "find": {
+              name: "Find...",
+              type: "sub",
+              icon: "fa-search",
+              items: this.loadItems()
             },
             "sep2": "-",
-            "clearAll": {
-              name: "Clear All",
-              icon: "fa-times",
-              disabled: !checkModePermission(this.viewMode.value, "clearAll")
-            },
-            "sep3": "-",
             "showReduced": {
               name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
               icon: "fa-link",
-              disabled: !checkModePermission(this.viewMode.value, "showReduced")
             },
           },
           events: {
@@ -102,17 +88,15 @@ class MainMenu {
       }
     };
     subItems["sep4"] = "-";
-    const options = {};
     // Build options
-    if (this.vertexDefinition.vertexTypes && Array.isArray(this.vertexDefinition.vertexTypes)) {
-      let vertices = this.vertexDefinition.vertexTypes;
-      // Sort array object
-      vertices = _.orderBy(vertices, ['vertexType'], ['asc']);
-      let len = vertices.length;
-      for (let i = 0; i < len; i++) {
-        let type = vertices[i].vertexType;
-        options[`${type}`] = type;
-      }
+    const options = {};
+
+    // Sort array object
+    const vertices = _.orderBy(this.parent.dataContainer.vertex, ['vertexType'], ['asc']);
+    const len = vertices.length;
+    for (let i = 0; i < len; i++) {
+      let type = vertices[i].vertexType;
+      options[`${type}`] = type;
     }
 
     subItems.select = {
@@ -120,7 +104,7 @@ class MainMenu {
       size: 10,
       options: options,
       events: {
-        change: this.onSelectVertex(this)
+        click: this.onSelectVertex(this)
       }
     };
 
@@ -136,6 +120,7 @@ class MainMenu {
       let filter = this.value.toUpperCase();
       let $select = $(this).closest('ul').find(`select`);
       let options = $select.find(`option`);
+
       // Remove first li cause it is input search
       let length = options.length;
       for (let i = 0; i < length; i++) {
@@ -147,25 +132,18 @@ class MainMenu {
           $(element).css('display', 'none');
         }
       }
-
-      //$($select).click();
     }
   }
 
-  onSelectVertex(self) {
+  onSelectVertex(main) {
     return function () {
+      const vertex = _.find(main.parent.dataContainer.vertex, {"vertexType": this.value});
 
-      let params = {
-        x: self.opt.x,
-        y: self.opt.y,
-        isMenu: self.opt.isMenu,
-        vertexType: this.value,
-        isImport: false
-      };
-      self.parent.createVertex(params);
-      $(`${self.selector}`).contextMenu("hide");
+      if (vertex){
+        vertex.showToUser();
+      }
     }
   }
 }
 
-export default MainMenu;
+export default MainMenuSegment;

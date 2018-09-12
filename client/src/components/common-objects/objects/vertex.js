@@ -15,6 +15,7 @@ import {
   arrayMove,
   getKeyPrefix,
   htmlDecode,
+  sleep,
 } from '../../../common/utilities/common.ult';
 
 const CONNECT_KEY = 'Connected';
@@ -70,7 +71,7 @@ class Vertex {
 
     let {id, x, y, groupType, vertexType, name, description, data, parent, mandatory, repeat, isMenu, isImport} = sOptions;
 
-    if ( isMenu ) {
+    if (isMenu) {
       let vertexTypeInfo = _.cloneDeep(_.find(this.vertexDefinition.vertexTypes, {'vertexType': vertexType}));
       data = vertexTypeInfo.data;
       description = vertexTypeInfo.description;
@@ -113,12 +114,14 @@ class Vertex {
     
     let htmlContent = '';
     let countData = this.data.length;
+    let hasLeftConnector = (this.connectSide == CONNECT_SIDE.LEFT || this.connectSide == CONNECT_SIDE.BOTH) ? " has_left_connect" : "";
+    let hasRightConnector = (this.connectSide == CONNECT_SIDE.RIGHT || this.connectSide == CONNECT_SIDE.BOTH) ? " has_right_connect" : "";
     for (let i = 0; i < countData; i++) {
       let item = this.data[i];
       htmlContent += `
         <div class="property" prop="${this.id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${htmlDecode(getKeyPrefix(item, this.vertexDefinition, this.groupType))}${item[presentation.key] || ""}</label>
-          <label class="data" id="${this.id}${presentation.value}${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
+          <label class="key${hasLeftConnector}" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${htmlDecode(getKeyPrefix(item, this.vertexDefinition, this.groupType))}${item[presentation.key] || ""}</label>
+          <label class="data${hasRightConnector}" id="${this.id}${presentation.value}${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
         </div>`;
     }
 
@@ -138,7 +141,7 @@ class Vertex {
           ${htmlContent}
         </div>
       `);
-
+    
     //Rect connect title INPUT
     if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.LEFT){
       group.append("rect")
@@ -168,7 +171,6 @@ class Vertex {
         .attr("fill", this.colorHash.hex(this.name))
         .call(callbackDragConnection);
     }
-    
 
     for (let i = 0; i < countData; i++) {
       // Input
@@ -330,6 +332,52 @@ class Vertex {
     lstMarkedOutput.forEach(e => {
       d3.select(`[prop="${e.source.prop}"][type="O"]`).classed("marked_connector", true);
     });
+  }
+
+  /**
+   * Calculate for scroll left and scroll top to show this vertex to user (Find feature of SegmentSetEditor)
+   */
+  showToUser(){
+    const $container = $(`#${this.containerId}`);
+    const $vertex = $(`#${this.id}`);
+
+    const {width: cntrW, height: cntrH} = $container.get(0).getBoundingClientRect();
+    const cntrLeft = $container.scrollLeft();
+    const cntrTop = $container.scrollTop();
+    const {width: vtxW, height: vtxH} = $vertex.get(0).getBoundingClientRect();
+
+    //Horizontal
+    if (this.x < cntrLeft) {
+      $container.scrollLeft(this.x - 5);
+    }else if (this.x + vtxW > cntrLeft + cntrW) {
+      $container.scrollLeft(this.x - (cntrW - vtxW) + 15);
+    }
+
+    //Vertical
+    if (this.y < cntrTop) {
+      $container.scrollTop(this.y - 5);
+    }else if (this.y + vtxH > cntrTop + cntrH) {
+      if (vtxH > cntrH - 15) {
+        $container.scrollTop(this.y - 5);
+      } else {
+        $container.scrollTop(this.y - (cntrH - vtxH) + 15);
+      }
+    }
+
+    //Show this vertex on the Top
+    this.moveToFront();
+
+    //Highlight the title background-color
+    const $vtxTitle = $(`#${this.id}`).find('.header_name');
+    const colorByName = this.colorHash.hex(this.name);
+    for (let i = 0; i < 3; i++){
+      setTimeout(function(){
+        $vtxTitle.css('background-color', 'white');
+      },i*400);
+      setTimeout(function(){
+        $vtxTitle.css('background-color', `${colorByName})`);
+      }, 200 + i*400);
+    }
   }
 }
 

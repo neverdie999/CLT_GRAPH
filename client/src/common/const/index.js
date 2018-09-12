@@ -16,6 +16,7 @@ export const VERTEX_ATTR_SIZE = {
   SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
 }
 export const CONNECT_SIDE = {
+  NONE: 'NONE',
   LEFT: 'LEFT',
   RIGHT: 'RIGHT',
   BOTH: 'BOTH'
@@ -36,6 +37,7 @@ export const VIEW_MODE = {
   OPERATIONS      : 'OPERATIONS',
   INPUT_MESSAGE   : 'INPUT_MESSAGE',
   OUTPUT_MESSAGE  : 'OUTPUT_MESSAGE',
+  SEGMENT         : 'SEGMENT',
 };
 
 // Boundary

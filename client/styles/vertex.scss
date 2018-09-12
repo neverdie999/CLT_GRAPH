@@ -24,29 +24,41 @@
     line-height: 25px;
 
     .key{
-      width: 145px;
+      width: 157px;
       text-align: left;
-      margin-left: 13px;
+      margin-left: 1px;
       font-weight: 300;
       font-size: 9px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 145px;
+      max-width: 157px;
       
     }
 
     .data{
       font-weight: 300;
       font-size: 9px;
-      width: calc(100% - 162px);
+      width: calc(100% - 150px);
       margin-left: 5px;
-      margin-right: 13px;
+      margin-right: 1px;
       text-align: right;
       border: none;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      max-width: calc(100% - 150px);
+    }
+
+    .has_left_connect{
+      margin-left: 13px;
+      width: 145px;
+      max-width: 145px;
+    }
+    
+    .has_right_connect{
+      margin-right: 13px;
+      width: calc(100% - 162px);
       max-width: calc(100% - 162px);
     }
   }

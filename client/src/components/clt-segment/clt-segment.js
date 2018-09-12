@@ -1,10 +1,9 @@
 import * as d3 from 'd3';
 import _ from 'lodash';
 import ObjectUtils from '../../common/utilities/object.ult';
-import VertexMgmt from '../common-objects/objects/vertex-mgmt';
-import BoundaryMgmt from '../common-objects/objects/boundary-mgmt';
+import SegmentMgmt from '../common-objects/objects/segment-mgmt';
 import EdgeMgmt from '../common-objects/objects/edge-mgmt';
-import MainMenu from '../common-objects/menu-context/main-menu';
+import MainMenuSegment from '../common-objects/menu-context/main-menu-segment';
 
 import {
   comShowMessage,
@@ -13,10 +12,10 @@ import {
 } from '../../common/utilities/common.ult';
 
 import { 
-  VERTEX_FORMAT_TYPE, DEFAULT_CONFIG_GRAPH, VIEW_MODE,
+  VERTEX_FORMAT_TYPE, DEFAULT_CONFIG_GRAPH, VIEW_MODE, VERTEX_ATTR_SIZE,
 } from '../../common/const/index';
 
-class CltGraph {
+class CltSegment {
   constructor(props) {
     this.selector = props.selector;
     this.viewMode = {value: props.viewMode || VIEW_MODE.EDIT};
@@ -63,7 +62,7 @@ class CltGraph {
       ]
     });
 
-    this.vertexMgmt = new VertexMgmt({
+    this.segmentMgmt = new SegmentMgmt({
       dataContainer : this.dataContainer,
       containerId : this.graphContainerId,
       svgId : this.graphSvgId,
@@ -72,19 +71,9 @@ class CltGraph {
       edgeMgmt : this.edgeMgmt
     });
 
-    this.boundaryMgmt = new BoundaryMgmt({
-      dataContainer: this.dataContainer,
-      containerId: this.graphContainerId,
-      svgId: this.graphSvgId,
-      viewMode: this.viewMode,
-      vertexMgmt: this.vertexMgmt,
-      edgeMgmt: this.edgeMgmt
-    });
-
     this.initCustomFunctionD3();
     this.objectUtils.initListenerContainerScroll(this.graphContainerId, this.edgeMgmt, [this.dataContainer]);
     this.objectUtils.initListenerOnWindowResize(this.edgeMgmt, [this.dataContainer]);
-    this.initOnMouseUpBackground();
   };
 
   initSvgHtml(){
@@ -118,7 +107,7 @@ class CltGraph {
   }
 
   initMenuContext() {
-    new MainMenu({
+    new MainMenuSegment({
       selector: `#${this.graphSvgId}`,
       containerId: `#${this.graphContainerId}`,
       parent: this,
@@ -131,94 +120,71 @@ class CltGraph {
     this.vertexMgmt.create(opt);
   }
 
-  createBoundary(opt) {
-    this.boundaryMgmt.create(opt);
-  }
-
   /**
    * Clear all element on graph
    * And reinit marker def
    */
   clearAll() {
-    this.vertexMgmt.clearAll();
-    this.boundaryMgmt.clearAll();
+    this.segmentMgmt.clearAll();
 
     setSizeGraph({ width: DEFAULT_CONFIG_GRAPH.MIN_WIDTH, height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT }, this.graphSvgId);
   }
 
   showReduced(){
     this.isShowReduced = true;
-    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.graphSvgId);
+    
+    this.dataContainer.vertex.forEach((vertex) => {
+      d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", true);
+      d3.select(`#${vertex.id}`).select('foreignObject').attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT);
+    });
+    
+    setMinBoundaryGraph(this.dataContainer, this.svgId);
   }
 
   showFull(){
     this.isShowReduced = false;
-    this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.graphSvgId);
+    
+    this.dataContainer.vertex.forEach((vertex) => {
+      let arrProp = d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", false)._groups[0];
+      d3.select(`#${vertex.id}`).select('foreignObject').attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * arrProp.length);
+    });
+
+    setMinBoundaryGraph(this.dataContainer, this.svgId);
   }
 
   async drawObjects(data) {
-    const { boundary: boundaries, vertex: vertices, position, edge } = data;
-    // Draw boundary
-    boundaries.forEach(e => {
-      let { x, y } = position.find(pos => {
-        return pos.id === e.id;
-      });
+    const { VERTEX: vertices } = data;
+    // Draw Segment
 
-      e.x = x;
-      e.y = y;
-      e.isImport = true;
-      this.boundaryMgmt.create(e);
-    });
-    // Draw vertex
+    let x = 5;
+    let y = 5;
     vertices.forEach(e => {
-      const { x, y } = position.find(pos => {
-        return pos.id === e.id;
-      });
-
       e.x = x;
       e.y = y;
       e.presentation = this.vertexDefinition.vertexPresentation[e.groupType];
       e.isImport = true;
 
-      this.vertexMgmt.create(e);
-    });
+      this.segmentMgmt.create(e);
 
-    edge.forEach(e =>{ 
-      this.edgeMgmt.create(e);
-    })
-    
-    if (this.dataContainer.boundary && this.dataContainer.boundary.length > 0){
-      this.objectUtils.setAllChildrenToShow(this.dataContainer);
-      if (this.dataContainer.boundary.length > 0)
-        await this.dataContainer.boundary[0].updateHeightBoundary();
-    }
+      x += VERTEX_ATTR_SIZE.GROUP_WIDTH + 5;
+    });
   }
 
-  async loadGraphData(graphData) {
-    let resMessage = await this.validateGraphDataStructure(graphData);
+  async loadSegmentSpecEditor(segmentData) {
 
-    if(resMessage != "ok"){
-      comShowMessage("Format or data in Data Graph Structure is corrupted. You should check it!");
-
-      if(resMessage == "error")
-        return;
+    let errorContent = await this.validateVertexDefineStructure(segmentData);
+    if (errorContent){
+      comShowMessage("Format or data in Data Segment Structure is corrupted. You should check it!");
+      return;
     }
 
     //clear data
     this.clearAll();
-    this.edgeMgmt.clearAll();
 
     //Reload Vertex Define and draw graph
-    const {vertexTypes} = graphData;
-    await this.processDataVertexTypeDefine(vertexTypes, this.vertexDefinition);
-    await this.drawObjects(graphData);
+    await this.processDataVertexTypeDefine(segmentData, this.vertexDefinition);
+    await this.drawObjects(segmentData);
     this.initMenuContext();
-
-    //Solve in case of save and import from different window size
-    this.objectUtils.updatePathConnectOnWindowResize(this.edgeMgmt, [this.dataContainer]);
-
-    //Solve in case of save and import from different scroll position
-    this.objectUtils.onContainerSvgScroll(this.svgId, this.edgeMgmt, [this.dataContainer]);
 
     setMinBoundaryGraph(this.dataContainer,this.graphSvgId);
   }
@@ -257,7 +223,7 @@ class CltGraph {
     });
   }
 
-  async LoadVertexDefinition(vertexDefinitionData){
+  async LoadVertexGroupDefinition(vertexDefinitionData){
     //Validate data struct
     let errorContent = await this.validateVertexDefineStructure(vertexDefinitionData);
     if (errorContent){
@@ -329,11 +295,13 @@ class CltGraph {
   }
 
   processDataVertexTypeDefine(data, container) {
-    const {VERTEX, VERTEX_GROUP} = data;
-    container.vertexTypes = VERTEX;
+
+    this.resetVertexDefinition();
+
+    const {VERTEX_GROUP} = data;
     container.vertexGroup = VERTEX_GROUP;
     this.getVertexFormatType(VERTEX_GROUP, container);
-    this.getVertexTypesShowFull(data, container);
+    //this.getVertexTypesShowFull(data, container);
   }
 
   /**
@@ -472,7 +440,7 @@ class CltGraph {
   }
 
   getContentGraphAsJson() {
-    let dataContent = {vertex: [], boundary: [],position: [], edge:[], vertexTypes: {}};
+    let dataContent = {VERTEX_GROUP: [], VERTEX: []};
 
     if (this.isEmptyContainerData(this.dataContainer)){
       return Promise.reject("There is no Input data. Please import!");
@@ -486,63 +454,16 @@ class CltGraph {
     //Vertex and Boundary data
     const cloneData = _.cloneDeep(this.dataContainer);
     cloneData.vertex.forEach(vertex => {
-      let pos = new Object({
-        "id": vertex.id,
-        "x": vertex.x,
-        "y": vertex.y
-      });
-
-      dataContent.vertex.push(this.getSaveDataVertex(vertex));
-      dataContent.position.push(pos);
-    });
-
-    cloneData.boundary.forEach(boundary => {
-      let pos = new Object({
-        "id": boundary.id,
-        "x": boundary.x,
-        "y": boundary.y
-      });
-
-      dataContent.boundary.push(this.getSaveDataBoundary(boundary));
-      dataContent.position.push(pos);
+      dataContent.VERTEX.push(this.getSaveDataVertex(vertex));
     });
 
     const cloneVertexDefine = _.cloneDeep(this.vertexDefinition);
 
-    let vertexDefine = {};
     if(this.vertexDefinition.vertexGroup){
-      vertexDefine = {
-        "VERTEX_GROUP": cloneVertexDefine.vertexGroup,
-        "VERTEX": cloneVertexDefine.vertexTypes
-      };
+      dataContent.VERTEX_GROUP = cloneVertexDefine.vertexGroup;
     }
-    dataContent.vertexTypes = vertexDefine;
-
-    //Edges    
-    cloneData.edge.forEach(edge => {
-      dataContent.edge.push(this.getSaveDataEdge(edge));
-    })
 
     return Promise.resolve(dataContent);
-  }
-
-  /**
-   * Filter properties that need to save
-   * @param {*} boundary 
-   */
-  getSaveDataBoundary(boundary){
-    return {
-      name: boundary.name,
-      description: boundary.description,
-      member: boundary.member,
-      id: boundary.id,
-      width: boundary.width,
-      height: boundary.height,
-      parent: boundary.parent,
-      mandatory: boundary.mandatory,
-      repeat: boundary.repeat,
-      svgId: boundary.svgId
-    };
   }
 
   /**
@@ -550,87 +471,40 @@ class CltGraph {
    * @param {*} vertex 
    */
   getSaveDataVertex(vertex){
-    return {
-      vertexType: vertex.vertexType,
-      name: vertex.name,
-      description: vertex.description,
-      data: vertex.data,
-      id: vertex.id,
-      groupType: vertex.groupType,
-      parent: vertex.parent,
-      mandatory: vertex.mandatory,
-      repeat: vertex.repeat,
-      svgId: vertex.svgId
-    };
-  }
+    let resObj = {};
+    resObj.groupType = vertex.groupType;
+    resObj.vertexType = vertex.vertexType;
+    resObj.description = vertex.description;
+    resObj.data = [];
 
-  /**
-   * Filter properties that need to save
-   * @param {*} edge 
-   */
-  getSaveDataEdge(edge){
-    return {
-      id: edge.id,
-      source: edge.source,
-      target: edge.target,
-      note: {
-        originNote: edge.originNote,
-        middleNote: edge.middleNote,
-        destNote: edge.destNote
-      },
-      style:{
-        line: edge.lineType,
-        arrow: edge.useMarker
-      }
-    };
+    vertex.data.forEach(e => {
+      resObj.data.push({
+        name        : e.name,
+        type        : e.type,
+        usage       : e.usage,
+        format      : e.format,
+        repeat      : e.repeat,
+        description : e.description
+      });
+    });
+
+    return resObj;
   }
 
   isEmptyContainerData(containerData){
     return (containerData.vertex.length == 0 && containerData.boundary.length == 0)
   }
 
-  /**
-   * If loading from another svgId, then correct by curent svgId
-   */
-  edgeVerifySvgId(edges){
-    if (edges.length > 0){
-      let oldSvgId = edges[0].source.svgId;
-      let index = edges[0].source.svgId.indexOf('_');
-      let oldSelectorName = oldSvgId.substring(index + 1, oldSvgId.length);
-
-      if (oldSelectorName != this.selectorName){
-        edges.forEach(e => {
-          e.source.svgId = e.source.svgId.replace(oldSelectorName, this.selectorName);
-          e.target.svgId = e.target.svgId.replace(oldSelectorName, this.selectorName);
-        });
-      }
-    }
-  }
-
-  setViewMode(viewMode = VIEW_MODE.EDIT){
-    this.viewMode.value = viewMode;
-  }
-
-  initOnMouseUpBackground() {
-    let selector = this.selector.prop("id");
-
-    if (selector == ""){
-      selector = `.${this.selector.prop("class")}`;
-    }else{
-      selector = `#${selector}`;
-    }
-    
-    let tmpEdgeMgmt = this.edgeMgmt;
-    d3.select(selector).on("mouseup", function(){
-      let mouse = d3.mouse(this);
-      let elem = document.elementFromPoint(mouse[0], mouse[1]);
-
-      //disable selecting effect if edge is selecting
-      if((!elem || !elem.tagName || elem.tagName != 'path') && tmpEdgeMgmt.isSelectingEdge()) {
-        tmpEdgeMgmt.cancleSelectedPath();
-      }
-    })
+  resetVertexDefinition(){
+    this.vertexDefinition.groupVertexOption = {};
+    this.vertexDefinition.vertexFormatType = {};
+    this.vertexDefinition.vertexFormat = {};
+    this.vertexDefinition.vertexGroupType = {};
+    this.vertexDefinition.headerForm = {};
+    this.vertexDefinition.vertexPresentation = {};
+    this.vertexDefinition.vertexGroup = null;
+    this.vertexDefinition.keyPrefix = {type:{}};
   }
 }
   
-export default CltGraph;
+export default CltSegment;

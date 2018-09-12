@@ -13,10 +13,16 @@ const messageMapping = [
   DIR_NAME + '/client/src/modules/message-mapping-gui/index.js',
 ];
 
+const segmentSetEditor = [
+  'babel-polyfill',
+  DIR_NAME + '/client/src/modules/segment-set-editor/index.js',
+];
+
 module.exports = {
   entry: {
     library: library,
     messageMapping: messageMapping,
+    segmentSetEditor: segmentSetEditor,
   },
   output: {
     path: path.resolve(DIR_NAME, 'dist'),
