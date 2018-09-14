@@ -425,14 +425,20 @@ class ObjectUtils {
    * Vertex: The vertices in group SHOW_FULL_ALWAYS not effected by show reduced
    * The remain vertex then show header and connected properties only
    */
-  async showReduced(dataContainer, edgeDataContainer, groupVertexOption, svgId) {
+  async showReduced(dataContainer, edgeDataContainer, vertexDefinition, svgId) {
     let edge = edgeDataContainer.edge;
-    let full = groupVertexOption["SHOW_FULL_ALWAYS"];
     let lstVer = [], lstProp = [];
+
+    let arrShowFullAlwayGroup = [];
+    vertexDefinition.vertexGroup.forEach(e => {
+      if (e.option.indexOf("SHOW_FULL_ALWAYS") != -1) {
+        arrShowFullAlwayGroup.push(e.groupType);
+      }
+    });
 
     // Filter the vertex effected by show reduced
     lstVer = _.filter(dataContainer.vertex, (e) => {
-      return full.indexOf(e.vertexType) < 0;
+      return arrShowFullAlwayGroup.indexOf(e.groupType) < 0;
     });
     
     lstVer.forEach((vertex) => {
@@ -481,15 +487,19 @@ class ObjectUtils {
   /**
    * Show full graph
    */
-  async showFull(dataContainer, edgeDataContainer, groupVertexOption, svgId) {
+  async showFull(dataContainer, vertexDefinition, svgId) {
 
-    let edges = edgeDataContainer.edge;
-    let full = groupVertexOption["SHOW_FULL_ALWAYS"];
-    let lstVer = [], lstProp = [];
+    let arrShowFullAlwayGroup = [];
+    vertexDefinition.vertexGroup.forEach(e => {
+      if (e.option.indexOf("SHOW_FULL_ALWAYS") != -1) {
+        arrShowFullAlwayGroup.push(e.groupType);
+      }
+    });
 
+    let lstVer = []
     // Filter the vertex effected by show reduced
     lstVer = _.filter(dataContainer.vertex, (e) => {
-      return full.indexOf(e.vertexType) < 0;
+      return arrShowFullAlwayGroup.indexOf(e.groupType) < 0;
     });
     
     lstVer.forEach((vertex) => {

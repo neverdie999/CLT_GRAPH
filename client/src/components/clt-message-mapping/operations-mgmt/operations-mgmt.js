@@ -15,7 +15,6 @@ class OperationsMgmt {
   constructor(props) {
     this.edgeMgmt = props.edgeMgmt;
     this.dataContainer = props.dataContainer;
-    this.vertexDefinition = props.vertexDefinition;
     this.svgId = props.svgId;
     this.containerId = props.containerId;
     this.viewMode = {value: VIEW_MODE.OPERATIONS};
@@ -31,7 +30,6 @@ class OperationsMgmt {
       dataContainer : this.dataContainer,
       containerId : this.containerId,
       svgId : this.svgId,
-      vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
       connectSide: CONNECT_SIDE.BOTH,
       edgeMgmt : this.edgeMgmt
@@ -52,7 +50,7 @@ class OperationsMgmt {
       selector: `#${this.svgId}`,
       containerId: `#${this.containerId}`,
       parent: this,
-      vertexDefinition: this.vertexDefinition,
+      vertexDefinition: this.vertexMgmt.vertexDefinition,
       viewMode: this.viewMode,
     });
   }
@@ -97,7 +95,6 @@ class OperationsMgmt {
 
       e.x = x;
       e.y = y;
-      e.presentation = this.vertexDefinition.vertexPresentation[e.groupType];
       e.isImport = true;
 
       this.vertexMgmt.create(e);
@@ -108,6 +105,14 @@ class OperationsMgmt {
       if (this.dataContainer.boundary.length > 0)
         await this.dataContainer.boundary[0].updateHeightBoundary();
     }
+  }
+
+  LoadVertexDefinition(vertexDefinitionData) {
+    return this.vertexMgmt.LoadVertexDefinition(vertexDefinitionData);
+  }
+
+  processDataVertexTypeDefine(vertexDefinitionData) {
+    this.vertexMgmt.processDataVertexTypeDefine(vertexDefinitionData);
   }
 }
 

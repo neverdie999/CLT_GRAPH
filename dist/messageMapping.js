@@ -989,7 +989,7 @@ function checkModePermission(viewMode, type){
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].SEGMENT] = [
-    'createVertex', 'clearAll', 'showReduced',
+    'createNew', 'find', 'showReduced',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex'
   ];
 
@@ -1005,7 +1005,7 @@ function checkModePermission(viewMode, type){
  */
 function getKeyPrefix(dataElement, vertexDefinition, groupType){
 
-  const keyPrefix = vertexDefinition.vertexPresentation[groupType]["keyPrefix"];
+  const keyPrefix = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertexDefinition.vertexGroup, {"groupType": groupType}).vertexPresentation.keyPrefix;
   if (!keyPrefix) return "";
 
   let res = "";
@@ -20771,14 +20771,20 @@ class ObjectUtils {
    * Vertex: The vertices in group SHOW_FULL_ALWAYS not effected by show reduced
    * The remain vertex then show header and connected properties only
    */
-  async showReduced(dataContainer, edgeDataContainer, groupVertexOption, svgId) {
+  async showReduced(dataContainer, edgeDataContainer, vertexDefinition, svgId) {
     let edge = edgeDataContainer.edge;
-    let full = groupVertexOption["SHOW_FULL_ALWAYS"];
     let lstVer = [], lstProp = [];
+
+    let arrShowFullAlwayGroup = [];
+    vertexDefinition.vertexGroup.forEach(e => {
+      if (e.option.indexOf("SHOW_FULL_ALWAYS") != -1) {
+        arrShowFullAlwayGroup.push(e.groupType);
+      }
+    });
 
     // Filter the vertex effected by show reduced
     lstVer = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(dataContainer.vertex, (e) => {
-      return full.indexOf(e.vertexType) < 0;
+      return arrShowFullAlwayGroup.indexOf(e.groupType) < 0;
     });
     
     lstVer.forEach((vertex) => {
@@ -20827,15 +20833,19 @@ class ObjectUtils {
   /**
    * Show full graph
    */
-  async showFull(dataContainer, edgeDataContainer, groupVertexOption, svgId) {
+  async showFull(dataContainer, vertexDefinition, svgId) {
 
-    let edges = edgeDataContainer.edge;
-    let full = groupVertexOption["SHOW_FULL_ALWAYS"];
-    let lstVer = [], lstProp = [];
+    let arrShowFullAlwayGroup = [];
+    vertexDefinition.vertexGroup.forEach(e => {
+      if (e.option.indexOf("SHOW_FULL_ALWAYS") != -1) {
+        arrShowFullAlwayGroup.push(e.groupType);
+      }
+    });
 
+    let lstVer = []
     // Filter the vertex effected by show reduced
     lstVer = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(dataContainer.vertex, (e) => {
-      return full.indexOf(e.vertexType) < 0;
+      return arrShowFullAlwayGroup.indexOf(e.groupType) < 0;
     });
     
     lstVer.forEach((vertex) => {
@@ -52603,10 +52613,14 @@ class VertexMgmt {
     this.dataContainer            = props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
     this.containerId              = props.containerId;
     this.svgId                    = props.svgId;
-    this.vertexDefinition         = props.vertexDefinition;
     this.viewMode                 = props.viewMode;
     this.edgeMgmt                 = props.edgeMgmt;
     this.connectSide              = props.connectSide || __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH;
+
+    this.vertexDefinition = {
+      vertexGroup: [],  // Group vertex
+      vertex:[]         // List of vertex type
+    };
 
     this.initialize();
   }
@@ -52818,7 +52832,7 @@ class VertexMgmt {
     // Use in function updateVertexInfo()
     let {name, description, repeat, mandatory, data, id, groupType} = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.vertex, {"id": vertexId});
     // Get vertex group with group type
-    let group = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroupType, {"groupType": groupType});
+    let group = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroup, {"groupType": groupType});
 
     this.currentId = id;
     // Append content to popup
@@ -52831,11 +52845,10 @@ class VertexMgmt {
     }
 
     // Generate properties vertex
-    let keyHeader = this.vertexDefinition.headerForm[groupType];
-    let cols = keyHeader.length;
+    let columnTitle = Object.keys(group.dataElementFormat);
+    let cols = columnTitle.length;
     let rows = data.length;
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
-    const dataFormat = this.vertexDefinition.vertexFormat[groupType];
+    const dataType = group.elementDataType;
 
     let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).empty();
     let $contentHeader = $('<thead>');
@@ -52844,15 +52857,15 @@ class VertexMgmt {
     let $colGroup = $('<colgroup>');
     let $popWidth = 0;
     for (let i = 0; i < cols; i++) {
-      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(keyHeader[i]));
+      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(columnTitle[i]));
       $colHdr.attr('class', 'col_header');
       $colHdr.appendTo($headerRow);
 
       // Init col in col group
-      let prop = keyHeader[i];
-      let type = typeData[prop];
-      let def = dataFormat[prop];
-      let width = this.findLongestContent({data, prop, type, def});
+      let prop = columnTitle[i];
+      let type = dataType[prop];
+      let value = group.dataElementFormat[prop];
+      let width = this.findLongestContent({data, prop, type, value});
       $popWidth += width;
       let $colWidth = $('<col>').attr('width', width);
       $colWidth.appendTo($colGroup);
@@ -52892,15 +52905,15 @@ class VertexMgmt {
       const dataRow = data[i];
       const $row = $('<tr>');
       for (let j = 0; j < cols; j++) {
-        let prop = keyHeader[j];
-        let type = typeData[prop];
+        let prop = columnTitle[j];
+        let type = dataType[prop];
         let val = dataRow[prop];
         let opt = [];
 
         const $col = $('<td>');
         // Get option if type is array
         if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY) {
-          opt = dataFormat[prop];
+          opt = group.dataElementFormat[prop];
         } else if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
           $col.attr('class', 'checkbox_center');
         }
@@ -52947,7 +52960,7 @@ class VertexMgmt {
   generateControlByType(options) {
     let $control = null;
     let {i, type, val, prop, opt, groupType} = options;
-    let defaultVal = this.vertexDefinition.vertexFormat[groupType][prop];
+    let defaultVal = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroup, {"groupType":groupType}).dataElementFormat[prop];
     i = 0;
     switch (type) {
       case __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN:
@@ -53012,23 +53025,23 @@ class VertexMgmt {
   }
 
   findLongestContent(configs) {
-    let {data, prop, type, def} = configs;
+    let {data, prop, type, value} = configs;
     let firstRow = data[0];
     let arr = [];
 
     // If type is boolean or first undefined or firstRow is empty
     if ((type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN) || !firstRow)
-      return this.getLongestSpecialCase(prop, def);
+      return this.getLongestSpecialCase(prop, value);
     // prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
 
     //  If object firstRow hasn't it own the specified property
     if (!firstRow.hasOwnProperty(prop)) {
-      return this.getLongestSpecialCase(prop, def);
+      return this.getLongestSpecialCase(prop, value);
     }
 
     // From an array of objects, extract value of a property as array
     if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY) {
-      arr = def;
+      arr = value;
     } else {
       arr = data.map(e => e[prop]);
     }
@@ -53039,14 +53052,14 @@ class VertexMgmt {
     return longest.toString().length * (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY ? __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* POPUP_CONFIG */].WIDTH_CHAR_UPPER : __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* POPUP_CONFIG */].WIDTH_CHAR) + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* POPUP_CONFIG */].PADDING_CHAR;
   }
 
-  getLongestSpecialCase(prop, def) {
+  getLongestSpecialCase(prop, value) {
     let lengthProp = prop.toString().length;
-    let lengthDef = def.toString().length;
-    let type = typeof(def);
+    let lengthDef = value.toString().length;
+    let type = typeof(value);
     // Has type is array
-    if (type === "object" && Array.isArray(def)) {
+    if (type === "object" && Array.isArray(value)) {
       type = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY
-      lengthDef = this.getLongestContentFromArry(def).toString().length;
+      lengthDef = this.getLongestContentFromArry(value).toString().length;
     }
 
     return (lengthProp > lengthDef ? lengthProp * __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* POPUP_CONFIG */].WIDTH_CHAR :
@@ -53065,24 +53078,25 @@ class VertexMgmt {
   addDataElement() {
     if (!this.currentId)
       return;
-    let {groupType} = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.vertex, {"id": this.currentId}));
-    let keyHeader = this.vertexDefinition.headerForm[groupType];
-    let cols = keyHeader.length;
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
-    const dataFormat = this.vertexDefinition.vertexFormat[groupType];
+    
+    const {groupType} = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.vertex, {"id": this.currentId});
+    const vertexGroup = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroup, {"groupType": groupType});
+    const columnTitle = Object.keys(vertexGroup.dataElementFormat);
+    const cols = columnTitle.length;
+    const dataType = vertexGroup.elementDataType;
     let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`);
 
     const $row = $('<tr>');
     for (let j = 0; j < cols; j++) {
-      let prop = keyHeader[j];
-      let type = typeData[prop];
+      let prop = columnTitle[j];
+      let type = dataType[prop];
       // let val = dataRow[prop];
       let opt = [];
 
       const $col = $('<td>');
       // Get option if type is array
       if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY) {
-        opt = dataFormat[prop];
+        opt = vertexGroup.dataElementFormat[prop];
       } else if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
         $col.attr('class', 'checkbox_center');
       }
@@ -53092,9 +53106,7 @@ class VertexMgmt {
       $col.appendTo($row);
     }
 
-    let group = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroupType, (g) => {
-      return g.groupType === groupType;
-    });
+    let group = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroup,{"groupType": groupType});
     let option = group.option;
     const isDynamicDataSet = option.indexOf(__WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_GROUP_OPTION */].DYNAMIC_DATASET) > -1;
     if (isDynamicDataSet) {
@@ -53178,14 +53190,14 @@ class VertexMgmt {
     const vertex = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.vertex, {'id': this.currentId});
     const {groupType} = vertex;
     
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
+    const dataType = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroup, {"groupType": groupType}).elementDataType;
     let elements = [];
     // Get data element
     $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr').each(function () {
       let row = {};
       $(this).find("td input:text, td input:checkbox, td select").each(function () {
         let prop = $(this).attr("name");
-        let type = typeData[prop];
+        let type = dataType[prop];
         if (prop != `${ATTR_DEL_CHECK}_${this.svgId}`)
           row[prop] = type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN ? ($(this).is(':checked') ? true : false) : this.value;
       });
@@ -53219,9 +53231,7 @@ class VertexMgmt {
     vertex.mandatory = mandatory;
     vertex.data = data;
 
-    let group = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroupType, (g) => {
-      return g.groupType === groupType;
-    });
+    const group = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroup, {"groupType": groupType});
     const option = group.option;
     const isDynamicDataSet = option.indexOf(__WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_GROUP_OPTION */].DYNAMIC_DATASET) > -1;
     if (isDynamicDataSet) {
@@ -53233,7 +53243,7 @@ class VertexMgmt {
       header.text(name).attr('title', description);
       header.style("background-color", `${this.colorHash.hex(name)}`);
       let rows = data.length;
-      let presentation = this.vertexDefinition.vertexPresentation[groupType];
+      let presentation = group.vertexPresentation;
       for (let i = 0; i < rows; i++) {
         let dataRow = data[i];
 
@@ -53265,7 +53275,7 @@ class VertexMgmt {
 
     let htmlContent = '';
     let len = elements.length;
-    let presentation = this.vertexDefinition.vertexPresentation[groupType];
+    let presentation = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroup, {"groupType": groupType}).vertexPresentation;
 
     const hasLeftConnector = (connectSide == __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].LEFT || connectSide == __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH) ? " has_left_connect" : "";
     const hasRightConnector = (connectSide == __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].RIGHT || connectSide == __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH) ? " has_right_connect" : "";
@@ -53380,6 +53390,81 @@ class VertexMgmt {
     __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
     this.dataContainer.vertex = [];
   }
+
+  LoadVertexDefinition(vertexDefinitionData){
+    //Validate data struct
+    if (!this.validateVertexDefineStructure(vertexDefinitionData)){
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Vertex Definition Structure is corrupted. You should check it!");
+      return false;
+    }
+
+    //Reload Vertex Define and init main menu
+    this.processDataVertexTypeDefine(vertexDefinitionData);
+
+    return true;
+  }
+
+  /**
+   * Validate Vertex Define Structure
+   */
+  validateVertexDefineStructure(data) {
+
+    //Validate data exists
+    if(data===undefined)
+    {
+      return false;
+    }
+
+    if (!data.VERTEX_GROUP || !data.VERTEX) {
+      return false;
+    }
+
+    if (Object.keys(data).length > 2) {
+      return false;
+    }
+
+    return true;
+  }
+
+  processDataVertexTypeDefine(data) {
+    this.resetVertexDefinition();
+
+    const {VERTEX_GROUP, VERTEX} = data;
+    this.vertexDefinition.vertexGroup = VERTEX_GROUP;
+    this.vertexDefinition.vertex = VERTEX;
+    this.getVertexFormatType(VERTEX_GROUP);
+  }
+
+  resetVertexDefinition(){
+    this.vertexDefinition.vertexGroup = [];
+    this.vertexDefinition.vertex = [];
+  }
+
+  getVertexFormatType(vertexGroup) {
+    for (let i = 0; i < vertexGroup.length; i++) {
+      const {dataElementFormat} = vertexGroup[i];
+      let dataType = {};
+      let header = Object.keys(dataElementFormat);
+      let len = header.length;
+      for (let i = 0; i < len; i++) {
+        let key = header[i];
+        let value = dataElementFormat[key];
+        let type = typeof(value);
+
+        dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].STRING; // For string and other type
+        if (type === "boolean")
+          dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN; // For boolean
+
+        if (type === "object" && Array.isArray(value))
+          dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY; // For array
+
+        if (type === "number")
+          dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].NUMBER; // For number
+      }
+
+      this.vertexDefinition.vertexGroup[i].elementDataType = dataType;
+    };
+  }
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (VertexMgmt);
@@ -53489,13 +53574,13 @@ class Vertex {
     let {id, x, y, groupType, vertexType, name, description, data, parent, mandatory, repeat, isMenu, isImport} = sOptions;
 
     if (isMenu) {
-      let vertexTypeInfo = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.vertexDefinition.vertexTypes, {'vertexType': vertexType}));
+      let vertexTypeInfo = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.vertexDefinition.vertex, {'vertexType': vertexType}));
       data = vertexTypeInfo.data;
       description = vertexTypeInfo.description;
       groupType = vertexTypeInfo.groupType;
     }
 
-    let presentation = this.vertexDefinition.vertexPresentation[groupType]; 
+    let presentation = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.vertexDefinition.vertexGroup, {"groupType":groupType}).vertexPresentation;
 
     this.id           = id || Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["j" /* generateObjectId */])('V');
     this.x            = x || 0;
@@ -55339,8 +55424,8 @@ class MainMenu {
     subItems["sep4"] = "-";
     const options = {};
     // Build options
-    if (this.vertexDefinition.vertexTypes && Array.isArray(this.vertexDefinition.vertexTypes)) {
-      let vertices = this.vertexDefinition.vertexTypes;
+    if (this.vertexDefinition.vertex && Array.isArray(this.vertexDefinition.vertex)) {
+      let vertices = this.vertexDefinition.vertex;
       // Sort array object
       vertices = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(vertices, ['vertexType'], ['asc']);
       let len = vertices.length;
@@ -57234,39 +57319,6 @@ class CltMessageMapping {
       boundary: [],
     };
 
-    this.operationsDefined = {
-      groupVertexOption: {}, // List vertex type have same option.
-      vertexFormatType: {}, // Vertex group format type
-      vertexFormat: {}, // Data element vertex format
-      vertexGroupType: {}, // Group vertex type
-      headerForm: {}, // Header group type
-      vertexPresentation: {}, // Group vertex presentation
-      vertexGroup: null, // Group vertex
-      keyPrefix: {type:{}}
-    };
-
-    this.inputDefined = {
-      groupVertexOption: {}, // List vertex type have same option.
-      vertexFormatType: {}, // Vertex group format type
-      vertexFormat: {}, // Data element vertex format
-      vertexGroupType: {}, // Group vertex type
-      headerForm: {}, // Header group type
-      vertexPresentation: {}, // Group vertex presentation
-      vertexGroup: null, // Group vertex
-      keyPrefix: {type:{}}
-    };
-
-    this.outputDefined = {
-      groupVertexOption: {}, // List vertex type have same option.
-      vertexFormatType: {}, // Vertex group format type
-      vertexFormat: {}, // Data element vertex format
-      vertexGroupType: {}, // Group vertex type
-      headerForm: {}, // Header group type
-      vertexPresentation: {}, // Group vertex presentation
-      vertexGroup: null, // Group vertex
-      keyPrefix: {type:{}}
-    };
-
     this.connectMgmt = new __WEBPACK_IMPORTED_MODULE_5__connect_mgmt_connect_mgmt__["a" /* default */]({
       mainSelector: this.selector,
       svgId: this.connectSvgId,
@@ -57282,8 +57334,7 @@ class CltMessageMapping {
       containerId: this.inputMessageContainerId,
       svgId: this.inputMessageSvgId,
       edgeMgmt: this.connectMgmt.edgeMgmt,
-      dataContainer: this.storeInputMessage,
-      vertexDefinition: this.inputDefined,
+      dataContainer: this.storeInputMessage
     });
 
     this.outputMgmt = new __WEBPACK_IMPORTED_MODULE_3__output_mgmt_output_mgmt__["a" /* default */]({
@@ -57291,8 +57342,7 @@ class CltMessageMapping {
       containerId: this.outputMessageContainerId,
       svgId: this.outputMessageSvgId,
       edgeMgmt: this.connectMgmt.edgeMgmt,
-      dataContainer: this.storeOutputMessage,
-      vertexDefinition: this.outputDefined,
+      dataContainer: this.storeOutputMessage
     });
 
     this.operationsMgmt = new __WEBPACK_IMPORTED_MODULE_4__operations_mgmt_operations_mgmt__["a" /* default */]({
@@ -57300,8 +57350,7 @@ class CltMessageMapping {
       containerId: this.operationsContainerId,
       svgId: this.operationsSvgId,
       edgeMgmt: this.connectMgmt.edgeMgmt,
-      dataContainer: this.storeOperations,
-      vertexDefinition: this.operationsDefined,
+      dataContainer: this.storeOperations
     });
 
     this.initCustomFunctionD3();
@@ -57415,7 +57464,7 @@ class CltMessageMapping {
 
     //Reload Vertex Define and draw graph
     const {vertexTypes} = graphData;
-    this.processDataVertexTypeDefine(vertexTypes, this.inputDefined);
+    this.inputMgmt.processDataVertexTypeDefine(vertexTypes);
     this.inputMgmt.drawObjectsOnInputGraph(graphData);
     this.inputMgmt.initMenuContext();
 
@@ -57445,7 +57494,7 @@ class CltMessageMapping {
     this.outputMgmt.clearAll();
 
     //Reload Vertex Define and draw graph
-    await this.processDataVertexTypeDefine(vertexTypes, this.outputDefined);
+    await this.outputMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.outputMgmt.drawObjectsOnOutputGraph(graphData);
     this.outputMgmt.initMenuContext();
 
@@ -57493,21 +57542,21 @@ class CltMessageMapping {
 
     //Input Graph - Reload Vertex define and draw new graph
     let vertexTypes = inputMessage.vertexTypes;
-    await this.processDataVertexTypeDefine(vertexTypes, this.inputDefined);
+    await this.inputMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.inputMgmt.drawObjectsOnInputGraph(inputMessage);
     this.inputMgmt.initMenuContext();
 
     //Output Graph - Reload Vertex define and draw new graph
     vertexTypes = {};
     vertexTypes = outputMessage.vertexTypes;
-    await this.processDataVertexTypeDefine(vertexTypes, this.outputDefined);
+    await this.outputMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.outputMgmt.drawObjectsOnOutputGraph(outputMessage);
     this.outputMgmt.initMenuContext();
 
     //Operations Graph - Reload Vertex define and draw new graph.
     vertexTypes = {};
     vertexTypes = operations.vertexTypes;
-    await this.processDataVertexTypeDefine(vertexTypes, this.operationsDefined);
+    await this.operationsMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.operationsMgmt.drawObjectsOnOperationsGraph(operations);
     this.operationsMgmt.initMenuContext();
     
@@ -57557,83 +57606,10 @@ class CltMessageMapping {
     });
   }
 
-  async LoadOperationsVertexDefinition(vertexDefinitionData){
-    //Validate data struct
-    let errorContent = await this.validateVertexDefineStructure(vertexDefinitionData);
-    if (errorContent){
-      Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
-      return;
+  LoadOperationsVertexDefinition(vertexDefinitionData){
+    if (this.operationsMgmt.LoadVertexDefinition(vertexDefinitionData)) {
+      this.operationsMgmt.initMenuContext();
     }
-
-    //Reload Vertex Define and init main menu
-    await this.processDataVertexTypeDefine(vertexDefinitionData, this.operationsDefined);
-    this.operationsMgmt.initMenuContext();
-  }
-
-  getVertexFormatType(vertexGroup, container) {
-    vertexGroup.forEach(group => {
-      const {groupType, dataElementFormat, vertexPresentation} = group;
-      container.headerForm[groupType] = Object.keys(dataElementFormat);
-
-      container.vertexPresentation[groupType] = vertexPresentation;
-      if (!container.vertexPresentation[groupType]["keyPrefix"]) {
-        container.vertexPresentation[groupType]["keyPrefix"] = {};
-      }
-      
-      container.vertexFormat[groupType] = dataElementFormat;
-      container.vertexGroupType[groupType] = group;
-      let formatType = {};
-      let header = container.headerForm[groupType];
-      let len = header.length;
-      for (let i = 0; i < len; i++) {
-        let key = header[i];
-        let value = dataElementFormat[key];
-        let type = typeof(value);
-
-        formatType[key] = __WEBPACK_IMPORTED_MODULE_8__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].STRING; // For string and other type
-        if (type === "boolean")
-          formatType[key] = __WEBPACK_IMPORTED_MODULE_8__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN; // For boolean
-
-        if (type === "object" && Array.isArray(value))
-          formatType[key] = __WEBPACK_IMPORTED_MODULE_8__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY; // For array
-
-        if (type === "number")
-          formatType[key] = __WEBPACK_IMPORTED_MODULE_8__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].NUMBER; // For number
-      }
-
-      container.vertexFormatType[groupType] = formatType;
-    });
-  }
-
-  getVertexTypesShowFull(data, container) {
-    const group = data["VERTEX_GROUP"];
-    const vertex = data["VERTEX"];
-    let len = group.length;
-    for (let i = 0; i < len; i++) {
-      let groupType = group[i].groupType;
-      let groupOption = group[i].option;
-      let lenOpt = groupOption.length;
-      for (let j = 0; j < lenOpt; j++) {
-        let option = groupOption[j];
-        let groupVertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(vertex, (e) => {
-            return e.groupType === groupType;
-          }
-        );
-        let groupAction = [];
-        groupVertex.forEach(e => {
-          groupAction.push(e.vertexType);
-        });
-        container.groupVertexOption[option] = groupAction;
-      }
-    }
-  }
-
-  processDataVertexTypeDefine(data, container) {
-    const {VERTEX, VERTEX_GROUP} = data;
-    container.vertexTypes = VERTEX;
-    container.vertexGroup = VERTEX_GROUP;
-    this.getVertexFormatType(VERTEX_GROUP, container);
-    this.getVertexTypesShowFull(data, container);
   }
 
   /**
@@ -57691,28 +57667,6 @@ class CltMessageMapping {
     }
 
     return Promise.resolve("ok");
-  }
-
-  /**
-   * Validate Vertex Define Structure
-   */
-  async validateVertexDefineStructure(data) {
-
-    //Validate data exists
-    if(data===undefined)
-    {
-      return Promise.resolve(true);
-    }
-
-    // Option vertex type definition but choose graph type file
-    if (data.vertex || data.edge || data.boundary || data.position || data.vertexTypes) {
-      return Promise.resolve(true);
-    }
-
-    // Option vertex type definition but choose mapping type file
-    if (data.inputMessage||data.operations||data.outputMessage||data.edges){
-      return Promise.resolve(true);
-    }
   }
 
   /**
@@ -57856,13 +57810,13 @@ class CltMessageMapping {
       inputMessage.position.push(pos);
     });
 
-    const cloneVertexInputDefine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.inputDefined);
+    const cloneVertexInputDefine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.inputMgmt.vertexMgmt.vertexDefinition);
 
     let inputVertexDefine = {};
-    if(this.inputDefined.vertexGroup){
+    if(cloneVertexInputDefine.vertexGroup){
       inputVertexDefine = {
-        "VERTEX_GROUP": cloneVertexInputDefine.vertexGroup,
-        "VERTEX": cloneVertexInputDefine.vertexTypes
+        "VERTEX_GROUP": this.getSaveVertexGroup(cloneVertexInputDefine.vertexGroup),
+        "VERTEX": cloneVertexInputDefine.vertex
       };
     }
     inputMessage.vertexTypes = inputVertexDefine;
@@ -57892,13 +57846,13 @@ class CltMessageMapping {
       outputMessage.position.push(pos);
     });
 
-    const cloneVertexOutputDefine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.outputDefined);
+    const cloneVertexOutputDefine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.outputMgmt.vertexMgmt.vertexDefinition);
 
     let outputVertexDefine = {};
-    if(this.outputDefined.vertexGroup){
+    if(cloneVertexOutputDefine.vertexGroup){
       outputVertexDefine = {
-        "VERTEX_GROUP": cloneVertexOutputDefine.vertexGroup,
-        "VERTEX": cloneVertexOutputDefine.vertexTypes
+        "VERTEX_GROUP": this.getSaveVertexGroup(cloneVertexOutputDefine.vertexGroup),
+        "VERTEX": cloneVertexOutputDefine.vertex
       };
     }
     outputMessage.vertexTypes = outputVertexDefine;
@@ -57927,12 +57881,12 @@ class CltMessageMapping {
       operations.position.push(pos);
     });
 
-    const cloneVertexOperationDefine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.operationsDefined);
+    const cloneVertexOperationDefine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.operationsMgmt.vertexMgmt.vertexDefinition);
     let operationVertexDefine = {};
-    if(this.outputDefined.vertexGroup){
+    if(cloneVertexOperationDefine.vertexGroup){
       operationVertexDefine = {
-        "VERTEX_GROUP": cloneVertexOperationDefine.vertexGroup,
-        "VERTEX": cloneVertexOperationDefine.vertexTypes
+        "VERTEX_GROUP": this.getSaveVertexGroup(cloneVertexOperationDefine.vertexGroup),
+        "VERTEX": cloneVertexOperationDefine.vertex
       };
     }
     operations.vertexTypes = operationVertexDefine;
@@ -58034,6 +57988,27 @@ class CltMessageMapping {
       }
     }
   }
+
+  /**
+   * Filter properties that need to save
+   * @param {*} vertexGroup 
+   */
+  getSaveVertexGroup(vertexGroup){
+    let resObj = [];
+
+    vertexGroup.forEach(group => {
+      let tmpGroup = {};
+
+      tmpGroup.groupType          = group.groupType;
+      tmpGroup.option             = group.option;
+      tmpGroup.dataElementFormat  = group.dataElementFormat;
+      tmpGroup.vertexPresentation = group.vertexPresentation;
+
+      resObj.push(tmpGroup);
+    })
+    
+    return resObj;
+  }
 }
   
 /* harmony default export */ __webpack_exports__["a"] = (CltMessageMapping);
@@ -58063,7 +58038,6 @@ class InputMgmt {
   constructor(props) {
     this.edgeMgmt = props.edgeMgmt;
     this.dataContainer = props.dataContainer;
-    this.vertexDefinition = props.vertexDefinition;
     this.containerId = props.containerId;
     this.svgId = props.svgId;
     this.isShowReduced = false;
@@ -58084,7 +58058,6 @@ class InputMgmt {
       dataContainer : this.dataContainer,
       containerId : this.containerId,
       svgId : this.svgId,
-      vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
       connectSide: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["d" /* CONNECT_SIDE */].RIGHT,
       edgeMgmt : this.edgeMgmt
@@ -58105,7 +58078,7 @@ class InputMgmt {
       selector: `#${this.svgId}`,
       containerId: `#${this.containerId}`,
       parent: this,
-      vertexDefinition: this.vertexDefinition,
+      vertexDefinition: this.vertexMgmt.vertexDefinition,
       viewMode: this.viewMode
     });
   }
@@ -58158,12 +58131,12 @@ class InputMgmt {
 
   showReduced(){
     this.isShowReduced = true;
-    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexMgmt.vertexDefinition, this.svgId);
   }
 
   showFull(){
     this.isShowReduced = false;
-    this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+    this.objectUtils.showFull(this.dataContainer, this.vertexMgmt.vertexDefinition, this.svgId);
   }
 
   /**
@@ -58204,6 +58177,10 @@ class InputMgmt {
       }
     }
   }
+
+  processDataVertexTypeDefine(vertexDefinitionData){
+    this.vertexMgmt.processDataVertexTypeDefine(vertexDefinitionData);
+  }
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (InputMgmt);
@@ -58234,7 +58211,6 @@ class OutputMgmt {
   constructor(props) {
     this.edgeMgmt = props.edgeMgmt;
     this.dataContainer = props.dataContainer;
-    this.vertexDefinition = props.vertexDefinition;
     this.containerId = props.containerId;
     this.svgId = props.svgId;
     this.isShowReduced = false;
@@ -58255,7 +58231,6 @@ class OutputMgmt {
       dataContainer : this.dataContainer,
       containerId : this.containerId,
       svgId : this.svgId,
-      vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
       connectSide: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["d" /* CONNECT_SIDE */].LEFT,
       edgeMgmt : this.edgeMgmt
@@ -58276,7 +58251,7 @@ class OutputMgmt {
       selector: `#${this.svgId}`,
       containerId: `#${this.containerId}`,
       parent: this,
-      vertexDefinition: this.vertexDefinition,
+      vertexDefinition: this.vertexMgmt.vertexDefinition,
       viewMode: this.viewMode,
     });
   }
@@ -58296,7 +58271,6 @@ class OutputMgmt {
       e.isImport = true;
 
       this.boundaryMgmt.create(e);
-      
     });
 
     // Draw vertex
@@ -58330,12 +58304,12 @@ class OutputMgmt {
 
   showReduced(){
     this.isShowReduced = true;
-    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexMgmt.vertexDefinition, this.svgId);
   }
 
   showFull(){
     this.isShowReduced = false;
-    this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+    this.objectUtils.showFull(this.dataContainer, this.vertexMgmt.vertexDefinition, this.svgId);
   }
 
   /**
@@ -58375,6 +58349,10 @@ class OutputMgmt {
       }
     }
   }
+
+  processDataVertexTypeDefine(vertexDefinitionData){
+    this.vertexMgmt.processDataVertexTypeDefine(vertexDefinitionData);
+  }
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (OutputMgmt);
@@ -58404,7 +58382,6 @@ class OperationsMgmt {
   constructor(props) {
     this.edgeMgmt = props.edgeMgmt;
     this.dataContainer = props.dataContainer;
-    this.vertexDefinition = props.vertexDefinition;
     this.svgId = props.svgId;
     this.containerId = props.containerId;
     this.viewMode = {value: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["n" /* VIEW_MODE */].OPERATIONS};
@@ -58420,7 +58397,6 @@ class OperationsMgmt {
       dataContainer : this.dataContainer,
       containerId : this.containerId,
       svgId : this.svgId,
-      vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
       connectSide: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["d" /* CONNECT_SIDE */].BOTH,
       edgeMgmt : this.edgeMgmt
@@ -58441,7 +58417,7 @@ class OperationsMgmt {
       selector: `#${this.svgId}`,
       containerId: `#${this.containerId}`,
       parent: this,
-      vertexDefinition: this.vertexDefinition,
+      vertexDefinition: this.vertexMgmt.vertexDefinition,
       viewMode: this.viewMode,
     });
   }
@@ -58486,7 +58462,6 @@ class OperationsMgmt {
 
       e.x = x;
       e.y = y;
-      e.presentation = this.vertexDefinition.vertexPresentation[e.groupType];
       e.isImport = true;
 
       this.vertexMgmt.create(e);
@@ -58497,6 +58472,14 @@ class OperationsMgmt {
       if (this.dataContainer.boundary.length > 0)
         await this.dataContainer.boundary[0].updateHeightBoundary();
     }
+  }
+
+  LoadVertexDefinition(vertexDefinitionData) {
+    return this.vertexMgmt.LoadVertexDefinition(vertexDefinitionData);
+  }
+
+  processDataVertexTypeDefine(vertexDefinitionData) {
+    this.vertexMgmt.processDataVertexTypeDefine(vertexDefinitionData);
   }
 }
 

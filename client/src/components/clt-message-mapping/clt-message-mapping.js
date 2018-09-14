@@ -13,7 +13,7 @@ import {
 } from '../../common/utilities/common.ult';
 
 import { 
-  VERTEX_FORMAT_TYPE, TYPE_CONNECT,
+  VERTEX_FORMAT_TYPE
 } from '../../common/const/index';
 
 
@@ -56,39 +56,6 @@ class CltMessageMapping {
       boundary: [],
     };
 
-    this.operationsDefined = {
-      groupVertexOption: {}, // List vertex type have same option.
-      vertexFormatType: {}, // Vertex group format type
-      vertexFormat: {}, // Data element vertex format
-      vertexGroupType: {}, // Group vertex type
-      headerForm: {}, // Header group type
-      vertexPresentation: {}, // Group vertex presentation
-      vertexGroup: null, // Group vertex
-      keyPrefix: {type:{}}
-    };
-
-    this.inputDefined = {
-      groupVertexOption: {}, // List vertex type have same option.
-      vertexFormatType: {}, // Vertex group format type
-      vertexFormat: {}, // Data element vertex format
-      vertexGroupType: {}, // Group vertex type
-      headerForm: {}, // Header group type
-      vertexPresentation: {}, // Group vertex presentation
-      vertexGroup: null, // Group vertex
-      keyPrefix: {type:{}}
-    };
-
-    this.outputDefined = {
-      groupVertexOption: {}, // List vertex type have same option.
-      vertexFormatType: {}, // Vertex group format type
-      vertexFormat: {}, // Data element vertex format
-      vertexGroupType: {}, // Group vertex type
-      headerForm: {}, // Header group type
-      vertexPresentation: {}, // Group vertex presentation
-      vertexGroup: null, // Group vertex
-      keyPrefix: {type:{}}
-    };
-
     this.connectMgmt = new ConnectMgmt({
       mainSelector: this.selector,
       svgId: this.connectSvgId,
@@ -104,8 +71,7 @@ class CltMessageMapping {
       containerId: this.inputMessageContainerId,
       svgId: this.inputMessageSvgId,
       edgeMgmt: this.connectMgmt.edgeMgmt,
-      dataContainer: this.storeInputMessage,
-      vertexDefinition: this.inputDefined,
+      dataContainer: this.storeInputMessage
     });
 
     this.outputMgmt = new OutputMgmt({
@@ -113,8 +79,7 @@ class CltMessageMapping {
       containerId: this.outputMessageContainerId,
       svgId: this.outputMessageSvgId,
       edgeMgmt: this.connectMgmt.edgeMgmt,
-      dataContainer: this.storeOutputMessage,
-      vertexDefinition: this.outputDefined,
+      dataContainer: this.storeOutputMessage
     });
 
     this.operationsMgmt = new OperationsMgmt({
@@ -122,8 +87,7 @@ class CltMessageMapping {
       containerId: this.operationsContainerId,
       svgId: this.operationsSvgId,
       edgeMgmt: this.connectMgmt.edgeMgmt,
-      dataContainer: this.storeOperations,
-      vertexDefinition: this.operationsDefined,
+      dataContainer: this.storeOperations
     });
 
     this.initCustomFunctionD3();
@@ -237,7 +201,7 @@ class CltMessageMapping {
 
     //Reload Vertex Define and draw graph
     const {vertexTypes} = graphData;
-    this.processDataVertexTypeDefine(vertexTypes, this.inputDefined);
+    this.inputMgmt.processDataVertexTypeDefine(vertexTypes);
     this.inputMgmt.drawObjectsOnInputGraph(graphData);
     this.inputMgmt.initMenuContext();
 
@@ -267,7 +231,7 @@ class CltMessageMapping {
     this.outputMgmt.clearAll();
 
     //Reload Vertex Define and draw graph
-    await this.processDataVertexTypeDefine(vertexTypes, this.outputDefined);
+    await this.outputMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.outputMgmt.drawObjectsOnOutputGraph(graphData);
     this.outputMgmt.initMenuContext();
 
@@ -315,21 +279,21 @@ class CltMessageMapping {
 
     //Input Graph - Reload Vertex define and draw new graph
     let vertexTypes = inputMessage.vertexTypes;
-    await this.processDataVertexTypeDefine(vertexTypes, this.inputDefined);
+    await this.inputMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.inputMgmt.drawObjectsOnInputGraph(inputMessage);
     this.inputMgmt.initMenuContext();
 
     //Output Graph - Reload Vertex define and draw new graph
     vertexTypes = {};
     vertexTypes = outputMessage.vertexTypes;
-    await this.processDataVertexTypeDefine(vertexTypes, this.outputDefined);
+    await this.outputMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.outputMgmt.drawObjectsOnOutputGraph(outputMessage);
     this.outputMgmt.initMenuContext();
 
     //Operations Graph - Reload Vertex define and draw new graph.
     vertexTypes = {};
     vertexTypes = operations.vertexTypes;
-    await this.processDataVertexTypeDefine(vertexTypes, this.operationsDefined);
+    await this.operationsMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.operationsMgmt.drawObjectsOnOperationsGraph(operations);
     this.operationsMgmt.initMenuContext();
     
@@ -379,83 +343,10 @@ class CltMessageMapping {
     });
   }
 
-  async LoadOperationsVertexDefinition(vertexDefinitionData){
-    //Validate data struct
-    let errorContent = await this.validateVertexDefineStructure(vertexDefinitionData);
-    if (errorContent){
-      comShowMessage("Format or data in Data Graph Structure is corrupted. You should check it!");
-      return;
+  LoadOperationsVertexDefinition(vertexDefinitionData){
+    if (this.operationsMgmt.LoadVertexDefinition(vertexDefinitionData)) {
+      this.operationsMgmt.initMenuContext();
     }
-
-    //Reload Vertex Define and init main menu
-    await this.processDataVertexTypeDefine(vertexDefinitionData, this.operationsDefined);
-    this.operationsMgmt.initMenuContext();
-  }
-
-  getVertexFormatType(vertexGroup, container) {
-    vertexGroup.forEach(group => {
-      const {groupType, dataElementFormat, vertexPresentation} = group;
-      container.headerForm[groupType] = Object.keys(dataElementFormat);
-
-      container.vertexPresentation[groupType] = vertexPresentation;
-      if (!container.vertexPresentation[groupType]["keyPrefix"]) {
-        container.vertexPresentation[groupType]["keyPrefix"] = {};
-      }
-      
-      container.vertexFormat[groupType] = dataElementFormat;
-      container.vertexGroupType[groupType] = group;
-      let formatType = {};
-      let header = container.headerForm[groupType];
-      let len = header.length;
-      for (let i = 0; i < len; i++) {
-        let key = header[i];
-        let value = dataElementFormat[key];
-        let type = typeof(value);
-
-        formatType[key] = VERTEX_FORMAT_TYPE.STRING; // For string and other type
-        if (type === "boolean")
-          formatType[key] = VERTEX_FORMAT_TYPE.BOOLEAN; // For boolean
-
-        if (type === "object" && Array.isArray(value))
-          formatType[key] = VERTEX_FORMAT_TYPE.ARRAY; // For array
-
-        if (type === "number")
-          formatType[key] = VERTEX_FORMAT_TYPE.NUMBER; // For number
-      }
-
-      container.vertexFormatType[groupType] = formatType;
-    });
-  }
-
-  getVertexTypesShowFull(data, container) {
-    const group = data["VERTEX_GROUP"];
-    const vertex = data["VERTEX"];
-    let len = group.length;
-    for (let i = 0; i < len; i++) {
-      let groupType = group[i].groupType;
-      let groupOption = group[i].option;
-      let lenOpt = groupOption.length;
-      for (let j = 0; j < lenOpt; j++) {
-        let option = groupOption[j];
-        let groupVertex = _.filter(vertex, (e) => {
-            return e.groupType === groupType;
-          }
-        );
-        let groupAction = [];
-        groupVertex.forEach(e => {
-          groupAction.push(e.vertexType);
-        });
-        container.groupVertexOption[option] = groupAction;
-      }
-    }
-  }
-
-  processDataVertexTypeDefine(data, container) {
-    const {VERTEX, VERTEX_GROUP} = data;
-    container.vertexTypes = VERTEX;
-    container.vertexGroup = VERTEX_GROUP;
-    this.getVertexFormatType(VERTEX_GROUP, container);
-    this.getVertexTypesShowFull(data, container);
   }
 
   /**
@@ -513,28 +404,6 @@ class CltMessageMapping {
     }
 
     return Promise.resolve("ok");
-  }
-
-  /**
-   * Validate Vertex Define Structure
-   */
-  async validateVertexDefineStructure(data) {
-
-    //Validate data exists
-    if(data===undefined)
-    {
-      return Promise.resolve(true);
-    }
-
-    // Option vertex type definition but choose graph type file
-    if (data.vertex || data.edge || data.boundary || data.position || data.vertexTypes) {
-      return Promise.resolve(true);
-    }
-
-    // Option vertex type definition but choose mapping type file
-    if (data.inputMessage||data.operations||data.outputMessage||data.edges){
-      return Promise.resolve(true);
-    }
   }
 
   /**
@@ -678,13 +547,13 @@ class CltMessageMapping {
       inputMessage.position.push(pos);
     });
 
-    const cloneVertexInputDefine = _.cloneDeep(this.inputDefined);
+    const cloneVertexInputDefine = _.cloneDeep(this.inputMgmt.vertexMgmt.vertexDefinition);
 
     let inputVertexDefine = {};
-    if(this.inputDefined.vertexGroup){
+    if(cloneVertexInputDefine.vertexGroup){
       inputVertexDefine = {
-        "VERTEX_GROUP": cloneVertexInputDefine.vertexGroup,
-        "VERTEX": cloneVertexInputDefine.vertexTypes
+        "VERTEX_GROUP": this.getSaveVertexGroup(cloneVertexInputDefine.vertexGroup),
+        "VERTEX": cloneVertexInputDefine.vertex
       };
     }
     inputMessage.vertexTypes = inputVertexDefine;
@@ -714,13 +583,13 @@ class CltMessageMapping {
       outputMessage.position.push(pos);
     });
 
-    const cloneVertexOutputDefine = _.cloneDeep(this.outputDefined);
+    const cloneVertexOutputDefine = _.cloneDeep(this.outputMgmt.vertexMgmt.vertexDefinition);
 
     let outputVertexDefine = {};
-    if(this.outputDefined.vertexGroup){
+    if(cloneVertexOutputDefine.vertexGroup){
       outputVertexDefine = {
-        "VERTEX_GROUP": cloneVertexOutputDefine.vertexGroup,
-        "VERTEX": cloneVertexOutputDefine.vertexTypes
+        "VERTEX_GROUP": this.getSaveVertexGroup(cloneVertexOutputDefine.vertexGroup),
+        "VERTEX": cloneVertexOutputDefine.vertex
       };
     }
     outputMessage.vertexTypes = outputVertexDefine;
@@ -749,12 +618,12 @@ class CltMessageMapping {
       operations.position.push(pos);
     });
 
-    const cloneVertexOperationDefine = _.cloneDeep(this.operationsDefined);
+    const cloneVertexOperationDefine = _.cloneDeep(this.operationsMgmt.vertexMgmt.vertexDefinition);
     let operationVertexDefine = {};
-    if(this.outputDefined.vertexGroup){
+    if(cloneVertexOperationDefine.vertexGroup){
       operationVertexDefine = {
-        "VERTEX_GROUP": cloneVertexOperationDefine.vertexGroup,
-        "VERTEX": cloneVertexOperationDefine.vertexTypes
+        "VERTEX_GROUP": this.getSaveVertexGroup(cloneVertexOperationDefine.vertexGroup),
+        "VERTEX": cloneVertexOperationDefine.vertex
       };
     }
     operations.vertexTypes = operationVertexDefine;
@@ -855,6 +724,27 @@ class CltMessageMapping {
         });
       }
     }
+  }
+
+  /**
+   * Filter properties that need to save
+   * @param {*} vertexGroup 
+   */
+  getSaveVertexGroup(vertexGroup){
+    let resObj = [];
+
+    vertexGroup.forEach(group => {
+      let tmpGroup = {};
+
+      tmpGroup.groupType          = group.groupType;
+      tmpGroup.option             = group.option;
+      tmpGroup.dataElementFormat  = group.dataElementFormat;
+      tmpGroup.vertexPresentation = group.vertexPresentation;
+
+      resObj.push(tmpGroup);
+    })
+    
+    return resObj;
   }
 }
   

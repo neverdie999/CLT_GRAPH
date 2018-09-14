@@ -7,7 +7,7 @@ class MainMgmt {
 
     this.cltSegment = new CltSegment({
       selector: $('.algetaContainer'),
-      viewMode: VIEW_MODE.EDIT
+      viewMode: VIEW_MODE.SEGMENT
     });
 
     /**

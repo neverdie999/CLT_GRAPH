@@ -45,10 +45,14 @@ class VertexMgmt {
     this.dataContainer            = props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
     this.containerId              = props.containerId;
     this.svgId                    = props.svgId;
-    this.vertexDefinition         = props.vertexDefinition;
     this.viewMode                 = props.viewMode;
     this.edgeMgmt                 = props.edgeMgmt;
     this.connectSide              = props.connectSide || CONNECT_SIDE.BOTH;
+
+    this.vertexDefinition = {
+      vertexGroup: [],  // Group vertex
+      vertex:[]         // List of vertex type
+    };
 
     this.initialize();
   }
@@ -260,7 +264,7 @@ class VertexMgmt {
     // Use in function updateVertexInfo()
     let {name, description, repeat, mandatory, data, id, groupType} = _.find(this.dataContainer.vertex, {"id": vertexId});
     // Get vertex group with group type
-    let group = _.find(this.vertexDefinition.vertexGroupType, {"groupType": groupType});
+    let group = _.find(this.vertexDefinition.vertexGroup, {"groupType": groupType});
 
     this.currentId = id;
     // Append content to popup
@@ -273,11 +277,10 @@ class VertexMgmt {
     }
 
     // Generate properties vertex
-    let keyHeader = this.vertexDefinition.headerForm[groupType];
-    let cols = keyHeader.length;
+    let columnTitle = Object.keys(group.dataElementFormat);
+    let cols = columnTitle.length;
     let rows = data.length;
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
-    const dataFormat = this.vertexDefinition.vertexFormat[groupType];
+    const dataType = group.elementDataType;
 
     let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).empty();
     let $contentHeader = $('<thead>');
@@ -286,15 +289,15 @@ class VertexMgmt {
     let $colGroup = $('<colgroup>');
     let $popWidth = 0;
     for (let i = 0; i < cols; i++) {
-      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(keyHeader[i]));
+      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(columnTitle[i]));
       $colHdr.attr('class', 'col_header');
       $colHdr.appendTo($headerRow);
 
       // Init col in col group
-      let prop = keyHeader[i];
-      let type = typeData[prop];
-      let def = dataFormat[prop];
-      let width = this.findLongestContent({data, prop, type, def});
+      let prop = columnTitle[i];
+      let type = dataType[prop];
+      let value = group.dataElementFormat[prop];
+      let width = this.findLongestContent({data, prop, type, value});
       $popWidth += width;
       let $colWidth = $('<col>').attr('width', width);
       $colWidth.appendTo($colGroup);
@@ -334,15 +337,15 @@ class VertexMgmt {
       const dataRow = data[i];
       const $row = $('<tr>');
       for (let j = 0; j < cols; j++) {
-        let prop = keyHeader[j];
-        let type = typeData[prop];
+        let prop = columnTitle[j];
+        let type = dataType[prop];
         let val = dataRow[prop];
         let opt = [];
 
         const $col = $('<td>');
         // Get option if type is array
         if (type === VERTEX_FORMAT_TYPE.ARRAY) {
-          opt = dataFormat[prop];
+          opt = group.dataElementFormat[prop];
         } else if (type === VERTEX_FORMAT_TYPE.BOOLEAN) {
           $col.attr('class', 'checkbox_center');
         }
@@ -389,7 +392,7 @@ class VertexMgmt {
   generateControlByType(options) {
     let $control = null;
     let {i, type, val, prop, opt, groupType} = options;
-    let defaultVal = this.vertexDefinition.vertexFormat[groupType][prop];
+    let defaultVal = _.find(this.vertexDefinition.vertexGroup, {"groupType":groupType}).dataElementFormat[prop];
     i = 0;
     switch (type) {
       case VERTEX_FORMAT_TYPE.BOOLEAN:
@@ -454,23 +457,23 @@ class VertexMgmt {
   }
 
   findLongestContent(configs) {
-    let {data, prop, type, def} = configs;
+    let {data, prop, type, value} = configs;
     let firstRow = data[0];
     let arr = [];
 
     // If type is boolean or first undefined or firstRow is empty
     if ((type === VERTEX_FORMAT_TYPE.BOOLEAN) || !firstRow)
-      return this.getLongestSpecialCase(prop, def);
+      return this.getLongestSpecialCase(prop, value);
     // prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
 
     //  If object firstRow hasn't it own the specified property
     if (!firstRow.hasOwnProperty(prop)) {
-      return this.getLongestSpecialCase(prop, def);
+      return this.getLongestSpecialCase(prop, value);
     }
 
     // From an array of objects, extract value of a property as array
     if (type === VERTEX_FORMAT_TYPE.ARRAY) {
-      arr = def;
+      arr = value;
     } else {
       arr = data.map(e => e[prop]);
     }
@@ -481,14 +484,14 @@ class VertexMgmt {
     return longest.toString().length * (type === VERTEX_FORMAT_TYPE.ARRAY ? POPUP_CONFIG.WIDTH_CHAR_UPPER : POPUP_CONFIG.WIDTH_CHAR) + POPUP_CONFIG.PADDING_CHAR;
   }
 
-  getLongestSpecialCase(prop, def) {
+  getLongestSpecialCase(prop, value) {
     let lengthProp = prop.toString().length;
-    let lengthDef = def.toString().length;
-    let type = typeof(def);
+    let lengthDef = value.toString().length;
+    let type = typeof(value);
     // Has type is array
-    if (type === "object" && Array.isArray(def)) {
+    if (type === "object" && Array.isArray(value)) {
       type = VERTEX_FORMAT_TYPE.ARRAY
-      lengthDef = this.getLongestContentFromArry(def).toString().length;
+      lengthDef = this.getLongestContentFromArry(value).toString().length;
     }
 
     return (lengthProp > lengthDef ? lengthProp * POPUP_CONFIG.WIDTH_CHAR :
@@ -507,24 +510,25 @@ class VertexMgmt {
   addDataElement() {
     if (!this.currentId)
       return;
-    let {groupType} = _.cloneDeep(_.find(this.dataContainer.vertex, {"id": this.currentId}));
-    let keyHeader = this.vertexDefinition.headerForm[groupType];
-    let cols = keyHeader.length;
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
-    const dataFormat = this.vertexDefinition.vertexFormat[groupType];
+    
+    const {groupType} = _.find(this.dataContainer.vertex, {"id": this.currentId});
+    const vertexGroup = _.find(this.vertexDefinition.vertexGroup, {"groupType": groupType});
+    const columnTitle = Object.keys(vertexGroup.dataElementFormat);
+    const cols = columnTitle.length;
+    const dataType = vertexGroup.elementDataType;
     let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`);
 
     const $row = $('<tr>');
     for (let j = 0; j < cols; j++) {
-      let prop = keyHeader[j];
-      let type = typeData[prop];
+      let prop = columnTitle[j];
+      let type = dataType[prop];
       // let val = dataRow[prop];
       let opt = [];
 
       const $col = $('<td>');
       // Get option if type is array
       if (type === VERTEX_FORMAT_TYPE.ARRAY) {
-        opt = dataFormat[prop];
+        opt = vertexGroup.dataElementFormat[prop];
       } else if (type === VERTEX_FORMAT_TYPE.BOOLEAN) {
         $col.attr('class', 'checkbox_center');
       }
@@ -534,9 +538,7 @@ class VertexMgmt {
       $col.appendTo($row);
     }
 
-    let group = _.find(this.vertexDefinition.vertexGroupType, (g) => {
-      return g.groupType === groupType;
-    });
+    let group = _.find(this.vertexDefinition.vertexGroup,{"groupType": groupType});
     let option = group.option;
     const isDynamicDataSet = option.indexOf(VERTEX_GROUP_OPTION.DYNAMIC_DATASET) > -1;
     if (isDynamicDataSet) {
@@ -620,14 +622,14 @@ class VertexMgmt {
     const vertex = _.find(this.dataContainer.vertex, {'id': this.currentId});
     const {groupType} = vertex;
     
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
+    const dataType = _.find(this.vertexDefinition.vertexGroup, {"groupType": groupType}).elementDataType;
     let elements = [];
     // Get data element
     $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr').each(function () {
       let row = {};
       $(this).find("td input:text, td input:checkbox, td select").each(function () {
         let prop = $(this).attr("name");
-        let type = typeData[prop];
+        let type = dataType[prop];
         if (prop != `${ATTR_DEL_CHECK}_${this.svgId}`)
           row[prop] = type === VERTEX_FORMAT_TYPE.BOOLEAN ? ($(this).is(':checked') ? true : false) : this.value;
       });
@@ -661,9 +663,7 @@ class VertexMgmt {
     vertex.mandatory = mandatory;
     vertex.data = data;
 
-    let group = _.find(this.vertexDefinition.vertexGroupType, (g) => {
-      return g.groupType === groupType;
-    });
+    const group = _.find(this.vertexDefinition.vertexGroup, {"groupType": groupType});
     const option = group.option;
     const isDynamicDataSet = option.indexOf(VERTEX_GROUP_OPTION.DYNAMIC_DATASET) > -1;
     if (isDynamicDataSet) {
@@ -675,7 +675,7 @@ class VertexMgmt {
       header.text(name).attr('title', description);
       header.style("background-color", `${this.colorHash.hex(name)}`);
       let rows = data.length;
-      let presentation = this.vertexDefinition.vertexPresentation[groupType];
+      let presentation = group.vertexPresentation;
       for (let i = 0; i < rows; i++) {
         let dataRow = data[i];
 
@@ -707,7 +707,7 @@ class VertexMgmt {
 
     let htmlContent = '';
     let len = elements.length;
-    let presentation = this.vertexDefinition.vertexPresentation[groupType];
+    let presentation = _.find(this.vertexDefinition.vertexGroup, {"groupType": groupType}).vertexPresentation;
 
     const hasLeftConnector = (connectSide == CONNECT_SIDE.LEFT || connectSide == CONNECT_SIDE.BOTH) ? " has_left_connect" : "";
     const hasRightConnector = (connectSide == CONNECT_SIDE.RIGHT || connectSide == CONNECT_SIDE.BOTH) ? " has_right_connect" : "";
@@ -821,6 +821,81 @@ class VertexMgmt {
   clearAll(){
     d3.select(`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
     this.dataContainer.vertex = [];
+  }
+
+  LoadVertexDefinition(vertexDefinitionData){
+    //Validate data struct
+    if (!this.validateVertexDefineStructure(vertexDefinitionData)){
+      comShowMessage("Format or data in Vertex Definition Structure is corrupted. You should check it!");
+      return false;
+    }
+
+    //Reload Vertex Define and init main menu
+    this.processDataVertexTypeDefine(vertexDefinitionData);
+
+    return true;
+  }
+
+  /**
+   * Validate Vertex Define Structure
+   */
+  validateVertexDefineStructure(data) {
+
+    //Validate data exists
+    if(data===undefined)
+    {
+      return false;
+    }
+
+    if (!data.VERTEX_GROUP || !data.VERTEX) {
+      return false;
+    }
+
+    if (Object.keys(data).length > 2) {
+      return false;
+    }
+
+    return true;
+  }
+
+  processDataVertexTypeDefine(data) {
+    this.resetVertexDefinition();
+
+    const {VERTEX_GROUP, VERTEX} = data;
+    this.vertexDefinition.vertexGroup = VERTEX_GROUP;
+    this.vertexDefinition.vertex = VERTEX;
+    this.getVertexFormatType(VERTEX_GROUP);
+  }
+
+  resetVertexDefinition(){
+    this.vertexDefinition.vertexGroup = [];
+    this.vertexDefinition.vertex = [];
+  }
+
+  getVertexFormatType(vertexGroup) {
+    for (let i = 0; i < vertexGroup.length; i++) {
+      const {dataElementFormat} = vertexGroup[i];
+      let dataType = {};
+      let header = Object.keys(dataElementFormat);
+      let len = header.length;
+      for (let i = 0; i < len; i++) {
+        let key = header[i];
+        let value = dataElementFormat[key];
+        let type = typeof(value);
+
+        dataType[key] = VERTEX_FORMAT_TYPE.STRING; // For string and other type
+        if (type === "boolean")
+          dataType[key] = VERTEX_FORMAT_TYPE.BOOLEAN; // For boolean
+
+        if (type === "object" && Array.isArray(value))
+          dataType[key] = VERTEX_FORMAT_TYPE.ARRAY; // For array
+
+        if (type === "number")
+          dataType[key] = VERTEX_FORMAT_TYPE.NUMBER; // For number
+      }
+
+      this.vertexDefinition.vertexGroup[i].elementDataType = dataType;
+    };
   }
 }
 

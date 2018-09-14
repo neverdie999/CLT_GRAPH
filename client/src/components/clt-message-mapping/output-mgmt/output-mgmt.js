@@ -16,7 +16,6 @@ class OutputMgmt {
   constructor(props) {
     this.edgeMgmt = props.edgeMgmt;
     this.dataContainer = props.dataContainer;
-    this.vertexDefinition = props.vertexDefinition;
     this.containerId = props.containerId;
     this.svgId = props.svgId;
     this.isShowReduced = false;
@@ -37,7 +36,6 @@ class OutputMgmt {
       dataContainer : this.dataContainer,
       containerId : this.containerId,
       svgId : this.svgId,
-      vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
       connectSide: CONNECT_SIDE.LEFT,
       edgeMgmt : this.edgeMgmt
@@ -58,7 +56,7 @@ class OutputMgmt {
       selector: `#${this.svgId}`,
       containerId: `#${this.containerId}`,
       parent: this,
-      vertexDefinition: this.vertexDefinition,
+      vertexDefinition: this.vertexMgmt.vertexDefinition,
       viewMode: this.viewMode,
     });
   }
@@ -78,7 +76,6 @@ class OutputMgmt {
       e.isImport = true;
 
       this.boundaryMgmt.create(e);
-      
     });
 
     // Draw vertex
@@ -112,12 +109,12 @@ class OutputMgmt {
 
   showReduced(){
     this.isShowReduced = true;
-    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexMgmt.vertexDefinition, this.svgId);
   }
 
   showFull(){
     this.isShowReduced = false;
-    this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.svgId);
+    this.objectUtils.showFull(this.dataContainer, this.vertexMgmt.vertexDefinition, this.svgId);
   }
 
   /**
@@ -156,6 +153,10 @@ class OutputMgmt {
         parentBoundary.move(offsetX, offsetY);
       }
     }
+  }
+
+  processDataVertexTypeDefine(vertexDefinitionData){
+    this.vertexMgmt.processDataVertexTypeDefine(vertexDefinitionData);
   }
 }
 

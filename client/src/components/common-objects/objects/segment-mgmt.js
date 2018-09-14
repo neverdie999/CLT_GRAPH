@@ -7,11 +7,8 @@ import ObjectUtils from '../../../common/utilities/object.ult';
 import SegmentMenu from '../menu-context/segment-menu';
 
 import {
-  REPEAT_RANGE,
   VERTEX_FORMAT_TYPE,
   POPUP_CONFIG,
-  VERTEX_GROUP_OPTION,
-  TYPE_CONNECT,
   VERTEX_ATTR_SIZE,
   CONNECT_SIDE,
   VIEW_MODE,
@@ -19,13 +16,10 @@ import {
 } from '../../../common/const/index';
 
 import {
-  replaceSpecialCharacter,
-  checkMinMaxValue,
   allowInputNumberOnly,
   autoScrollOnMousedrag,
   updateSizeGraph,
   setMinBoundaryGraph,
-  checkModePermission,
   getKeyPrefix,
   htmlDecode,
   checkIsMatchRegexNumber,
@@ -45,10 +39,14 @@ class SegmentMgmt {
     this.dataContainer            = props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
     this.containerId              = props.containerId;
     this.svgId                    = props.svgId;
-    this.vertexDefinition         = props.vertexDefinition;
     this.viewMode                 = {value: VIEW_MODE.SEGMENT};
     this.edgeMgmt                 = props.edgeMgmt;
     this.connectSide              = CONNECT_SIDE.NONE;
+
+    this.vertexDefinition = {
+      vertexGroup: [],  // Group vertex
+      vertex:[]         // List of vertex type
+    };
 
     this.initialize();
   }
@@ -60,6 +58,7 @@ class SegmentMgmt {
 
     this.selectorClass = `_vertex_${this.svgId}`;
     this.currentVertex = null; //vertex is being edited
+    this.vertexGroup = null;
 
     new SegmentMenu({
       selector: `.${this.selectorClass}`,
@@ -170,20 +169,11 @@ class SegmentMgmt {
       vertexMgmt: this
     });
 
-    newVertex.create(sOptions, this.handleDragVertex, this.edgeMgmt.handleDragConnection);
+    newVertex.create(sOptions, this.handleDragVertex);
   }
 
   startDrag(main) {
     return function (d) {
-      if (main.edgeMgmt.isSelectingEdge())
-        main.edgeMgmt.cancleSelectedPath();
-
-      // Resize boundary when vertex dragged
-      if (!d.parent)
-        main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
-
-      main.edgeMgmt.emphasizePathConnectForVertex(this);
-
       d.moveToFront();
     }
   }
@@ -199,23 +189,11 @@ class SegmentMgmt {
       d.y = y;
       // Transform group
       d3.select(`#${d.id}`).attr("transform", "translate(" + [d.x, d.y] + ")");
-      main.edgeMgmt.updatePathConnectForVertex(d);
     }
   }
 
   endDrag(main) {
     return function (d) {
-      if (d.parent) {
-        //If object not out boundary parent , object change postion in boundary parent, so change index object
-        if (main.objectUtils.checkDragObjectOutsideBoundary(d) == false) {
-          main.objectUtils.changeIndexInBoundaryForObject(d);
-        }
-      } else {
-        main.objectUtils.checkDragObjectInsideBoundary(d);
-        main.objectUtils.restoreSizeBoundary(d);
-      }
-      
-      setMinBoundaryGraph(main.dataContainer, main.svgId);
     }
   }
 
@@ -224,15 +202,15 @@ class SegmentMgmt {
    * @param vertex
    */
   makePopupEditVertex(vertex) {
-
     this.currentVertex = vertex;
     // Use in function updateVertexInfo()
     let {name, description, data, groupType} = vertex;
 
     // Get vertex group with group type
     if (!groupType) {
-      groupType = this.vertexDefinition.vertexGroupType[Object.keys(this.vertexDefinition.vertexGroupType)[0]].groupType;
+      groupType = this.vertexGroup.groupType;
     }
+
     this.currentVertex.groupType = groupType;
 
     // Append content to popup
@@ -240,11 +218,10 @@ class SegmentMgmt {
     $(`#vertexDesc_${this.svgId}`).val(description);
 
     // Generate properties vertex
-    let keyHeader = this.vertexDefinition.headerForm[groupType];
-    let cols = keyHeader.length;
+    let columnTitle = Object.keys(this.vertexGroup.dataElementFormat);
+    let cols = columnTitle.length;
     let rows = data.length;
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
-    const dataFormat = this.vertexDefinition.vertexFormat[groupType];
+    const dataType = this.vertexGroup.elementDataType;
 
     let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).empty();
     let $contentHeader = $('<thead>');
@@ -253,15 +230,15 @@ class SegmentMgmt {
     let $colGroup = $('<colgroup>');
     let $popWidth = 0;
     for (let i = 0; i < cols; i++) {
-      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(keyHeader[i]));
+      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(columnTitle[i]));
       $colHdr.attr('class', 'col_header');
       $colHdr.appendTo($headerRow);
 
       // Init col in col group
-      let prop = keyHeader[i];
-      let type = typeData[prop];
-      let def = dataFormat[prop];
-      let width = this.findLongestContent({data, prop, type, def});
+      let prop = columnTitle[i];
+      let type = dataType[prop];
+      let value = this.vertexGroup.dataElementFormat[prop];
+      let width = this.findLongestContent({data, prop, type, value});
       $popWidth += width;
       let $colWidth = $('<col>').attr('width', width);
       $colWidth.appendTo($colGroup);
@@ -290,15 +267,15 @@ class SegmentMgmt {
       const dataRow = data[i];
       const $row = $('<tr>');
       for (let j = 0; j < cols; j++) {
-        let prop = keyHeader[j];
-        let type = typeData[prop];
+        let prop = columnTitle[j];
+        let type = dataType[prop];
         let val = dataRow[prop];
         let opt = [];
 
         const $col = $('<td>');
         // Get option if type is array
         if (type === VERTEX_FORMAT_TYPE.ARRAY) {
-          opt = dataFormat[prop];
+          opt = this.vertexGroup.dataElementFormat[prop];
         } else if (type === VERTEX_FORMAT_TYPE.BOOLEAN) {
           $col.attr('class', 'checkbox_center');
         }
@@ -338,8 +315,8 @@ class SegmentMgmt {
    */
   generateControlByType(options) {
     let $control = null;
-    let {i, type, val, prop, opt, groupType} = options;
-    let defaultVal = this.vertexDefinition.vertexFormat[groupType][prop];
+    let {i, type, val, prop, opt} = options;
+    let defaultVal = this.vertexGroup.dataElementFormat[prop];
     i = 0;
     switch (type) {
       case VERTEX_FORMAT_TYPE.BOOLEAN:
@@ -404,23 +381,23 @@ class SegmentMgmt {
   }
 
   findLongestContent(configs) {
-    let {data, prop, type, def} = configs;
+    let {data, prop, type, value} = configs;
     let firstRow = data[0];
     let arr = [];
 
     // If type is boolean or first undefined or firstRow is empty
     if ((type === VERTEX_FORMAT_TYPE.BOOLEAN) || !firstRow)
-      return this.getLongestSpecialCase(prop, def);
+      return this.getLongestSpecialCase(prop, value);
     // prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
 
     //  If object firstRow hasn't it own the specified property
     if (!firstRow.hasOwnProperty(prop)) {
-      return this.getLongestSpecialCase(prop, def);
+      return this.getLongestSpecialCase(prop, value);
     }
 
     // From an array of objects, extract value of a property as array
     if (type === VERTEX_FORMAT_TYPE.ARRAY) {
-      arr = def;
+      arr = value;
     } else {
       arr = data.map(e => e[prop]);
     }
@@ -431,14 +408,14 @@ class SegmentMgmt {
     return longest.toString().length * (type === VERTEX_FORMAT_TYPE.ARRAY ? POPUP_CONFIG.WIDTH_CHAR_UPPER : POPUP_CONFIG.WIDTH_CHAR) + POPUP_CONFIG.PADDING_CHAR;
   }
 
-  getLongestSpecialCase(prop, def) {
+  getLongestSpecialCase(prop, value) {
     let lengthProp = prop.toString().length;
-    let lengthDef = def.toString().length;
-    let type = typeof(def);
+    let lengthDef = value.toString().length;
+    let type = typeof(value);
     // Has type is array
-    if (type === "object" && Array.isArray(def)) {
+    if (type === "object" && Array.isArray(value)) {
       type = VERTEX_FORMAT_TYPE.ARRAY
-      lengthDef = this.getLongestContentFromArry(def).toString().length;
+      lengthDef = this.getLongestContentFromArry(value).toString().length;
     }
 
     return (lengthProp > lengthDef ? lengthProp * POPUP_CONFIG.WIDTH_CHAR :
@@ -456,23 +433,22 @@ class SegmentMgmt {
 
   addDataElement() {
     const groupType = this.currentVertex.groupType;
-    const keyHeader = this.vertexDefinition.headerForm[groupType];
-    let cols = keyHeader.length;
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
-    const dataFormat = this.vertexDefinition.vertexFormat[groupType];
+    const columnTitle = Object.keys(this.vertexGroup.dataElementFormat);
+    const cols = columnTitle.length;
+    const dataType = this.vertexGroup.elementDataType;
     let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`);
 
     const $row = $('<tr>');
     for (let j = 0; j < cols; j++) {
-      let prop = keyHeader[j];
-      let type = typeData[prop];
+      let prop = columnTitle[j];
+      let type = dataType[prop];
       // let val = dataRow[prop];
       let opt = [];
 
       const $col = $('<td>');
       // Get option if type is array
       if (type === VERTEX_FORMAT_TYPE.ARRAY) {
-        opt = dataFormat[prop];
+        opt = this.vertexGroup.dataElementFormat[prop];
       } else if (type === VERTEX_FORMAT_TYPE.BOOLEAN) {
         $col.attr('class', 'checkbox_center');
       }
@@ -557,8 +533,8 @@ class SegmentMgmt {
     // Get data on form
     this.currentVertex.name = this.currentVertex.vertexType = $(`#vertexName_${this.svgId}`).val();
     this.currentVertex.description = $(`#vertexDesc_${this.svgId}`).val();
-    const groupType = this.currentVertex.groupType;    
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
+    const groupType = this.currentVertex.groupType;
+    const dataType = this.vertexGroup.elementDataType;
     
     let elements = [];
     // Get data element
@@ -566,7 +542,7 @@ class SegmentMgmt {
       let row = {};
       $(this).find("td input:text, td input:checkbox, td select").each(function () {
         let prop = $(this).attr("name");
-        let type = typeData[prop];
+        let type = dataType[prop];
         if (prop != `${ATTR_DEL_CHECK}_${this.svgId}`)
           row[prop] = type === VERTEX_FORMAT_TYPE.BOOLEAN ? ($(this).is(':checked') ? true : false) : this.value;
       });
@@ -613,7 +589,7 @@ class SegmentMgmt {
 
     let htmlContent = '';
     let len = elements.length;
-    let presentation = this.vertexDefinition.vertexPresentation[groupType];
+    let presentation = this.vertexGroup.vertexPresentation;
 
     const hasLeftConnector = (connectSide == CONNECT_SIDE.LEFT || connectSide == CONNECT_SIDE.BOTH) ? " has_left_connect" : "";
     const hasRightConnector = (connectSide == CONNECT_SIDE.RIGHT || connectSide == CONNECT_SIDE.BOTH) ? " has_right_connect" : "";
@@ -656,6 +632,105 @@ class SegmentMgmt {
   clearAll(){
     d3.select(`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
     this.dataContainer.vertex = [];
+  }
+
+  LoadVertexGroupDefinition(vertexDefinitionData){
+    //Validate data struct
+    if (!this.validateVertexGourpDefineStructure(vertexDefinitionData)){
+      comShowMessage("Format or data in Vertex Group Definition Structure is corrupted. You should check it!");
+      return false;
+    }
+
+    //Reload Vertex Define and init main menu
+    this.processDataVertexTypeDefine(vertexDefinitionData);
+
+    return true;
+  }
+
+  getVertexFormatType(vertexGroup) {
+    for (let i = 0; i < vertexGroup.length; i++) {
+      this.vertexDefinition.vertexGroup.push(vertexGroup[i]);
+      const {dataElementFormat} = vertexGroup[i];
+      let dataType = {};
+      let header = Object.keys(dataElementFormat);
+      let len = header.length;
+      for (let i = 0; i < len; i++) {
+        let key = header[i];
+        let value = dataElementFormat[key];
+        let type = typeof(value);
+
+        dataType[key] = VERTEX_FORMAT_TYPE.STRING; // For string and other type
+        if (type === "boolean")
+          dataType[key] = VERTEX_FORMAT_TYPE.BOOLEAN; // For boolean
+
+        if (type === "object" && Array.isArray(value))
+          dataType[key] = VERTEX_FORMAT_TYPE.ARRAY; // For array
+
+        if (type === "number")
+          dataType[key] = VERTEX_FORMAT_TYPE.NUMBER; // For number
+      }
+
+      this.vertexDefinition.vertexGroup[i].elementDataType = dataType;
+    };
+  }
+
+  getVertexTypesShowFull(data, container) {
+    const group = data["VERTEX_GROUP"];
+    const vertex = data["VERTEX"];
+    let len = group.length;
+    for (let i = 0; i < len; i++) {
+      let groupType = group[i].groupType;
+      let groupOption = group[i].option;
+      let lenOpt = groupOption.length;
+      for (let j = 0; j < lenOpt; j++) {
+        let option = groupOption[j];
+        let groupVertex = _.filter(vertex, (e) => {
+            return e.groupType === groupType;
+          }
+        );
+        let groupAction = [];
+        groupVertex.forEach(e => {
+          groupAction.push(e.vertexType);
+        });
+        container.groupVertexOption[option] = groupAction;
+      }
+    }
+  }
+
+  processDataVertexTypeDefine(data) {
+    this.resetVertexDefinition();
+
+    const {VERTEX_GROUP} = data;
+    this.getVertexFormatType(VERTEX_GROUP);
+
+    this.vertexGroup = this.vertexDefinition.vertexGroup[0];
+  }
+
+  resetVertexDefinition(){
+    this.vertexDefinition.vertexGroup = [];
+    this.vertexDefinition.vertex = [];
+  }
+
+  /**
+   * Validate Vertex Group Define Structure
+   */
+  validateVertexGourpDefineStructure(data) {
+
+    //Validate data exists
+    if(data===undefined)
+    {
+      return false;
+    }
+
+    if (!data.VERTEX_GROUP) {
+      return false;
+    }
+
+    if (Object.keys(data).length > 1) {
+      return false;
+    }
+
+    return true;
   }
 }
 

@@ -43,18 +43,21 @@ class MainMenuSegment {
             "createNew": {
               name: "Create New",
               icon: "fa-window-maximize",
+              disabled: !checkModePermission(this.viewMode.value, 'createNew')
             },
             "sep1": "-",
             "find": {
               name: "Find...",
               type: "sub",
               icon: "fa-search",
-              items: this.loadItems()
+              items: checkModePermission(this.viewMode.value, 'find') ? this.loadItems() : {},
+              disabled: !checkModePermission(this.viewMode.value, 'find')
             },
             "sep2": "-",
             "showReduced": {
               name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
               icon: "fa-link",
+              disabled: !checkModePermission(this.viewMode.value, 'showReduced')
             },
           },
           events: {

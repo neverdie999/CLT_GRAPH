@@ -13,7 +13,7 @@ import {
 } from '../../common/utilities/common.ult';
 
 import { 
-  VERTEX_FORMAT_TYPE, DEFAULT_CONFIG_GRAPH, VIEW_MODE,
+  DEFAULT_CONFIG_GRAPH, VIEW_MODE,
 } from '../../common/const/index';
 
 class CltGraph {
@@ -44,17 +44,6 @@ class CltGraph {
       edge: []
     };
 
-    this.vertexDefinition = {
-      groupVertexOption: {}, // List vertex type have same option.
-      vertexFormatType: {}, // Vertex group format type
-      vertexFormat: {}, // Data element vertex format
-      vertexGroupType: {}, // Group vertex type
-      headerForm: {}, // Header group type
-      vertexPresentation: {}, // Group vertex presentation
-      vertexGroup: null, // Group vertex
-      keyPrefix: {type:{}}
-    };
-
     this.edgeMgmt = new EdgeMgmt({
       dataContainer    : this.dataContainer,
       svgId            : this.connectSvgId,
@@ -67,7 +56,6 @@ class CltGraph {
       dataContainer : this.dataContainer,
       containerId : this.graphContainerId,
       svgId : this.graphSvgId,
-      vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
       edgeMgmt : this.edgeMgmt
     });
@@ -122,7 +110,7 @@ class CltGraph {
       selector: `#${this.graphSvgId}`,
       containerId: `#${this.graphContainerId}`,
       parent: this,
-      vertexDefinition: this.vertexDefinition,
+      vertexDefinition: this.vertexMgmt.vertexDefinition,
       viewMode: this.viewMode
     });
   }
@@ -148,12 +136,12 @@ class CltGraph {
 
   showReduced(){
     this.isShowReduced = true;
-    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.graphSvgId);
+    this.objectUtils.showReduced(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexMgmt.vertexDefinition, this.graphSvgId);
   }
 
   showFull(){
     this.isShowReduced = false;
-    this.objectUtils.showFull(this.dataContainer, this.edgeMgmt.dataContainer, this.vertexDefinition.groupVertexOption, this.graphSvgId);
+    this.objectUtils.showFull(this.dataContainer, this.vertexMgmt.vertexDefinition, this.graphSvgId);
   }
 
   async drawObjects(data) {
@@ -177,7 +165,6 @@ class CltGraph {
 
       e.x = x;
       e.y = y;
-      e.presentation = this.vertexDefinition.vertexPresentation[e.groupType];
       e.isImport = true;
 
       this.vertexMgmt.create(e);
@@ -210,7 +197,7 @@ class CltGraph {
 
     //Reload Vertex Define and draw graph
     const {vertexTypes} = graphData;
-    await this.processDataVertexTypeDefine(vertexTypes, this.vertexDefinition);
+    await this.vertexMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.drawObjects(graphData);
     this.initMenuContext();
 
@@ -257,83 +244,10 @@ class CltGraph {
     });
   }
 
-  async LoadVertexDefinition(vertexDefinitionData){
-    //Validate data struct
-    let errorContent = await this.validateVertexDefineStructure(vertexDefinitionData);
-    if (errorContent){
-      comShowMessage("Format or data in Data Graph Structure is corrupted. You should check it!");
-      return;
+  LoadVertexDefinition(vertexDefinitionData){
+    if (this.vertexMgmt.LoadVertexDefinition(vertexDefinitionData)){
+      this.initMenuContext();
     }
-
-    //Reload Vertex Define and init main menu
-    await this.processDataVertexTypeDefine(vertexDefinitionData, this.vertexDefinition);
-    this.initMenuContext();
-  }
-
-  getVertexFormatType(vertexGroup, container) {
-    vertexGroup.forEach(group => {
-      const {groupType, dataElementFormat, vertexPresentation} = group;
-      container.headerForm[groupType] = Object.keys(dataElementFormat);
-      
-      container.vertexPresentation[groupType] = vertexPresentation;
-      if (!container.vertexPresentation[groupType]["keyPrefix"]) {
-        container.vertexPresentation[groupType]["keyPrefix"] = {};
-      }
-
-      container.vertexFormat[groupType] = dataElementFormat;
-      container.vertexGroupType[groupType] = group;
-      let formatType = {};
-      let header = container.headerForm[groupType];
-      let len = header.length;
-      for (let i = 0; i < len; i++) {
-        let key = header[i];
-        let value = dataElementFormat[key];
-        let type = typeof(value);
-
-        formatType[key] = VERTEX_FORMAT_TYPE.STRING; // For string and other type
-        if (type === "boolean")
-          formatType[key] = VERTEX_FORMAT_TYPE.BOOLEAN; // For boolean
-
-        if (type === "object" && Array.isArray(value))
-          formatType[key] = VERTEX_FORMAT_TYPE.ARRAY; // For array
-
-        if (type === "number")
-          formatType[key] = VERTEX_FORMAT_TYPE.NUMBER; // For number
-      }
-
-      container.vertexFormatType[groupType] = formatType;
-    });
-  }
-
-  getVertexTypesShowFull(data, container) {
-    const group = data["VERTEX_GROUP"];
-    const vertex = data["VERTEX"];
-    let len = group.length;
-    for (let i = 0; i < len; i++) {
-      let groupType = group[i].groupType;
-      let groupOption = group[i].option;
-      let lenOpt = groupOption.length;
-      for (let j = 0; j < lenOpt; j++) {
-        let option = groupOption[j];
-        let groupVertex = _.filter(vertex, (e) => {
-            return e.groupType === groupType;
-          }
-        );
-        let groupAction = [];
-        groupVertex.forEach(e => {
-          groupAction.push(e.vertexType);
-        });
-        container.groupVertexOption[option] = groupAction;
-      }
-    }
-  }
-
-  processDataVertexTypeDefine(data, container) {
-    const {VERTEX, VERTEX_GROUP} = data;
-    container.vertexTypes = VERTEX;
-    container.vertexGroup = VERTEX_GROUP;
-    this.getVertexFormatType(VERTEX_GROUP, container);
-    this.getVertexTypesShowFull(data, container);
   }
 
   /**
@@ -391,28 +305,6 @@ class CltGraph {
     }
 
     return Promise.resolve("ok");
-  }
-
-  /**
-   * Validate Vertex Define Structure
-   */
-  async validateVertexDefineStructure(data) {
-
-    //Validate data exists
-    if(data===undefined)
-    {
-      return Promise.resolve(true);
-    }
-
-    // Option vertex type definition but choose graph type file
-    if (data.vertex || data.edge || data.boundary || data.position || data.vertexTypes) {
-      return Promise.resolve(true);
-    }
-
-    // Option vertex type definition but choose mapping type file
-    if (data.inputMessage||data.operations||data.outputMessage||data.edges){
-      return Promise.resolve(true);
-    }
   }
 
   /**
@@ -507,13 +399,12 @@ class CltGraph {
       dataContent.position.push(pos);
     });
 
-    const cloneVertexDefine = _.cloneDeep(this.vertexDefinition);
-
+    const cloneVertexDefine = _.cloneDeep(this.vertexMgmt.vertexDefinition);
     let vertexDefine = {};
-    if(this.vertexDefinition.vertexGroup){
+    if(cloneVertexDefine.vertexGroup){
       vertexDefine = {
-        "VERTEX_GROUP": cloneVertexDefine.vertexGroup,
-        "VERTEX": cloneVertexDefine.vertexTypes
+        "VERTEX_GROUP": this.getSaveVertexGroup(cloneVertexDefine.vertexGroup),
+        "VERTEX": cloneVertexDefine.vertex
       };
     }
     dataContent.vertexTypes = vertexDefine;
@@ -524,6 +415,27 @@ class CltGraph {
     })
 
     return Promise.resolve(dataContent);
+  }
+
+  /**
+   * Filter properties that need to save
+   * @param {*} vertexGroup 
+   */
+  getSaveVertexGroup(vertexGroup){
+    let resObj = [];
+
+    vertexGroup.forEach(group => {
+      let tmpGroup = {};
+
+      tmpGroup.groupType          = group.groupType;
+      tmpGroup.option             = group.option;
+      tmpGroup.dataElementFormat  = group.dataElementFormat;
+      tmpGroup.vertexPresentation = group.vertexPresentation;
+
+      resObj.push(tmpGroup);
+    })
+    
+    return resObj;
   }
 
   /**

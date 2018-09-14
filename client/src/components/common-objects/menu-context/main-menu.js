@@ -104,8 +104,8 @@ class MainMenu {
     subItems["sep4"] = "-";
     const options = {};
     // Build options
-    if (this.vertexDefinition.vertexTypes && Array.isArray(this.vertexDefinition.vertexTypes)) {
-      let vertices = this.vertexDefinition.vertexTypes;
+    if (this.vertexDefinition.vertex && Array.isArray(this.vertexDefinition.vertex)) {
+      let vertices = this.vertexDefinition.vertex;
       // Sort array object
       vertices = _.orderBy(vertices, ['vertexType'], ['asc']);
       let len = vertices.length;

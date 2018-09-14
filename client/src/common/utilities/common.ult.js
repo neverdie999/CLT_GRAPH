@@ -290,7 +290,7 @@ export function checkModePermission(viewMode, type){
   ];
 
   data[VIEW_MODE.SEGMENT] = [
-    'createVertex', 'clearAll', 'showReduced',
+    'createNew', 'find', 'showReduced',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex'
   ];
 
@@ -306,7 +306,7 @@ export function checkModePermission(viewMode, type){
  */
 export function getKeyPrefix(dataElement, vertexDefinition, groupType){
 
-  const keyPrefix = vertexDefinition.vertexPresentation[groupType]["keyPrefix"];
+  const keyPrefix = _.find(vertexDefinition.vertexGroup, {"groupType": groupType}).vertexPresentation.keyPrefix;
   if (!keyPrefix) return "";
 
   let res = "";

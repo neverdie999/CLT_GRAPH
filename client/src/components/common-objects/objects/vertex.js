@@ -72,13 +72,13 @@ class Vertex {
     let {id, x, y, groupType, vertexType, name, description, data, parent, mandatory, repeat, isMenu, isImport} = sOptions;
 
     if (isMenu) {
-      let vertexTypeInfo = _.cloneDeep(_.find(this.vertexDefinition.vertexTypes, {'vertexType': vertexType}));
+      let vertexTypeInfo = _.cloneDeep(_.find(this.vertexDefinition.vertex, {'vertexType': vertexType}));
       data = vertexTypeInfo.data;
       description = vertexTypeInfo.description;
       groupType = vertexTypeInfo.groupType;
     }
 
-    let presentation = this.vertexDefinition.vertexPresentation[groupType]; 
+    let presentation = _.find(this.vertexDefinition.vertexGroup, {"groupType":groupType}).vertexPresentation;
 
     this.id           = id || generateObjectId('V');
     this.x            = x || 0;

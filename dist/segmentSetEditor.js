@@ -989,7 +989,7 @@ function checkModePermission(viewMode, type){
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].SEGMENT] = [
-    'createVertex', 'clearAll', 'showReduced',
+    'createNew', 'find', 'showReduced',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex'
   ];
 
@@ -1005,7 +1005,7 @@ function checkModePermission(viewMode, type){
  */
 function getKeyPrefix(dataElement, vertexDefinition, groupType){
 
-  const keyPrefix = vertexDefinition.vertexPresentation[groupType]["keyPrefix"];
+  const keyPrefix = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertexDefinition.vertexGroup, {"groupType": groupType}).vertexPresentation.keyPrefix;
   if (!keyPrefix) return "";
 
   let res = "";
@@ -20771,14 +20771,20 @@ class ObjectUtils {
    * Vertex: The vertices in group SHOW_FULL_ALWAYS not effected by show reduced
    * The remain vertex then show header and connected properties only
    */
-  async showReduced(dataContainer, edgeDataContainer, groupVertexOption, svgId) {
+  async showReduced(dataContainer, edgeDataContainer, vertexDefinition, svgId) {
     let edge = edgeDataContainer.edge;
-    let full = groupVertexOption["SHOW_FULL_ALWAYS"];
     let lstVer = [], lstProp = [];
+
+    let arrShowFullAlwayGroup = [];
+    vertexDefinition.vertexGroup.forEach(e => {
+      if (e.option.indexOf("SHOW_FULL_ALWAYS") != -1) {
+        arrShowFullAlwayGroup.push(e.groupType);
+      }
+    });
 
     // Filter the vertex effected by show reduced
     lstVer = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(dataContainer.vertex, (e) => {
-      return full.indexOf(e.vertexType) < 0;
+      return arrShowFullAlwayGroup.indexOf(e.groupType) < 0;
     });
     
     lstVer.forEach((vertex) => {
@@ -20827,15 +20833,19 @@ class ObjectUtils {
   /**
    * Show full graph
    */
-  async showFull(dataContainer, edgeDataContainer, groupVertexOption, svgId) {
+  async showFull(dataContainer, vertexDefinition, svgId) {
 
-    let edges = edgeDataContainer.edge;
-    let full = groupVertexOption["SHOW_FULL_ALWAYS"];
-    let lstVer = [], lstProp = [];
+    let arrShowFullAlwayGroup = [];
+    vertexDefinition.vertexGroup.forEach(e => {
+      if (e.option.indexOf("SHOW_FULL_ALWAYS") != -1) {
+        arrShowFullAlwayGroup.push(e.groupType);
+      }
+    });
 
+    let lstVer = []
     // Filter the vertex effected by show reduced
     lstVer = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(dataContainer.vertex, (e) => {
-      return full.indexOf(e.vertexType) < 0;
+      return arrShowFullAlwayGroup.indexOf(e.groupType) < 0;
     });
     
     lstVer.forEach((vertex) => {
@@ -52666,13 +52676,13 @@ class Vertex {
     let {id, x, y, groupType, vertexType, name, description, data, parent, mandatory, repeat, isMenu, isImport} = sOptions;
 
     if (isMenu) {
-      let vertexTypeInfo = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.vertexDefinition.vertexTypes, {'vertexType': vertexType}));
+      let vertexTypeInfo = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.vertexDefinition.vertex, {'vertexType': vertexType}));
       data = vertexTypeInfo.data;
       description = vertexTypeInfo.description;
       groupType = vertexTypeInfo.groupType;
     }
 
-    let presentation = this.vertexDefinition.vertexPresentation[groupType]; 
+    let presentation = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.vertexDefinition.vertexGroup, {"groupType":groupType}).vertexPresentation;
 
     this.id           = id || Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["j" /* generateObjectId */])('V');
     this.x            = x || 0;
@@ -54701,7 +54711,7 @@ class MainMgmt {
 
     this.cltSegment = new __WEBPACK_IMPORTED_MODULE_1__components_clt_segment_clt_segment__["a" /* default */]({
       selector: $('.algetaContainer'),
-      viewMode: __WEBPACK_IMPORTED_MODULE_2__common_const_index__["n" /* VIEW_MODE */].EDIT
+      viewMode: __WEBPACK_IMPORTED_MODULE_2__common_const_index__["n" /* VIEW_MODE */].SEGMENT
     });
 
     /**
@@ -54850,7 +54860,7 @@ class FileMgmt {
 class CltSegment {
   constructor(props) {
     this.selector = props.selector;
-    this.viewMode = {value: props.viewMode || __WEBPACK_IMPORTED_MODULE_7__common_const_index__["n" /* VIEW_MODE */].EDIT};
+    this.viewMode = {value: props.viewMode || __WEBPACK_IMPORTED_MODULE_7__common_const_index__["n" /* VIEW_MODE */].SEGMENT};
 
     this.selectorName = this.selector.selector.replace(/[\.\#]/,'');
 
@@ -54875,17 +54885,6 @@ class CltSegment {
       edge: []
     };
 
-    this.vertexDefinition = {
-      groupVertexOption: {}, // List vertex type have same option.
-      vertexFormatType: {}, // Vertex group format type
-      vertexFormat: {}, // Data element vertex format
-      vertexGroupType: {}, // Group vertex type
-      headerForm: {}, // Header group type
-      vertexPresentation: {}, // Group vertex presentation
-      vertexGroup: null, // Group vertex
-      keyPrefix: {type:{}}
-    };
-
     this.edgeMgmt = new __WEBPACK_IMPORTED_MODULE_4__common_objects_objects_edge_mgmt__["a" /* default */]({
       dataContainer    : this.dataContainer,
       svgId            : this.connectSvgId,
@@ -54898,7 +54897,6 @@ class CltSegment {
       dataContainer : this.dataContainer,
       containerId : this.graphContainerId,
       svgId : this.graphSvgId,
-      vertexDefinition : this.vertexDefinition,
       viewMode: this.viewMode,
       edgeMgmt : this.edgeMgmt
     });
@@ -54943,7 +54941,6 @@ class CltSegment {
       selector: `#${this.graphSvgId}`,
       containerId: `#${this.graphContainerId}`,
       parent: this,
-      vertexDefinition: this.vertexDefinition,
       viewMode: this.viewMode
     });
   }
@@ -54984,6 +54981,18 @@ class CltSegment {
     Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
 
+  LoadVertexGroupDefinition(vertexDefinitionData){
+    if (this.dataContainer.vertex.length > 0 && !confirm('The current data will be cleared, do you want to continue ?')) {
+      return;
+    }
+
+    this.clearAll();
+
+    if (this.segmentMgmt.LoadVertexGroupDefinition(vertexDefinitionData)) {
+      this.initMenuContext();
+    }
+  }
+
   async drawObjects(data) {
     const { VERTEX: vertices } = data;
     // Draw Segment
@@ -54993,7 +55002,6 @@ class CltSegment {
     vertices.forEach(e => {
       e.x = x;
       e.y = y;
-      e.presentation = this.vertexDefinition.vertexPresentation[e.groupType];
       e.isImport = true;
 
       this.segmentMgmt.create(e);
@@ -55004,18 +55012,18 @@ class CltSegment {
 
   async loadSegmentSpecEditor(segmentData) {
 
-    let errorContent = await this.validateVertexDefineStructure(segmentData);
-    if (errorContent){
-      Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Data Segment Structure is corrupted. You should check it!");
-      return;
+    if (!this.validateSegmentSpecStructure(segmentData)) {
+      Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Segment Spec Structure is corrupted. You should check it!");
+      return false;
     }
+
+    this.segmentMgmt.processDataVertexTypeDefine(segmentData);
 
     //clear data
     this.clearAll();
 
-    //Reload Vertex Define and draw graph
-    await this.processDataVertexTypeDefine(segmentData, this.vertexDefinition);
     await this.drawObjects(segmentData);
+
     this.initMenuContext();
 
     Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer,this.graphSvgId);
@@ -55055,228 +55063,18 @@ class CltSegment {
     });
   }
 
-  async LoadVertexGroupDefinition(vertexDefinitionData){
-    //Validate data struct
-    let errorContent = await this.validateVertexDefineStructure(vertexDefinitionData);
-    if (errorContent){
-      Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
-      return;
-    }
-
-    //Reload Vertex Define and init main menu
-    await this.processDataVertexTypeDefine(vertexDefinitionData, this.vertexDefinition);
-    this.initMenuContext();
-  }
-
-  getVertexFormatType(vertexGroup, container) {
-    vertexGroup.forEach(group => {
-      const {groupType, dataElementFormat, vertexPresentation} = group;
-      container.headerForm[groupType] = Object.keys(dataElementFormat);
-      
-      container.vertexPresentation[groupType] = vertexPresentation;
-      if (!container.vertexPresentation[groupType]["keyPrefix"]) {
-        container.vertexPresentation[groupType]["keyPrefix"] = {};
-      }
-
-      container.vertexFormat[groupType] = dataElementFormat;
-      container.vertexGroupType[groupType] = group;
-      let formatType = {};
-      let header = container.headerForm[groupType];
-      let len = header.length;
-      for (let i = 0; i < len; i++) {
-        let key = header[i];
-        let value = dataElementFormat[key];
-        let type = typeof(value);
-
-        formatType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].STRING; // For string and other type
-        if (type === "boolean")
-          formatType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN; // For boolean
-
-        if (type === "object" && Array.isArray(value))
-          formatType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY; // For array
-
-        if (type === "number")
-          formatType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].NUMBER; // For number
-      }
-
-      container.vertexFormatType[groupType] = formatType;
-    });
-  }
-
-  getVertexTypesShowFull(data, container) {
-    const group = data["VERTEX_GROUP"];
-    const vertex = data["VERTEX"];
-    let len = group.length;
-    for (let i = 0; i < len; i++) {
-      let groupType = group[i].groupType;
-      let groupOption = group[i].option;
-      let lenOpt = groupOption.length;
-      for (let j = 0; j < lenOpt; j++) {
-        let option = groupOption[j];
-        let groupVertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(vertex, (e) => {
-            return e.groupType === groupType;
-          }
-        );
-        let groupAction = [];
-        groupVertex.forEach(e => {
-          groupAction.push(e.vertexType);
-        });
-        container.groupVertexOption[option] = groupAction;
-      }
-    }
-  }
-
-  processDataVertexTypeDefine(data, container) {
-
-    this.resetVertexDefinition();
-
-    const {VERTEX_GROUP} = data;
-    container.vertexGroup = VERTEX_GROUP;
-    this.getVertexFormatType(VERTEX_GROUP, container);
-    //this.getVertexTypesShowFull(data, container);
-  }
-
-  /**
-   * Validate Graph Data Structure
-   * with embedded vertex type
-   * Validate content
-   */
-  async validateGraphDataStructure(data) {
-    //Validate data exists
-    if(data===undefined)
-    {
-      console.log("Data does not exist");
-      return Promise.resolve("error");
-    }
-
-    // Validate struct data
-    if (!data.vertex || !data.boundary || !data.position || !data.vertexTypes ||
-      (Object.keys(data.vertexTypes).length === 0 && data.vertexTypes.constructor === Object)) {
-      console.log("Data Graph Structure is corrupted. You should check it!");
-      return Promise.resolve("error");
-    }
-
-    // Validate embedded vertex type with vertices
-    let dataTypes = data.vertexTypes['VERTEX'];
-    let vertices = this.removeDuplicates(data.vertex, "vertexType");
-    let types = this.getListVertexType(dataTypes);
-    for (let vertex of vertices) {
-
-      let type = vertex.vertexType;
-      // If vertex type not exit in embedded vertex type
-      if (types.indexOf(type) < 0) {
-        console.log("[Graph Data Structure] Vertex type not exits in embedded vertex type");
-        return Promise.resolve("warning");
-      }
-
-      // Validate data key between embedded vertex and vetex in graph.
-      let dataSource = vertex.data;
-      let dataTarget = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(dataTypes, {'vertexType': type});
-      let keySource = Object.keys(dataSource[0] || {});
-      let keyTarget = Object.keys(dataTarget.data[0] || {});
-
-      // Check length key
-      if (this.checkLengthMisMatch(keySource, keyTarget)) {
-        console.log("[Graph Data Structure] Data's length is different");
-        return Promise.resolve("warning");
-      }
-
-      // Check mismatch key
-      let flag = await this.checkKeyMisMatch(keySource, keyTarget);
-
-      if (flag) {
-        console.log("[Graph Data Structure] Key vertex at source not exit in target");
-        return Promise.resolve("warning");
-      }
-    }
-
-    return Promise.resolve("ok");
-  }
-
-  /**
-   * Validate Vertex Define Structure
-   */
-  async validateVertexDefineStructure(data) {
-
-    //Validate data exists
-    if(data===undefined)
-    {
-      return Promise.resolve(true);
-    }
-
-    // Option vertex type definition but choose graph type file
-    if (data.vertex || data.edge || data.boundary || data.position || data.vertexTypes) {
-      return Promise.resolve(true);
-    }
-
-    // Option vertex type definition but choose mapping type file
-    if (data.inputMessage||data.operations||data.outputMessage||data.edges){
-      return Promise.resolve(true);
-    }
-  }
-
-  /**
-   * Removing Duplicate Objects From An Array By Property
-   * @param myArr
-   * @param prop
-   * @author: Dwayne
-   * @reference: https://ilikekillnerds.com/2016/05/removing-duplicate-objects-array-property-name-javascript/
-   */
-  removeDuplicates(myArr, prop) {
-    return myArr.filter((obj, pos, arr) => {
-      return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
-    });
-  }
-
-  /**
-   * get list vertex type of graph
-   * @param array data
-   * @returns {*}
-   */
-  getListVertexType(data) {
-    let types = [];
-    let len = data.length;
-    for (let i = 0; i < len; i++) {
-      let type = data[i];
-      types.push(type.vertexType);
-    }
-
-    return types;
-  }
-
-  /**
-   * Check length of source and target is match
-   * @param src
-   * @param tgt
-   * @returns {boolean}
-   */
-  checkLengthMisMatch(src, tgt) {
-    return src.length != tgt.length ? true : false;
-  }
-
-  /**
-   * Check key of source and target is match
-   * @param src
-   * @param tgt
-   * @returns {boolean}
-   */
-  checkKeyMisMatch(src, tgt) {
-    let misMatch = false;
-    src.forEach(key => {
-      if (tgt.indexOf(key) < 0) {
-        misMatch = true;
-      }
-    });
-
-    return Promise.resolve(misMatch);
-  }
-
   getContentGraphAsJson() {
     let dataContent = {VERTEX_GROUP: [], VERTEX: []};
 
     if (this.isEmptyContainerData(this.dataContainer)){
       return Promise.reject("There is no Input data. Please import!");
     } 
+
+    const cloneVertexDefine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.segmentMgmt.vertexDefinition);
+
+    if(cloneVertexDefine.vertexGroup){
+      dataContent.VERTEX_GROUP = this.getSaveVertexGroup(cloneVertexDefine.vertexGroup);
+    }
 
     // Process data to export
     // Need clone data cause case user export
@@ -55289,13 +55087,28 @@ class CltSegment {
       dataContent.VERTEX.push(this.getSaveDataVertex(vertex));
     });
 
-    const cloneVertexDefine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.vertexDefinition);
-
-    if(this.vertexDefinition.vertexGroup){
-      dataContent.VERTEX_GROUP = cloneVertexDefine.vertexGroup;
-    }
-
     return Promise.resolve(dataContent);
+  }
+
+  /**
+   * Filter properties that need to save
+   * @param {*} vertexGroup 
+   */
+  getSaveVertexGroup(vertexGroup){
+    let resObj = [];
+
+    vertexGroup.forEach(group => {
+      let tmpGroup = {};
+
+      tmpGroup.groupType          = group.groupType;
+      tmpGroup.option             = group.option;
+      tmpGroup.dataElementFormat  = group.dataElementFormat;
+      tmpGroup.vertexPresentation = group.vertexPresentation;
+
+      resObj.push(tmpGroup);
+    })
+    
+    return resObj;
   }
 
   /**
@@ -55309,15 +55122,16 @@ class CltSegment {
     resObj.description = vertex.description;
     resObj.data = [];
 
+    const arrPropNeedToSave = Object.keys(this.segmentMgmt.vertexGroup.dataElementFormat);
+
     vertex.data.forEach(e => {
-      resObj.data.push({
-        name        : e.name,
-        type        : e.type,
-        usage       : e.usage,
-        format      : e.format,
-        repeat      : e.repeat,
-        description : e.description
+      let elementDataObj = {};
+
+      arrPropNeedToSave.forEach(prop => {
+        elementDataObj[prop] = e[prop];
       });
+
+      resObj.data.push(elementDataObj);
     });
 
     return resObj;
@@ -55327,15 +55141,26 @@ class CltSegment {
     return (containerData.vertex.length == 0 && containerData.boundary.length == 0)
   }
 
-  resetVertexDefinition(){
-    this.vertexDefinition.groupVertexOption = {};
-    this.vertexDefinition.vertexFormatType = {};
-    this.vertexDefinition.vertexFormat = {};
-    this.vertexDefinition.vertexGroupType = {};
-    this.vertexDefinition.headerForm = {};
-    this.vertexDefinition.vertexPresentation = {};
-    this.vertexDefinition.vertexGroup = null;
-    this.vertexDefinition.keyPrefix = {type:{}};
+  /**
+   * Validate Vertex Group Define Structure
+   */
+  validateSegmentSpecStructure(data) {
+
+    //Validate data exists
+    if(data===undefined)
+    {
+      return false;
+    }
+
+    if (!data.VERTEX_GROUP || !data.VERTEX) {
+      return false;
+    }
+
+    if (Object.keys(data).length > 2) {
+      return false;
+    }
+
+    return true;
   }
 }
   
@@ -55383,10 +55208,14 @@ class SegmentMgmt {
     this.dataContainer            = props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
     this.containerId              = props.containerId;
     this.svgId                    = props.svgId;
-    this.vertexDefinition         = props.vertexDefinition;
     this.viewMode                 = {value: __WEBPACK_IMPORTED_MODULE_7__common_const_index__["n" /* VIEW_MODE */].SEGMENT};
     this.edgeMgmt                 = props.edgeMgmt;
     this.connectSide              = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].NONE;
+
+    this.vertexDefinition = {
+      vertexGroup: [],  // Group vertex
+      vertex:[]         // List of vertex type
+    };
 
     this.initialize();
   }
@@ -55398,6 +55227,7 @@ class SegmentMgmt {
 
     this.selectorClass = `_vertex_${this.svgId}`;
     this.currentVertex = null; //vertex is being edited
+    this.vertexGroup = null;
 
     new __WEBPACK_IMPORTED_MODULE_6__menu_context_segment_menu__["a" /* default */]({
       selector: `.${this.selectorClass}`,
@@ -55508,20 +55338,11 @@ class SegmentMgmt {
       vertexMgmt: this
     });
 
-    newVertex.create(sOptions, this.handleDragVertex, this.edgeMgmt.handleDragConnection);
+    newVertex.create(sOptions, this.handleDragVertex);
   }
 
   startDrag(main) {
     return function (d) {
-      if (main.edgeMgmt.isSelectingEdge())
-        main.edgeMgmt.cancleSelectedPath();
-
-      // Resize boundary when vertex dragged
-      if (!d.parent)
-        main.objectUtils.reSizeBoundaryWhenObjectDragged(d);
-
-      main.edgeMgmt.emphasizePathConnectForVertex(this);
-
       d.moveToFront();
     }
   }
@@ -55537,23 +55358,11 @@ class SegmentMgmt {
       d.y = y;
       // Transform group
       __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${d.id}`).attr("transform", "translate(" + [d.x, d.y] + ")");
-      main.edgeMgmt.updatePathConnectForVertex(d);
     }
   }
 
   endDrag(main) {
     return function (d) {
-      if (d.parent) {
-        //If object not out boundary parent , object change postion in boundary parent, so change index object
-        if (main.objectUtils.checkDragObjectOutsideBoundary(d) == false) {
-          main.objectUtils.changeIndexInBoundaryForObject(d);
-        }
-      } else {
-        main.objectUtils.checkDragObjectInsideBoundary(d);
-        main.objectUtils.restoreSizeBoundary(d);
-      }
-      
-      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(main.dataContainer, main.svgId);
     }
   }
 
@@ -55562,15 +55371,15 @@ class SegmentMgmt {
    * @param vertex
    */
   makePopupEditVertex(vertex) {
-
     this.currentVertex = vertex;
     // Use in function updateVertexInfo()
     let {name, description, data, groupType} = vertex;
 
     // Get vertex group with group type
     if (!groupType) {
-      groupType = this.vertexDefinition.vertexGroupType[Object.keys(this.vertexDefinition.vertexGroupType)[0]].groupType;
+      groupType = this.vertexGroup.groupType;
     }
+
     this.currentVertex.groupType = groupType;
 
     // Append content to popup
@@ -55578,11 +55387,10 @@ class SegmentMgmt {
     $(`#vertexDesc_${this.svgId}`).val(description);
 
     // Generate properties vertex
-    let keyHeader = this.vertexDefinition.headerForm[groupType];
-    let cols = keyHeader.length;
+    let columnTitle = Object.keys(this.vertexGroup.dataElementFormat);
+    let cols = columnTitle.length;
     let rows = data.length;
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
-    const dataFormat = this.vertexDefinition.vertexFormat[groupType];
+    const dataType = this.vertexGroup.elementDataType;
 
     let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).empty();
     let $contentHeader = $('<thead>');
@@ -55591,15 +55399,15 @@ class SegmentMgmt {
     let $colGroup = $('<colgroup>');
     let $popWidth = 0;
     for (let i = 0; i < cols; i++) {
-      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(keyHeader[i]));
+      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(columnTitle[i]));
       $colHdr.attr('class', 'col_header');
       $colHdr.appendTo($headerRow);
 
       // Init col in col group
-      let prop = keyHeader[i];
-      let type = typeData[prop];
-      let def = dataFormat[prop];
-      let width = this.findLongestContent({data, prop, type, def});
+      let prop = columnTitle[i];
+      let type = dataType[prop];
+      let value = this.vertexGroup.dataElementFormat[prop];
+      let width = this.findLongestContent({data, prop, type, value});
       $popWidth += width;
       let $colWidth = $('<col>').attr('width', width);
       $colWidth.appendTo($colGroup);
@@ -55628,15 +55436,15 @@ class SegmentMgmt {
       const dataRow = data[i];
       const $row = $('<tr>');
       for (let j = 0; j < cols; j++) {
-        let prop = keyHeader[j];
-        let type = typeData[prop];
+        let prop = columnTitle[j];
+        let type = dataType[prop];
         let val = dataRow[prop];
         let opt = [];
 
         const $col = $('<td>');
         // Get option if type is array
         if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY) {
-          opt = dataFormat[prop];
+          opt = this.vertexGroup.dataElementFormat[prop];
         } else if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
           $col.attr('class', 'checkbox_center');
         }
@@ -55676,8 +55484,8 @@ class SegmentMgmt {
    */
   generateControlByType(options) {
     let $control = null;
-    let {i, type, val, prop, opt, groupType} = options;
-    let defaultVal = this.vertexDefinition.vertexFormat[groupType][prop];
+    let {i, type, val, prop, opt} = options;
+    let defaultVal = this.vertexGroup.dataElementFormat[prop];
     i = 0;
     switch (type) {
       case __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN:
@@ -55742,23 +55550,23 @@ class SegmentMgmt {
   }
 
   findLongestContent(configs) {
-    let {data, prop, type, def} = configs;
+    let {data, prop, type, value} = configs;
     let firstRow = data[0];
     let arr = [];
 
     // If type is boolean or first undefined or firstRow is empty
     if ((type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN) || !firstRow)
-      return this.getLongestSpecialCase(prop, def);
+      return this.getLongestSpecialCase(prop, value);
     // prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
 
     //  If object firstRow hasn't it own the specified property
     if (!firstRow.hasOwnProperty(prop)) {
-      return this.getLongestSpecialCase(prop, def);
+      return this.getLongestSpecialCase(prop, value);
     }
 
     // From an array of objects, extract value of a property as array
     if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY) {
-      arr = def;
+      arr = value;
     } else {
       arr = data.map(e => e[prop]);
     }
@@ -55769,14 +55577,14 @@ class SegmentMgmt {
     return longest.toString().length * (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY ? __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* POPUP_CONFIG */].WIDTH_CHAR_UPPER : __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* POPUP_CONFIG */].WIDTH_CHAR) + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* POPUP_CONFIG */].PADDING_CHAR;
   }
 
-  getLongestSpecialCase(prop, def) {
+  getLongestSpecialCase(prop, value) {
     let lengthProp = prop.toString().length;
-    let lengthDef = def.toString().length;
-    let type = typeof(def);
+    let lengthDef = value.toString().length;
+    let type = typeof(value);
     // Has type is array
-    if (type === "object" && Array.isArray(def)) {
+    if (type === "object" && Array.isArray(value)) {
       type = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY
-      lengthDef = this.getLongestContentFromArry(def).toString().length;
+      lengthDef = this.getLongestContentFromArry(value).toString().length;
     }
 
     return (lengthProp > lengthDef ? lengthProp * __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* POPUP_CONFIG */].WIDTH_CHAR :
@@ -55794,23 +55602,22 @@ class SegmentMgmt {
 
   addDataElement() {
     const groupType = this.currentVertex.groupType;
-    const keyHeader = this.vertexDefinition.headerForm[groupType];
-    let cols = keyHeader.length;
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
-    const dataFormat = this.vertexDefinition.vertexFormat[groupType];
+    const columnTitle = Object.keys(this.vertexGroup.dataElementFormat);
+    const cols = columnTitle.length;
+    const dataType = this.vertexGroup.elementDataType;
     let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`);
 
     const $row = $('<tr>');
     for (let j = 0; j < cols; j++) {
-      let prop = keyHeader[j];
-      let type = typeData[prop];
+      let prop = columnTitle[j];
+      let type = dataType[prop];
       // let val = dataRow[prop];
       let opt = [];
 
       const $col = $('<td>');
       // Get option if type is array
       if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY) {
-        opt = dataFormat[prop];
+        opt = this.vertexGroup.dataElementFormat[prop];
       } else if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
         $col.attr('class', 'checkbox_center');
       }
@@ -55895,8 +55702,8 @@ class SegmentMgmt {
     // Get data on form
     this.currentVertex.name = this.currentVertex.vertexType = $(`#vertexName_${this.svgId}`).val();
     this.currentVertex.description = $(`#vertexDesc_${this.svgId}`).val();
-    const groupType = this.currentVertex.groupType;    
-    const typeData = this.vertexDefinition.vertexFormatType[groupType];
+    const groupType = this.currentVertex.groupType;
+    const dataType = this.vertexGroup.elementDataType;
     
     let elements = [];
     // Get data element
@@ -55904,7 +55711,7 @@ class SegmentMgmt {
       let row = {};
       $(this).find("td input:text, td input:checkbox, td select").each(function () {
         let prop = $(this).attr("name");
-        let type = typeData[prop];
+        let type = dataType[prop];
         if (prop != `${ATTR_DEL_CHECK}_${this.svgId}`)
           row[prop] = type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN ? ($(this).is(':checked') ? true : false) : this.value;
       });
@@ -55951,7 +55758,7 @@ class SegmentMgmt {
 
     let htmlContent = '';
     let len = elements.length;
-    let presentation = this.vertexDefinition.vertexPresentation[groupType];
+    let presentation = this.vertexGroup.vertexPresentation;
 
     const hasLeftConnector = (connectSide == __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].LEFT || connectSide == __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH) ? " has_left_connect" : "";
     const hasRightConnector = (connectSide == __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].RIGHT || connectSide == __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH) ? " has_right_connect" : "";
@@ -55994,6 +55801,105 @@ class SegmentMgmt {
   clearAll(){
     __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
     this.dataContainer.vertex = [];
+  }
+
+  LoadVertexGroupDefinition(vertexDefinitionData){
+    //Validate data struct
+    if (!this.validateVertexGourpDefineStructure(vertexDefinitionData)){
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Vertex Group Definition Structure is corrupted. You should check it!");
+      return false;
+    }
+
+    //Reload Vertex Define and init main menu
+    this.processDataVertexTypeDefine(vertexDefinitionData);
+
+    return true;
+  }
+
+  getVertexFormatType(vertexGroup) {
+    for (let i = 0; i < vertexGroup.length; i++) {
+      this.vertexDefinition.vertexGroup.push(vertexGroup[i]);
+      const {dataElementFormat} = vertexGroup[i];
+      let dataType = {};
+      let header = Object.keys(dataElementFormat);
+      let len = header.length;
+      for (let i = 0; i < len; i++) {
+        let key = header[i];
+        let value = dataElementFormat[key];
+        let type = typeof(value);
+
+        dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].STRING; // For string and other type
+        if (type === "boolean")
+          dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].BOOLEAN; // For boolean
+
+        if (type === "object" && Array.isArray(value))
+          dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].ARRAY; // For array
+
+        if (type === "number")
+          dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_FORMAT_TYPE */].NUMBER; // For number
+      }
+
+      this.vertexDefinition.vertexGroup[i].elementDataType = dataType;
+    };
+  }
+
+  getVertexTypesShowFull(data, container) {
+    const group = data["VERTEX_GROUP"];
+    const vertex = data["VERTEX"];
+    let len = group.length;
+    for (let i = 0; i < len; i++) {
+      let groupType = group[i].groupType;
+      let groupOption = group[i].option;
+      let lenOpt = groupOption.length;
+      for (let j = 0; j < lenOpt; j++) {
+        let option = groupOption[j];
+        let groupVertex = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.filter(vertex, (e) => {
+            return e.groupType === groupType;
+          }
+        );
+        let groupAction = [];
+        groupVertex.forEach(e => {
+          groupAction.push(e.vertexType);
+        });
+        container.groupVertexOption[option] = groupAction;
+      }
+    }
+  }
+
+  processDataVertexTypeDefine(data) {
+    this.resetVertexDefinition();
+
+    const {VERTEX_GROUP} = data;
+    this.getVertexFormatType(VERTEX_GROUP);
+
+    this.vertexGroup = this.vertexDefinition.vertexGroup[0];
+  }
+
+  resetVertexDefinition(){
+    this.vertexDefinition.vertexGroup = [];
+    this.vertexDefinition.vertex = [];
+  }
+
+  /**
+   * Validate Vertex Group Define Structure
+   */
+  validateVertexGourpDefineStructure(data) {
+
+    //Validate data exists
+    if(data===undefined)
+    {
+      return false;
+    }
+
+    if (!data.VERTEX_GROUP) {
+      return false;
+    }
+
+    if (Object.keys(data).length > 1) {
+      return false;
+    }
+
+    return true;
   }
 }
 
@@ -56122,18 +56028,21 @@ class MainMenuSegment {
             "createNew": {
               name: "Create New",
               icon: "fa-window-maximize",
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'createNew')
             },
             "sep1": "-",
             "find": {
               name: "Find...",
               type: "sub",
               icon: "fa-search",
-              items: this.loadItems()
+              items: Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'find') ? this.loadItems() : {},
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'find')
             },
             "sep2": "-",
             "showReduced": {
               name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
               icon: "fa-link",
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'showReduced')
             },
           },
           events: {
