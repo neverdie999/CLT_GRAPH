@@ -42,6 +42,7 @@ class SegmentMgmt {
     this.viewMode                 = {value: VIEW_MODE.SEGMENT};
     this.edgeMgmt                 = props.edgeMgmt;
     this.connectSide              = CONNECT_SIDE.NONE;
+   // this.parent                   = props.parent;
 
     this.vertexDefinition = {
       vertexGroup: [],  // Group vertex
@@ -156,6 +157,7 @@ class SegmentMgmt {
 
     $(`#vertexBtnCancel_${main.svgId}`).click(() => {
       this.closePopVertexInfo();
+      this.currentVertex = null;
     });
   }
 
@@ -169,7 +171,7 @@ class SegmentMgmt {
       vertexMgmt: this
     });
 
-    newVertex.create(sOptions, this.handleDragVertex);
+    return newVertex.create(sOptions, this.handleDragVertex);
   }
 
   startDrag(main) {
@@ -514,7 +516,6 @@ class SegmentMgmt {
    * Close popup edit vertex info
    */
   closePopVertexInfo() {
-    this.currentVertex = null;
     let options = {popupId: `${HTML_VERTEX_INFO_ID}_${this.svgId}`}
     PopUtils.metClosePopup(options);
   }
@@ -555,14 +556,27 @@ class SegmentMgmt {
     this.currentVertex.data = elements;
     this.currentVertex.groupType = groupType;
 
+    // let newVertex = null;
+    // let updatedVertexId = this.currentVertex.id;
     if (this.currentVertex.id) {
       this.updateVertexInfo(this.currentVertex);
     } else {
       //Create New
+      //newVertex = this.create(this.currentVertex);
       this.create(this.currentVertex);
     }
 
+    //this.parent.sort2();
+
     this.closePopVertexInfo();
+
+    // const tmpVertex = _.find(this.dataContainer.vertex, {"id":updatedVertexId});
+    // if (newVertex) {
+    //   newVertex.showToUser();
+    // }else if (this.currentVertex) {
+    //   this.currentVertex.showToUser();
+    //   this.currentVertex = null;
+    // }
   }
 
   /**
@@ -619,10 +633,6 @@ class SegmentMgmt {
     );
 
     setMinBoundaryGraph(this.dataContainer, this.svgId);
-  }
-
-  hideAllEdgeRelatedToVertex(vertexId, status){
-    this.edgeMgmt.hideAllEdgeRelatedToVertex(vertexId, status);
   }
 
   updatePathConnectForVertex(vertex){

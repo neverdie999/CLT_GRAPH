@@ -144,16 +144,7 @@ class CltMessageMapping {
       this.inputMgmt.setCenterAlignmentGarph();
       this.outputMgmt.setCenterAlignmentGarph();
       
-      //update all edges for Operations area
-      this.storeOperations.vertex.forEach(e => {
-        e.updatePathConnect();
-      })
-
-      //update all edges for Operations area
-      this.storeOutputMessage.vertex.forEach(e => {
-        e.updatePathConnect();
-      })
-
+      this.objectUtils.updatePathConnectOnWindowResize(this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     });
   }
 

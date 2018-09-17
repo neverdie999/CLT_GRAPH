@@ -35,6 +35,10 @@ class MainMenuSegment {
                 this.parent.isShowReduced ? this.parent.showFull() : this.parent.showReduced();
                 break;
 
+              case "sort":
+                this.parent.sort2();
+                break;
+
               default:
                 break;
             }
@@ -58,6 +62,11 @@ class MainMenuSegment {
               name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
               icon: "fa-link",
               disabled: !checkModePermission(this.viewMode.value, 'showReduced')
+            },
+            "sep3": "-",
+            "sort": {
+              name: "Sort",
+              icon: "fa-sort"
             },
           },
           events: {

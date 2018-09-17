@@ -72,23 +72,23 @@ class ObjectUtils {
         y: axisY - parentSvg.scrollTop()
       };
 
-      if (prop.indexOf('boundary_title') != -1){
+    if (prop.indexOf('boundary_title') != -1){
 
-        axisY = axisY + BOUNDARY_ATTR_SIZE.HEADER_HEIGHT / 2;
-  
-        return {
-          x: type === TYPE_CONNECT.OUTPUT ? axisX + info.width + containerSvg.offset().left : axisX + containerSvg.offset().left,
-          y: axisY - parentSvg.scrollTop()
-        };
-      }else if (prop.indexOf('title') != -1){
+      axisY = axisY + BOUNDARY_ATTR_SIZE.HEADER_HEIGHT / 2;
 
-        axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT / 2;
-  
-        return {
-          x: type === TYPE_CONNECT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
-          y: axisY - parentSvg.scrollTop()
-        };
-      } else{
+      return {
+        x: type === TYPE_CONNECT.OUTPUT ? axisX + info.width + containerSvg.offset().left : axisX + containerSvg.offset().left,
+        y: axisY - parentSvg.scrollTop()
+      };
+    }else if (prop.indexOf('title') != -1){
+
+      axisY = axisY + VERTEX_ATTR_SIZE.HEADER_HEIGHT / 2;
+
+      return {
+        x: type === TYPE_CONNECT.OUTPUT ? axisX + VERTEX_ATTR_SIZE.GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
+        y: axisY - parentSvg.scrollTop()
+      };
+    } else{
       // Get index prop in object
       let index = this.findIndexPropInVertex(id, prop);
       // Calculate coordinate of prop

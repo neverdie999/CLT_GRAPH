@@ -20418,23 +20418,23 @@ class ObjectUtils {
         y: axisY - parentSvg.scrollTop()
       };
 
-      if (prop.indexOf('boundary_title') != -1){
+    if (prop.indexOf('boundary_title') != -1){
 
-        axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT / 2;
-  
-        return {
-          x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* TYPE_CONNECT */].OUTPUT ? axisX + info.width + containerSvg.offset().left : axisX + containerSvg.offset().left,
-          y: axisY - parentSvg.scrollTop()
-        };
-      }else if (prop.indexOf('title') != -1){
+      axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT / 2;
 
-        axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT / 2;
-  
-        return {
-          x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* TYPE_CONNECT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
-          y: axisY - parentSvg.scrollTop()
-        };
-      } else{
+      return {
+        x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* TYPE_CONNECT */].OUTPUT ? axisX + info.width + containerSvg.offset().left : axisX + containerSvg.offset().left,
+        y: axisY - parentSvg.scrollTop()
+      };
+    }else if (prop.indexOf('title') != -1){
+
+      axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT / 2;
+
+      return {
+        x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["j" /* TYPE_CONNECT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
+        y: axisY - parentSvg.scrollTop()
+      };
+    } else{
       // Get index prop in object
       let index = this.findIndexPropInVertex(id, prop);
       // Calculate coordinate of prop
@@ -52810,6 +52810,8 @@ class Vertex {
 
     if(!isImport) 
       Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+
+    return this;
   }
 
   /**
@@ -54898,7 +54900,8 @@ class CltSegment {
       containerId : this.graphContainerId,
       svgId : this.graphSvgId,
       viewMode: this.viewMode,
-      edgeMgmt : this.edgeMgmt
+      edgeMgmt : this.edgeMgmt,
+     // parent: this
     });
 
     this.initCustomFunctionD3();
@@ -54945,10 +54948,6 @@ class CltSegment {
     });
   }
 
-  createVertex(opt) {
-    this.vertexMgmt.create(opt);
-  }
-
   /**
    * Clear all element on graph
    * And reinit marker def
@@ -54967,7 +54966,7 @@ class CltSegment {
       __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).select('foreignObject').attr("height", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT);
     });
     
-    Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+    this.sort2();
   }
 
   showFull(){
@@ -54978,7 +54977,7 @@ class CltSegment {
       __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).select('foreignObject').attr("height", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * arrProp.length);
     });
 
-    Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+    this.sort2();
   }
 
   LoadVertexGroupDefinition(vertexDefinitionData){
@@ -55005,8 +55004,6 @@ class CltSegment {
       e.isImport = true;
 
       this.segmentMgmt.create(e);
-
-      x += __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + 5;
     });
   }
 
@@ -55023,10 +55020,9 @@ class CltSegment {
     this.clearAll();
 
     await this.drawObjects(segmentData);
+    await this.sort2();
 
     this.initMenuContext();
-
-    Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer,this.graphSvgId);
   }
 
   save(fileName) {
@@ -55162,6 +55158,136 @@ class CltSegment {
 
     return true;
   }
+
+  sort() {
+    let arrSort =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.clone(this.dataContainer.vertex);
+   
+    // Sort ascending by data lenght
+    arrSort.sort(function (a,b) {
+      return a.data.length - b.data.length;
+    });
+
+    const $container = $(`#${this.graphContainerId}`);
+    const {width: cntrW} = $container.get(0).getBoundingClientRect();
+    const columnCount = parseInt(cntrW / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH);
+
+    //Arrange all segment for an 2 dimensional array
+    let arrSort2 = [];
+    let begin = -1, end = arrSort.length;
+    while (begin < end - 1) {
+      let arrTemp = [];
+      for ( let i = 0; i < columnCount && begin + 1 < end; i++) {
+        arrTemp[i] = arrSort[++begin];
+      }
+      if (arrTemp.length > 0) arrSort2.push(arrTemp);
+
+      arrTemp = [];
+      for ( let j = 0; j < columnCount && end - 1 > begin; j++) {
+        arrTemp[j] = arrSort[--end];
+      }
+      if (arrTemp.length > 0) arrSort2.push(arrTemp);
+    }
+
+    // Begin sorting follow arport2 that was arranged before
+    let x = 5;
+    let y = 5;
+
+    for (let row = 0; row < arrSort2.length; row++) {
+      for (let col = 0; col < arrSort2[row].length; col++) {
+        if (row > 0) {
+          const $aboveVertex = $(`#${arrSort2[row-1][col]["id"]}`);
+          const {y: vY, height: vH} = $aboveVertex.get(0).getBoundingClientRect();
+          y = vY + vH + 5;
+        }
+
+        const vertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.vertex, {"id": arrSort2[row][col].id});
+        vertex.setPosition({x,y});
+
+        x += __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + 5;
+      }
+
+      x = 5;
+    }
+
+    Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.graphSvgId);
+  }
+
+  sort2() {
+    let arrSort =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.clone(this.dataContainer.vertex);
+
+    // Sort descending by data lenght of vertex
+    arrSort.sort(function (a,b) {
+      return b.data.length - a.data.length;
+    });
+
+    // get height for all vertex
+    for (let i = 0; i < arrSort.length; i++) {
+      const $vSelector = $(`#${arrSort[i].id}`);
+      arrSort[i].height = $vSelector.get(0).getBoundingClientRect().height;
+    }
+   
+    const nMarginRight = 5;
+    const nMarginBottom = 5;
+    const $container = $(`#${this.graphContainerId}`);
+    const {width: cntrW} = $container.get(0).getBoundingClientRect();
+    let columnCount = parseInt((cntrW - ((parseInt(cntrW / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH) - 1) * nMarginRight)) / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH);
+    if (columnCount < 1) columnCount = 1;
+
+    // Fist arrange
+    let arrSort2 = [];
+    let arrLenght = [];
+    for (let i = 0; i < columnCount && i < arrSort.length; i++) {
+      let arr = [];
+      arrSort[i].y = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["g" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y;
+      arr.push(arrSort[i]);
+      arrSort2.push(arr);
+      arrLenght[i] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["g" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y + arrSort[i].height;
+    }
+
+    // Calculate for sorting
+    if (arrSort.length > columnCount) {
+      let nCount = columnCount;
+      while (nCount < arrSort.length) {
+        // Find the column has the min height
+        let indexOfMin = this.indexOfMinOf(arrLenght);
+
+        arrSort[nCount].y = arrLenght[indexOfMin] + nMarginBottom;
+        arrSort2[indexOfMin].push(arrSort[nCount]);
+        arrLenght[indexOfMin] += arrSort[nCount].height + nMarginBottom;
+
+        nCount++;
+      }
+    }
+
+    // Arrange all vertex with arrSort2 was made
+    let x = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["g" /* PADDING_POSITION_SVG */].MIN_OFFSET_X;
+
+    for (let row = 0; row < arrSort2.length; row++) {
+      for (let col = 0; col < arrSort2[row].length; col++) {
+        const vertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.vertex, {"id": arrSort2[row][col].id});
+        vertex.setPosition({x, y: arrSort2[row][col].y});
+      }
+      x += __WEBPACK_IMPORTED_MODULE_7__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + nMarginRight;
+    }
+
+    Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.graphSvgId);
+  }
+
+  indexOfMinOf(arr) {
+    if (arr.length == 0) return -1;
+
+    let min = arr[0];
+    let index = 0;
+
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i] < min) {
+        min = arr[i];
+        index = i;
+      }
+    }
+
+    return index;
+  }
 }
   
 /* harmony default export */ __webpack_exports__["a"] = (CltSegment);
@@ -55211,6 +55337,7 @@ class SegmentMgmt {
     this.viewMode                 = {value: __WEBPACK_IMPORTED_MODULE_7__common_const_index__["n" /* VIEW_MODE */].SEGMENT};
     this.edgeMgmt                 = props.edgeMgmt;
     this.connectSide              = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].NONE;
+   // this.parent                   = props.parent;
 
     this.vertexDefinition = {
       vertexGroup: [],  // Group vertex
@@ -55325,6 +55452,7 @@ class SegmentMgmt {
 
     $(`#vertexBtnCancel_${main.svgId}`).click(() => {
       this.closePopVertexInfo();
+      this.currentVertex = null;
     });
   }
 
@@ -55338,7 +55466,7 @@ class SegmentMgmt {
       vertexMgmt: this
     });
 
-    newVertex.create(sOptions, this.handleDragVertex);
+    return newVertex.create(sOptions, this.handleDragVertex);
   }
 
   startDrag(main) {
@@ -55683,7 +55811,6 @@ class SegmentMgmt {
    * Close popup edit vertex info
    */
   closePopVertexInfo() {
-    this.currentVertex = null;
     let options = {popupId: `${HTML_VERTEX_INFO_ID}_${this.svgId}`}
     __WEBPACK_IMPORTED_MODULE_4__common_utilities_popup_ult__["a" /* default */].metClosePopup(options);
   }
@@ -55724,14 +55851,27 @@ class SegmentMgmt {
     this.currentVertex.data = elements;
     this.currentVertex.groupType = groupType;
 
+    // let newVertex = null;
+    // let updatedVertexId = this.currentVertex.id;
     if (this.currentVertex.id) {
       this.updateVertexInfo(this.currentVertex);
     } else {
       //Create New
+      //newVertex = this.create(this.currentVertex);
       this.create(this.currentVertex);
     }
 
+    //this.parent.sort2();
+
     this.closePopVertexInfo();
+
+    // const tmpVertex = _.find(this.dataContainer.vertex, {"id":updatedVertexId});
+    // if (newVertex) {
+    //   newVertex.showToUser();
+    // }else if (this.currentVertex) {
+    //   this.currentVertex.showToUser();
+    //   this.currentVertex = null;
+    // }
   }
 
   /**
@@ -55788,10 +55928,6 @@ class SegmentMgmt {
     );
 
     Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
-  }
-
-  hideAllEdgeRelatedToVertex(vertexId, status){
-    this.edgeMgmt.hideAllEdgeRelatedToVertex(vertexId, status);
   }
 
   updatePathConnectForVertex(vertex){
@@ -56020,6 +56156,10 @@ class MainMenuSegment {
                 this.parent.isShowReduced ? this.parent.showFull() : this.parent.showReduced();
                 break;
 
+              case "sort":
+                this.parent.sort2();
+                break;
+
               default:
                 break;
             }
@@ -56043,6 +56183,11 @@ class MainMenuSegment {
               name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
               icon: "fa-link",
               disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'showReduced')
+            },
+            "sep3": "-",
+            "sort": {
+              name: "Sort",
+              icon: "fa-sort"
             },
           },
           events: {

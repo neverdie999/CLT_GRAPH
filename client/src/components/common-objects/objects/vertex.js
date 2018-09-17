@@ -206,6 +206,8 @@ class Vertex {
 
     if(!isImport) 
       setMinBoundaryGraph(this.dataContainer, this.svgId);
+
+    return this;
   }
 
   /**

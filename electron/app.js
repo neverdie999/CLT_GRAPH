@@ -49,7 +49,7 @@ app.on('ready', async () => {
 
 
   mainWindow.loadURL(url.format ({
-    pathname: path.join(__dirname, '/../client/index.html'),
+    pathname: path.join(__dirname, '/../client/src/modules/message-mapping-gui/index.html'),
     protocol: 'file:',
     slashes: true
   }));
