@@ -122,7 +122,7 @@ class CltSegment {
       d3.select(`#${vertex.id}`).select('foreignObject').attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT);
     });
     
-    this.sort2();
+    this.sortByName();
   }
 
   showFull(){
@@ -133,7 +133,7 @@ class CltSegment {
       d3.select(`#${vertex.id}`).select('foreignObject').attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * arrProp.length);
     });
 
-    this.sort2();
+    this.sortByName();
   }
 
   LoadVertexGroupDefinition(vertexDefinitionData){
@@ -176,7 +176,7 @@ class CltSegment {
     this.clearAll();
 
     await this.drawObjects(segmentData);
-    await this.sort2();
+    await this.sortByName();
 
     this.initMenuContext();
   }
@@ -315,60 +315,7 @@ class CltSegment {
     return true;
   }
 
-  sort() {
-    let arrSort =  _.clone(this.dataContainer.vertex);
-   
-    // Sort ascending by data lenght
-    arrSort.sort(function (a,b) {
-      return a.data.length - b.data.length;
-    });
-
-    const $container = $(`#${this.graphContainerId}`);
-    const {width: cntrW} = $container.get(0).getBoundingClientRect();
-    const columnCount = parseInt(cntrW / VERTEX_ATTR_SIZE.GROUP_WIDTH);
-
-    //Arrange all segment for an 2 dimensional array
-    let arrSort2 = [];
-    let begin = -1, end = arrSort.length;
-    while (begin < end - 1) {
-      let arrTemp = [];
-      for ( let i = 0; i < columnCount && begin + 1 < end; i++) {
-        arrTemp[i] = arrSort[++begin];
-      }
-      if (arrTemp.length > 0) arrSort2.push(arrTemp);
-
-      arrTemp = [];
-      for ( let j = 0; j < columnCount && end - 1 > begin; j++) {
-        arrTemp[j] = arrSort[--end];
-      }
-      if (arrTemp.length > 0) arrSort2.push(arrTemp);
-    }
-
-    // Begin sorting follow arport2 that was arranged before
-    let x = 5;
-    let y = 5;
-
-    for (let row = 0; row < arrSort2.length; row++) {
-      for (let col = 0; col < arrSort2[row].length; col++) {
-        if (row > 0) {
-          const $aboveVertex = $(`#${arrSort2[row-1][col]["id"]}`);
-          const {y: vY, height: vH} = $aboveVertex.get(0).getBoundingClientRect();
-          y = vY + vH + 5;
-        }
-
-        const vertex = _.find(this.dataContainer.vertex, {"id": arrSort2[row][col].id});
-        vertex.setPosition({x,y});
-
-        x += VERTEX_ATTR_SIZE.GROUP_WIDTH + 5;
-      }
-
-      x = 5;
-    }
-
-    setMinBoundaryGraph(this.dataContainer, this.graphSvgId);
-  }
-
-  sort2() {
+  sortBySize() {
     let arrSort =  _.clone(this.dataContainer.vertex);
 
     // Sort descending by data lenght of vertex
@@ -429,6 +376,71 @@ class CltSegment {
     setMinBoundaryGraph(this.dataContainer, this.graphSvgId);
   }
 
+  sortByName() {
+    let arrSort =  _.clone(this.dataContainer.vertex);
+
+    arrSort.sort(function (a,b) {
+      return (a.name.toUpperCase()).localeCompare((b.name.toUpperCase()));
+    });
+
+    // get height for all vertex
+    for (let i = 0; i < arrSort.length; i++) {
+      const $vSelector = $(`#${arrSort[i].id}`);
+      arrSort[i].height = $vSelector.get(0).getBoundingClientRect().height;
+    }
+   
+    const nMarginRight = 5;
+    const nMarginBottom = 5;
+    const $container = $(`#${this.graphContainerId}`);
+    const {width: cntrW} = $container.get(0).getBoundingClientRect();
+    let columnCount = parseInt((cntrW - ((parseInt(cntrW / VERTEX_ATTR_SIZE.GROUP_WIDTH) - 1) * nMarginRight)) / VERTEX_ATTR_SIZE.GROUP_WIDTH);
+    if (columnCount < 1) columnCount = 1;
+
+    // Fist arrange
+    let arrSort2 = [];
+    let arrLenght = [];
+    for (let i = 0; i < columnCount && i < arrSort.length; i++) {
+      let arr = [];
+      arrSort[i].y = PADDING_POSITION_SVG.MIN_OFFSET_Y;
+      arr.push(arrSort[i]);
+      arrSort2.push(arr);
+      arrLenght[i] = PADDING_POSITION_SVG.MIN_OFFSET_Y + arrSort[i].height;
+    }
+
+    // Calculate for sorting
+    if (arrSort.length > columnCount) {
+      let nCount = columnCount;
+      while (nCount < arrSort.length) {
+        // Find the column has the min height
+        let indexOfMax = this.indexOfMaxOf(arrLenght);
+        const maxLength = arrLenght[indexOfMax];
+        const y = arrLenght[indexOfMax] + nMarginBottom;
+
+        for (let i = 0; i < columnCount && nCount < arrSort.length; i++) {
+          arrSort[nCount].y = y;
+          arrSort2[i].push(arrSort[nCount]);
+
+          arrLenght[i] = maxLength + nMarginBottom + arrSort[nCount].height;
+
+          nCount++;
+        }
+      }
+    }
+
+    // Arrange all vertex with arrSort2 was made
+    let x = PADDING_POSITION_SVG.MIN_OFFSET_X;
+
+    for (let row = 0; row < arrSort2.length; row++) {
+      for (let col = 0; col < arrSort2[row].length; col++) {
+        const vertex = _.find(this.dataContainer.vertex, {"id": arrSort2[row][col].id});
+        vertex.setPosition({x, y: arrSort2[row][col].y});
+      }
+      x += VERTEX_ATTR_SIZE.GROUP_WIDTH + nMarginRight;
+    }
+
+    setMinBoundaryGraph(this.dataContainer, this.graphSvgId);
+  }
+
   indexOfMinOf(arr) {
     if (arr.length == 0) return -1;
 
@@ -438,6 +450,22 @@ class CltSegment {
     for (let i = 1; i < arr.length; i++) {
       if (arr[i] < min) {
         min = arr[i];
+        index = i;
+      }
+    }
+
+    return index;
+  }
+
+  indexOfMaxOf(arr) {
+    if (arr.length == 0) return -1;
+
+    let max = arr[0];
+    let index = 0;
+
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i] > max) {
+        max = arr[i];
         index = i;
       }
     }

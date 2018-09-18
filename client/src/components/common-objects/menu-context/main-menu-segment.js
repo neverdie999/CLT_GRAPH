@@ -36,7 +36,7 @@ class MainMenuSegment {
                 break;
 
               case "sort":
-                this.parent.sort2();
+                this.parent.sortByName();
                 break;
 
               default:
@@ -104,7 +104,12 @@ class MainMenuSegment {
     const options = {};
 
     // Sort array object
-    const vertices = _.orderBy(this.parent.dataContainer.vertex, ['vertexType'], ['asc']);
+    let vertices = _.clone(this.parent.dataContainer.vertex);
+
+    vertices.sort(function (a,b) {
+      return (a.vertexType.toUpperCase()).localeCompare((b.vertexType.toUpperCase()));
+    });
+
     const len = vertices.length;
     for (let i = 0; i < len; i++) {
       let type = vertices[i].vertexType;
