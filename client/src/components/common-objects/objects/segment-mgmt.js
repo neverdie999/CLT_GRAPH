@@ -136,8 +136,6 @@ class SegmentMgmt {
     </div>
     <!-- Vertex Info Popup (E) -->`;
     $($(`#${this.svgId}`)[0].parentNode).append(sHtml);
-
-    
   }
 
   bindEventForPopupVertex() {
@@ -307,7 +305,9 @@ class SegmentMgmt {
       width: $popWidth + POPUP_CONFIG.PADDING_CHAR + 45
     }
 
-    PopUtils.metSetShowPopup(options);
+		PopUtils.metSetShowPopup(options);
+		
+		$(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tbody').sortable();
   }
 
   /**

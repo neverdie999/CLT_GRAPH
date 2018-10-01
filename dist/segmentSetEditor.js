@@ -55459,8 +55459,6 @@ class SegmentMgmt {
     </div>
     <!-- Vertex Info Popup (E) -->`;
     $($(`#${this.svgId}`)[0].parentNode).append(sHtml);
-
-    
   }
 
   bindEventForPopupVertex() {
@@ -55630,7 +55628,9 @@ class SegmentMgmt {
       width: $popWidth + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* POPUP_CONFIG */].PADDING_CHAR + 45
     }
 
-    __WEBPACK_IMPORTED_MODULE_4__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
+		__WEBPACK_IMPORTED_MODULE_4__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
+		
+		$(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tbody').sortable();
   }
 
   /**

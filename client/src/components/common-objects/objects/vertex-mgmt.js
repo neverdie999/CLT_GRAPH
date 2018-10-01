@@ -381,7 +381,11 @@ class VertexMgmt {
       $(`#vertexBtnAdd_${this.svgId}`).hide();
       $(`#vertexBtnDelete_${this.svgId}`).hide();
       $(`#vertexBtnConfirm_${this.svgId}`).hide();
-    }
+		}
+		
+		if (isDynamicDataSet) {
+			$(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tbody').sortable();
+		}
   }
 
   /**
