@@ -12,6 +12,8 @@ import {
   createPath,
 } from '../../../common/utilities/common.ult';
 
+const CONNECT_KEY = 'Connected';
+
 class EdgeMgmt {
   constructor(props) {
     this.dataContainer    = props.dataContainer;
@@ -580,7 +582,41 @@ class EdgeMgmt {
   hideEdgeGroupPath(){
     d3.select(`#${this.groupEdgePathId}`).style("display", "none");
     d3.select(`#${this.groupEdgePathId}`).moveToBack();
-  }
+	}
+	
+	updatePositionRelatedToVertex(vertexId, arrPosition) {
+		// Find edge start from this vertex
+		let arrSrcPaths = _.filter(this.dataContainer.edge, (e) => {
+      return e.source.vertexId === vertexId && e.source.prop.indexOf('title') == -1;
+		});
+		
+    // Find edge end at this vertex
+    let arrDesPaths = _.filter(this.dataContainer.edge, (e) => {
+      return e.target.vertexId === vertexId && e.target.prop.indexOf('title') == -1;
+		});
+
+		arrSrcPaths.forEach((edge)=>{
+			let oldIndex = edge.source.prop.replace(`${vertexId}${CONNECT_KEY}`, "");
+			let newIndex = arrPosition.indexOf(oldIndex);
+
+			if (newIndex == -1) {
+				edge.remove();
+			}else if (newIndex != parseInt(oldIndex)) {
+				edge.source.prop = `${vertexId}${CONNECT_KEY}${newIndex}`;
+			}
+		})
+
+		arrDesPaths.forEach((edge)=>{
+			let oldIndex = edge.target.prop.replace(`${vertexId}${CONNECT_KEY}`, "");
+			let newIndex = arrPosition.indexOf(oldIndex);
+
+			if (newIndex == -1) {
+				edge.remove();
+			}else if (newIndex != parseInt(oldIndex)) {
+				edge.target.prop = `${vertexId}${CONNECT_KEY}${newIndex}`;
+			}
+		})
+	}
 }
 
 export default EdgeMgmt;

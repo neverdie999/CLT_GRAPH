@@ -33,6 +33,10 @@ class MainMgmt {
 
   save(fileName){
     this.cltSegment.save(fileName);
-  }
+	}
+	
+	saveToImage(fileName) {
+		this.cltSegment.saveToImage(fileName);
+	}
 };
 export default MainMgmt;

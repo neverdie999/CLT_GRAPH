@@ -26,7 +26,7 @@ import {
   setMinBoundaryGraph,
   checkModePermission,
   getKeyPrefix,
-  htmlDecode,
+  htmlEncode,
   checkIsMatchRegexNumber,
   comShowMessage,
 } from '../../../common/utilities/common.ult';
@@ -287,23 +287,16 @@ class VertexMgmt {
     // Generate header table
     let $headerRow = $('<tr>');
     let $colGroup = $('<colgroup>');
-    let $popWidth = 0;
-    for (let i = 0; i < cols; i++) {
-      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(columnTitle[i]));
-      $colHdr.attr('class', 'col_header');
-      $colHdr.appendTo($headerRow);
+		let $popWidth = 0;
+		
+		//Append hidden column 'id'
+		let $colId = $('<th>').text('id');
+		$colId.attr('class', 'col_header');
+		$colId.css('display', 'none');
+		$colId.appendTo($headerRow);
 
-      // Init col in col group
-      let prop = columnTitle[i];
-      let type = dataType[prop];
-      let value = group.dataElementFormat[prop];
-      let width = this.findLongestContent({data, prop, type, value});
-      $popWidth += width;
-      let $colWidth = $('<col>').attr('width', width);
-      $colWidth.appendTo($colGroup);
-    }
-
-    const option = group.option;
+		// init delcheck column if isDynamicDataSet
+		const option = group.option;
     const isDynamicDataSet = option.indexOf(VERTEX_GROUP_OPTION.DYNAMIC_DATASET) > -1;
     // Set show hide group button dynamic data set
     if (!isDynamicDataSet) {
@@ -324,7 +317,22 @@ class VertexMgmt {
         'colType': '<th>',
         'isCheckAll': true,
       });
-      $colHdr.prependTo($headerRow);
+      $colHdr.appendTo($headerRow);
+    }
+
+    for (let i = 0; i < cols; i++) {
+      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(columnTitle[i]));
+      $colHdr.attr('class', 'col_header');
+      $colHdr.appendTo($headerRow);
+
+      // Init col in col group
+      let prop = columnTitle[i];
+      let type = dataType[prop];
+      let value = group.dataElementFormat[prop];
+      let width = this.findLongestContent({data, prop, type, value});
+      $popWidth += width;
+      let $colWidth = $('<col>').attr('width', width);
+      $colWidth.appendTo($colGroup);
     }
 
     $colGroup.appendTo($table);
@@ -335,7 +343,28 @@ class VertexMgmt {
     let $contentBody = $('<tbody>');
     for (let i = 0; i < rows; i++) {
       const dataRow = data[i];
-      const $row = $('<tr>');
+			const $row = $('<tr>');
+
+			// id
+			let $colId = $('<td>');
+			$colId.attr('name', 'id');
+			$colId.text(i);
+			$colId.hide();
+			$colId.appendTo($row);
+
+			// Checkbox
+			if (isDynamicDataSet) {
+        // Append del check to row
+        let $col = this.initCellDelCheck({
+          'className': 'checkbox_center',
+          'name': `${ATTR_DEL_CHECK}_${this.svgId}` ,
+          'checked': false,
+          'colType': '<td>'
+        });
+        $col.appendTo($row);
+			}
+
+			//data
       for (let j = 0; j < cols; j++) {
         let prop = columnTitle[j];
         let type = dataType[prop];
@@ -354,17 +383,7 @@ class VertexMgmt {
         $control.appendTo($col);
         $col.appendTo($row);
       }
-
-      if (isDynamicDataSet) {
-        // Append del check to row
-        let $col = this.initCellDelCheck({
-          'className': 'checkbox_center',
-          'name': `${ATTR_DEL_CHECK}_${this.svgId}` ,
-          'checked': false,
-          'colType': '<td>'
-        });
-        $col.prependTo($row);
-      }
+			
       $row.appendTo($contentBody);
     }
 
@@ -522,7 +541,24 @@ class VertexMgmt {
     const dataType = vertexGroup.elementDataType;
     let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`);
 
-    const $row = $('<tr>');
+		const $row = $('<tr>');
+		// id
+		$('<td name="id">').hide().appendTo($row);
+
+		let group = _.find(this.vertexDefinition.vertexGroup,{"groupType": groupType});
+    let option = group.option;
+    const isDynamicDataSet = option.indexOf(VERTEX_GROUP_OPTION.DYNAMIC_DATASET) > -1;
+    if (isDynamicDataSet) {
+      // Append del check to row
+      let $col = this.initCellDelCheck({
+        'className': 'checkbox_center',
+        'name': `${ATTR_DEL_CHECK}_${this.svgId}`,
+        'checked': false,
+        'colType': '<td>'
+      });
+      $col.appendTo($row);
+    }
+
     for (let j = 0; j < cols; j++) {
       let prop = columnTitle[j];
       let type = dataType[prop];
@@ -542,19 +578,7 @@ class VertexMgmt {
       $col.appendTo($row);
     }
 
-    let group = _.find(this.vertexDefinition.vertexGroup,{"groupType": groupType});
-    let option = group.option;
-    const isDynamicDataSet = option.indexOf(VERTEX_GROUP_OPTION.DYNAMIC_DATASET) > -1;
-    if (isDynamicDataSet) {
-      // Append del check to row
-      let $col = this.initCellDelCheck({
-        'className': 'checkbox_center',
-        'name': `${ATTR_DEL_CHECK}_${this.svgId}`,
-        'checked': false,
-        'colType': '<td>'
-      });
-      $col.prependTo($row);
-    }
+    
 
     $row.appendTo($appendTo);
   }
@@ -628,22 +652,27 @@ class VertexMgmt {
     
     const dataType = _.find(this.vertexDefinition.vertexGroup, {"groupType": groupType}).elementDataType;
     let elements = [];
-    // Get data element
-    $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr').each(function () {
-      let row = {};
-      $(this).find("td input:text, td input:checkbox, td select").each(function () {
-        let prop = $(this).attr("name");
-        let type = dataType[prop];
-        if (prop != `${ATTR_DEL_CHECK}_${this.svgId}`)
-          row[prop] = type === VERTEX_FORMAT_TYPE.BOOLEAN ? ($(this).is(':checked') ? true : false) : this.value;
-      });
-      elements.push(row);
-    });
-    // Remove first row (header table)
-    elements.shift();
+		// Get data element
+		let arrPosition = [];
+    $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr').each(function (rowIndex) {
+			// Skip for header row
+			if (rowIndex > 0) {
+				let row = {};
+				arrPosition.push($(this).find("td[name='id']").text());
+				$(this).find("td input:text, td input:checkbox, td select").each(function () {
+					let prop = $(this).attr("name");
+					let type = dataType[prop];
+					if (prop != `${ATTR_DEL_CHECK}_${this.svgId}`)
+						row[prop] = type === VERTEX_FORMAT_TYPE.BOOLEAN ? ($(this).is(':checked') ? true : false) : this.value;
+				});
+				elements.push(row);
+			}
+		});
+		
     forms.data = elements;
     forms.groupType = groupType;
 
+		this.edgeMgmt.updatePositionRelatedToVertex(this.currentId, arrPosition);
     this.updateVertexInfo(forms);
 
     //Check and mark connector if has connection
@@ -685,7 +714,7 @@ class VertexMgmt {
 
         //Key
         d3.select(`#${replaceSpecialCharacter(`${id}${presentation.key}${i}`)}`)
-          .html(htmlDecode(getKeyPrefix(dataRow, this.vertexDefinition, groupType)) + dataRow[presentation.key])
+          .html(htmlEncode(getKeyPrefix(dataRow, this.vertexDefinition, groupType)) + dataRow[presentation.key])
           .attr('title', dataRow[presentation.keyTooltip]);
 
         //Value
@@ -701,106 +730,12 @@ class VertexMgmt {
   }
 
   async reRenderContentInsideVertex(vertex) {
-    const {name, description, data: elements, id, vertexType, groupType, parent, connectSide} = vertex;
+    const {vertexType, parent} = vertex;
 
     if (!vertexType)
       return;
 
-    // To do: Read or load from config.
-    let group = d3.select(`#${id}`);
-
-    let htmlContent = '';
-    let len = elements.length;
-    let presentation = _.find(this.vertexDefinition.vertexGroup, {"groupType": groupType}).vertexPresentation;
-
-    const hasLeftConnector = (connectSide == CONNECT_SIDE.LEFT || connectSide == CONNECT_SIDE.BOTH) ? " has_left_connect" : "";
-    const hasRightConnector = (connectSide == CONNECT_SIDE.RIGHT || connectSide == CONNECT_SIDE.BOTH) ? " has_right_connect" : "";
-
-    for (let i = 0; i < len; i++) {
-      let data = elements[i];
-      htmlContent += `
-        <div class="property" prop="${id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key${hasLeftConnector}" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${htmlDecode(getKeyPrefix(data, this.vertexDefinition, groupType))}${data[presentation.key] || ""}</label>
-          <label class="data${hasRightConnector}" id="${id}${presentation.value}${i}" title="${data[presentation.valueTooltip] || "No data to show"}">${data[presentation.value] || ""}</label>
-        </div>`;
-    }
-
-    let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * len;
-    group.append("foreignObject")
-      .attr("width", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-      .attr("height", vertexHeight)
-      .append("xhtml:div")
-      .attr("class", "vertex_content")
-      .html(`
-        <p class="header_name" id="${id}Name" title="${description}"
-          style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px; background-color: ${this.colorHash.hex(name)};
-          cursor: move; pointer-events: all">${name}</p>
-        <div class="vertex_data">
-          ${htmlContent}
-        </div>`
-    );
-    
-    //Rect connect title INPUT
-    if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.LEFT){
-      group.append("rect")
-      .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
-      .attr("type", TYPE_CONNECT.INPUT)
-      .attr("prop", `${id}${CONNECT_KEY}title`)
-      .attr("pointer-events", "all")
-      .attr("width", 12)
-      .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
-      .attr("x", 1)
-      .attr("y", 1)
-      .attr("fill", this.colorHash.hex(name))
-      .call(this.edgeMgmt.handleDragConnection);
-    }
-
-    //Rect connect title OUTPUT
-    if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.RIGHT){
-      group.append("rect")
-        .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
-        .attr("prop", `${id}${CONNECT_KEY}title`)
-        .attr("pointer-events", "all")
-        .attr("type", TYPE_CONNECT.OUTPUT)
-        .attr("width", 12)
-        .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
-        .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
-        .attr("y", 1)
-        .attr("fill", this.colorHash.hex(name))
-        .call(this.edgeMgmt.handleDragConnection);
-    }
-
-    for (let i = 0; i < len; i++) {
-      // Input
-      if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.LEFT){
-        group.append("rect")
-          .attr("class", `drag_connect drag_connect_${this.svgId}`)
-          .attr("type", TYPE_CONNECT.INPUT)
-          .attr("prop", `${id}${CONNECT_KEY}${i}`)
-          .attr("pointer-events", "all")
-          .attr("width", 12)
-          .attr("height", 25)
-          .attr("x", 1)
-          .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-          .attr("fill", this.colorHashConnection.hex(name))
-          .call(this.edgeMgmt.handleDragConnection);
-      }
-
-      // Output
-      if (connectSide === CONNECT_SIDE.BOTH || connectSide === CONNECT_SIDE.RIGHT){
-        group.append("rect")
-          .attr("class", `drag_connect drag_connect_${this.svgId}`)
-          .attr("prop", `${id}${CONNECT_KEY}${i}`)
-          .attr("type", TYPE_CONNECT.OUTPUT)
-          .attr("pointer-events", "all")
-          .attr("width", 12)
-          .attr("height", 25)
-          .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
-          .attr("y", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * i + 1)
-          .attr("fill", this.colorHashConnection.hex(name))
-          .call(this.edgeMgmt.handleDragConnection);
-      }
-    }
+    vertex.generateContent(this.edgeMgmt.handleDragConnection);
 
     if (parent){
       let parentObj = _.find(this.dataContainer.boundary, {"id": parent});
@@ -811,7 +746,8 @@ class VertexMgmt {
     
     setMinBoundaryGraph(this.dataContainer, this.svgId);
 
-    this.edgeMgmt.removeEdgeLostPropOnVertex(vertex);
+		//this.edgeMgmt.removeEdgeLostPropOnVertex(vertex);
+		this.edgeMgmt.updatePathConnectForVertex(vertex);
   }
 
   hideAllEdgeRelatedToVertex(vertexId, status){

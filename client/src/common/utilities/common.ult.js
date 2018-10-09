@@ -319,7 +319,7 @@ export function getKeyPrefix(dataElement, vertexDefinition, groupType){
   return res;
 }
 
-export function htmlDecode (s) {
+export function htmlEncode (s) {
   var translate = {
      " "  : "&nbsp;",
      "&"  : "&amp;",

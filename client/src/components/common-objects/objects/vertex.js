@@ -14,7 +14,7 @@ import {
   checkModePermission,
   arrayMove,
   getKeyPrefix,
-  htmlDecode,
+  htmlEncode,
   sleep,
 } from '../../../common/utilities/common.ult';
 
@@ -78,8 +78,6 @@ class Vertex {
       groupType = vertexTypeInfo.groupType;
     }
 
-    let presentation = _.find(this.vertexDefinition.vertexGroup, {"groupType":groupType}).vertexPresentation;
-
     this.id           = id || generateObjectId('V');
     this.x            = x || 0;
     this.y            = y || 0;
@@ -104,6 +102,8 @@ class Vertex {
       .attr("id", this.id)
       .attr("class", `${this.selectorClass}`);
 
+			// If isEnableDragVertex => emphasizePathConnectForVertex will be call at StartDrag
+			// else => have to bind emphasizePathConnectForVertex for click event
       if(checkModePermission(this.viewMode.value, "isEnableDragVertex")){
         group.call(callbackDragVertex);
       }else{
@@ -112,7 +112,17 @@ class Vertex {
         })
       }
     
-    let htmlContent = '';
+    this.generateContent(callbackDragConnection);
+
+    if(!isImport) 
+      setMinBoundaryGraph(this.dataContainer, this.svgId);
+
+    return this;
+	}
+	
+	generateContent(callbackDragConnection = ()=>{}) {
+		let htmlContent = '';
+		let presentation = _.find(this.vertexDefinition.vertexGroup, {"groupType":this.groupType}).vertexPresentation;
     let countData = this.data.length;
     let hasLeftConnector = (this.connectSide == CONNECT_SIDE.LEFT || this.connectSide == CONNECT_SIDE.BOTH) ? " has_left_connect" : "";
     let hasRightConnector = (this.connectSide == CONNECT_SIDE.RIGHT || this.connectSide == CONNECT_SIDE.BOTH) ? " has_right_connect" : "";
@@ -120,23 +130,26 @@ class Vertex {
       let item = this.data[i];
       htmlContent += `
         <div class="property" prop="${this.id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key${hasLeftConnector}" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${htmlDecode(getKeyPrefix(item, this.vertexDefinition, this.groupType))}${item[presentation.key] || ""}</label>
+          <label class="key${hasLeftConnector}" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${htmlEncode(getKeyPrefix(item, this.vertexDefinition, this.groupType))}${item[presentation.key] || ""}</label>
           <label class="data${hasRightConnector}" id="${this.id}${presentation.value}${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
         </div>`;
     }
 
-    let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * countData;
-
+		let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * countData;
+		
+		let group = d3.select(`#${this.id}`);
     group.append("foreignObject")
       .attr("width", VERTEX_ATTR_SIZE.GROUP_WIDTH)
       .attr("height", vertexHeight)
-      .append("xhtml:div")
+			.append("xhtml:div")
       .attr("class", "vertex_content")
-      .html(`
-        <p class="header_name" id="${this.id}Name" title="${this.description}" 
-          style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px;
-          background-color: ${this.colorHash.hex(this.name)};
-          cursor: move; pointer-events: all">${this.name}</p>
+			.html(`
+			<div class="content_header_name" style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px;
+									background-color: ${this.colorHash.hex(this.name)};
+									cursor: move; pointer-events: all">
+				<p class="header_name" id="${this.id}Name" title="${this.description}">${this.name}</p>
+			</div>
+					
         <div class="vertex_data">
           ${htmlContent}
         </div>
@@ -160,10 +173,10 @@ class Vertex {
     //Rect connect title OUTPUT
     if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.RIGHT){
       group.append("rect")
-        .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+				.attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
+				.attr("type", TYPE_CONNECT.OUTPUT)
         .attr("prop", `${this.id}${CONNECT_KEY}title`)
         .attr("pointer-events", "all")
-        .attr("type", TYPE_CONNECT.OUTPUT)
         .attr("width", 12)
         .attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT - 1)
         .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
@@ -191,10 +204,10 @@ class Vertex {
       // Output
       if (this.connectSide === CONNECT_SIDE.BOTH || this.connectSide === CONNECT_SIDE.RIGHT){
         let connect =  group.append("rect")
-          .attr("class", `drag_connect drag_connect_${this.svgId}`)
+					.attr("class", `drag_connect drag_connect_${this.svgId}`)
+					.attr("type", TYPE_CONNECT.OUTPUT)
           .attr("prop", `${this.id}${CONNECT_KEY}${i}`)
           .attr("pointer-events", "all")
-          .attr("type", TYPE_CONNECT.OUTPUT)
           .attr("width", 12)
           .attr("height", 25)
           .attr("x", VERTEX_ATTR_SIZE.GROUP_WIDTH - (VERTEX_ATTR_SIZE.PROP_HEIGHT / 2))
@@ -203,12 +216,7 @@ class Vertex {
           .call(callbackDragConnection);
       }
     }
-
-    if(!isImport) 
-      setMinBoundaryGraph(this.dataContainer, this.svgId);
-
-    return this;
-  }
+	}
 
   /**
    * Set position for vertex

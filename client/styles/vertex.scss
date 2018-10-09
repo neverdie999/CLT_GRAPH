@@ -3,16 +3,18 @@
   border-left: 1px solid black;
   border-right: 1px solid black;
   font-size: 13px;
-  background: #ffffff;
+	background: #ffffff;
 }
 
+.content_header_name {
+	border-bottom: 1px black solid;
+}
 .header_name {
-  margin: 0;
-  padding: 10px 0px;
+  margin: 0px;
+  padding: 10px 0px 0px 0px;
   text-align: center;
-  border-bottom: 1px black solid;
   font-weight: 600;
-  font-size: 13px;
+	font-size: 13px;
 }
 
 .vertex_data {

@@ -9,6 +9,7 @@ const ID_INPUT_FILE_DATA = 'inputFileData';
 const GROUP_OPTION_MODE_GRAPH = 'input:radio[name=graphMode]';
 const ID_OUTPUT_FILE_NAME = 'outputFileName';
 const ID_BUTTON_DOWNLOAD_FILE = 'btnDownloadFile';
+const ID_BUTTON_EXPORT_IMAGE = 'btnExportImage';
 
 class FileMgmt {
   constructor(props) {
@@ -45,7 +46,12 @@ class FileMgmt {
         this.parent.save(fileName);
         event.preventDefault();
       }
-    });
+		});
+		
+		$(`#${ID_BUTTON_EXPORT_IMAGE}`).click(()=>{
+			let fileName = $(`#${ID_OUTPUT_FILE_NAME}`).val();
+			this.parent.saveToImage(fileName);
+		})
   }
 
   /**

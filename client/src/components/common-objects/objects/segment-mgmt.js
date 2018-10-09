@@ -9,7 +9,6 @@ import SegmentMenu from '../menu-context/segment-menu';
 import {
   VERTEX_FORMAT_TYPE,
   POPUP_CONFIG,
-  VERTEX_ATTR_SIZE,
   CONNECT_SIDE,
   VIEW_MODE,
 
@@ -20,8 +19,6 @@ import {
   autoScrollOnMousedrag,
   updateSizeGraph,
   setMinBoundaryGraph,
-  getKeyPrefix,
-  htmlDecode,
   checkIsMatchRegexNumber,
   comShowMessage,
 } from '../../../common/utilities/common.ult';
@@ -32,7 +29,6 @@ const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
 const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
 const ATTR_DEL_CHECK_ALL = 'delCheckAll';
 const ATTR_DEL_CHECK = 'delCheck';
-const CONNECT_KEY = 'Connected';
 
 class SegmentMgmt {
   constructor(props) {
@@ -529,7 +525,9 @@ class SegmentMgmt {
       comShowMessage("Please enter Name.");
       $(`#vertexName_${this.svgId}`).focus();
       return;
-    }
+		}
+		
+		if (!this.validateDataElementTable()) return;
 
     // Get data on form
     this.currentVertex.name = this.currentVertex.vertexType = $(`#vertexName_${this.svgId}`).val();
@@ -566,17 +564,7 @@ class SegmentMgmt {
       this.create(this.currentVertex);
     }
 
-    //this.parent.sort2();
-
     this.closePopVertexInfo();
-
-    // const tmpVertex = _.find(this.dataContainer.vertex, {"id":updatedVertexId});
-    // if (newVertex) {
-    //   newVertex.showToUser();
-    // }else if (this.currentVertex) {
-    //   this.currentVertex.showToUser();
-    //   this.currentVertex = null;
-    // }
   }
 
   /**
@@ -593,44 +581,12 @@ class SegmentMgmt {
   }
 
   async reRenderContentInsideVertex(vertex) {
-    const {name, description, data: elements, id, vertexType, groupType, connectSide} = vertex;
+    const {vertexType} = vertex;
 
     if (!vertexType)
       return;
 
-    // To do: Read or load from config.
-    let group = d3.select(`#${id}`);
-
-    let htmlContent = '';
-    let len = elements.length;
-    let presentation = this.vertexGroup.vertexPresentation;
-
-    const hasLeftConnector = (connectSide == CONNECT_SIDE.LEFT || connectSide == CONNECT_SIDE.BOTH) ? " has_left_connect" : "";
-    const hasRightConnector = (connectSide == CONNECT_SIDE.RIGHT || connectSide == CONNECT_SIDE.BOTH) ? " has_right_connect" : "";
-
-    for (let i = 0; i < len; i++) {
-      let data = elements[i];
-      htmlContent += `
-        <div class="property" prop="${id}${CONNECT_KEY}${i}" style="height: ${VERTEX_ATTR_SIZE.PROP_HEIGHT}px">
-          <label class="key${hasLeftConnector}" id="${id}${presentation.key}${i}" title="${data[presentation.keyTooltip] || "No data to show"}">${htmlDecode(getKeyPrefix(data, this.vertexDefinition, groupType))}${data[presentation.key] || ""}</label>
-          <label class="data${hasRightConnector}" id="${id}${presentation.value}${i}" title="${data[presentation.valueTooltip] || "No data to show"}">${data[presentation.value] || ""}</label>
-        </div>`;
-    }
-
-    let vertexHeight = VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * len;
-    group.append("foreignObject")
-      .attr("width", VERTEX_ATTR_SIZE.GROUP_WIDTH)
-      .attr("height", vertexHeight)
-      .append("xhtml:div")
-      .attr("class", "vertex_content")
-      .html(`
-        <p class="header_name" id="${id}Name" title="${description}"
-          style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px; background-color: ${this.colorHash.hex(name)};
-          cursor: move; pointer-events: all">${name}</p>
-        <div class="vertex_data">
-          ${htmlContent}
-        </div>`
-    );
+    vertex.generateContent();
 
     setMinBoundaryGraph(this.dataContainer, this.svgId);
   }
@@ -741,7 +697,26 @@ class SegmentMgmt {
     }
 
     return true;
-  }
+	}
+	
+	validateDataElementTable() {
+		let $tr = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr');
+
+		let rowCount = $tr.length;
+
+		if (rowCount <= 1) return true;
+
+		for(let i = 1; i < rowCount; i++) {
+			let $name = $($tr[i]).find("td input:text[name='name']");
+			if ($name.val() == "") {
+				comShowMessage("Enter name.");
+				$name.focus();
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }
 
 export default SegmentMgmt;

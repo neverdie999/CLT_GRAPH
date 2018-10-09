@@ -62,13 +62,13 @@ class CltSegment {
 
     this.initCustomFunctionD3();
     this.objectUtils.initListenerContainerScroll(this.graphContainerId, this.edgeMgmt, [this.dataContainer]);
-    this.objectUtils.initListenerOnWindowResize(this.edgeMgmt, [this.dataContainer]);
+		this.objectUtils.initListenerOnWindowResize(this.edgeMgmt, [this.dataContainer]);
   };
 
   initSvgHtml(){
     let sHtml = 
     `<div id="${this.graphContainerId}" class="graphContainer" ref="${this.graphSvgId}">
-        <svg id="${this.graphSvgId}" class="svg"></svg>
+				<svg id="${this.graphSvgId}" class="svg" width="900" height="900"></svg>
       </div>
       <svg id="${this.connectSvgId}" class="connect-svg"></svg>`;
 
@@ -213,7 +213,156 @@ class CltSegment {
     }).catch(err => {
       comShowMessage(err);
     });
-  }
+	}
+
+	/**
+	 * Define which css will be gotten from computedStyle to put into style property for export image
+	 */
+	getStylingList() {
+		return [
+			{el: '#export_image .vertex_content', properties: ['border-top', 'border-left', 'border-right', 'font-size', 'background']},
+			{el: '#export_image .content_header_name', properties: ['height', 'border-bottom']},
+			{el: '#export_image .content_header_name .header_name', properties: ['padding', 'margin', 'text-align', 'border-bottom', 'font-weight', 'font-size']},
+			{el: '#export_image .vertex_data .property', properties: ['height', 'border-bottom', 'display', 'width', 'line-height']},
+			{el: '#export_image .vertex_data .property .key', properties: ['width', 'text-align', 'margin-left', 'font-weight', 'font-size', 'white-space', 'overflow', 'text-overflow', 'max-width']},
+			{el: '#export_image .vertex_data .property .data', properties: ['font-weight', 'font-size', 'width', 'margin-left', 'margin-right', 'text-align', 'border', 'white-space', 'overflow', 'text-overflow', 'max-width', ]},
+			{el: '#export_image .vertex_data .property .has_left_connect', properties: ['margin-left', 'width', 'max-width']},
+			{el: '#export_image .vertex_data .property .has_right_connect', properties: ['margin-right',	'width', 'max-width']},
+		]
+	}
+
+	/**
+	 * Apply css were defined from getStylingList function
+	 * @param {*} elements 
+	 */
+	addInlineStyling(elements) {
+		if(elements && elements.length) {
+			elements.forEach(function(d) {
+				d3.selectAll(d.el).each(function(){
+					let element = this;
+					if (d.el == '.header_name') debugger;
+					if(d.properties && d.properties.length) {
+						d.properties.forEach(function(prop) {
+								let computedStyle = getComputedStyle(element, null);
+								let value = computedStyle.getPropertyValue(prop);
+
+								if (prop == 'height'){
+									if (element.className == 'content_header_name')
+										value = (parseInt(value.replace("px", ""))  - 2) + "px";
+									else
+										value = (parseInt(value.replace("px", ""))  - 1) + "px";
+								}
+								
+								element.style[prop] = value;
+						});
+					}
+				 });
+			});
+		}
+	}
+	
+	/**
+	 * Save SVG to image
+	 */
+	saveToImage(fileName){
+
+		if (!fileName) {
+      comShowMessage("Please input file name");
+      return;
+		}
+		
+		// Show page loader 
+		$('#loader').show();
+
+		setTimeout(()=>{
+			this.doSaveToImage(fileName);
+		}, 300);
+	}
+
+	doSaveToImage(fileName) {
+		const {width, height} = $(`#${this.graphSvgId}`).get(0).getBoundingClientRect();
+
+		let html = d3.select(`#${this.graphSvgId}`)
+				.node().outerHTML;
+
+		//Create dummy div for storing html that needed to be export
+		d3.select('body')
+				.append('div')
+					.attr('id', 'export_image')
+					.html(html);
+
+		d3.select('#export_image svg')
+			.attr('xmlns', 'http://www.w3.org/2000/svg')
+			.attr('width', width)
+			.attr('height', height);
+			
+		d3.selectAll('#export_image .vertex_content').attr('xmlns', 'http://www.w3.org/1999/xhtml')
+
+		//Appy css was defined
+		this.addInlineStyling(this.getStylingList());
+
+		//Adding padding-left 2.5px for each first &nbsp; because it has an error while exporting with &nbsp;
+		$('#export_image .vertex_data .property .key').each(function(){
+			let innerHTML = this.innerHTML;
+
+			if (innerHTML != "") {
+				let nCount = 0;
+				let arr = innerHTML.split('&nbsp;');
+
+				for (let i = 0; i < arr.length; i++) {
+					if (arr[i] == "") nCount++;
+					else break;
+				}
+
+				if (nCount > 0) {
+					$(this).css('padding-left', nCount * 2.5);
+				}
+			}
+		})
+
+		//Replace all &nbsp; by " "
+		html = d3.select(`#export_image`).node().innerHTML;
+		html = html.replace(/&nbsp;/g, " ");
+
+		//Remove dummy div
+		d3.select('#export_image').remove();
+
+		// Create data and export image file
+		let imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
+
+		// let img = '<img src="'+imgsrc+'">'; 
+		// d3.select("#svgdataurl")
+		// 		.attr("width", width)
+		// 		.attr("height", height)
+		// 		.html(img);
+		
+		d3.select('body')
+				.append('canvas')
+					.attr("width", width)
+					.attr("height", height);
+
+		let canvas = $('canvas').get(0);
+		let	context = canvas.getContext("2d");
+
+		let image = new Image;
+		image.onload = function() {
+
+			context.drawImage(image, 0, 0);
+	
+			let canvasdata = canvas.toDataURL("image/jpg");
+	
+			let a = document.createElement("a");
+			a.download = `${fileName}.jpg`;
+			a.href = canvasdata;
+			a.click();
+
+			d3.select('canvas').remove();
+			
+			$('#loader').hide();
+		};
+
+		image.src = imgsrc;
+	}
 
   getContentGraphAsJson() {
     let dataContent = {VERTEX_GROUP: [], VERTEX: []};
