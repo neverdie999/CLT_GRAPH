@@ -55228,12 +55228,6 @@ class CltSegment {
 		// Create data and export image file
 		let imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
 
-		// let img = '<img src="'+imgsrc+'">'; 
-		// d3.select("#svgdataurl")
-		// 		.attr("width", width)
-		// 		.attr("height", height)
-		// 		.html(img);
-		
 		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('body')
 				.append('canvas')
 					.attr("width", width)
@@ -55243,23 +55237,36 @@ class CltSegment {
 		let	context = canvas.getContext("2d");
 
 		let image = new Image;
-		image.onload = function() {
+		image.src = imgsrc;
+		image.onload = () => {
 
 			context.drawImage(image, 0, 0);
 	
-			let canvasdata = canvas.toDataURL("image/jpg");
-	
 			let a = document.createElement("a");
-			a.download = `${fileName}.jpg`;
-			a.href = canvasdata;
+			a.download = `${fileName}.png`;
+			a.href = this.binaryblob();
+
 			a.click();
 
 			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('canvas').remove();
 			
 			$('#loader').hide();
 		};
+	}
 
-		image.src = imgsrc;
+	binaryblob(){
+		let byteString = atob(document.querySelector("canvas").toDataURL().replace(/^data:image\/(png|jpg);base64,/, ""));
+		let ab = new ArrayBuffer(byteString.length);
+		let ia = new Uint8Array(ab);
+		for (let i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i);
+		}
+		let dataView = new DataView(ab);
+		let blob = new Blob([dataView], {type: "image/png"});
+		let DOMURL = self.URL || self.webkitURL || self;
+		let newurl = DOMURL.createObjectURL(blob);
+	
+		return newurl;
 	}
 
   getContentGraphAsJson() {
