@@ -59,9 +59,9 @@ class SegmentMgmt {
 
     new SegmentMenu({
       selector: `.${this.selectorClass}`,
-      vertexMgmt: this,
+      parent: this,
       dataContainer: this.dataContainer,
-      viewMode: this.viewMode
+			viewMode: this.viewMode
     });
 
     this.initVertexPopupHtml();
@@ -203,10 +203,9 @@ class SegmentMgmt {
     let {name, description, data, groupType} = vertex;
 
     // Get vertex group with group type
-    if (!groupType) {
-      groupType = this.vertexGroup.groupType;
-    }
-
+   
+		this.vertexGroup = _.find(this.vertexDefinition.vertexGroup, {"groupType": groupType})
+		
     this.currentVertex.groupType = groupType;
 
     // Append content to popup
@@ -668,8 +667,6 @@ class SegmentMgmt {
 
     const {VERTEX_GROUP} = data;
     this.getVertexFormatType(VERTEX_GROUP);
-
-    this.vertexGroup = this.vertexDefinition.vertexGroup[0];
   }
 
   resetVertexDefinition(){

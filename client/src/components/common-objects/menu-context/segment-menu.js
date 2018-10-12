@@ -3,9 +3,9 @@ import { checkModePermission } from '../../../common/utilities/common.ult';
 class SegmentMenu {
   constructor(props) {
     this.selector = props.selector;
-    this.vertexMgmt = props.vertexMgmt;
+    this.parent = props.parent;
     this.dataContainer = props.dataContainer;
-    this.viewMode = props.viewMode;
+		this.viewMode = props.viewMode;
     this.initVertexMenu();
   }
 
@@ -20,7 +20,7 @@ class SegmentMenu {
             let vertexObj = _.find(this.dataContainer.vertex, {"id": vertexId});
             switch (key) {
               case "editVertex":
-                this.vertexMgmt.makePopupEditVertex(vertexObj);
+                this.parent.makePopupEditVertex(vertexObj);
                 break;
 
               case "copyVertex":

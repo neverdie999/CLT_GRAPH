@@ -56,8 +56,7 @@ class CltSegment {
       containerId : this.graphContainerId,
       svgId : this.graphSvgId,
       viewMode: this.viewMode,
-      edgeMgmt : this.edgeMgmt,
-     // parent: this
+			edgeMgmt : this.edgeMgmt
     });
 
     this.initCustomFunctionD3();
@@ -100,7 +99,8 @@ class CltSegment {
       selector: `#${this.graphSvgId}`,
       containerId: `#${this.graphContainerId}`,
       parent: this,
-      viewMode: this.viewMode
+			viewMode: this.viewMode,
+			vertexDefinition: this.segmentMgmt.vertexDefinition
     });
   }
 

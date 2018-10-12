@@ -53820,7 +53820,7 @@ class Vertex {
     this.moveToFront();
 
     //Highlight the title background-color
-    const $vtxTitle = $(`#${this.id}`).find('.header_name');
+    const $vtxTitle = $(`#${this.id}`).find('.content_header_name');
     const colorByName = this.colorHash.hex(this.name);
     for (let i = 0; i < 3; i++){
       setTimeout(function(){

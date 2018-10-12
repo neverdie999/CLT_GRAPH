@@ -6,7 +6,8 @@ class MainMenuSegment {
     this.selector = props.selector;
     this.containerId = props.containerId;
     this.parent = props.parent;
-    this.viewMode = props.viewMode;
+		this.viewMode = props.viewMode;
+		this.vertexDefinition = props.vertexDefinition;
     
     this.initMainMenu();
   }
@@ -25,7 +26,8 @@ class MainMenuSegment {
               case "createNew":
                 let params = {
                   x: options.x,
-                  y: options.y,
+									y: options.y,
+									groupType: this.vertexDefinition.vertexGroup[0].groupType,
                   data: {}
                 };
                 this.parent.segmentMgmt.makePopupEditVertex(params);
@@ -44,11 +46,7 @@ class MainMenuSegment {
             }
           },
           items: {
-            "createNew": {
-              name: "Create New",
-              icon: "fa-window-maximize",
-              disabled: !checkModePermission(this.viewMode.value, 'createNew')
-            },
+            "createNew": this.makeCreateNewOption(),
             "sep1": "-",
             "find": {
               name: "Find...",
@@ -133,23 +131,23 @@ class MainMenuSegment {
   }
 
   searchVertexType() {
-    return function () {
-      let filter = this.value.toUpperCase();
-      let $select = $(this).closest('ul').find(`select`);
-      let options = $select.find(`option`);
+		return function () {
+			let filter = this.value.toUpperCase();
+			let $select = $(this).closest('ul').find(`select`);
+			let options = $select.find(`option`);
 
-      // Remove first li cause it is input search
-      let length = options.length;
-      for (let i = 0; i < length; i++) {
-        let element = options[i];
-        let value = $(element).val();
-        if (value.toUpperCase().indexOf(filter) > -1) {
-          $(element).css('display', '');
-        } else {
-          $(element).css('display', 'none');
-        }
-      }
-    }
+			// Remove first li cause it is input search
+			let length = options.length;
+			for (let i = 0; i < length; i++) {
+				let element = options[i];
+				let value = $(element).val();
+				if (value.toUpperCase().indexOf(filter) > -1) {
+					$(element).css('display', '');
+				} else {
+					$(element).css('display', 'none');
+				}
+			}
+		}
   }
 
   onSelectVertex(main) {
@@ -160,7 +158,84 @@ class MainMenuSegment {
         vertex.showToUser();
       }
     }
-  }
+	}
+	
+	/**
+   * Submenu for Create New option
+   */
+  loadGroupTypeItems() {
+    const subItems = {};
+    subItems.isHtmlItem = {
+      placeholder: 'Type to search',
+      type: 'text',
+      value: '',
+      events: {
+        keyup: this.searchVertexType()
+      }
+    };
+    subItems["sep4"] = "-";
+    // Build options
+    const options = {};
+
+    // Sort array object
+    let vertexGroup = _.clone(this.vertexDefinition.vertexGroup);
+
+    vertexGroup.sort(function (a,b) {
+      return (a.groupType.toUpperCase()).localeCompare((b.groupType.toUpperCase()));
+    });
+
+    const len = vertexGroup.length;
+    for (let i = 0; i < len; i++) {
+      let groupType = vertexGroup[i].groupType;
+      options[`${groupType}`] = groupType;
+    }
+
+    subItems.select = {
+      type: 'select',
+      size: 10,
+      options: options,
+      events: {
+        click: this.onSelectGroupType(this)
+      }
+    };
+
+    let dfd = jQuery.Deferred();
+    setTimeout(() => {
+      dfd.resolve(subItems);
+    }, 10);
+    return dfd.promise();
+	}
+	
+	onSelectGroupType(main) {
+		return function () {
+			let params = {
+				x: main.opt.x,
+				y: main.opt.y,
+				groupType: this.value,
+				data: {}
+			};
+			main.parent.segmentMgmt.makePopupEditVertex(params);
+			$(`${main.selector}`).contextMenu("hide");
+    }
+	}
+
+	makeCreateNewOption() {
+		if (this.vertexDefinition.vertexGroup.length > 1) {
+			return {
+				name: "Create New",
+				type: "sub",
+				icon: "fa-window-maximize",
+				items: this.loadGroupTypeItems(),
+				disabled: !checkModePermission(this.viewMode.value, 'createNew')
+			}
+		} else {
+			return {
+				name: "Create New",
+				icon: "fa-window-maximize",
+				disabled: !checkModePermission(this.viewMode.value, 'createNew')
+			}
+		}
+	}
 }
 
 export default MainMenuSegment;
