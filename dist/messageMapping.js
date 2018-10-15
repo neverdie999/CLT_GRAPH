@@ -33004,12 +33004,14 @@ class PopUtils {
     }
     // Configure show modal and prevent close modal when use
     // click outside or press ESC
-    $(`#${popupId}`).modal({backdrop: 'static', keyboard: false})
+    $(`#${popupId}`).modal({backdrop: 'static', keyboard: true})
 
     // Set position popup center
     // Default is top center
     if (position === 'center') {
-      $(`#${popupId}` + ` .modal-dialog`).css("margin-top", Math.max(0, ($(window).height() - $('.modal-dialog').height()) / 4));
+			$(`#${popupId} .modal-dialog`).css('left', 0);
+			$(`#${popupId} .modal-dialog`).css('top', 0);
+      //$(`#${popupId}` + ` .modal-dialog`).css("margin-top", Math.max(0, ($(window).height() - $('.modal-dialog').height()) / 4));
     }
 
     // Set width for modal.
@@ -52665,7 +52667,7 @@ class VertexMgmt {
 
     let sHtml = `
     <!-- Vertex Info Popup (S) -->
-    <div id="${HTML_VERTEX_INFO_ID}_${this.svgId}" class="modal fade" role="dialog">
+    <div id="${HTML_VERTEX_INFO_ID}_${this.svgId}" class="modal fade" role="dialog" tabindex="-1">
       <div class="modal-dialog">
         <div class="web-dialog modal-content">
           <div class="dialog-title">
@@ -52762,7 +52764,10 @@ class VertexMgmt {
         let rtnVal = Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["e" /* checkMinMaxValue */])(this.value, $(`#isVertexMandatory_${main.svgId}`).prop('checked') == true ? 1 : __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* REPEAT_RANGE */].MIN, __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* REPEAT_RANGE */].MAX);
         this.value = rtnVal;
       });
-    }
+		}
+		
+		// Enable dragging for popup
+		this.initDialogDragEvent();
   }
 
   create(sOptions) {
@@ -53404,7 +53409,44 @@ class VertexMgmt {
 
       this.vertexDefinition.vertexGroup[i].elementDataType = dataType;
     };
-  }
+	}
+	
+	/**
+	 * Enable dragging for popup
+	 */
+	initDialogDragEvent() {
+		let main = this;
+		$(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .dialog-title`).css('cursor', 'move').on("mousedown", (e) => {
+			let $drag = $(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .modal-dialog`).addClass('draggable');
+				
+			let pos_y = $drag.offset().top - e.pageY,
+				pos_x = $drag.offset().left - e.pageX,
+				winH = window.innerHeight,
+				winW = window.innerWidth,
+				dlgW = $drag.get(0).getBoundingClientRect().width;
+				
+			$(window).on("mousemove", function(e) {
+				let x = e.pageX + pos_x;
+				let y = e.pageY + pos_y;
+
+				if (x < 10) x = 10;
+				else if (x + dlgW > winW - 10) x = winW - dlgW - 10;
+
+				if (y < 10) y = 10
+				else if (y > winH - 10) y = winH - 10;
+
+				$(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .draggable`).offset({
+						top: y,
+						left: x
+				})
+			});
+			e.preventDefault(); // disable selection
+		})
+
+		$(window).on('mouseup', function(e) {
+			$(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .draggable`).removeClass('draggable')
+		})
+	}
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (VertexMgmt);
@@ -53932,7 +53974,7 @@ class BoundaryMgmt {
 
     let sHtml = 
     `<!-- Boundary Info Popup (S)-->
-    <div id="boundaryInfo_${this.svgId}" class="modal fade" role="dialog">
+    <div id="boundaryInfo_${this.svgId}" class="modal fade" role="dialog" tabindex="-1">
       <div class="modal-dialog">
         <div class="web-dialog modal-content">
           <div class="dialog-title">
@@ -54012,7 +54054,10 @@ class BoundaryMgmt {
           $(`#maxBoundaryRepeat_${main.svgId}`).val(1);
         }
       });
-    }
+		}
+		
+		// Enable dragging for popup
+		this.initDialogDragEvent();
   }
 
   create(sOptions) {
@@ -54197,7 +54242,44 @@ class BoundaryMgmt {
   clearAll(){
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
     this.dataContainer.boundary = [];
-  }
+	}
+	
+	/**
+	 * Enable dragging for popup
+	 */
+	initDialogDragEvent() {
+		let main = this;
+		$(`#boundaryInfo_${main.svgId} .dialog-title`).css('cursor', 'move').on("mousedown", (e) => {
+			let $drag = $(`#boundaryInfo_${main.svgId} .modal-dialog`).addClass('draggable');
+				
+			let pos_y = $drag.offset().top - e.pageY,
+				pos_x = $drag.offset().left - e.pageX,
+				winH = window.innerHeight,
+				winW = window.innerWidth,
+				dlgW = $drag.get(0).getBoundingClientRect().width;
+				
+			$(window).on("mousemove", function(e) {
+				let x = e.pageX + pos_x;
+				let y = e.pageY + pos_y;
+
+				if (x < 10) x = 10;
+				else if (x + dlgW > winW - 10) x = winW - dlgW - 10;
+
+				if (y < 10) y = 10
+				else if (y > winH - 10) y = winH - 10;
+
+				$(`#boundaryInfo_${main.svgId} .draggable`).offset({
+						top: y,
+						left: x
+				})
+			});
+			e.preventDefault(); // disable selection
+		})
+
+		$(window).on('mouseup', function(e) {
+			$(`#boundaryInfo_${main.svgId} .draggable`).removeClass('draggable')
+		})
+	}
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (BoundaryMgmt);

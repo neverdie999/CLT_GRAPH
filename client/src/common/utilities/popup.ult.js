@@ -14,12 +14,14 @@ class PopUtils {
     }
     // Configure show modal and prevent close modal when use
     // click outside or press ESC
-    $(`#${popupId}`).modal({backdrop: 'static', keyboard: false})
+    $(`#${popupId}`).modal({backdrop: 'static', keyboard: true})
 
     // Set position popup center
     // Default is top center
     if (position === 'center') {
-      $(`#${popupId}` + ` .modal-dialog`).css("margin-top", Math.max(0, ($(window).height() - $('.modal-dialog').height()) / 4));
+			$(`#${popupId} .modal-dialog`).css('left', 0);
+			$(`#${popupId} .modal-dialog`).css('top', 0);
+      //$(`#${popupId}` + ` .modal-dialog`).css("margin-top", Math.max(0, ($(window).height() - $('.modal-dialog').height()) / 4));
     }
 
     // Set width for modal.

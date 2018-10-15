@@ -86,7 +86,7 @@ class BoundaryMgmt {
 
     let sHtml = 
     `<!-- Boundary Info Popup (S)-->
-    <div id="boundaryInfo_${this.svgId}" class="modal fade" role="dialog">
+    <div id="boundaryInfo_${this.svgId}" class="modal fade" role="dialog" tabindex="-1">
       <div class="modal-dialog">
         <div class="web-dialog modal-content">
           <div class="dialog-title">
@@ -166,7 +166,10 @@ class BoundaryMgmt {
           $(`#maxBoundaryRepeat_${main.svgId}`).val(1);
         }
       });
-    }
+		}
+		
+		// Enable dragging for popup
+		this.initDialogDragEvent();
   }
 
   create(sOptions) {
@@ -351,7 +354,44 @@ class BoundaryMgmt {
   clearAll(){
     d3.select(`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
     this.dataContainer.boundary = [];
-  }
+	}
+	
+	/**
+	 * Enable dragging for popup
+	 */
+	initDialogDragEvent() {
+		let main = this;
+		$(`#boundaryInfo_${main.svgId} .dialog-title`).css('cursor', 'move').on("mousedown", (e) => {
+			let $drag = $(`#boundaryInfo_${main.svgId} .modal-dialog`).addClass('draggable');
+				
+			let pos_y = $drag.offset().top - e.pageY,
+				pos_x = $drag.offset().left - e.pageX,
+				winH = window.innerHeight,
+				winW = window.innerWidth,
+				dlgW = $drag.get(0).getBoundingClientRect().width;
+				
+			$(window).on("mousemove", function(e) {
+				let x = e.pageX + pos_x;
+				let y = e.pageY + pos_y;
+
+				if (x < 10) x = 10;
+				else if (x + dlgW > winW - 10) x = winW - dlgW - 10;
+
+				if (y < 10) y = 10
+				else if (y > winH - 10) y = winH - 10;
+
+				$(`#boundaryInfo_${main.svgId} .draggable`).offset({
+						top: y,
+						left: x
+				})
+			});
+			e.preventDefault(); // disable selection
+		})
+
+		$(window).on('mouseup', function(e) {
+			$(`#boundaryInfo_${main.svgId} .draggable`).removeClass('draggable')
+		})
+	}
 }
 
 export default BoundaryMgmt

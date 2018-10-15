@@ -67,7 +67,7 @@ class CltSegment {
   initSvgHtml(){
     let sHtml = 
     `<div id="${this.graphContainerId}" class="graphContainer" ref="${this.graphSvgId}">
-				<svg id="${this.graphSvgId}" class="svg" width="900" height="900"></svg>
+				<svg id="${this.graphSvgId}" class="svg"></svg>
       </div>
       <svg id="${this.connectSvgId}" class="connect-svg"></svg>`;
 

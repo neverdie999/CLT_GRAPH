@@ -70,14 +70,14 @@ class SegmentMgmt {
     this.handleDragVertex = d3.drag()
       .on("start", this.startDrag(this))
       .on("drag", this.dragTo(this))
-      .on("end", this.endDrag(this));
+			.on("end", this.endDrag(this));
   }
 
   initVertexPopupHtml(){
 
     let sHtml = `
     <!-- Vertex Info Popup (S) -->
-    <div id="${HTML_VERTEX_INFO_ID}_${this.svgId}" class="modal fade" role="dialog">
+    <div id="${HTML_VERTEX_INFO_ID}_${this.svgId}" class="modal fade" role="dialog" tabindex="-1">
       <div class="modal-dialog">
         <div class="web-dialog modal-content">
           <div class="dialog-title">
@@ -152,8 +152,10 @@ class SegmentMgmt {
     $(`#vertexBtnCancel_${main.svgId}`).click(() => {
       this.closePopVertexInfo();
       this.currentVertex = null;
-    });
-  }
+		});
+		
+		this.initDialogDragEvent();
+	}
 
   create(sOptions) {
     let {vertexType} = sOptions;
@@ -713,6 +715,43 @@ class SegmentMgmt {
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Enable dragging for popup
+	 */
+	initDialogDragEvent() {
+		let main = this;
+		$(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .dialog-title`).css('cursor', 'move').on("mousedown", (e) => {
+			let $drag = $(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .modal-dialog`).addClass('draggable');
+				
+			let pos_y = $drag.offset().top - e.pageY,
+				pos_x = $drag.offset().left - e.pageX,
+				winH = window.innerHeight,
+				winW = window.innerWidth,
+				dlgW = $drag.get(0).getBoundingClientRect().width;
+				
+			$(window).on("mousemove", function(e) {
+				let x = e.pageX + pos_x;
+				let y = e.pageY + pos_y;
+
+				if (x < 10) x = 10;
+				else if (x + dlgW > winW - 10) x = winW - dlgW - 10;
+
+				if (y < 10) y = 10
+				else if (y > winH - 10) y = winH - 10;
+
+				$(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .draggable`).offset({
+						top: y,
+						left: x
+				})
+			});
+			e.preventDefault(); // disable selection
+		})
+
+		$(window).on('mouseup', function(e) {
+			$(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .draggable`).removeClass('draggable')
+		})
 	}
 }
 
