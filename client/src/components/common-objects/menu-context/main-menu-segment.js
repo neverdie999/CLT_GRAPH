@@ -102,7 +102,7 @@ class MainMenuSegment {
     const options = {};
 
     // Sort array object
-    let vertices = _.clone(this.parent.dataContainer.vertex);
+    let vertices = _.cloneDeep(this.parent.dataContainer.vertex);
 
     vertices.sort(function (a,b) {
       return (a.vertexType.toUpperCase()).localeCompare((b.vertexType.toUpperCase()));
@@ -178,7 +178,7 @@ class MainMenuSegment {
     const options = {};
 
     // Sort array object
-    let vertexGroup = _.clone(this.vertexDefinition.vertexGroup);
+    let vertexGroup = _.cloneDeep(this.vertexDefinition.vertexGroup);
 
     vertexGroup.sort(function (a,b) {
       return (a.groupType.toUpperCase()).localeCompare((b.groupType.toUpperCase()));

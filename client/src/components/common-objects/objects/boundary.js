@@ -362,7 +362,7 @@ class Boundary {
       const member = cMembers[i];
       let objectId = member.id;
       if (member.type === "V") {
-        let cVertex = _.clone(_.find(this.dataContainer.vertex, {"id": objectId}));
+        let cVertex = _.cloneDeep(_.find(this.dataContainer.vertex, {"id": objectId}));
         let cVertexId = generateObjectId("V");
         cVertex.id = cVertexId;
         cVertex.parent = this.id;
@@ -372,7 +372,7 @@ class Boundary {
         this.boundaryMgmt.vertexMgmt.create(cVertex);
         this.addMemberToBoundary(child, false);
       } else {
-        let cBoundary = _.clone(_.find(this.dataContainer.boundary, {"id": objectId}));
+        let cBoundary = _.cloneDeep(_.find(this.dataContainer.boundary, {"id": objectId}));
         let members = cBoundary.member.slice();
         let cBoundaryId = generateObjectId("B");
         cBoundary.id = cBoundaryId;
@@ -397,7 +397,7 @@ class Boundary {
    */
   async copyAll() {
     let cBoundaryId = generateObjectId("B");
-    let cBoundary = _.clone(this);
+    let cBoundary = _.cloneDeep(this);
     let cMembers = cBoundary.member.slice();
 
     cBoundary.member = [];
@@ -487,7 +487,7 @@ class Boundary {
    */
   removeChildElementsBoundary() {
     // Get child of boundary
-    const  member  = _.clone(this.member);
+    const  member  = _.cloneDeep(this.member);
     member.forEach(mem => {
       if (mem.type=="V") {
         //need to put deleteVertex function

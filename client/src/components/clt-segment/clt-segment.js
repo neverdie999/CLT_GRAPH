@@ -472,7 +472,7 @@ class CltSegment {
   }
 
   sortBySize() {
-    let arrSort =  _.clone(this.dataContainer.vertex);
+    let arrSort =  _.cloneDeep(this.dataContainer.vertex);
 
     // Sort descending by data lenght of vertex
     arrSort.sort(function (a,b) {
@@ -533,7 +533,7 @@ class CltSegment {
   }
 
   sortByName() {
-    let arrSort =  _.clone(this.dataContainer.vertex);
+    let arrSort =  _.cloneDeep(this.dataContainer.vertex);
 
     arrSort.sort(function (a,b) {
       return (a.name.toUpperCase()).localeCompare((b.name.toUpperCase()));

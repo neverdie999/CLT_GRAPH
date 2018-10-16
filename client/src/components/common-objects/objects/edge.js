@@ -251,8 +251,47 @@ class Edge {
     const {source, target} = this;
     let pathStr = createPath(source, target);
     // Get DOM and update attribute
-    d3.selectAll(`#${this.id}`).attr('d', pathStr);
-  }
+		d3.selectAll(`#${this.id}`).attr('d', pathStr);
+	}
+	
+	updateMarkedConnector(sOptions = {}) {
+		
+		if (Object.keys(sOptions)[0] == "source") {
+			// Unmarked old connector
+			if (this.source.prop.indexOf('title') == -1){
+				let isExist = _.find(this.dataContainer.edge, (e) => {
+					return e.id != this.id && e.source.vertexId == this.source.vertexId && e.source.prop == this.source.prop;
+				})
+
+				// If there is no any connection to this connector then unmark it
+				if (!isExist) {
+					d3.select(`[prop="${this.source.prop}"][type="O"]`).classed("marked_connector", false);
+				}
+			}
+
+			//Marked new connector
+			if (sOptions.source.prop.indexOf('title') == -1){
+				d3.select(`[prop="${sOptions.source.prop}"][type="O"]`).classed("marked_connector", true);
+			}
+		} else {
+			// Unmarked old connector
+			if (this.target.prop.indexOf('title') == -1){
+				let isExist = _.find(this.dataContainer.edge, (e) => {
+					return e.id != this.id && e.target.vertexId == this.target.vertexId && e.target.prop == this.target.prop;
+				})
+
+				// If there is no any connection to this connector then unmark it
+				if (!isExist) {
+					d3.select(`[prop="${this.target.prop}"][type="I"]`).classed("marked_connector", false);
+				}
+			}
+
+			//Marked new connector
+			if (sOptions.target.prop.indexOf('title') == -1){
+				d3.select(`[prop="${sOptions.target.prop}"][type="I"]`).classed("marked_connector", true);
+			}
+		}
+	}
 
   setStatusEdgeOnCurrentView() {
     const {id, source: {x: xSrc, y: ySrc, svgId: svgSrc}, target: {x: xDes, y: yDes, svgId: svgDes}} = this;

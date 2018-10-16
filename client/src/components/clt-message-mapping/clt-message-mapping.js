@@ -5,6 +5,7 @@ import OutputMgmt from './output-mgmt/output-mgmt';
 import OperationsMgmt from './operations-mgmt/operations-mgmt';
 import ConnectMgmt from './connect-mgmt/connect-mgmt';
 import ObjectUtils from '../../common/utilities/object.ult';
+import LinkedList from '../../common/data-type-define/linked-list';
 
 import {
   comShowMessage,
@@ -95,7 +96,11 @@ class CltMessageMapping {
     this.objectUtils.initListenerContainerScroll(this.operationsContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     this.objectUtils.initListenerContainerScroll(this.outputMessageContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     this.initListenerOnWindowResize();
-    this.initOnMouseUpBackground();
+		this.initOnMouseUpBackground();
+		
+		$('#btnExportImage').click((e)=>{
+			this.sortByConnection();
+		})
   };
 
   initSvgHtml(){
@@ -736,7 +741,40 @@ class CltMessageMapping {
     })
     
     return resObj;
-  }
+	}
+	
+	sortByConnection() {
+		let arrRes = [];
+		let operationsContainer = _.cloneDeep(this.storeOperations);
+		// Find all object connect to input area
+		this.storeConnect.edge.forEach(e => {
+			if (e.source.svgId == this.inputMessageSvgId && e.target.svgId == this.operationsSvgId) {
+
+				let object = null;
+				if (e.target.vertexId[0] == "V") {
+					object = _.remove(operationsContainer.vertex, el => {
+						return el && el.id == e.target.vertexId;
+					})
+				} else {
+					object = _.remove(operationsContainer.boundary, el => {
+						return el && el.id == e.target.vertexId;
+					})
+				}
+
+				if (object.length > 0) {
+					if (object[0].parent) {
+						let parent = _.remove(operationsContainer.boundary, {"id":object[0].parent});
+
+						if (parent.length > 0) {
+							arrRes.push(parent);
+						}
+					} else {
+						arrRes.push(object);
+					}
+				} 
+			}
+		})
+	}
 }
   
 export default CltMessageMapping;

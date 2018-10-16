@@ -54527,7 +54527,13 @@ class EdgeMgmt {
         newPoint.prop = prop;
         newPoint.svgId = svgId;
 
-        pointType === "O" ? edgeObj.updatePathConnect({source: newPoint}) : edgeObj.updatePathConnect({target: newPoint});
+				if (pointType === "O") {
+					edgeObj.updateMarkedConnector({source: newPoint});
+					edgeObj.updatePathConnect({source: newPoint})
+				} else {
+					edgeObj.updateMarkedConnector({target: newPoint});
+					edgeObj.updatePathConnect({target: newPoint})
+				}
       }
 
       main.handlerOnClickEdge(main.selectingEdge);
@@ -55181,8 +55187,47 @@ class Edge {
     const {source, target} = this;
     let pathStr = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["h" /* createPath */])(source, target);
     // Get DOM and update attribute
-    __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('d', pathStr);
-  }
+		__WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('d', pathStr);
+	}
+	
+	updateMarkedConnector(sOptions = {}) {
+		
+		if (Object.keys(sOptions)[0] == "source") {
+			// Unmarked old connector
+			if (this.source.prop.indexOf('title') == -1){
+				let isExist = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.edge, (e) => {
+					return e.id != this.id && e.source.vertexId == this.source.vertexId && e.source.prop == this.source.prop;
+				})
+
+				// If there is no any connection to this connector then unmark it
+				if (!isExist) {
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.source.prop}"][type="O"]`).classed("marked_connector", false);
+				}
+			}
+
+			//Marked new connector
+			if (sOptions.source.prop.indexOf('title') == -1){
+				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${sOptions.source.prop}"][type="O"]`).classed("marked_connector", true);
+			}
+		} else {
+			// Unmarked old connector
+			if (this.target.prop.indexOf('title') == -1){
+				let isExist = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.edge, (e) => {
+					return e.id != this.id && e.target.vertexId == this.target.vertexId && e.target.prop == this.target.prop;
+				})
+
+				// If there is no any connection to this connector then unmark it
+				if (!isExist) {
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.target.prop}"][type="I"]`).classed("marked_connector", false);
+				}
+			}
+
+			//Marked new connector
+			if (sOptions.target.prop.indexOf('title') == -1){
+				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${sOptions.target.prop}"][type="I"]`).classed("marked_connector", true);
+			}
+		}
+	}
 
   setStatusEdgeOnCurrentView() {
     const {id, source: {x: xSrc, y: ySrc, svgId: svgSrc}, target: {x: xDes, y: yDes, svgId: svgDes}} = this;
@@ -56575,7 +56620,7 @@ class Boundary {
       const member = cMembers[i];
       let objectId = member.id;
       if (member.type === "V") {
-        let cVertex = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, {"id": objectId}));
+        let cVertex = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, {"id": objectId}));
         let cVertexId = Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["j" /* generateObjectId */])("V");
         cVertex.id = cVertexId;
         cVertex.parent = this.id;
@@ -56585,7 +56630,7 @@ class Boundary {
         this.boundaryMgmt.vertexMgmt.create(cVertex);
         this.addMemberToBoundary(child, false);
       } else {
-        let cBoundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": objectId}));
+        let cBoundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": objectId}));
         let members = cBoundary.member.slice();
         let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["j" /* generateObjectId */])("B");
         cBoundary.id = cBoundaryId;
@@ -56610,7 +56655,7 @@ class Boundary {
    */
   async copyAll() {
     let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["j" /* generateObjectId */])("B");
-    let cBoundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(this);
+    let cBoundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(this);
     let cMembers = cBoundary.member.slice();
 
     cBoundary.member = [];
@@ -56700,7 +56745,7 @@ class Boundary {
    */
   removeChildElementsBoundary() {
     // Get child of boundary
-    const  member  = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(this.member);
+    const  member  = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(this.member);
     member.forEach(mem => {
       if (mem.type=="V") {
         //need to put deleteVertex function
@@ -57333,8 +57378,10 @@ class FileMgmt {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__operations_mgmt_operations_mgmt__ = __webpack_require__(880);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__connect_mgmt_connect_mgmt__ = __webpack_require__(881);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_utilities_object_ult__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_const_index__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_data_type_define_linked_list__ = __webpack_require__(882);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_const_index__ = __webpack_require__(23);
+
 
 
 
@@ -57366,7 +57413,7 @@ class CltMessageMapping {
 
   initialize() {
 
-   Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["i" /* disableHorizontalScroll */])();
+   Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["i" /* disableHorizontalScroll */])();
 
     this.objectUtils = new __WEBPACK_IMPORTED_MODULE_6__common_utilities_object_ult__["a" /* default */]();
     this.initSvgHtml();
@@ -57426,7 +57473,11 @@ class CltMessageMapping {
     this.objectUtils.initListenerContainerScroll(this.operationsContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     this.objectUtils.initListenerContainerScroll(this.outputMessageContainerId, this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
     this.initListenerOnWindowResize();
-    this.initOnMouseUpBackground();
+		this.initOnMouseUpBackground();
+		
+		$('#btnExportImage').click((e)=>{
+			this.sortByConnection();
+		})
   };
 
   initSvgHtml(){
@@ -57505,7 +57556,7 @@ class CltMessageMapping {
     let resMessage = await this.validateGraphDataStructure(graphData);
 
     if(resMessage != "ok"){
-      Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
 
       if(resMessage == "error")
         return;
@@ -57513,7 +57564,7 @@ class CltMessageMapping {
 
     let isError = this.validatesSameGraph(graphData, "I");
     if( isError ){
-      Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])("There was duplicate data with Output graph.\nYou should check it or choose another one!");
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("There was duplicate data with Output graph.\nYou should check it or choose another one!");
       return;
     }
 
@@ -57527,7 +57578,7 @@ class CltMessageMapping {
     this.inputMgmt.drawObjectsOnInputGraph(graphData);
     this.inputMgmt.initMenuContext();
 
-    Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeInputMessage,this.inputMessageSvgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeInputMessage,this.inputMessageSvgId);
   }
 
   async LoadOutputMessage(graphData){
@@ -57536,7 +57587,7 @@ class CltMessageMapping {
     let resMessage = await this.validateGraphDataStructure(graphData);
 
     if(resMessage != "ok"){
-      Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Data Graph Structure is corrupted. You should check it!");
 
       if(resMessage == "error")
         return;
@@ -57544,7 +57595,7 @@ class CltMessageMapping {
 
     let isError= await this.validatesSameGraph(graphData, "O");
     if( isError ){
-      Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])("There was duplicate data with Iutput graph.\nYou should check it or choose another one!");
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("There was duplicate data with Iutput graph.\nYou should check it or choose another one!");
       return;
     }
 
@@ -57557,7 +57608,7 @@ class CltMessageMapping {
     await this.outputMgmt.drawObjectsOnOutputGraph(graphData);
     this.outputMgmt.initMenuContext();
 
-    Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeOutputMessage,this.outputMessageSvgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeOutputMessage,this.outputMessageSvgId);
   }
 
   async LoadMesseageMapping(messageMappingData){
@@ -57567,7 +57618,7 @@ class CltMessageMapping {
     let resMessage = await this.validateGraphDataStructure(inputMessage);
 
     if(resMessage != "ok"){
-      Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])("Input Message: Format or data in Data Graph Structure is corrupted. You should check it!");
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Input Message: Format or data in Data Graph Structure is corrupted. You should check it!");
 
       if(resMessage == "error")
         return;
@@ -57577,7 +57628,7 @@ class CltMessageMapping {
     resMessage = await this.validateGraphDataStructure(outputMessage);
 
     if(resMessage != "ok"){
-      Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])("Output Message: Format or data in Data Graph Structure is corrupted. You should check it!");
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Output Message: Format or data in Data Graph Structure is corrupted. You should check it!");
 
       if(resMessage == "error")
         return;
@@ -57587,7 +57638,7 @@ class CltMessageMapping {
     resMessage = await this.validateGraphDataStructure(operations);
 
     if(resMessage != "ok"){
-      Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])("Operations Message: Format or data in Data Graph Structure is corrupted. You should check it!");
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Operations Message: Format or data in Data Graph Structure is corrupted. You should check it!");
 
       if(resMessage == "error")
         return;
@@ -57623,9 +57674,9 @@ class CltMessageMapping {
     this.edgeVerifySvgId(edges);
     await this.connectMgmt.drawEdgeOnConnectGraph(edges);
 
-    Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeInputMessage,this.inputMessageSvgId);
-    Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeOutputMessage,this.outputMessageSvgId);
-    Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeOperations,this.operationsSvgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeInputMessage,this.inputMessageSvgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeOutputMessage,this.outputMessageSvgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeOperations,this.operationsSvgId);
 
     //Solve in case of save and import from different window size
     await this.objectUtils.updatePathConnectOnWindowResize(this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
@@ -57634,13 +57685,13 @@ class CltMessageMapping {
   save(fileName) {
 
     if (!fileName) {
-      Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])("Please input file name");
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Please input file name");
       return;
     }
 
     this.getContentGraphAsJson().then(content => {
       if (!content) {
-        Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])("No content to export");
+        Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("No content to export");
         return;
       }
       // stringify with tabs inserted at each level
@@ -57661,7 +57712,7 @@ class CltMessageMapping {
       downLink[0].click();
       downLink.remove();
     }).catch(err => {
-      Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["g" /* comShowMessage */])(err);
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])(err);
     });
   }
 
@@ -58067,7 +58118,40 @@ class CltMessageMapping {
     })
     
     return resObj;
-  }
+	}
+	
+	sortByConnection() {
+		let arrRes = [];
+		let operationsContainer = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.storeOperations);
+		// Find all object connect to input area
+		this.storeConnect.edge.forEach(e => {
+			if (e.source.svgId == this.inputMessageSvgId && e.target.svgId == this.operationsSvgId) {
+
+				let object = null;
+				if (e.target.vertexId[0] == "V") {
+					object = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(operationsContainer.vertex, el => {
+						return el && el.id == e.target.vertexId;
+					})
+				} else {
+					object = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(operationsContainer.boundary, el => {
+						return el && el.id == e.target.vertexId;
+					})
+				}
+
+				if (object.length > 0) {
+					if (object[0].parent) {
+						let parent = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(operationsContainer.boundary, {"id":object[0].parent});
+
+						if (parent.length > 0) {
+							arrRes.push(parent);
+						}
+					} else {
+						arrRes.push(object);
+					}
+				} 
+			}
+		})
+	}
 }
   
 /* harmony default export */ __webpack_exports__["a"] = (CltMessageMapping);
@@ -58627,6 +58711,64 @@ class ConnectMgmt {
 
 /* harmony default export */ __webpack_exports__["a"] = (ConnectMgmt);
 
+
+/***/ }),
+/* 882 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Node {
+	constructor(value, prev, next) {
+		this.value = value;
+		this.prev = prev;
+		this.next = next;
+	}
+}
+
+class LinkedList {
+	constructor(props) {
+		this.head = null;
+		this.tail = null;
+	}
+
+	addToHead(value) {
+		const newNode = new Node(value, null, this.head);
+		if (this.head) this.head.prev = newNode;
+		else this.tail = newNode; 
+		this.head = newNode;
+	}
+
+	addToTail(value) {
+		const newNode = new Node(value, this.tail, null);
+		if (this.tail) this.tail.next = newNode;
+		else this.head = newNode;
+		this.tail = newNode;
+	}
+
+	removeHead() {
+		if (!this.head) return null;
+		let value = this.head.value;
+		this.head = this.head.next;
+		
+		if (this.head) this.head.prev = null;
+		else this.tail = null;
+		
+		return value;
+	}
+
+	removeTail() {
+		if (!this.tail) return null;
+		let value = this.tail.value;
+		this.tail = this.tail.prev;
+		
+		if (this.tail) this.tail.next = null;
+		else this.head = null;
+		
+		return value;
+	}
+}
+
+/* unused harmony default export */ var _unused_webpack_default_export = (LinkedList);
 
 /***/ })
 /******/ ]);

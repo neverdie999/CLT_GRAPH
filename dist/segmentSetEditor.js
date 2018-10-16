@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 882);
+/******/ 	return __webpack_require__(__webpack_require__.s = 883);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -53243,7 +53243,13 @@ class EdgeMgmt {
         newPoint.prop = prop;
         newPoint.svgId = svgId;
 
-        pointType === "O" ? edgeObj.updatePathConnect({source: newPoint}) : edgeObj.updatePathConnect({target: newPoint});
+				if (pointType === "O") {
+					edgeObj.updateMarkedConnector({source: newPoint});
+					edgeObj.updatePathConnect({source: newPoint})
+				} else {
+					edgeObj.updateMarkedConnector({target: newPoint});
+					edgeObj.updatePathConnect({target: newPoint})
+				}
       }
 
       main.handlerOnClickEdge(main.selectingEdge);
@@ -53897,8 +53903,47 @@ class Edge {
     const {source, target} = this;
     let pathStr = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["h" /* createPath */])(source, target);
     // Get DOM and update attribute
-    __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('d', pathStr);
-  }
+		__WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('d', pathStr);
+	}
+	
+	updateMarkedConnector(sOptions = {}) {
+		
+		if (Object.keys(sOptions)[0] == "source") {
+			// Unmarked old connector
+			if (this.source.prop.indexOf('title') == -1){
+				let isExist = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.edge, (e) => {
+					return e.id != this.id && e.source.vertexId == this.source.vertexId && e.source.prop == this.source.prop;
+				})
+
+				// If there is no any connection to this connector then unmark it
+				if (!isExist) {
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.source.prop}"][type="O"]`).classed("marked_connector", false);
+				}
+			}
+
+			//Marked new connector
+			if (sOptions.source.prop.indexOf('title') == -1){
+				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${sOptions.source.prop}"][type="O"]`).classed("marked_connector", true);
+			}
+		} else {
+			// Unmarked old connector
+			if (this.target.prop.indexOf('title') == -1){
+				let isExist = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.edge, (e) => {
+					return e.id != this.id && e.target.vertexId == this.target.vertexId && e.target.prop == this.target.prop;
+				})
+
+				// If there is no any connection to this connector then unmark it
+				if (!isExist) {
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.target.prop}"][type="I"]`).classed("marked_connector", false);
+				}
+			}
+
+			//Marked new connector
+			if (sOptions.target.prop.indexOf('title') == -1){
+				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${sOptions.target.prop}"][type="I"]`).classed("marked_connector", true);
+			}
+		}
+	}
 
   setStatusEdgeOnCurrentView() {
     const {id, source: {x: xSrc, y: ySrc, svgId: svgSrc}, target: {x: xDes, y: yDes, svgId: svgDes}} = this;
@@ -54697,21 +54742,12 @@ module.exports = function (css) {
 /* 879 */,
 /* 880 */,
 /* 881 */,
-/* 882 */
+/* 882 */,
+/* 883 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(327);
-module.exports = __webpack_require__(883);
-
-
-/***/ }),
-/* 883 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__starter__ = __webpack_require__(884);
-
+module.exports = __webpack_require__(884);
 
 
 /***/ }),
@@ -54719,7 +54755,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_mgmt_main_mgmt__ = __webpack_require__(885);
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__starter__ = __webpack_require__(885);
+
+
+
+/***/ }),
+/* 885 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_mgmt_main_mgmt__ = __webpack_require__(886);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_index_scss__ = __webpack_require__(857);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__styles_index_scss__);
 
@@ -54743,12 +54789,12 @@ new Starter();
 
 
 /***/ }),
-/* 885 */
+/* 886 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__file_mgmt_file_mgmt__ = __webpack_require__(886);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_clt_segment_clt_segment__ = __webpack_require__(887);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__file_mgmt_file_mgmt__ = __webpack_require__(887);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_clt_segment_clt_segment__ = __webpack_require__(888);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_const_index__ = __webpack_require__(23);
 
 
@@ -54795,7 +54841,7 @@ class MainMgmt {
 
 
 /***/ }),
-/* 886 */
+/* 887 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54891,7 +54937,7 @@ class FileMgmt {
 
 
 /***/ }),
-/* 887 */
+/* 888 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54899,9 +54945,9 @@ class FileMgmt {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_utilities_object_ult__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_objects_objects_segment_mgmt__ = __webpack_require__(888);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_objects_objects_segment_mgmt__ = __webpack_require__(889);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_objects_objects_edge_mgmt__ = __webpack_require__(853);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_objects_menu_context_main_menu_segment__ = __webpack_require__(890);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_objects_menu_context_main_menu_segment__ = __webpack_require__(891);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_const_index__ = __webpack_require__(23);
 
@@ -55372,7 +55418,7 @@ class CltSegment {
   }
 
   sortBySize() {
-    let arrSort =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.clone(this.dataContainer.vertex);
+    let arrSort =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.dataContainer.vertex);
 
     // Sort descending by data lenght of vertex
     arrSort.sort(function (a,b) {
@@ -55433,7 +55479,7 @@ class CltSegment {
   }
 
   sortByName() {
-    let arrSort =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.clone(this.dataContainer.vertex);
+    let arrSort =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.dataContainer.vertex);
 
     arrSort.sort(function (a,b) {
       return (a.name.toUpperCase()).localeCompare((b.name.toUpperCase()));
@@ -55534,7 +55580,7 @@ class CltSegment {
 
 
 /***/ }),
-/* 888 */
+/* 889 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55546,7 +55592,7 @@ class CltSegment {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vertex__ = __webpack_require__(851);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_popup_ult__ = __webpack_require__(326);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_utilities_object_ult__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__menu_context_segment_menu__ = __webpack_require__(889);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__menu_context_segment_menu__ = __webpack_require__(890);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_const_index__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__ = __webpack_require__(22);
 
@@ -56297,7 +56343,7 @@ class SegmentMgmt {
 
 
 /***/ }),
-/* 889 */
+/* 890 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56366,7 +56412,7 @@ class SegmentMenu {
 
 
 /***/ }),
-/* 890 */
+/* 891 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56477,7 +56523,7 @@ class MainMenuSegment {
     const options = {};
 
     // Sort array object
-    let vertices = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.clone(this.parent.dataContainer.vertex);
+    let vertices = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.parent.dataContainer.vertex);
 
     vertices.sort(function (a,b) {
       return (a.vertexType.toUpperCase()).localeCompare((b.vertexType.toUpperCase()));
@@ -56553,7 +56599,7 @@ class MainMenuSegment {
     const options = {};
 
     // Sort array object
-    let vertexGroup = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.clone(this.vertexDefinition.vertexGroup);
+    let vertexGroup = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.vertexDefinition.vertexGroup);
 
     vertexGroup.sort(function (a,b) {
       return (a.groupType.toUpperCase()).localeCompare((b.groupType.toUpperCase()));

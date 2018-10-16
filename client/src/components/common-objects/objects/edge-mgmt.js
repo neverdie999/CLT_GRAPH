@@ -231,7 +231,13 @@ class EdgeMgmt {
         newPoint.prop = prop;
         newPoint.svgId = svgId;
 
-        pointType === "O" ? edgeObj.updatePathConnect({source: newPoint}) : edgeObj.updatePathConnect({target: newPoint});
+				if (pointType === "O") {
+					edgeObj.updateMarkedConnector({source: newPoint});
+					edgeObj.updatePathConnect({source: newPoint})
+				} else {
+					edgeObj.updateMarkedConnector({target: newPoint});
+					edgeObj.updatePathConnect({target: newPoint})
+				}
       }
 
       main.handlerOnClickEdge(main.selectingEdge);

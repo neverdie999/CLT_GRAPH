@@ -54527,7 +54527,13 @@ class EdgeMgmt {
         newPoint.prop = prop;
         newPoint.svgId = svgId;
 
-        pointType === "O" ? edgeObj.updatePathConnect({source: newPoint}) : edgeObj.updatePathConnect({target: newPoint});
+				if (pointType === "O") {
+					edgeObj.updateMarkedConnector({source: newPoint});
+					edgeObj.updatePathConnect({source: newPoint})
+				} else {
+					edgeObj.updateMarkedConnector({target: newPoint});
+					edgeObj.updatePathConnect({target: newPoint})
+				}
       }
 
       main.handlerOnClickEdge(main.selectingEdge);
@@ -55181,8 +55187,47 @@ class Edge {
     const {source, target} = this;
     let pathStr = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["h" /* createPath */])(source, target);
     // Get DOM and update attribute
-    __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('d', pathStr);
-  }
+		__WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('d', pathStr);
+	}
+	
+	updateMarkedConnector(sOptions = {}) {
+		
+		if (Object.keys(sOptions)[0] == "source") {
+			// Unmarked old connector
+			if (this.source.prop.indexOf('title') == -1){
+				let isExist = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.edge, (e) => {
+					return e.id != this.id && e.source.vertexId == this.source.vertexId && e.source.prop == this.source.prop;
+				})
+
+				// If there is no any connection to this connector then unmark it
+				if (!isExist) {
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.source.prop}"][type="O"]`).classed("marked_connector", false);
+				}
+			}
+
+			//Marked new connector
+			if (sOptions.source.prop.indexOf('title') == -1){
+				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${sOptions.source.prop}"][type="O"]`).classed("marked_connector", true);
+			}
+		} else {
+			// Unmarked old connector
+			if (this.target.prop.indexOf('title') == -1){
+				let isExist = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.edge, (e) => {
+					return e.id != this.id && e.target.vertexId == this.target.vertexId && e.target.prop == this.target.prop;
+				})
+
+				// If there is no any connection to this connector then unmark it
+				if (!isExist) {
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.target.prop}"][type="I"]`).classed("marked_connector", false);
+				}
+			}
+
+			//Marked new connector
+			if (sOptions.target.prop.indexOf('title') == -1){
+				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${sOptions.target.prop}"][type="I"]`).classed("marked_connector", true);
+			}
+		}
+	}
 
   setStatusEdgeOnCurrentView() {
     const {id, source: {x: xSrc, y: ySrc, svgId: svgSrc}, target: {x: xDes, y: yDes, svgId: svgDes}} = this;
@@ -56575,7 +56620,7 @@ class Boundary {
       const member = cMembers[i];
       let objectId = member.id;
       if (member.type === "V") {
-        let cVertex = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, {"id": objectId}));
+        let cVertex = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, {"id": objectId}));
         let cVertexId = Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["j" /* generateObjectId */])("V");
         cVertex.id = cVertexId;
         cVertex.parent = this.id;
@@ -56585,7 +56630,7 @@ class Boundary {
         this.boundaryMgmt.vertexMgmt.create(cVertex);
         this.addMemberToBoundary(child, false);
       } else {
-        let cBoundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": objectId}));
+        let cBoundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": objectId}));
         let members = cBoundary.member.slice();
         let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["j" /* generateObjectId */])("B");
         cBoundary.id = cBoundaryId;
@@ -56610,7 +56655,7 @@ class Boundary {
    */
   async copyAll() {
     let cBoundaryId = Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["j" /* generateObjectId */])("B");
-    let cBoundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(this);
+    let cBoundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(this);
     let cMembers = cBoundary.member.slice();
 
     cBoundary.member = [];
@@ -56700,7 +56745,7 @@ class Boundary {
    */
   removeChildElementsBoundary() {
     // Get child of boundary
-    const  member  = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.clone(this.member);
+    const  member  = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.cloneDeep(this.member);
     member.forEach(mem => {
       if (mem.type=="V") {
         //need to put deleteVertex function
