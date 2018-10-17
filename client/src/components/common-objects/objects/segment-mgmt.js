@@ -153,6 +153,9 @@ class SegmentMgmt {
       this.closePopVertexInfo();
       this.currentVertex = null;
 		});
+
+		// Prevent refresh page after pressing enter on form control (Edit popup)
+		$("form").submit(function() { return false; });
 		
 		this.initDialogDragEvent();
 	}

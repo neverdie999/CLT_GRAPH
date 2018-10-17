@@ -196,6 +196,9 @@ class VertexMgmt {
         this.value = rtnVal;
       });
 		}
+
+		// Prevent refresh page after pressing enter on form control (Edit popup)
+		$("form").submit(function() { return false; });
 		
 		// Enable dragging for popup
 		this.initDialogDragEvent();

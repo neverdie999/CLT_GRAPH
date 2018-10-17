@@ -300,7 +300,6 @@ export function checkModePermission(viewMode, type){
   ];
 
   return data[viewMode].indexOf(type) != -1;
-  
 }
 
 /**
