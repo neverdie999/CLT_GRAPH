@@ -16,6 +16,7 @@ import {
   setMinBoundaryGraph,
   arrayMove,
   checkModePermission,
+	segmentName,
 } from '../../../common/utilities/common.ult';
 
 const CONNECT_KEY = 'Connected';
@@ -131,7 +132,7 @@ class Boundary {
             <p id="${this.id}Header" class="header_name header_boundary" style="width: 100%;
              height: ${BOUNDARY_ATTR_SIZE.HEADER_HEIGHT}px;
              background-color: ${this.colorHash.hex(this.name)}" 
-             title="${this.description}">${this.name}</p>
+             title="${this.description}">${segmentName(this, this.viewMode.value)}</p>
           </div>
     `);
 

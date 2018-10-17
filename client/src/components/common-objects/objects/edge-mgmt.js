@@ -590,7 +590,12 @@ class EdgeMgmt {
     d3.select(`#${this.groupEdgePathId}`).moveToBack();
 	}
 	
-	updatePositionRelatedToVertex(vertexId, arrPosition) {
+	/**
+	 * Update connector position after reordering data elements
+	 * @param {*} vertexId 
+	 * @param {*} arrPosition array connectors were changed position
+	 */
+	updateConnectorPositionRelatedToVertex(vertexId, arrPosition) {
 		// Find edge start from this vertex
 		let arrSrcPaths = _.filter(this.dataContainer.edge, (e) => {
       return e.source.vertexId === vertexId && e.source.prop.indexOf('title') == -1;

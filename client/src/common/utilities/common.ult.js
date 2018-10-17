@@ -263,30 +263,35 @@ export function checkModePermission(viewMode, type){
   data[VIEW_MODE.SHOW_ONLY] = [
     'showReduced',
     'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
-    'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory'];
+		'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory',
+		'namePrefix'
+	];
 
   data[VIEW_MODE.EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
-    'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory'
+		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory',
+		'namePrefix'
   ];
 
   data[VIEW_MODE.OPERATIONS] = [
     'createVertex', 'createBoundary', 'clearAll',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
-    'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'
+		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'
   ];
 
   data[VIEW_MODE.INPUT_MESSAGE] = [
     'showReduced',
     'editVertex', 'vertexRepeat', 'isVertexMandatory',
-    'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu'
+		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
+		'namePrefix'
   ];
 
   data[VIEW_MODE.OUTPUT_MESSAGE] = [
     'showReduced',
     'editVertex', 'vertexRepeat', 'isVertexMandatory',
-    'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu'
+		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
+		'namePrefix'
   ];
 
   data[VIEW_MODE.SEGMENT] = [
@@ -338,4 +343,13 @@ export function htmlEncode (s) {
   })
 
   return res;
+}
+
+export function segmentName (segmentObject, viewMode) {
+	if (checkModePermission(viewMode, 'namePrefix')) {
+		let usage = segmentObject.mandatory ? "M" : "C";
+		return `[${usage}${segmentObject.repeat}] ${segmentObject.name}`
+	} else {
+		return `${segmentObject.name}`
+	}
 }

@@ -29,6 +29,7 @@ import {
   htmlEncode,
   checkIsMatchRegexNumber,
   comShowMessage,
+	segmentName,
 } from '../../../common/utilities/common.ult';
 
 
@@ -661,7 +662,10 @@ class VertexMgmt {
 			// Skip for header row
 			if (rowIndex > 0) {
 				let row = {};
+
+				//array of new position of connectors
 				arrPosition.push($(this).find("td[name='id']").text());
+
 				$(this).find("td input:text, td input:checkbox, td select").each(function () {
 					let prop = $(this).attr("name");
 					let type = dataType[prop];
@@ -675,7 +679,7 @@ class VertexMgmt {
     forms.data = elements;
     forms.groupType = groupType;
 
-		this.edgeMgmt.updatePositionRelatedToVertex(this.currentId, arrPosition);
+		this.edgeMgmt.updateConnectorPositionRelatedToVertex(this.currentId, arrPosition);
     this.updateVertexInfo(forms);
 
     //Check and mark connector if has connection
@@ -708,8 +712,8 @@ class VertexMgmt {
     } else {
       // Update properties
       let header = d3.select(`#${id}Name`);
-      header.text(name).attr('title', description);
-      header.style("background-color", `${this.colorHash.hex(name)}`);
+      header.text(segmentName(vertex, this.viewMode.value)).attr('title', description);
+      d3.select(header.node().parentNode).style("background-color", `${this.colorHash.hex(name)}`);
       let rows = data.length;
       let presentation = group.vertexPresentation;
       for (let i = 0; i < rows; i++) {

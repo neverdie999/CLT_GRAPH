@@ -689,15 +689,16 @@ module.exports = Object.getPrototypeOf || function (O) {
 /* harmony export (immutable) */ __webpack_exports__["o"] = replaceSpecialCharacter;
 /* harmony export (immutable) */ __webpack_exports__["h"] = createPath;
 /* harmony export (immutable) */ __webpack_exports__["b"] = arrayMove;
-/* harmony export (immutable) */ __webpack_exports__["q"] = setSizeGraph;
+/* harmony export (immutable) */ __webpack_exports__["r"] = setSizeGraph;
 /* unused harmony export sleep */
-/* harmony export (immutable) */ __webpack_exports__["p"] = setMinBoundaryGraph;
+/* harmony export (immutable) */ __webpack_exports__["q"] = setMinBoundaryGraph;
 /* harmony export (immutable) */ __webpack_exports__["c"] = autoScrollOnMousedrag;
-/* harmony export (immutable) */ __webpack_exports__["r"] = updateSizeGraph;
+/* harmony export (immutable) */ __webpack_exports__["s"] = updateSizeGraph;
 /* harmony export (immutable) */ __webpack_exports__["i"] = disableHorizontalScroll;
 /* harmony export (immutable) */ __webpack_exports__["f"] = checkModePermission;
 /* harmony export (immutable) */ __webpack_exports__["l"] = getKeyPrefix;
 /* harmony export (immutable) */ __webpack_exports__["m"] = htmlEncode;
+/* harmony export (immutable) */ __webpack_exports__["p"] = segmentName;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
@@ -962,30 +963,35 @@ function checkModePermission(viewMode, type){
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].SHOW_ONLY] = [
     'showReduced',
     'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
-    'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory'];
+		'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory',
+		'namePrefix'
+	];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
-    'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory'
+		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory',
+		'namePrefix'
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].OPERATIONS] = [
     'createVertex', 'createBoundary', 'clearAll',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
-    'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'
+		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].INPUT_MESSAGE] = [
     'showReduced',
     'editVertex', 'vertexRepeat', 'isVertexMandatory',
-    'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu'
+		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
+		'namePrefix'
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].OUTPUT_MESSAGE] = [
     'showReduced',
     'editVertex', 'vertexRepeat', 'isVertexMandatory',
-    'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu'
+		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
+		'namePrefix'
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].SEGMENT] = [
@@ -1037,6 +1043,15 @@ function htmlEncode (s) {
   })
 
   return res;
+}
+
+function segmentName (segmentObject, viewMode) {
+	if (checkModePermission(viewMode, 'namePrefix')) {
+		let usage = segmentObject.mandatory ? "M" : "C";
+		return `[${usage}${segmentObject.repeat}] ${segmentObject.name}`
+	} else {
+		return `${segmentObject.name}`
+	}
 }
 
 /***/ }),
@@ -20827,7 +20842,7 @@ class ObjectUtils {
     if (dataContainer.boundary.length > 0)
       await dataContainer.boundary[0].updateHeightBoundary();
     
-    Object(__WEBPACK_IMPORTED_MODULE_3__common_ult__["p" /* setMinBoundaryGraph */])(dataContainer, svgId);
+    Object(__WEBPACK_IMPORTED_MODULE_3__common_ult__["q" /* setMinBoundaryGraph */])(dataContainer, svgId);
   }
 
   /**
@@ -20876,7 +20891,7 @@ class ObjectUtils {
     if (dataContainer.boundary.length > 0)
       await dataContainer.boundary[0].updateHeightBoundary();
 
-    Object(__WEBPACK_IMPORTED_MODULE_3__common_ult__["p" /* setMinBoundaryGraph */])(dataContainer, svgId);
+    Object(__WEBPACK_IMPORTED_MODULE_3__common_ult__["q" /* setMinBoundaryGraph */])(dataContainer, svgId);
   }
 
   /**
@@ -52800,7 +52815,7 @@ class VertexMgmt {
 
   dragTo(main) {
     return function (d) {
-      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["r" /* updateSizeGraph */])(d);
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["s" /* updateSizeGraph */])(d);
       Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["c" /* autoScrollOnMousedrag */])(d.svgId, d.containerId);
       
       // Prevent drag object outside the window
@@ -52825,7 +52840,7 @@ class VertexMgmt {
         main.objectUtils.restoreSizeBoundary(d);
       }
       
-      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(main.dataContainer, main.svgId);
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(main.dataContainer, main.svgId);
     }
   }
 
@@ -53231,7 +53246,10 @@ class VertexMgmt {
 			// Skip for header row
 			if (rowIndex > 0) {
 				let row = {};
+
+				//array of new position of connectors
 				arrPosition.push($(this).find("td[name='id']").text());
+
 				$(this).find("td input:text, td input:checkbox, td select").each(function () {
 					let prop = $(this).attr("name");
 					let type = dataType[prop];
@@ -53245,7 +53263,7 @@ class VertexMgmt {
     forms.data = elements;
     forms.groupType = groupType;
 
-		this.edgeMgmt.updatePositionRelatedToVertex(this.currentId, arrPosition);
+		this.edgeMgmt.updateConnectorPositionRelatedToVertex(this.currentId, arrPosition);
     this.updateVertexInfo(forms);
 
     //Check and mark connector if has connection
@@ -53278,8 +53296,8 @@ class VertexMgmt {
     } else {
       // Update properties
       let header = __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${id}Name`);
-      header.text(name).attr('title', description);
-      header.style("background-color", `${this.colorHash.hex(name)}`);
+      header.text(Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* segmentName */])(vertex, this.viewMode.value)).attr('title', description);
+      __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](header.node().parentNode).style("background-color", `${this.colorHash.hex(name)}`);
       let rows = data.length;
       let presentation = group.vertexPresentation;
       for (let i = 0; i < rows; i++) {
@@ -53317,7 +53335,7 @@ class VertexMgmt {
       await ancesstor.reorderPositionMember();
     }
     
-    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
 
 		//this.edgeMgmt.removeEdgeLostPropOnVertex(vertex);
 		this.edgeMgmt.updatePathConnectForVertex(vertex);
@@ -53599,7 +53617,7 @@ class Vertex {
     this.generateContent(callbackDragConnection);
 
     if(!isImport) 
-      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
 
     return this;
 	}
@@ -53631,7 +53649,7 @@ class Vertex {
 			<div class="content_header_name" style="height: ${__WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px;
 									background-color: ${this.colorHash.hex(this.name)};
 									cursor: move; pointer-events: all">
-				<p class="header_name" id="${this.id}Name" title="${this.description}">${this.name}</p>
+				<p class="header_name" id="${this.id}Name" title="${this.description}">${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["p" /* segmentName */])(this, this.viewMode.value)}</p>
 			</div>
 					
         <div class="vertex_data">
@@ -53747,7 +53765,7 @@ class Vertex {
       return e.id === this.id;
     });
 
-    Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+    Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
   
   /**
@@ -53872,7 +53890,8 @@ class Vertex {
         $vtxTitle.css('background-color', `${colorByName})`);
       }, 200 + i*400);
     }
-  }
+	}
+	
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Vertex);
@@ -54089,7 +54108,7 @@ class BoundaryMgmt {
 
   dragTo(main) {
     return function (d) {
-      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["r" /* updateSizeGraph */])(d);
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["s" /* updateSizeGraph */])(d);
       Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["c" /* autoScrollOnMousedrag */])(d.svgId, d.containerId);
 
       let {x, y} = main.objectUtils.setPositionObjectJustInSvg(__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */], `#${d.svgId}`, `#${d.id}`);
@@ -54138,7 +54157,7 @@ class BoundaryMgmt {
 
       main.hiddenBBoxGroup();
       main.objectUtils.restoreSizeBoundary(d);
-      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(main.dataContainer, main.svgId);
+      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(main.dataContainer, main.svgId);
     }
   }
 
@@ -54220,7 +54239,7 @@ class BoundaryMgmt {
     this.editingBoundary.description = description;
 
     let header = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.editingBoundary.id}Header`);
-    header.text(name).attr('title', description);
+    header.text(Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* segmentName */])(this.editingBoundary, this.viewMode.value)).attr('title', description);
     header.style("background-color", `${this.colorHash.hex(name)}`);
 
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.editingBoundary.id}Content`).style("border-color", `${this.colorHash.hex(name)}`);
@@ -54886,7 +54905,12 @@ class EdgeMgmt {
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePathId}`).moveToBack();
 	}
 	
-	updatePositionRelatedToVertex(vertexId, arrPosition) {
+	/**
+	 * Update connector position after reordering data elements
+	 * @param {*} vertexId 
+	 * @param {*} arrPosition array connectors were changed position
+	 */
+	updateConnectorPositionRelatedToVertex(vertexId, arrPosition) {
 		// Find edge start from this vertex
 		let arrSrcPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
       return e.source.vertexId === vertexId && e.source.prop.indexOf('title') == -1;
@@ -56389,7 +56413,7 @@ class Boundary {
             <p id="${this.id}Header" class="header_name header_boundary" style="width: 100%;
              height: ${__WEBPACK_IMPORTED_MODULE_4__common_const_index__["b" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT}px;
              background-color: ${this.colorHash.hex(this.name)}" 
-             title="${this.description}">${this.name}</p>
+             title="${this.description}">${Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["p" /* segmentName */])(this, this.viewMode.value)}</p>
           </div>
     `);
 
@@ -56449,7 +56473,7 @@ class Boundary {
    }
 
     if(!isImport)
-      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
 
   updateHeightBoundary() {
@@ -56607,7 +56631,7 @@ class Boundary {
     if (isEffectToParent){
       this.updateSize();
       this.reorderPositionMember();
-      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
     }
   }
 
@@ -56682,7 +56706,7 @@ class Boundary {
     ancestor.reorderPositionMember();
     ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
 
-    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
 
   doDeleteAll(){
@@ -56737,7 +56761,7 @@ class Boundary {
     ancestor.updateSize();
     ancestor.reorderPositionMember();
     ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
-    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
 
   /**
@@ -56791,7 +56815,7 @@ class Boundary {
       await ancestor.reorderPositionMember();
       ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
   
-      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
     }
   }
 
@@ -56806,7 +56830,7 @@ class Boundary {
       await ancestor.reorderPositionMember();
       ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
 
-      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+      Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
     }
   }
 
@@ -56918,7 +56942,7 @@ class Boundary {
     this.updateSize();
     this.reorderPositionMember();
     this.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(this);
-    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
+    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId);
   }
 
   async removeMemberFromBoundary( obj, isEffectToParent = true ) {
@@ -57574,7 +57598,7 @@ class CltMessageMapping {
     this.inputMgmt.drawObjectsOnInputGraph(graphData);
     this.inputMgmt.initMenuContext();
 
-    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeInputMessage,this.inputMessageSvgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.storeInputMessage,this.inputMessageSvgId);
   }
 
   async LoadOutputMessage(graphData){
@@ -57604,7 +57628,7 @@ class CltMessageMapping {
     await this.outputMgmt.drawObjectsOnOutputGraph(graphData);
     this.outputMgmt.initMenuContext();
 
-    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeOutputMessage,this.outputMessageSvgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.storeOutputMessage,this.outputMessageSvgId);
   }
 
   async LoadMesseageMapping(messageMappingData){
@@ -57670,9 +57694,9 @@ class CltMessageMapping {
     this.edgeVerifySvgId(edges);
     await this.connectMgmt.drawEdgeOnConnectGraph(edges);
 
-    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeInputMessage,this.inputMessageSvgId);
-    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeOutputMessage,this.outputMessageSvgId);
-    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeOperations,this.operationsSvgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.storeInputMessage,this.inputMessageSvgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.storeOutputMessage,this.outputMessageSvgId);
+    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["q" /* setMinBoundaryGraph */])(this.storeOperations,this.operationsSvgId);
 
     //Solve in case of save and import from different window size
     await this.objectUtils.updatePathConnectOnWindowResize(this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);
@@ -58232,7 +58256,7 @@ class InputMgmt {
     this.vertexMgmt.clearAll();
     this.boundaryMgmt.clearAll();
 
-    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["q" /* setSizeGraph */])({ height: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["e" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT }, this.svgId);
+    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["r" /* setSizeGraph */])({ height: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["e" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT }, this.svgId);
   }
 
   showReduced(){
@@ -58405,7 +58429,7 @@ class OutputMgmt {
     this.vertexMgmt.clearAll();
     this.boundaryMgmt.clearAll();
 
-    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["q" /* setSizeGraph */])({ height: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["e" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT }, this.svgId);
+    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["r" /* setSizeGraph */])({ height: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["e" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT }, this.svgId);
   }
 
   showReduced(){
@@ -58544,7 +58568,7 @@ class OperationsMgmt {
     this.vertexMgmt.clearAll();
     this.boundaryMgmt.clearAll();
 
-    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["q" /* setSizeGraph */])({ height: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["e" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT }, this.svgId);
+    Object(__WEBPACK_IMPORTED_MODULE_5__common_utilities_common_ult__["r" /* setSizeGraph */])({ height: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["e" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT }, this.svgId);
   }
 
   async drawObjectsOnOperationsGraph(data) {

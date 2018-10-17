@@ -13,7 +13,8 @@ import {
   autoScrollOnMousedrag,
   updateSizeGraph,
   setMinBoundaryGraph,
-  checkModePermission
+  checkModePermission,
+	segmentName
 } from '../../../common/utilities/common.ult';
 
 import {
@@ -332,7 +333,7 @@ class BoundaryMgmt {
     this.editingBoundary.description = description;
 
     let header = d3.select(`#${this.editingBoundary.id}Header`);
-    header.text(name).attr('title', description);
+    header.text(segmentName(this.editingBoundary, this.viewMode.value)).attr('title', description);
     header.style("background-color", `${this.colorHash.hex(name)}`);
 
     d3.select(`#${this.editingBoundary.id}Content`).style("border-color", `${this.colorHash.hex(name)}`);

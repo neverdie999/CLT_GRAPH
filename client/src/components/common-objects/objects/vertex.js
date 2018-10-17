@@ -15,7 +15,7 @@ import {
   arrayMove,
   getKeyPrefix,
   htmlEncode,
-  sleep,
+	segmentName,
 } from '../../../common/utilities/common.ult';
 
 const CONNECT_KEY = 'Connected';
@@ -147,7 +147,7 @@ class Vertex {
 			<div class="content_header_name" style="height: ${VERTEX_ATTR_SIZE.HEADER_HEIGHT}px;
 									background-color: ${this.colorHash.hex(this.name)};
 									cursor: move; pointer-events: all">
-				<p class="header_name" id="${this.id}Name" title="${this.description}">${this.name}</p>
+				<p class="header_name" id="${this.id}Name" title="${this.description}">${segmentName(this, this.viewMode.value)}</p>
 			</div>
 					
         <div class="vertex_data">
@@ -388,7 +388,8 @@ class Vertex {
         $vtxTitle.css('background-color', `${colorByName})`);
       }, 200 + i*400);
     }
-  }
+	}
+	
 }
 
 export default Vertex;
