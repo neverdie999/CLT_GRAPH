@@ -192,7 +192,7 @@ class Boundary {
    }
 
     if(!isImport)
-      setMinBoundaryGraph(this.dataContainer, this.svgId);
+      setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
   }
 
   updateHeightBoundary() {
@@ -350,7 +350,7 @@ class Boundary {
     if (isEffectToParent){
       this.updateSize();
       this.reorderPositionMember();
-      setMinBoundaryGraph(this.dataContainer, this.svgId);
+      setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
     }
   }
 
@@ -425,7 +425,7 @@ class Boundary {
     ancestor.reorderPositionMember();
     ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
 
-    setMinBoundaryGraph(this.dataContainer, this.svgId);
+    setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
   }
 
   doDeleteAll(){
@@ -480,7 +480,7 @@ class Boundary {
     ancestor.updateSize();
     ancestor.reorderPositionMember();
     ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
-    setMinBoundaryGraph(this.dataContainer, this.svgId);
+    setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
   }
 
   /**
@@ -534,7 +534,7 @@ class Boundary {
       await ancestor.reorderPositionMember();
       ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
   
-      setMinBoundaryGraph(this.dataContainer, this.svgId);
+      setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
     }
   }
 
@@ -549,7 +549,7 @@ class Boundary {
       await ancestor.reorderPositionMember();
       ancestor.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(ancestor);
 
-      setMinBoundaryGraph(this.dataContainer, this.svgId);
+      setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
     }
   }
 
@@ -661,7 +661,7 @@ class Boundary {
     this.updateSize();
     this.reorderPositionMember();
     this.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(this);
-    setMinBoundaryGraph(this.dataContainer, this.svgId);
+    setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
   }
 
   async removeMemberFromBoundary( obj, isEffectToParent = true ) {

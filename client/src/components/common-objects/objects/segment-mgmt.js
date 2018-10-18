@@ -182,10 +182,10 @@ class SegmentMgmt {
   dragTo(main) {
     return function (d) {
       updateSizeGraph(d);
-      autoScrollOnMousedrag(d.svgId, d.containerId);
+      autoScrollOnMousedrag(d.svgId, d.containerId, main.viewMode.value);
       
       // Prevent drag object outside the window
-      let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, `#${d.svgId}`, `#${d.id}`);
+      let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, d);
       d.x = x;
       d.y = y;
       // Transform group
@@ -592,7 +592,7 @@ class SegmentMgmt {
 
     vertex.generateContent();
 
-    setMinBoundaryGraph(this.dataContainer, this.svgId);
+    setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
   }
 
   updatePathConnectForVertex(vertex){

@@ -115,7 +115,7 @@ class Vertex {
     this.generateContent(callbackDragConnection);
 
     if(!isImport) 
-      setMinBoundaryGraph(this.dataContainer, this.svgId);
+      setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
 
     return this;
 	}
@@ -263,7 +263,7 @@ class Vertex {
       return e.id === this.id;
     });
 
-    setMinBoundaryGraph(this.dataContainer, this.svgId);
+    setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
   }
   
   /**

@@ -529,7 +529,7 @@ class CltSegment {
       x += VERTEX_ATTR_SIZE.GROUP_WIDTH + nMarginRight;
     }
 
-    setMinBoundaryGraph(this.dataContainer, this.graphSvgId);
+    setMinBoundaryGraph(this.dataContainer, this.graphSvgId, this.viewMode.value);
   }
 
   sortByName() {
@@ -594,7 +594,7 @@ class CltSegment {
       x += VERTEX_ATTR_SIZE.GROUP_WIDTH + nMarginRight;
     }
 
-    setMinBoundaryGraph(this.dataContainer, this.graphSvgId);
+    setMinBoundaryGraph(this.dataContainer, this.graphSvgId, this.viewMode.value);
   }
 
   indexOfMinOf(arr) {

@@ -207,7 +207,7 @@ class CltGraph {
     //Solve in case of save and import from different scroll position
     this.objectUtils.onContainerSvgScroll(this.svgId, this.edgeMgmt, [this.dataContainer]);
 
-    setMinBoundaryGraph(this.dataContainer,this.graphSvgId);
+    setMinBoundaryGraph(this.dataContainer,this.graphSvgId, this.viewMode.value);
   }
 
   save(fileName) {

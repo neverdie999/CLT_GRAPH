@@ -115,6 +115,5 @@ export const COMMON_DATA = {
   // vertexGroup: null, // Group vertex
   currentWidth: 1900, // Default current width graph
   currentHeight: 1800, // Default current height graph
-  isEnableHorizontalScroll: true,
   viewMode: VIEW_MODE.EDIT
 };

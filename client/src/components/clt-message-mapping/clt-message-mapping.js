@@ -5,12 +5,10 @@ import OutputMgmt from './output-mgmt/output-mgmt';
 import OperationsMgmt from './operations-mgmt/operations-mgmt';
 import ConnectMgmt from './connect-mgmt/connect-mgmt';
 import ObjectUtils from '../../common/utilities/object.ult';
-import LinkedList from '../../common/data-type-define/linked-list';
 
 import {
   comShowMessage,
-  setMinBoundaryGraph,
-  disableHorizontalScroll,
+  setMinBoundaryGraph
 } from '../../common/utilities/common.ult';
 
 import { 
@@ -35,8 +33,6 @@ class CltMessageMapping {
   }
 
   initialize() {
-
-   disableHorizontalScroll();
 
     this.objectUtils = new ObjectUtils();
     this.initSvgHtml();
@@ -197,7 +193,7 @@ class CltMessageMapping {
     this.inputMgmt.drawObjectsOnInputGraph(graphData);
     this.inputMgmt.initMenuContext();
 
-    setMinBoundaryGraph(this.storeInputMessage,this.inputMessageSvgId);
+    setMinBoundaryGraph(this.storeInputMessage,this.inputMessageSvgId, this.inputMgmt.viewMode.value);
   }
 
   async LoadOutputMessage(graphData){
@@ -227,7 +223,7 @@ class CltMessageMapping {
     await this.outputMgmt.drawObjectsOnOutputGraph(graphData);
     this.outputMgmt.initMenuContext();
 
-    setMinBoundaryGraph(this.storeOutputMessage,this.outputMessageSvgId);
+    setMinBoundaryGraph(this.storeOutputMessage,this.outputMessageSvgId, this.outputMgmt.viewMode.value);
   }
 
   async LoadMesseageMapping(messageMappingData){
@@ -293,9 +289,9 @@ class CltMessageMapping {
     this.edgeVerifySvgId(edges);
     await this.connectMgmt.drawEdgeOnConnectGraph(edges);
 
-    setMinBoundaryGraph(this.storeInputMessage,this.inputMessageSvgId);
-    setMinBoundaryGraph(this.storeOutputMessage,this.outputMessageSvgId);
-    setMinBoundaryGraph(this.storeOperations,this.operationsSvgId);
+    setMinBoundaryGraph(this.storeInputMessage,this.inputMessageSvgId, this.inputMgmt.viewMode.value);
+    setMinBoundaryGraph(this.storeOutputMessage,this.outputMessageSvgId, this.outputMgmt.viewMode.value);
+    setMinBoundaryGraph(this.storeOperations,this.operationsSvgId, this.operationsMgmt.viewMode.value);
 
     //Solve in case of save and import from different window size
     await this.objectUtils.updatePathConnectOnWindowResize(this.connectMgmt.edgeMgmt, [this.storeInputMessage, this.storeOperations, this.storeOutputMessage]);

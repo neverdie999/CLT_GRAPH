@@ -7,7 +7,7 @@ import {
   COMMON_DATA,
   BOUNDARY_ATTR_SIZE
 } from '../const/index';
-import { setMinBoundaryGraph } from './common.ult';
+import { setMinBoundaryGraph, checkModePermission } from './common.ult';
 
 class ObjectUtils {
   /**
@@ -17,15 +17,15 @@ class ObjectUtils {
    * @param objectId
    * @returns {{x: number, y: number}}
    */
-  setPositionObjectJustInSvg(event, svg, objectId) {
+  setPositionObjectJustInSvg(event, object) {
     // Limit left
     let x = event.x < PADDING_POSITION_SVG.MIN_OFFSET_X ? PADDING_POSITION_SVG.MIN_OFFSET_X : event.x;
     let y = event.y < PADDING_POSITION_SVG.MIN_OFFSET_Y ? PADDING_POSITION_SVG.MIN_OFFSET_Y : event.y;
     
     // limit right
-    if (!COMMON_DATA.isEnableHorizontalScroll){
-      let limitWidth = $(`${svg}`).width();
-      let {width} = this.getBBoxObject(objectId);
+    if (!checkModePermission(object.viewMode.value, 'horizontalScroll')){
+      let limitWidth = $(`${object.svgId}`).width();
+      let {width} = this.getBBoxObject(object.id);
       if (x + width > limitWidth)
         x = limitWidth - width;
     }
@@ -425,7 +425,7 @@ class ObjectUtils {
    * Vertex: The vertices in group SHOW_FULL_ALWAYS not effected by show reduced
    * The remain vertex then show header and connected properties only
    */
-  async showReduced(dataContainer, edgeDataContainer, vertexDefinition, svgId) {
+  async showReduced(dataContainer, edgeDataContainer, vertexDefinition, svgId, viewMode) {
     let edge = edgeDataContainer.edge;
     let lstVer = [], lstProp = [];
 
@@ -481,13 +481,13 @@ class ObjectUtils {
     if (dataContainer.boundary.length > 0)
       await dataContainer.boundary[0].updateHeightBoundary();
     
-    setMinBoundaryGraph(dataContainer, svgId);
+    setMinBoundaryGraph(dataContainer, svgId, viewMode);
   }
 
   /**
    * Show full graph
    */
-  async showFull(dataContainer, vertexDefinition, svgId) {
+  async showFull(dataContainer, vertexDefinition, svgId, viewMode) {
 
     let arrShowFullAlwayGroup = [];
     vertexDefinition.vertexGroup.forEach(e => {
@@ -530,7 +530,7 @@ class ObjectUtils {
     if (dataContainer.boundary.length > 0)
       await dataContainer.boundary[0].updateHeightBoundary();
 
-    setMinBoundaryGraph(dataContainer, svgId);
+    setMinBoundaryGraph(dataContainer, svgId, viewMode);
   }
 
   /**

@@ -206,9 +206,9 @@ class BoundaryMgmt {
   dragTo(main) {
     return function (d) {
       updateSizeGraph(d);
-      autoScrollOnMousedrag(d.svgId, d.containerId);
+      autoScrollOnMousedrag(d.svgId, d.containerId, main.viewMode.value);
 
-      let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, `#${d.svgId}`, `#${d.id}`);
+      let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, d);
       //d.x = x;
       //d.y = y;
 
@@ -221,7 +221,7 @@ class BoundaryMgmt {
   endDrag(main) {
     return function (d) {
 
-      let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, `#${d.svgId}`, `#${d.id}`);
+      let {x, y} = main.objectUtils.setPositionObjectJustInSvg(d3.event, d);
       d.x = x;
       d.y = y;
 
@@ -254,7 +254,7 @@ class BoundaryMgmt {
 
       main.hiddenBBoxGroup();
       main.objectUtils.restoreSizeBoundary(d);
-      setMinBoundaryGraph(main.dataContainer, main.svgId);
+      setMinBoundaryGraph(main.dataContainer, main.svgId, main.viewMode.value);
     }
   }
 

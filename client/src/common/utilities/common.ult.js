@@ -146,7 +146,7 @@ export function sleep(millis)
  * @param {*} data 
  * @param {*} svgId 
  */
-export function setMinBoundaryGraph(data, svgId) {
+export function setMinBoundaryGraph(data, svgId, viewMode) {
 
   // Array store size
   let lstOffsetX = [DEFAULT_CONFIG_GRAPH.MIN_WIDTH];
@@ -185,7 +185,7 @@ export function setMinBoundaryGraph(data, svgId) {
   let width = Math.max.apply(null, lstOffsetX);
   let height = Math.max.apply(null, lstOffsetY);
 
-  if(COMMON_DATA.isEnableHorizontalScroll){
+  if(checkModePermission(viewMode, 'horizontalScroll')){
     setSizeGraph({width, height},svgId);
   }else{
     setSizeGraph({width: undefined, height},svgId);
@@ -195,7 +195,7 @@ export function setMinBoundaryGraph(data, svgId) {
 /**
  * Auto scroll when drag vertex or boundary
  */
-export function autoScrollOnMousedrag(svgId, containerId) {
+export function autoScrollOnMousedrag(svgId, containerId, viewMode) {
   // Auto scroll on mouse drag
   let svg = d3.select(`#${svgId}`).node();
   const $parent = $(`#${containerId}`);
@@ -216,7 +216,7 @@ export function autoScrollOnMousedrag(svgId, containerId) {
     $parent.scrollTop(y - AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL);
   }
 
-  if (COMMON_DATA.isEnableHorizontalScroll){
+  if (checkModePermission(viewMode, 'horizontalScroll')){
     if ((x + AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL) > w + sL) { 
       $parent.scrollLeft((x + AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL) - w); 
     } else if (x < AUTO_SCROLL_CONFIG.LIMIT_TO_SCROLL + sL) { 
@@ -231,7 +231,7 @@ export function updateSizeGraph(dragObj) {
   let currentY = d3.event.y;
   let margin = 100;
 
-  if (COMMON_DATA.isEnableHorizontalScroll){
+  if (checkModePermission(dragObj.viewMode.value, 'horizontalScroll')){
     if ((currentX + width) > COMMON_DATA.currentWidth) {
       COMMON_DATA.currentWidth = currentX + width + margin;
       $(`#${dragObj.svgId}`).css("min-width", COMMON_DATA.currentWidth);
@@ -242,14 +242,6 @@ export function updateSizeGraph(dragObj) {
     COMMON_DATA.currentHeight = currentY + height + margin;
     $(`#${dragObj.svgId}`).css("min-height", COMMON_DATA.currentHeight);
   }
-}
-
-/**
- * Disable horizontal scroll
- * ex: Message Mapping GUI
- */
-export function  disableHorizontalScroll() {
-  COMMON_DATA.isEnableHorizontalScroll = false;
 }
 
 /**
@@ -264,20 +256,21 @@ export function checkModePermission(viewMode, type){
     'showReduced',
     'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'namePrefix'
+		'namePrefix', 'horizontalScroll'
 	];
 
   data[VIEW_MODE.EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'namePrefix'
+		'namePrefix', 'horizontalScroll'
   ];
 
   data[VIEW_MODE.OPERATIONS] = [
     'createVertex', 'createBoundary', 'clearAll',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
-		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu'
+		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',
+		'horizontalScroll'
   ];
 
   data[VIEW_MODE.INPUT_MESSAGE] = [
@@ -296,7 +289,8 @@ export function checkModePermission(viewMode, type){
 
   data[VIEW_MODE.SEGMENT] = [
     'createNew', 'find', 'showReduced',
-    'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex'
+		'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
+		'horizontalScroll'
   ];
 
   return data[viewMode].indexOf(type) != -1;
