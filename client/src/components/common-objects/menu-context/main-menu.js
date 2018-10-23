@@ -34,6 +34,10 @@ class MainMenu {
               case "clearAll":
                 this.parent.clearAll();
                 this.parent.edgeMgmt.clearAll();
+								break;
+								
+							case "autoAlignment":
+                this.parent.operationsAutoAlignment();
                 break;
 
               case "showReduced":
@@ -63,8 +67,14 @@ class MainMenu {
               name: "Clear All",
               icon: "fa-times",
               disabled: !checkModePermission(this.viewMode.value, "clearAll")
+						},
+						"sep3": "-",
+            "autoAlignment": {
+              name: "Auto Alignment",
+              icon: "fa-sort",
+              disabled: !checkModePermission(this.viewMode.value, "autoAlignment")
             },
-            "sep3": "-",
+            "sep4": "-",
             "showReduced": {
               name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
               icon: "fa-link",

@@ -969,7 +969,7 @@ function checkModePermission(viewMode, type){
     'createVertex', 'createBoundary', 'clearAll',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',
-		'horizontalScroll'
+		'horizontalScroll', 'autoAlignment'
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["n" /* VIEW_MODE */].INPUT_MESSAGE] = [
@@ -19006,7 +19006,7 @@ function projectionMutator(projectAt) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(124), __webpack_require__(848)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(123), __webpack_require__(848)(module)))
 
 /***/ }),
 /* 38 */
@@ -22881,6 +22881,33 @@ Cardinal.prototype = {
 
 /***/ }),
 /* 123 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var BKDRHash = __webpack_require__(850);
@@ -23000,33 +23027,6 @@ ColorHash.prototype.hex = function(str) {
 };
 
 module.exports = ColorHash;
-
-
-/***/ }),
-/* 124 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
 
 
 /***/ }),
@@ -33076,7 +33076,7 @@ define(String.prototype, "padRight", "".padEnd);
 "pop,reverse,shift,keys,values,entries,indexOf,every,some,forEach,map,filter,find,findIndex,includes,join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill".split(",").forEach(function (key) {
   [][key] && define(Array, key, Function.call.bind([][key]));
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(124)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(123)))
 
 /***/ }),
 /* 328 */
@@ -38329,7 +38329,7 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
   typeof self === "object" ? self : this
 );
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(124)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(123)))
 
 /***/ }),
 /* 526 */
@@ -52586,7 +52586,7 @@ module.exports = function(module) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_color_hash__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_color_hash__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_color_hash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_color_hash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vertex__ = __webpack_require__(851);
@@ -53499,7 +53499,7 @@ module.exports = BKDRHash;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_color_hash__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_color_hash__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_color_hash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_color_hash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
@@ -53901,7 +53901,7 @@ class Vertex {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__boundary__ = __webpack_require__(863);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_popup_ult__ = __webpack_require__(326);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_color_hash__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_color_hash__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_color_hash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_color_hash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_utilities_object_ult__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__menu_context_boundary_menu__ = __webpack_require__(864);
@@ -55488,6 +55488,10 @@ class MainMenu {
               case "clearAll":
                 this.parent.clearAll();
                 this.parent.edgeMgmt.clearAll();
+								break;
+								
+							case "autoAlignment":
+                this.parent.operationsAutoAlignment();
                 break;
 
               case "showReduced":
@@ -55517,8 +55521,14 @@ class MainMenu {
               name: "Clear All",
               icon: "fa-times",
               disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, "clearAll")
+						},
+						"sep3": "-",
+            "autoAlignment": {
+              name: "Auto Alignment",
+              icon: "fa-sort",
+              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, "autoAlignment")
             },
-            "sep3": "-",
+            "sep4": "-",
             "showReduced": {
               name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
               icon: "fa-link",
@@ -56281,7 +56291,7 @@ class VertexMenu {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_color_hash__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_color_hash__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_color_hash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_color_hash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
@@ -57401,6 +57411,9 @@ class FileMgmt {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_utilities_object_ult__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_const_index__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_util__ = __webpack_require__(882);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_util___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_util__);
+
 
 
 
@@ -57482,7 +57495,8 @@ class CltMessageMapping {
       containerId: this.operationsContainerId,
       svgId: this.operationsSvgId,
       edgeMgmt: this.connectMgmt.edgeMgmt,
-      dataContainer: this.storeOperations
+			dataContainer: this.storeOperations,
+			parent: this
     });
 
     this.initCustomFunctionD3();
@@ -58132,6 +58146,536 @@ class CltMessageMapping {
     
     return resObj;
 	}
+
+	operationsAutoAlignment() {
+		let arrRes = [];
+		let operationsContainer = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.storeOperations);
+		// Find all object connect to input area
+		this.storeConnect.edge.forEach(e => {
+			if (e.source.svgId == this.inputMessageSvgId && e.target.svgId == this.operationsSvgId) {
+				let object = null;
+				if (e.target.vertexId[0] == "V") {
+					object = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(operationsContainer.vertex, el => {
+						return el && el.id == e.target.vertexId;
+					})
+				} else {
+					object = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(operationsContainer.boundary, el => {
+						return el && el.id == e.target.vertexId;
+					})
+				}
+
+				if (object.length > 0) {
+					if (object[0].parent) {
+						let parent = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(operationsContainer.boundary, {"id":object[0].parent});
+						if (parent.length > 0) {
+							arrRes.push(parent[0]);
+						}
+					} else {
+						arrRes.push(object[0]);
+					}
+				} 
+			}
+		})
+
+		// Finding and pushing objects related to each object in current array
+		for(let i = 0; i < arrRes.length; i++) {
+			this.findNextObjects(arrRes[i], operationsContainer);
+		}
+
+		// =================== Find longest way for each line ===================================
+		let arrLongestLine = [];
+		for(let i = 0; i < arrRes.length; i++) {
+			let arrLine = [];
+			arrLongestLine.push(arrLine);
+			let line = [];
+			arrLine.push(line);
+			this.findLongestLine(arrRes[i], line, arrLine);
+		}
+
+		this.removeUnexpectedResult(arrLongestLine);
+
+		let arrFinalResult = this.mergeFinalResult(arrLongestLine);
+
+		// link to real object
+		for (let i = 0; i < arrFinalResult.length; i++) {
+			for (let j = 0; j < arrFinalResult[i].length; j++) {
+				for (let k = 0; k < arrFinalResult[i][j].length; k++) {
+					if (arrFinalResult[i][j][k].type == "V") {
+						arrFinalResult[i][j][k] = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.storeOperations.vertex, {"id": arrFinalResult[i][j][k].id})
+					} else {
+						arrFinalResult[i][j][k] = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.storeOperations.boundary, {"id": arrFinalResult[i][j][k].id})
+					}
+				}
+			}
+		}
+
+		// Arrange and calculate to avoid edge draw through objects
+		let top = 5;
+		for (let i = 0; i < arrFinalResult.length; i++) {
+			if (i > 0) {
+				top = this.maxHeight(arrFinalResult[i-1]) + 100;
+			}
+
+			// Arrange for each line
+			this.arrangeLine(arrFinalResult[i], top);
+			
+			// avoid edge draw draw through objects for each line
+			this.avoidEdgeGoThrowObject(arrFinalResult[i]);
+		}
+
+		Object(__WEBPACK_IMPORTED_MODULE_7__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.storeOperations, this.operationsSvgId, this.operationsMgmt.viewMode.value);
+	}
+
+	/**
+	 * 
+	 * @param {*} line 
+	 * @param {*} top 
+	 */
+	arrangeLine(line, top) {
+		// distance between each object
+		let distance = 100;
+
+		for (let i = 0; i < line.length; i++) {
+			for (let j = 0; j < line[i].length; j++) {
+				let x, y;
+
+				// x
+				if (i == 0) {
+					x = distance;
+				} else {
+					let prevObj = line[i - 1][0];
+
+					if (prevObj.type == "V") {
+						x = prevObj.x + __WEBPACK_IMPORTED_MODULE_8__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + distance;
+					} else {
+						x = prevObj.x + prevObj.width + distance;
+					}
+				}
+
+				// y
+				if (j == 0) {
+					y = top;
+				} else {
+					let aboveObj = line[i][j-1];
+					let rect = $(`#${aboveObj.id}`).get(0).getBoundingClientRect();
+					y = aboveObj.y + rect.height + 5;
+				}
+
+				line[i][j].setPosition({x,y});
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param {*} line 
+	 */
+	avoidEdgeGoThrowObject(line) {
+		let listEdge = [];
+		this.storeConnect.edge.forEach((edge, index) => {
+			if (edge.source.svgId == this.operationsSvgId && edge.target.svgId == this.operationsSvgId) {
+				listEdge.push(edge);
+			}
+		})
+
+		listEdge = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(listEdge);
+		this.calculateCoordinateByOperationsAreaForEdge(listEdge);
+
+		for (let i = 1; i < line.length; i++) {
+			for (let j = 0; j < line[i].length; j++) {
+				
+				let obj = line[i][j];
+				let pointRes = null;
+
+				// Find all edge that crossing objects
+				listEdge.forEach((item, index)=>{
+					let point = this.getIntersectionObject(item, obj);
+					// Choose the highest point
+					if (point) {
+						if (!pointRes || point.y > pointRes.y) {
+							pointRes = point;
+						}
+					}
+				})
+
+				// 
+				if (pointRes) {
+					let offset = pointRes.y - obj.y;
+					obj.setPosition({x: obj.x, y: obj.y + offset + 100});
+
+					// update position for below object in the same column
+					if (j < line[i].length - 1) {
+						for (let k = j + 1; k < line[i].length; k++) {
+							line[i][k].setPosition({x: line[i][k-1].x, y: line[i][k-1].y + $(`#${line[i][k-1].id}`).get(0).getBoundingClientRect().height + 5})
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * get the intersection point between the edge and object then choose a point that has the highest y coordinate
+	 * @param {*} edge 
+	 * @param {*} object 
+	 */
+	getIntersectionObject(edge, object) {
+
+		if (object.type == "B") {
+			if (!this.notIn(object.member, edge.target.vertexId) || !this.notIn(object.member, edge.source.vertexId)) return null;
+		}
+
+		let inputRect = $(`#${this.inputMessageContainerId}`).get(0).getBoundingClientRect();
+		inputRect.width = 0;
+
+		// edge
+		let eA = {x: edge.source.x, y: edge.source.y};
+		let eB = {x: edge.target.x, y: edge.target.y};
+
+		let objRect = $(`#${object.id}`).get(0).getBoundingClientRect();
+		// left edge of object
+		let leftA = {x: object.x + inputRect.width, y: object.y};
+		let leftB = {x: object.x + inputRect.width, y: object.y + objRect.height};
+
+		// right edge of object
+		let rightA = {x: object.x + objRect.width + inputRect.width, y: object.y};
+		let rightB = {x: object.x + objRect.width + inputRect.width, y: object.y + objRect.height};
+
+		// top edge of object
+		let topA = {x: object.x + inputRect.width, y: object.y};
+		let topB = {x: object.x + inputRect.width + inputRect.width, y: object.y};
+
+		// bottom edge of object
+		let bottomA = {x: object.x + inputRect.width, y: object.y + objRect.height};
+		let bottomB = {x: object.x + inputRect.width + inputRect.width, y: object.y + objRect.height};
+
+		let pointRes = null;
+		// Left edge
+		let point = this.getIntersection({A: leftA, B: leftB}, {A: eA, B: eB});
+		if (point && point.y > leftA.y && point.y < leftB.y && point.x > eA.x && point.x < eB.x) {
+			if (!pointRes || point.y > pointRes.y) pointRes = point;
+		}
+
+		// Right edge
+		point = this.getIntersection({A: rightA, B: rightB}, {A: eA, B: eB});
+		if (point && point.y > leftA.y && point.y < leftB.y && point.x > eA.x && point.x < eB.x) {
+			if (!pointRes || point.y > pointRes.y) pointRes = point;
+		}
+
+		// Top edge
+		point = this.getIntersection({A: topA, B: topB}, {A: eA, B: eB});
+		if (point && point.x > topA.x && point.x < topB.x && point.x > eA.x && point.x < eB.x) {
+			if (!pointRes || point.y > pointRes.y) pointRes = point;
+		}
+
+		// Bottom edge
+		point = this.getIntersection({A: bottomA, B: bottomB}, {A: eA, B: eB});
+		if (point && point.x > bottomA.x && point.x < bottomB.x && point.x > eA.x && point.x < eB.x) {
+			if (!pointRes || point.y > pointRes.y) pointRes = point;
+		}
+
+		return pointRes;
+	}
+
+	/**
+	 * get intersection between two edges
+	 * @param {*} edge1 
+	 * @param {*} edge2 
+	 */
+	getIntersection(edge1, edge2) {
+		/* 
+			y = ax + b
+
+			With: A(x1,y1), B(x2,y2)
+
+			=> a = (y2 - y1) / (x2 - x1)
+			=> b = (y1x2 - y2x1) / (x2 - x1)
+
+
+			With:
+			(d1): y = a1x + b1
+			(d2): y = a2x + b2
+
+			=> x = (a1 - a2) / (b2 - b1)
+			=> y = (b1*a2 - a1*b2) / (a2 - a1)
+		*/
+
+		/* edge1 // edge2 then there is no intersection */
+		if (   (edge1.B.x - edge1.A.x == 0 && edge2.B.x - edge2.A.x == 0)
+				|| (edge1.B.y - edge1.A.y == 0 && edge2.B.y - edge2.A.y == 0) ) {
+					return null;
+		}
+		
+		if (edge1.B.x - edge1.A.x == 0) {
+			/* edge1 // Oy */
+
+			let resX = edge1.A.x;
+
+			let a2 = (edge2.B.y - edge2.A.y) / (edge2.B.x - edge2.A.x);
+			let b2 = (edge2.A.y*edge2.B.x - edge2.B.y*edge2.A.x) / (edge2.B.x - edge2.A.x);
+
+			let resY = a2*resX + b2;
+
+			return {x: resX, y: resY};
+
+		} else if (edge1.B.y - edge1.A.y == 0) {
+			/* edge1 // Ox */
+
+			let resY = edge1.A.y;
+
+			let a2 = (edge2.B.y - edge2.A.y) / (edge2.B.x - edge2.A.x);
+			let b2 = (edge2.A.y*edge2.B.x - edge2.B.y*edge2.A.x) / (edge2.B.x - edge2.A.x);
+
+			let resX = (resY - b2)/a2;
+
+			return {x: resX, y: resY}
+
+		} else if (edge2.B.x - edge2.A.x == 0) {
+			/* edge2 // Oy */
+
+			let resX = edge2.A.x;
+
+			let a1 = (edge1.B.y - edge1.A.y) / (edge1.B.x - edge1.A.x);
+			let b1 = (edge1.A.y*edge1.B.x - edge1.B.y*edge1.A.x) / (edge1.B.x - edge1.A.x);
+
+			let resY = a1*resX + b1;
+
+			return {x: resX, y: resY};
+			
+		} else if (edge2.B.y - edge2.A.y == 0) {
+			/* edge2 // Ox */
+			
+			let resY = edge2.A.y;
+
+			let a1 = (edge1.B.y - edge1.A.y) / (edge1.B.x - edge1.A.x);
+			let b1 = (edge1.A.y*edge1.B.x - edge1.B.y*edge1.A.x) / (edge1.B.x - edge1.A.x);
+
+			let resX = (resY - b1)/a1;
+
+			return {x: resX, y: resY};
+
+		} else {
+			let a1 = (edge1.B.y - edge1.A.y) / (edge1.B.x - edge1.A.x);
+			let b1 = (edge1.A.y*edge1.B.x - edge1.B.y*edge1.A.x) / (edge1.B.x - edge1.A.x);
+
+			let a2 = (edge2.B.y - edge2.A.y) / (edge2.B.x - edge2.A.x);
+			let b2 = (edge2.A.y*edge2.B.x - edge2.B.y*edge2.A.x) / (edge2.B.x - edge2.A.x);
+
+			let resX = (a1 - a2) / (b2 - b1);
+			let resY = (b1*a2 - a1*b2) / (a2 - a1);
+
+			return {x: resX, y: resY};
+		}
+	}
+
+	// Find all objects connect to this object from right side
+	findNextObjects(object, operationsContainer) {
+		// If this object was run findNextObjects before then do nothing
+		if (object.child) return;
+
+		object.child = [];
+		this.storeConnect.edge.forEach(e => {
+			if (e.source.svgId == this.operationsSvgId && this.haveConnectToThisObject(object, e.source.vertexId)) {
+				let tmpObj = null;
+
+				if (e.target.vertexId[0] == "V") {
+					tmpObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(operationsContainer.vertex, {"id": e.target.vertexId})
+				} else {
+					tmpObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(operationsContainer.boundary, {"id": e.target.vertexId})
+				}
+
+				if (tmpObj) {
+					if (tmpObj.parent) {
+						tmpObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(operationsContainer.boundary, {"id":tmpObj.parent});
+					}
+
+					if (this.notIn(object.child, tmpObj.id)) {
+						object.child.push(tmpObj);
+					}
+				} 
+			}
+		})
+
+		for(let i = 0; i < object.child.length; i++) {
+			this.findNextObjects(object.child[i], operationsContainer);
+		}
+	}
+
+	/**
+	 * Return true if object does not exist in arr
+	 * @param {*} arr 
+	 * @param {*} object 
+	 */
+	notIn(arr, objectId) {
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i].id == objectId) return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * 
+	 * @param {*} object 
+	 * @param {*} id 
+	 */
+	haveConnectToThisObject(object, id) {
+		if (object.type == "V") {
+			return object.id == id;
+		} else {
+			if (object.id == id) return true;
+
+			for (let i = 0; i < object.member.length; i++) {
+				if (object.member[i].id == id) return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param {*} object 
+	 * @param {*} arrCurLine 
+	 * @param {*} arrRes 
+	 */
+	findLongestLine(object, arrCurLine, arrRes) {
+		arrCurLine.push(object);
+
+		if (object.child.length > 0) {
+			for (let i = 0; i < object.child.length; i++) {
+				let newLine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.clone(arrCurLine);
+				arrRes.push(newLine);
+				this.findLongestLine(object.child[i], newLine, arrRes);
+			}
+		}
+	}
+
+	/**
+	 * 
+	 */
+	maxLength(arr) {
+		if (arr.length == 0) return 0;
+
+		let max = arr[0].length;
+
+		if (arr.length > 1) {
+			for (let i = 1; i < arr.length; i++) {
+				if (arr[i].length > max) max = arr[i].length;
+			}
+		}
+
+		return max;
+	}
+
+	/**
+	 * 
+	 * @param {*} arrLongestLine 
+	 */
+	removeUnexpectedResult(arrLongestLine) {
+		for (let i = 0; i < arrLongestLine.length; i++) {
+			let maxLength = this.maxLength(arrLongestLine[i]);
+			__WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(arrLongestLine[i], item => {
+				return item.length < maxLength;
+			})
+		}
+	}
+
+	/**
+	 * 
+	 * @param {*} arrLongestLine 
+	 */
+	mergeFinalResult(arrLongestLine) {
+		let arrRes = [];
+		for (let i = 0; i < arrLongestLine.length; i++) {
+			let line = arrLongestLine[i];
+			let tempLine = line[0]; // Choose the first item in line for the base then merge other item into it
+			let arrResTemp = []; // store the final result for each line
+			arrRes.push(arrResTemp);
+
+			// use first item for base data
+			tempLine.forEach((item, index) => {
+				arrResTemp[index] = [];
+				arrResTemp[index].push(item);
+			})
+
+			// if more than 1 item in line then merge them to the base
+			if (line.length > 1) {
+				for (let j = 1; j < line.length; j++) {
+					line[j].forEach((item, index) => {
+						if (this.notIn(arrResTemp[index], item.id)) {
+							arrResTemp[index].push(item);
+						}
+					})
+				}
+			}
+		}
+
+		return arrRes;
+	}
+
+	/**
+	 * 
+	 * @param {*} arrEdge 
+	 */
+	calculateCoordinateByOperationsAreaForEdge(arrEdge) {
+
+		arrEdge.forEach((item, index) => {
+			// source
+			this.doCalculateCoordinateForNodeOfEdge(item.source, __WEBPACK_IMPORTED_MODULE_8__common_const_index__["j" /* TYPE_CONNECT */].OUTPUT);
+
+			// target
+			this.doCalculateCoordinateForNodeOfEdge(item.target, __WEBPACK_IMPORTED_MODULE_8__common_const_index__["j" /* TYPE_CONNECT */].INPUT);
+		})
+	}
+
+	/**
+	 * 
+	 * @param {*} node 
+	 * @param {*} connectType 
+	 */
+	doCalculateCoordinateForNodeOfEdge(node, connectType) {
+		let {vertexId, prop} = node;
+		let vertices = [];
+		vertices = vertices.concat(this.storeOperations.vertex);
+		vertices = vertices.concat(this.storeOperations.boundary);
+
+		let object = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {"id": vertexId});
+
+		if (prop.indexOf('boundary_title') != -1){
+			node.y = object.y + __WEBPACK_IMPORTED_MODULE_8__common_const_index__["b" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT / 2;
+			node.x = connectType === __WEBPACK_IMPORTED_MODULE_8__common_const_index__["j" /* TYPE_CONNECT */].OUTPUT ? object.x + object.width : object.x
+
+    }else if (prop.indexOf('title') != -1){
+			node.y = object.y + __WEBPACK_IMPORTED_MODULE_8__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT / 2;
+			node.x = connectType === __WEBPACK_IMPORTED_MODULE_8__common_const_index__["j" /* TYPE_CONNECT */].OUTPUT ? object.x + __WEBPACK_IMPORTED_MODULE_8__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH : object.x
+
+    } else{
+      // Get index prop in object
+      let index = this.objectUtils.findIndexPropInVertex(vertexId, prop);
+			node.y = object.y + __WEBPACK_IMPORTED_MODULE_8__common_const_index__["k" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index * __WEBPACK_IMPORTED_MODULE_8__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_8__common_const_index__["k" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2;
+			node.x = connectType === __WEBPACK_IMPORTED_MODULE_8__common_const_index__["j" /* TYPE_CONNECT */].OUTPUT ? object.x + __WEBPACK_IMPORTED_MODULE_8__common_const_index__["k" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH : object.x;
+    }
+	}
+
+	/**
+	 * 
+	 * @param {*} line 
+	 */
+	maxHeight(line) {
+		let maxHeight = 0;
+		for (let i = 0; i < line.length; i++) {
+			for (let j = 0; j < line[i].length; j++) {
+				let rect = $(`#${line[i][j].id}`).get(0).getBoundingClientRect();
+				if (maxHeight < line[i][j].y + rect.height) {
+					maxHeight = line[i][j].y + rect.height;
+				}
+			}
+		}
+
+		return maxHeight;
+	}
+	
 }
   
 /* harmony default export */ __webpack_exports__["a"] = (CltMessageMapping);
@@ -58507,7 +59051,8 @@ class OperationsMgmt {
     this.dataContainer = props.dataContainer;
     this.svgId = props.svgId;
     this.containerId = props.containerId;
-    this.viewMode = {value: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["n" /* VIEW_MODE */].OPERATIONS};
+		this.viewMode = {value: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["n" /* VIEW_MODE */].OPERATIONS};
+		this.parent = props.parent;
 
     this.initialize();
   }
@@ -58603,7 +59148,11 @@ class OperationsMgmt {
 
   processDataVertexTypeDefine(vertexDefinitionData) {
     this.vertexMgmt.processDataVertexTypeDefine(vertexDefinitionData);
-  }
+	}
+
+	operationsAutoAlignment() {
+		this.parent.operationsAutoAlignment();
+	}
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (OperationsMgmt);
@@ -58690,6 +59239,829 @@ class ConnectMgmt {
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (ConnectMgmt);
+
+
+/***/ }),
+/* 882 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+var formatRegExp = /%[sdj%]/g;
+exports.format = function(f) {
+  if (!isString(f)) {
+    var objects = [];
+    for (var i = 0; i < arguments.length; i++) {
+      objects.push(inspect(arguments[i]));
+    }
+    return objects.join(' ');
+  }
+
+  var i = 1;
+  var args = arguments;
+  var len = args.length;
+  var str = String(f).replace(formatRegExp, function(x) {
+    if (x === '%%') return '%';
+    if (i >= len) return x;
+    switch (x) {
+      case '%s': return String(args[i++]);
+      case '%d': return Number(args[i++]);
+      case '%j':
+        try {
+          return JSON.stringify(args[i++]);
+        } catch (_) {
+          return '[Circular]';
+        }
+      default:
+        return x;
+    }
+  });
+  for (var x = args[i]; i < len; x = args[++i]) {
+    if (isNull(x) || !isObject(x)) {
+      str += ' ' + x;
+    } else {
+      str += ' ' + inspect(x);
+    }
+  }
+  return str;
+};
+
+
+// Mark that a method should not be used.
+// Returns a modified function which warns once by default.
+// If --no-deprecation is set, then it is a no-op.
+exports.deprecate = function(fn, msg) {
+  // Allow for deprecating things in the process of starting up.
+  if (isUndefined(global.process)) {
+    return function() {
+      return exports.deprecate(fn, msg).apply(this, arguments);
+    };
+  }
+
+  if (process.noDeprecation === true) {
+    return fn;
+  }
+
+  var warned = false;
+  function deprecated() {
+    if (!warned) {
+      if (process.throwDeprecation) {
+        throw new Error(msg);
+      } else if (process.traceDeprecation) {
+        console.trace(msg);
+      } else {
+        console.error(msg);
+      }
+      warned = true;
+    }
+    return fn.apply(this, arguments);
+  }
+
+  return deprecated;
+};
+
+
+var debugs = {};
+var debugEnviron;
+exports.debuglog = function(set) {
+  if (isUndefined(debugEnviron))
+    debugEnviron = process.env.NODE_DEBUG || '';
+  set = set.toUpperCase();
+  if (!debugs[set]) {
+    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
+      var pid = process.pid;
+      debugs[set] = function() {
+        var msg = exports.format.apply(exports, arguments);
+        console.error('%s %d: %s', set, pid, msg);
+      };
+    } else {
+      debugs[set] = function() {};
+    }
+  }
+  return debugs[set];
+};
+
+
+/**
+ * Echos the value of a value. Trys to print the value out
+ * in the best way possible given the different types.
+ *
+ * @param {Object} obj The object to print out.
+ * @param {Object} opts Optional options object that alters the output.
+ */
+/* legacy: obj, showHidden, depth, colors*/
+function inspect(obj, opts) {
+  // default options
+  var ctx = {
+    seen: [],
+    stylize: stylizeNoColor
+  };
+  // legacy...
+  if (arguments.length >= 3) ctx.depth = arguments[2];
+  if (arguments.length >= 4) ctx.colors = arguments[3];
+  if (isBoolean(opts)) {
+    // legacy...
+    ctx.showHidden = opts;
+  } else if (opts) {
+    // got an "options" object
+    exports._extend(ctx, opts);
+  }
+  // set default options
+  if (isUndefined(ctx.showHidden)) ctx.showHidden = false;
+  if (isUndefined(ctx.depth)) ctx.depth = 2;
+  if (isUndefined(ctx.colors)) ctx.colors = false;
+  if (isUndefined(ctx.customInspect)) ctx.customInspect = true;
+  if (ctx.colors) ctx.stylize = stylizeWithColor;
+  return formatValue(ctx, obj, ctx.depth);
+}
+exports.inspect = inspect;
+
+
+// http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
+inspect.colors = {
+  'bold' : [1, 22],
+  'italic' : [3, 23],
+  'underline' : [4, 24],
+  'inverse' : [7, 27],
+  'white' : [37, 39],
+  'grey' : [90, 39],
+  'black' : [30, 39],
+  'blue' : [34, 39],
+  'cyan' : [36, 39],
+  'green' : [32, 39],
+  'magenta' : [35, 39],
+  'red' : [31, 39],
+  'yellow' : [33, 39]
+};
+
+// Don't use 'blue' not visible on cmd.exe
+inspect.styles = {
+  'special': 'cyan',
+  'number': 'yellow',
+  'boolean': 'yellow',
+  'undefined': 'grey',
+  'null': 'bold',
+  'string': 'green',
+  'date': 'magenta',
+  // "name": intentionally not styling
+  'regexp': 'red'
+};
+
+
+function stylizeWithColor(str, styleType) {
+  var style = inspect.styles[styleType];
+
+  if (style) {
+    return '\u001b[' + inspect.colors[style][0] + 'm' + str +
+           '\u001b[' + inspect.colors[style][1] + 'm';
+  } else {
+    return str;
+  }
+}
+
+
+function stylizeNoColor(str, styleType) {
+  return str;
+}
+
+
+function arrayToHash(array) {
+  var hash = {};
+
+  array.forEach(function(val, idx) {
+    hash[val] = true;
+  });
+
+  return hash;
+}
+
+
+function formatValue(ctx, value, recurseTimes) {
+  // Provide a hook for user-specified inspect functions.
+  // Check that value is an object with an inspect function on it
+  if (ctx.customInspect &&
+      value &&
+      isFunction(value.inspect) &&
+      // Filter out the util module, it's inspect function is special
+      value.inspect !== exports.inspect &&
+      // Also filter out any prototype objects using the circular check.
+      !(value.constructor && value.constructor.prototype === value)) {
+    var ret = value.inspect(recurseTimes, ctx);
+    if (!isString(ret)) {
+      ret = formatValue(ctx, ret, recurseTimes);
+    }
+    return ret;
+  }
+
+  // Primitive types cannot have properties
+  var primitive = formatPrimitive(ctx, value);
+  if (primitive) {
+    return primitive;
+  }
+
+  // Look up the keys of the object.
+  var keys = Object.keys(value);
+  var visibleKeys = arrayToHash(keys);
+
+  if (ctx.showHidden) {
+    keys = Object.getOwnPropertyNames(value);
+  }
+
+  // IE doesn't make error fields non-enumerable
+  // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
+  if (isError(value)
+      && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
+    return formatError(value);
+  }
+
+  // Some type of object without properties can be shortcutted.
+  if (keys.length === 0) {
+    if (isFunction(value)) {
+      var name = value.name ? ': ' + value.name : '';
+      return ctx.stylize('[Function' + name + ']', 'special');
+    }
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    }
+    if (isDate(value)) {
+      return ctx.stylize(Date.prototype.toString.call(value), 'date');
+    }
+    if (isError(value)) {
+      return formatError(value);
+    }
+  }
+
+  var base = '', array = false, braces = ['{', '}'];
+
+  // Make Array say that they are Array
+  if (isArray(value)) {
+    array = true;
+    braces = ['[', ']'];
+  }
+
+  // Make functions say that they are functions
+  if (isFunction(value)) {
+    var n = value.name ? ': ' + value.name : '';
+    base = ' [Function' + n + ']';
+  }
+
+  // Make RegExps say that they are RegExps
+  if (isRegExp(value)) {
+    base = ' ' + RegExp.prototype.toString.call(value);
+  }
+
+  // Make dates with properties first say the date
+  if (isDate(value)) {
+    base = ' ' + Date.prototype.toUTCString.call(value);
+  }
+
+  // Make error with message first say the error
+  if (isError(value)) {
+    base = ' ' + formatError(value);
+  }
+
+  if (keys.length === 0 && (!array || value.length == 0)) {
+    return braces[0] + base + braces[1];
+  }
+
+  if (recurseTimes < 0) {
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    } else {
+      return ctx.stylize('[Object]', 'special');
+    }
+  }
+
+  ctx.seen.push(value);
+
+  var output;
+  if (array) {
+    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
+  } else {
+    output = keys.map(function(key) {
+      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
+    });
+  }
+
+  ctx.seen.pop();
+
+  return reduceToSingleString(output, base, braces);
+}
+
+
+function formatPrimitive(ctx, value) {
+  if (isUndefined(value))
+    return ctx.stylize('undefined', 'undefined');
+  if (isString(value)) {
+    var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
+                                             .replace(/'/g, "\\'")
+                                             .replace(/\\"/g, '"') + '\'';
+    return ctx.stylize(simple, 'string');
+  }
+  if (isNumber(value))
+    return ctx.stylize('' + value, 'number');
+  if (isBoolean(value))
+    return ctx.stylize('' + value, 'boolean');
+  // For some reason typeof null is "object", so special case here.
+  if (isNull(value))
+    return ctx.stylize('null', 'null');
+}
+
+
+function formatError(value) {
+  return '[' + Error.prototype.toString.call(value) + ']';
+}
+
+
+function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
+  var output = [];
+  for (var i = 0, l = value.length; i < l; ++i) {
+    if (hasOwnProperty(value, String(i))) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          String(i), true));
+    } else {
+      output.push('');
+    }
+  }
+  keys.forEach(function(key) {
+    if (!key.match(/^\d+$/)) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          key, true));
+    }
+  });
+  return output;
+}
+
+
+function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
+  var name, str, desc;
+  desc = Object.getOwnPropertyDescriptor(value, key) || { value: value[key] };
+  if (desc.get) {
+    if (desc.set) {
+      str = ctx.stylize('[Getter/Setter]', 'special');
+    } else {
+      str = ctx.stylize('[Getter]', 'special');
+    }
+  } else {
+    if (desc.set) {
+      str = ctx.stylize('[Setter]', 'special');
+    }
+  }
+  if (!hasOwnProperty(visibleKeys, key)) {
+    name = '[' + key + ']';
+  }
+  if (!str) {
+    if (ctx.seen.indexOf(desc.value) < 0) {
+      if (isNull(recurseTimes)) {
+        str = formatValue(ctx, desc.value, null);
+      } else {
+        str = formatValue(ctx, desc.value, recurseTimes - 1);
+      }
+      if (str.indexOf('\n') > -1) {
+        if (array) {
+          str = str.split('\n').map(function(line) {
+            return '  ' + line;
+          }).join('\n').substr(2);
+        } else {
+          str = '\n' + str.split('\n').map(function(line) {
+            return '   ' + line;
+          }).join('\n');
+        }
+      }
+    } else {
+      str = ctx.stylize('[Circular]', 'special');
+    }
+  }
+  if (isUndefined(name)) {
+    if (array && key.match(/^\d+$/)) {
+      return str;
+    }
+    name = JSON.stringify('' + key);
+    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
+      name = name.substr(1, name.length - 2);
+      name = ctx.stylize(name, 'name');
+    } else {
+      name = name.replace(/'/g, "\\'")
+                 .replace(/\\"/g, '"')
+                 .replace(/(^"|"$)/g, "'");
+      name = ctx.stylize(name, 'string');
+    }
+  }
+
+  return name + ': ' + str;
+}
+
+
+function reduceToSingleString(output, base, braces) {
+  var numLinesEst = 0;
+  var length = output.reduce(function(prev, cur) {
+    numLinesEst++;
+    if (cur.indexOf('\n') >= 0) numLinesEst++;
+    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
+  }, 0);
+
+  if (length > 60) {
+    return braces[0] +
+           (base === '' ? '' : base + '\n ') +
+           ' ' +
+           output.join(',\n  ') +
+           ' ' +
+           braces[1];
+  }
+
+  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
+}
+
+
+// NOTE: These type checking functions intentionally don't use `instanceof`
+// because it is fragile and can be easily faked with `Object.create()`.
+function isArray(ar) {
+  return Array.isArray(ar);
+}
+exports.isArray = isArray;
+
+function isBoolean(arg) {
+  return typeof arg === 'boolean';
+}
+exports.isBoolean = isBoolean;
+
+function isNull(arg) {
+  return arg === null;
+}
+exports.isNull = isNull;
+
+function isNullOrUndefined(arg) {
+  return arg == null;
+}
+exports.isNullOrUndefined = isNullOrUndefined;
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+exports.isNumber = isNumber;
+
+function isString(arg) {
+  return typeof arg === 'string';
+}
+exports.isString = isString;
+
+function isSymbol(arg) {
+  return typeof arg === 'symbol';
+}
+exports.isSymbol = isSymbol;
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+exports.isUndefined = isUndefined;
+
+function isRegExp(re) {
+  return isObject(re) && objectToString(re) === '[object RegExp]';
+}
+exports.isRegExp = isRegExp;
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+exports.isObject = isObject;
+
+function isDate(d) {
+  return isObject(d) && objectToString(d) === '[object Date]';
+}
+exports.isDate = isDate;
+
+function isError(e) {
+  return isObject(e) &&
+      (objectToString(e) === '[object Error]' || e instanceof Error);
+}
+exports.isError = isError;
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+exports.isFunction = isFunction;
+
+function isPrimitive(arg) {
+  return arg === null ||
+         typeof arg === 'boolean' ||
+         typeof arg === 'number' ||
+         typeof arg === 'string' ||
+         typeof arg === 'symbol' ||  // ES6 symbol
+         typeof arg === 'undefined';
+}
+exports.isPrimitive = isPrimitive;
+
+exports.isBuffer = __webpack_require__(884);
+
+function objectToString(o) {
+  return Object.prototype.toString.call(o);
+}
+
+
+function pad(n) {
+  return n < 10 ? '0' + n.toString(10) : n.toString(10);
+}
+
+
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+              'Oct', 'Nov', 'Dec'];
+
+// 26 Feb 16:19:34
+function timestamp() {
+  var d = new Date();
+  var time = [pad(d.getHours()),
+              pad(d.getMinutes()),
+              pad(d.getSeconds())].join(':');
+  return [d.getDate(), months[d.getMonth()], time].join(' ');
+}
+
+
+// log is just a thin wrapper to console.log that prepends a timestamp
+exports.log = function() {
+  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
+};
+
+
+/**
+ * Inherit the prototype methods from one constructor into another.
+ *
+ * The Function.prototype.inherits from lang.js rewritten as a standalone
+ * function (not on Function.prototype). NOTE: If this file is to be loaded
+ * during bootstrapping this function needs to be rewritten using some native
+ * functions as prototype setup using normal JavaScript does not work as
+ * expected during bootstrapping (see mirror.js in r114903).
+ *
+ * @param {function} ctor Constructor function which needs to inherit the
+ *     prototype.
+ * @param {function} superCtor Constructor function to inherit prototype from.
+ */
+exports.inherits = __webpack_require__(885);
+
+exports._extend = function(origin, add) {
+  // Don't do anything if add isn't an object
+  if (!add || !isObject(add)) return origin;
+
+  var keys = Object.keys(add);
+  var i = keys.length;
+  while (i--) {
+    origin[keys[i]] = add[keys[i]];
+  }
+  return origin;
+};
+
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(123), __webpack_require__(883)))
+
+/***/ }),
+/* 883 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 884 */
+/***/ (function(module, exports) {
+
+module.exports = function isBuffer(arg) {
+  return arg && typeof arg === 'object'
+    && typeof arg.copy === 'function'
+    && typeof arg.fill === 'function'
+    && typeof arg.readUInt8 === 'function';
+}
+
+/***/ }),
+/* 885 */
+/***/ (function(module, exports) {
+
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
 
 
 /***/ })

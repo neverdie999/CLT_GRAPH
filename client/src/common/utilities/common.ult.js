@@ -270,7 +270,7 @@ export function checkModePermission(viewMode, type){
     'createVertex', 'createBoundary', 'clearAll',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',
-		'horizontalScroll'
+		'horizontalScroll', 'autoAlignment'
   ];
 
   data[VIEW_MODE.INPUT_MESSAGE] = [

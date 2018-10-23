@@ -17,7 +17,8 @@ class OperationsMgmt {
     this.dataContainer = props.dataContainer;
     this.svgId = props.svgId;
     this.containerId = props.containerId;
-    this.viewMode = {value: VIEW_MODE.OPERATIONS};
+		this.viewMode = {value: VIEW_MODE.OPERATIONS};
+		this.parent = props.parent;
 
     this.initialize();
   }
@@ -113,7 +114,11 @@ class OperationsMgmt {
 
   processDataVertexTypeDefine(vertexDefinitionData) {
     this.vertexMgmt.processDataVertexTypeDefine(vertexDefinitionData);
-  }
+	}
+
+	operationsAutoAlignment() {
+		this.parent.operationsAutoAlignment();
+	}
 }
 
 export default OperationsMgmt;
