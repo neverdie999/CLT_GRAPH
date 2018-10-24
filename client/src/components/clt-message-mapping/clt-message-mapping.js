@@ -12,7 +12,7 @@ import {
 } from '../../common/utilities/common.ult';
 
 import { 
-  VERTEX_FORMAT_TYPE, VERTEX_ATTR_SIZE, BOUNDARY_ATTR_SIZE, TYPE_CONNECT
+  VERTEX_FORMAT_TYPE, VERTEX_ATTR_SIZE, BOUNDARY_ATTR_SIZE, TYPE_CONNECT, PADDING_POSITION_SVG
 } from '../../common/const/index';
 import { isObject } from 'util';
 
@@ -740,30 +740,40 @@ class CltMessageMapping {
 	operationsAutoAlignment() {
 		let arrRes = [];
 		let operationsContainer = _.cloneDeep(this.storeOperations);
-		// Find all object connect to input area
-		this.storeConnect.edge.forEach(e => {
-			if (e.source.svgId == this.inputMessageSvgId && e.target.svgId == this.operationsSvgId) {
-				let object = null;
-				if (e.target.vertexId[0] == "V") {
-					object = _.remove(operationsContainer.vertex, el => {
-						return el && el.id == e.target.vertexId;
-					})
-				} else {
-					object = _.remove(operationsContainer.boundary, el => {
-						return el && el.id == e.target.vertexId;
-					})
-				}
+		
+		// All edge start from input message
+		let arrEdgeStartFromInput = [];
+		arrEdgeStartFromInput = this.storeConnect.edge.filter(e => {
+			return e.source.svgId == this.inputMessageSvgId && e.target.svgId == this.operationsSvgId
+		})
+		
+		// sort from top to bottom
+		arrEdgeStartFromInput.sort(function(a, b){
+			return a.source.y - b.source.y
+		})
 
-				if (object.length > 0) {
-					if (object[0].parent) {
-						let parent = _.remove(operationsContainer.boundary, {"id":object[0].parent});
-						if (parent.length > 0) {
-							arrRes.push(parent[0]);
-						}
-					} else {
-						arrRes.push(object[0]);
+		// Find all object connect to input area		
+		arrEdgeStartFromInput.forEach(e => {
+			let object = null;
+			if (e.target.vertexId[0] == "V") {
+				object = _.remove(operationsContainer.vertex, el => {
+					return el && el.id == e.target.vertexId;
+				})
+			} else {
+				object = _.remove(operationsContainer.boundary, el => {
+					return el && el.id == e.target.vertexId;
+				})
+			}
+
+			if (object.length > 0) {
+				if (object[0].parent) {
+					let parent = _.remove(operationsContainer.boundary, {"id":object[0].parent});
+					if (parent.length > 0) {
+						arrRes.push(parent[0]);
 					}
-				} 
+				} else {
+					arrRes.push(object[0]);
+				}
 			}
 		})
 
@@ -772,7 +782,7 @@ class CltMessageMapping {
 			this.findNextObjects(arrRes[i], operationsContainer);
 		}
 
-		// =================== Find longest way for each line ===================================
+		// Find longest way for each line
 		let arrLongestLine = [];
 		for(let i = 0; i < arrRes.length; i++) {
 			let arrLine = [];
@@ -813,7 +823,181 @@ class CltMessageMapping {
 			this.avoidEdgeGoThrowObject(arrFinalResult[i]);
 		}
 
+		// ============================ Arrange for mapping constanst output message ================================================
+
+		let arrMappingConstObj = []
+		// Find all object connect to output message
+		this.storeConnect.edge.forEach(e => {
+			if (e.target.svgId == this.outputMessageSvgId && e.source.svgId == this.operationsSvgId) {
+				let object = null;
+				if (e.source.vertexId[0] == "V") {
+					object = _.remove(operationsContainer.vertex, el => {
+						return el && el.id == e.source.vertexId;
+					})
+				} else {
+					object = _.remove(operationsContainer.boundary, el => {
+						return el && el.id == e.source.vertexId;
+					})
+				}
+
+				if (object.length > 0) {
+					if (object[0].parent) {
+						let parent = _.remove(operationsContainer.boundary, {"id":object[0].parent});
+						if (parent.length > 0) {
+							arrMappingConstObj.push(parent[0]);
+						}
+					} else {
+						arrMappingConstObj.push(object[0]);
+					}
+				} 
+			}
+		})
+
+		// Remove all objects that have left connection
+		this.storeConnect.edge.forEach(e => {
+			_.remove(arrMappingConstObj, item => {
+				return item.id == e.target.vertexId;
+			})
+		})
+
+		// link to real object
+		for (let i = 0; i < arrMappingConstObj.length; i++) {
+			if (arrMappingConstObj[i].type == "V") {
+				arrMappingConstObj[i] = _.find(this.storeOperations.vertex, {"id": arrMappingConstObj[i].id})
+			} else {
+				arrMappingConstObj[i] = _.find(this.storeOperations.boundary, {"id": arrMappingConstObj[i].id})
+			}
+		}
+
+		// Find all edges connect to arrMappingConstObj
+		let listEdgeConnectToMappingConstObj = [];
+		this.storeConnect.edge.forEach((edge) => {
+			arrMappingConstObj.forEach(item => {
+				if (this.isNodeConnectToObject(item, edge.source)) {
+					listEdgeConnectToMappingConstObj.push(edge);	
+				}
+			})
+		})
+
+		// Move all Mapping Constant object to a temp place then arrange them by new position
+		arrMappingConstObj.forEach(item => {
+			item.setPosition({x: 5, y: 5});
+		})
+
+		// get the coordinate in output svg for target
+		listEdgeConnectToMappingConstObj = _.cloneDeep(listEdgeConnectToMappingConstObj);
+		listEdgeConnectToMappingConstObj.forEach((item, index) => {
+			this.doCalculateCoordinateForNodeOfEdge(item.target, TYPE_CONNECT.INPUT, this.storeOutputMessage);
+			this.doCalculateCoordinateForNodeOfEdge(item.source, TYPE_CONNECT.OUTPUT, this.storeOperations);
+		})
+
+		// sort by y coordinate from Top to Bottom then use them to arrange Mapping constant from Top to Bottom
+		listEdgeConnectToMappingConstObj.sort(function(a, b){
+			return a.target.y - b.target.y
+		})
+
+		// start arrange Mapping Constant object
+		let arrArrangedObj = [];
+		let {maxLength, index} = this.maxLength(arrFinalResult);
+
+		let rect = $(`#${arrFinalResult[index][maxLength-1][0].id}`).get(0).getBoundingClientRect();
+		let maxLengthLine = arrFinalResult[index][maxLength-1][0].x + rect.width;
+
+		listEdgeConnectToMappingConstObj.forEach((edge, index) => {
+			if (!_.find(arrArrangedObj, {"id": edge.source.vertexId})) {
+				let obj = _.find(arrMappingConstObj, {"id": edge.source.vertexId});
+				if (!obj) {
+					obj = _.find([].concat(this.storeOperations.vertex).concat(this.storeOperations.boundary), {"id": edge.source.vertexId});
+				}
+
+				if (obj && obj.parent) {
+					obj = _.find(arrMappingConstObj, {"id": obj.parent});
+				}
+				this.arrangeForMappingConstantObject(obj, edge, maxLengthLine);
+				arrArrangedObj.push(obj);
+				if (obj.type == "B") {
+					obj.member.forEach(item => {
+						arrArrangedObj.push(item);
+					})
+				}
+			}
+		})
+
 		setMinBoundaryGraph(this.storeOperations, this.operationsSvgId, this.operationsMgmt.viewMode.value);
+	}
+
+	/**
+	 * 
+	 * @param {*} object 
+	 * @param {*} edge 
+	 * @param {*} maxLengthLine 
+	 */
+	arrangeForMappingConstantObject(object, edge, maxLengthLine) {
+		// distance from top to edge.source.y of object
+		let offset = edge.source.y - object.y;
+
+		let finalX = maxLengthLine + 200;
+		let finalY = edge.target.y - offset < PADDING_POSITION_SVG.MIN_OFFSET_Y ? PADDING_POSITION_SVG.MIN_OFFSET_Y : edge.target.y - offset;
+
+		let rect = $(`#${object.id}`).get(0).getBoundingClientRect();
+		let overridePosition;
+		while ((overridePosition = this.haveOverride({id: object.id, x: finalX, y: finalY, width: rect.width, height: rect.height})) != -1) {
+			finalY = overridePosition + 5;
+		}
+
+		object.setPosition({x: finalX, y: finalY});
+	}
+
+	/**
+	 * 
+	 * @param {*} objectId 
+	 * @param {*} point 
+	 */
+	haveOverride(objectInfo) {
+		for (let i = 0; i < this.storeOperations.boundary.length; i++){
+			let boundary = this.storeOperations.boundary[i];
+			if (boundary.id != objectInfo.id && this.isOverride(objectInfo, boundary)) {
+				return boundary.y + boundary.height;
+			}
+		}
+
+		for (let i = 0; i < this.storeOperations.vertex.length; i++){
+			let vertex = this.storeOperations.vertex[i];
+			let rect = $(`#${vertex.id}`).get(0).getBoundingClientRect();
+			if (vertex.id != objectInfo.id && this.isOverride(objectInfo, {x: vertex.x, y: vertex.y, width: rect.width, height: rect.height})) {
+				return vertex.y + rect.height;
+			}
+		}
+
+		return -1;
+	}
+
+	isOverride(object1, object2) {
+		if (
+			(	// Top Left of object1 is in object2
+				(object1.y >= object2.y && object1.x >= object2.x && object1.y <= object2.y + object2.height + 4 && object1.x <= object2.x + object2.width)
+				// Top Right of object1 is in object2
+				|| (object1.y >= object2.y && object1.y <= object2.y + object2.height + 4 && object1.x + object1.width >= object2.x && object1.x + object1.width <= object2.x + object2.width)
+				// Bottom left of object1 is in object2
+				|| (object1.y + object1.height >= object2.y && object1.y + object1.height <= object2.y + object2.height + 4 && object1.x >= object2.x && object1.x <= object2.x + object2.width)
+				// Bottom Right of object1 is in object2
+				|| (object1.y  + object1.height >= object2.y && object1.y + object1.height <= object2.y + object2.height + 4 && object1.x + object1.width >= object2.x && object1.x + object1.width <= object2.x + object2.width)
+			)
+			||
+			( // Top Left of object2 is in object1
+				(object2.y >= object1.y && object2.x >= object1.x && object2.y <= object1.y + object1.height + 4 && object2.x <= object1.x + object1.width)
+				// Top Right of object2 is in object1
+				|| (object2.y >= object1.y && object2.y <= object1.y + object1.height + 4 && object2.x + object2.width >= object1.x && object2.x + object2.width <= object1.x + object1.width)
+				// Bottom left of object2 is in object1
+				|| (object2.y + object2.height >= object1.y && object2.y + object2.height <= object1.y + object1.height + 4 && object2.x >= object1.x && object2.x <= object1.x + object1.width)
+				// Bottom Right of object2 is in object1
+				|| (object2.y  + object2.height >= object1.y && object2.y + object2.height <= object1.y + object1.height + 4 && object2.x + object2.width >= object1.x && object2.x + object2.width <= object1.x + object1.width)
+			)
+		) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -1001,6 +1185,11 @@ class CltMessageMapping {
 
 			let resX = edge1.A.x;
 
+			if (edge2.B.y - edge2.A.y == 0) {
+				// edge2 // Ox
+				return {x: resX, y: edge2.A.y};	
+			}
+
 			let a2 = (edge2.B.y - edge2.A.y) / (edge2.B.x - edge2.A.x);
 			let b2 = (edge2.A.y*edge2.B.x - edge2.B.y*edge2.A.x) / (edge2.B.x - edge2.A.x);
 
@@ -1013,6 +1202,11 @@ class CltMessageMapping {
 
 			let resY = edge1.A.y;
 
+			if (edge2.B.x - edge2.A.x == 0) {
+				// edge2 // Oy
+				return {x: edge2.A.x, y: resY}	
+			}
+
 			let a2 = (edge2.B.y - edge2.A.y) / (edge2.B.x - edge2.A.x);
 			let b2 = (edge2.A.y*edge2.B.x - edge2.B.y*edge2.A.x) / (edge2.B.x - edge2.A.x);
 
@@ -1022,8 +1216,12 @@ class CltMessageMapping {
 
 		} else if (edge2.B.x - edge2.A.x == 0) {
 			/* edge2 // Oy */
-
 			let resX = edge2.A.x;
+
+			if (edge1.B.y - edge1.A.y == 0) {
+				// edge1 // Ox
+				return {x: resX, y: edge1.A.y};	
+			}
 
 			let a1 = (edge1.B.y - edge1.A.y) / (edge1.B.x - edge1.A.x);
 			let b1 = (edge1.A.y*edge1.B.x - edge1.B.y*edge1.A.x) / (edge1.B.x - edge1.A.x);
@@ -1036,6 +1234,10 @@ class CltMessageMapping {
 			/* edge2 // Ox */
 			
 			let resY = edge2.A.y;
+
+			if (edge1.B.x - edge1.A.x == 0) {
+				return {x: edge1.A.x, y: resY};	
+			}
 
 			let a1 = (edge1.B.y - edge1.A.y) / (edge1.B.x - edge1.A.x);
 			let b1 = (edge1.A.y*edge1.B.x - edge1.B.y*edge1.A.x) / (edge1.B.x - edge1.A.x);
@@ -1148,14 +1350,18 @@ class CltMessageMapping {
 		if (arr.length == 0) return 0;
 
 		let max = arr[0].length;
+		let index = 0;
 
 		if (arr.length > 1) {
 			for (let i = 1; i < arr.length; i++) {
-				if (arr[i].length > max) max = arr[i].length;
+				if (arr[i].length > max) {
+					max = arr[i].length;
+					index = i;
+				}
 			}
 		}
 
-		return max;
+		return {maxLength: max, index: index};
 	}
 
 	/**
@@ -1164,7 +1370,7 @@ class CltMessageMapping {
 	 */
 	removeUnexpectedResult(arrLongestLine) {
 		for (let i = 0; i < arrLongestLine.length; i++) {
-			let maxLength = this.maxLength(arrLongestLine[i]);
+			let {maxLength} = this.maxLength(arrLongestLine[i]);
 			_.remove(arrLongestLine[i], item => {
 				return item.length < maxLength;
 			})
@@ -1212,10 +1418,10 @@ class CltMessageMapping {
 
 		arrEdge.forEach((item, index) => {
 			// source
-			this.doCalculateCoordinateForNodeOfEdge(item.source, TYPE_CONNECT.OUTPUT);
+			this.doCalculateCoordinateForNodeOfEdge(item.source, TYPE_CONNECT.OUTPUT, this.storeOperations);
 
 			// target
-			this.doCalculateCoordinateForNodeOfEdge(item.target, TYPE_CONNECT.INPUT);
+			this.doCalculateCoordinateForNodeOfEdge(item.target, TYPE_CONNECT.INPUT, this.storeOperations);
 		})
 	}
 
@@ -1223,12 +1429,13 @@ class CltMessageMapping {
 	 * 
 	 * @param {*} node 
 	 * @param {*} connectType 
+	 * @param {*} dataContainer 
 	 */
-	doCalculateCoordinateForNodeOfEdge(node, connectType) {
+	doCalculateCoordinateForNodeOfEdge(node, connectType, dataContainer) {
 		let {vertexId, prop} = node;
 		let vertices = [];
-		vertices = vertices.concat(this.storeOperations.vertex);
-		vertices = vertices.concat(this.storeOperations.boundary);
+		vertices = vertices.concat(dataContainer.vertex);
+		vertices = vertices.concat(dataContainer.boundary);
 
 		let object = _.find(vertices, {"id": vertexId});
 
@@ -1264,6 +1471,14 @@ class CltMessageMapping {
 		}
 
 		return maxHeight;
+	}
+
+	isNodeConnectToObject(object, node) {
+		if (object.type == "V") {
+			return object.id == node.vertexId;
+		} else {
+			return object.id == node.vertexId || _.find(object.member, {"id": node.vertexId});
+		}
 	}
 	
 }
