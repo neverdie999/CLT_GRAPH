@@ -752,7 +752,7 @@ class CltMessageMapping {
 			return a.source.y - b.source.y
 		})
 
-		// Find all object connect to input area		
+		// Find all object connect to input area
 		arrEdgeStartFromInput.forEach(e => {
 			let object = null;
 			if (e.target.vertexId[0] == "V") {
@@ -807,20 +807,6 @@ class CltMessageMapping {
 					}
 				}
 			}
-		}
-
-		// Arrange and calculate to avoid edge draw through objects
-		let top = 5;
-		for (let i = 0; i < arrFinalResult.length; i++) {
-			if (i > 0) {
-				top = this.maxHeight(arrFinalResult[i-1]) + 100;
-			}
-
-			// Arrange for each line
-			this.arrangeLine(arrFinalResult[i], top);
-			
-			// avoid edge draw draw through objects for each line
-			this.avoidEdgeGoThrowObject(arrFinalResult[i]);
 		}
 
 		// ============================ Arrange for mapping constanst output message ================================================
@@ -879,16 +865,10 @@ class CltMessageMapping {
 			})
 		})
 
-		// Move all Mapping Constant object to a temp place then arrange them by new position
-		arrMappingConstObj.forEach(item => {
-			item.setPosition({x: 5, y: 5});
-		})
-
 		// get the coordinate in output svg for target
 		listEdgeConnectToMappingConstObj = _.cloneDeep(listEdgeConnectToMappingConstObj);
 		listEdgeConnectToMappingConstObj.forEach((item, index) => {
 			this.doCalculateCoordinateForNodeOfEdge(item.target, TYPE_CONNECT.INPUT, this.storeOutputMessage);
-			this.doCalculateCoordinateForNodeOfEdge(item.source, TYPE_CONNECT.OUTPUT, this.storeOperations);
 		})
 
 		// sort by y coordinate from Top to Bottom then use them to arrange Mapping constant from Top to Bottom
@@ -896,7 +876,56 @@ class CltMessageMapping {
 			return a.target.y - b.target.y
 		})
 
-		// start arrange Mapping Constant object
+		// Move Constant object to family branch(line)
+		for (let i = 0; i < arrFinalResult.length; i++) {
+			let line = arrFinalResult[i];
+			for (let j = 0; j < line[line.length - 1].length; j++) {
+				let obj = line[line.length - 1][j];
+				for (let k = 0; k < this.storeConnect.edge.length; k++) {
+					let edge = this.storeConnect.edge[k];
+					if (edge.source.svgId == this.operationsSvgId && edge.target.svgId == this.outputMessageSvgId && edge.source.vertexId == obj.id) {
+						for (let m = 0; m < listEdgeConnectToMappingConstObj.length; m++) {
+							let constEdge = listEdgeConnectToMappingConstObj[m];
+							if (constEdge.target.vertexId == edge.target.vertexId) {
+								for ( let n = arrMappingConstObj.length - 1; n >= 0; n--) {
+									if (arrMappingConstObj[n].id == constEdge.source.vertexId) {
+										line[line.length - 1].push(arrMappingConstObj.splice(n,1)[0]);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// start arrange for branch(line)
+		let top = 5;
+		for (let i = 0; i < arrFinalResult.length; i++) {
+			if (i > 0) {
+				top = this.maxHeight(arrFinalResult[i-1]) + 100;
+			}
+
+			// Arrange for each line
+			this.arrangeLine(arrFinalResult[i], top);
+			
+			// avoid edge draw draw through objects for each line
+			this.avoidEdgeGoThrowObject(arrFinalResult[i]);
+		}
+
+		// start arrange Mapping Constant
+
+		// Move all Mapping Constant object to a temp place then arrange them by new position
+		arrMappingConstObj.forEach(item => {
+			item.setPosition({x: 5, y: 5});
+		})
+
+		// get the coordinate in Operations svg for source
+		listEdgeConnectToMappingConstObj.forEach((item, index) => {
+			this.doCalculateCoordinateForNodeOfEdge(item.source, TYPE_CONNECT.OUTPUT, this.storeOperations);
+		})
+
+		// arrange Mapping Constant
 		let arrArrangedObj = [];
 		let {maxLength, index} = this.maxLength(arrFinalResult);
 
@@ -904,7 +933,7 @@ class CltMessageMapping {
 		let maxLengthLine = arrFinalResult[index][maxLength-1][0].x + rect.width;
 
 		listEdgeConnectToMappingConstObj.forEach((edge, index) => {
-			if (!_.find(arrArrangedObj, {"id": edge.source.vertexId})) {
+			if (!_.find(arrArrangedObj, {"id": edge.source.vertexId}) && _.find(arrMappingConstObj, {"id": edge.source.vertexId})) {
 				let obj = _.find(arrMappingConstObj, {"id": edge.source.vertexId});
 				if (!obj) {
 					obj = _.find([].concat(this.storeOperations.vertex).concat(this.storeOperations.boundary), {"id": edge.source.vertexId});
@@ -913,7 +942,9 @@ class CltMessageMapping {
 				if (obj && obj.parent) {
 					obj = _.find(arrMappingConstObj, {"id": obj.parent});
 				}
-				this.arrangeForMappingConstantObject(obj, edge, maxLengthLine);
+
+				this.arrangeForMappingConstantObject(obj, arrArrangedObj, maxLengthLine);
+				
 				arrArrangedObj.push(obj);
 				if (obj.type == "B") {
 					obj.member.forEach(item => {
@@ -932,12 +963,14 @@ class CltMessageMapping {
 	 * @param {*} edge 
 	 * @param {*} maxLengthLine 
 	 */
-	arrangeForMappingConstantObject(object, edge, maxLengthLine) {
-		// distance from top to edge.source.y of object
-		let offset = edge.source.y - object.y;
-
+	arrangeForMappingConstantObject(object, arrArrangedObj, maxLengthLine) {
 		let finalX = maxLengthLine + 200;
-		let finalY = edge.target.y - offset < PADDING_POSITION_SVG.MIN_OFFSET_Y ? PADDING_POSITION_SVG.MIN_OFFSET_Y : edge.target.y - offset;
+		let finalY = 5;
+		if (arrArrangedObj.length > 0) {
+			let prevObj = arrArrangedObj[arrArrangedObj.length - 1];
+			let rect = $(`#${prevObj.id}`).get(0).getBoundingClientRect();
+			finalY = prevObj.y + rect.height + 5;
+		}
 
 		let rect = $(`#${object.id}`).get(0).getBoundingClientRect();
 		let overridePosition;
