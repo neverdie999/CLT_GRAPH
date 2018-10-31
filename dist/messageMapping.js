@@ -58603,10 +58603,18 @@ class CltMessageMapping {
 	findNextObjects(object, operationsContainer) {
 		// If this object was run findNextObjects before then do nothing
 		if (object.child) return;
+		
+		let arrEdges = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.storeConnect.edge, edge => {
+			return edge.source.svgId == this.operationsSvgId && edge.target.svgId == this.operationsSvgId
+		})
+
+		arrEdges.sort((a,b) => {
+			return a.source.y - b.source.y;
+		})
 
 		object.child = [];
-		this.storeConnect.edge.forEach(e => {
-			if (e.source.svgId == this.operationsSvgId && this.haveConnectToThisObject(object, e.source.vertexId)) {
+		arrEdges.forEach(e => {
+			if (this.haveConnectToThisObject(object, e.source.vertexId)) {
 				let tmpObj = null;
 
 				if (e.target.vertexId[0] == "V") {
