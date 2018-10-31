@@ -878,7 +878,6 @@ class CltMessageMapping {
 		listEdgeConnectToMappingConstObj.sort(function(a, b){
 			return a.target.y - b.target.y
 		})
-
 		
 		// Move Constant object to family branch
 		for (let i = 0; i < arrFinalResult.length; i++) {
@@ -896,7 +895,7 @@ class CltMessageMapping {
 							let constEdge = listEdgeConnectToMappingConstObj[m];
 							if (constEdge.target.vertexId == edge.target.vertexId) {
 								for ( let n = arrMappingConstObj.length - 1; n >= 0; n--) {
-									if (arrMappingConstObj[n].id == constEdge.source.vertexId) {
+									if (this.isNodeConnectToObject(arrMappingConstObj[n], constEdge.source)) {
 										let lastChildBranch = branch[branch.length - 1];
 										lastChildBranch[lastChildBranch.length - 1].push(arrMappingConstObj.splice(n,1)[0]);
 									}
@@ -939,7 +938,13 @@ class CltMessageMapping {
 
 		listEdgeConnectToMappingConstObj.forEach((edge, index) => {
 			// if haven't been arranged and is a Mapping Constant object
-			if (!_.find(arrArrangedObj, {"id": edge.source.vertexId}) && _.find(arrMappingConstObj, {"id": edge.source.vertexId})) {
+			let isArrangedObj = _.find(arrArrangedObj, obj => {
+				return this.isNodeConnectToObject(obj, edge.source)
+			})
+			let isConstObj = _.find(arrMappingConstObj, obj => {
+				return this.isNodeConnectToObject(obj, edge.source)
+			});
+			if (!isArrangedObj && isConstObj) {
 
 				let obj = _.find(arrMappingConstObj, {"id": edge.source.vertexId});
 				if (!obj) {
@@ -954,11 +959,6 @@ class CltMessageMapping {
 				this.arrangeForMappingConstantObject(obj, arrArrangedObj, maxLengthBranch);
 				
 				arrArrangedObj.push(obj);
-				if (obj.type == "B") {
-					obj.member.forEach(item => {
-						arrArrangedObj.push(item);
-					})
-				}
 			}
 		})
 
