@@ -738,6 +738,7 @@ class CltMessageMapping {
 	}
 
 	operationsAutoAlignment() {
+		// Calculate for arranging branch
 		let arrRes = [];
 		let operationsContainer = _.cloneDeep(this.storeOperations);
 		
@@ -782,34 +783,36 @@ class CltMessageMapping {
 			this.findNextObjects(arrRes[i], operationsContainer);
 		}
 
-		// Find longest way for each line
-		let arrLongestLine = [];
+		// Find all child branch for each branch
+		let arrFinalResult = [];
 		for(let i = 0; i < arrRes.length; i++) {
-			let arrLine = [];
-			arrLongestLine.push(arrLine);
-			let line = [];
-			arrLine.push(line);
-			this.findLongestLine(arrRes[i], line, arrLine);
+			let branch = [];
+			arrFinalResult.push(branch);
+			let childBranch = [];
+			branch.push(childBranch);
+			this.findChildBranch(arrRes[i], childBranch, branch, 1);
 		}
 
-		this.removeUnexpectedResult(arrLongestLine);
-
-		let arrFinalResult = this.mergeFinalResult(arrLongestLine);
+		this.removeUnexpectedResult(arrFinalResult);
 
 		// link to real object
 		for (let i = 0; i < arrFinalResult.length; i++) {
-			for (let j = 0; j < arrFinalResult[i].length; j++) {
-				for (let k = 0; k < arrFinalResult[i][j].length; k++) {
-					if (arrFinalResult[i][j][k].type == "V") {
-						arrFinalResult[i][j][k] = _.find(this.storeOperations.vertex, {"id": arrFinalResult[i][j][k].id})
+			let branch = arrFinalResult[i];
+			for (let j = 0; j < branch.length; j++) {
+				let childBranch = branch[j];
+				for (let k = 0; k < childBranch.length; k++) {
+					let level = childBranch[k][0].level;
+					if (childBranch[k][0].type == "V") {
+						childBranch[k][0] = _.find(this.storeOperations.vertex, {"id": childBranch[k][0].id})
 					} else {
-						arrFinalResult[i][j][k] = _.find(this.storeOperations.boundary, {"id": arrFinalResult[i][j][k].id})
+						childBranch[k][0] = _.find(this.storeOperations.boundary, {"id": childBranch[k][0].id})
 					}
+					childBranch[k][0].level = level;
 				}
 			}
 		}
 
-		// ============================ Arrange for mapping constanst output message ================================================
+		// ============================ Calculate for arranging mapping constanst ================================================
 
 		let arrMappingConstObj = []
 		// Find all object connect to output message
@@ -876,20 +879,26 @@ class CltMessageMapping {
 			return a.target.y - b.target.y
 		})
 
-		// Move Constant object to family branch(line)
+		
+		// Move Constant object to family branch
 		for (let i = 0; i < arrFinalResult.length; i++) {
-			let line = arrFinalResult[i];
-			for (let j = 0; j < line[line.length - 1].length; j++) {
-				let obj = line[line.length - 1][j];
+			let branch = arrFinalResult[i];
+			for (let j = 0; j < branch.length; j++) {
+				let childBranch = branch[j];
+				let obj = childBranch[childBranch.length-1][0];
+				// Find any constant object that connect to the same output object with obj
 				for (let k = 0; k < this.storeConnect.edge.length; k++) {
+					// Find edge that connect obj to output object
 					let edge = this.storeConnect.edge[k];
 					if (edge.source.svgId == this.operationsSvgId && edge.target.svgId == this.outputMessageSvgId && edge.source.vertexId == obj.id) {
 						for (let m = 0; m < listEdgeConnectToMappingConstObj.length; m++) {
+							// Find const edge that have the same target with above edge
 							let constEdge = listEdgeConnectToMappingConstObj[m];
 							if (constEdge.target.vertexId == edge.target.vertexId) {
 								for ( let n = arrMappingConstObj.length - 1; n >= 0; n--) {
 									if (arrMappingConstObj[n].id == constEdge.source.vertexId) {
-										line[line.length - 1].push(arrMappingConstObj.splice(n,1)[0]);
+										let lastChildBranch = branch[branch.length - 1];
+										lastChildBranch[lastChildBranch.length - 1].push(arrMappingConstObj.splice(n,1)[0]);
 									}
 								}
 							}
@@ -899,51 +908,50 @@ class CltMessageMapping {
 			}
 		}
 
-		// start arrange for branch(line)
+		// start arrange for branch
 		let top = 5;
 		for (let i = 0; i < arrFinalResult.length; i++) {
 			if (i > 0) {
 				top = this.maxHeight(arrFinalResult[i-1]) + 100;
 			}
 
-			// Arrange for each line
-			this.arrangeLine(arrFinalResult[i], top);
+			// Arrange for each Branch
+			this.arrangeBranch(arrFinalResult[i], top);
 			
-			// avoid edge draw draw through objects for each line
+			// avoid edge draw draw through objects for each Branch
 			this.avoidEdgeGoThrowObject(arrFinalResult[i]);
 		}
 
 		// start arrange Mapping Constant
-
 		// Move all Mapping Constant object to a temp place then arrange them by new position
 		arrMappingConstObj.forEach(item => {
 			item.setPosition({x: 5, y: 5});
 		})
 
-		// get the coordinate in Operations svg for source
-		listEdgeConnectToMappingConstObj.forEach((item, index) => {
-			this.doCalculateCoordinateForNodeOfEdge(item.source, TYPE_CONNECT.OUTPUT, this.storeOperations);
-		})
-
 		// arrange Mapping Constant
 		let arrArrangedObj = [];
-		let {maxLength, index} = this.maxLength(arrFinalResult);
+		let {maxLength, idxBranch, idxChildBranch} = this.maxLength(arrFinalResult);
 
-		let rect = $(`#${arrFinalResult[index][maxLength-1][0].id}`).get(0).getBoundingClientRect();
-		let maxLengthLine = arrFinalResult[index][maxLength-1][0].x + rect.width;
+		let colChild = arrFinalResult[idxBranch][idxChildBranch][maxLength-1];
+		let maxLengthObj = colChild[0];
+		let rect = $(`#${maxLengthObj.id}`).get(0).getBoundingClientRect();
+		let maxLengthBranch = maxLengthObj.x + rect.width;
 
 		listEdgeConnectToMappingConstObj.forEach((edge, index) => {
+			// if haven't been arranged and is a Mapping Constant object
 			if (!_.find(arrArrangedObj, {"id": edge.source.vertexId}) && _.find(arrMappingConstObj, {"id": edge.source.vertexId})) {
+
 				let obj = _.find(arrMappingConstObj, {"id": edge.source.vertexId});
 				if (!obj) {
 					obj = _.find([].concat(this.storeOperations.vertex).concat(this.storeOperations.boundary), {"id": edge.source.vertexId});
 				}
 
+				// If obj have parent then just arrange for parent then all childs will be effect
 				if (obj && obj.parent) {
 					obj = _.find(arrMappingConstObj, {"id": obj.parent});
 				}
 
-				this.arrangeForMappingConstantObject(obj, arrArrangedObj, maxLengthLine);
+				this.arrangeForMappingConstantObject(obj, arrArrangedObj, maxLengthBranch);
 				
 				arrArrangedObj.push(obj);
 				if (obj.type == "B") {
@@ -961,10 +969,10 @@ class CltMessageMapping {
 	 * 
 	 * @param {*} object 
 	 * @param {*} edge 
-	 * @param {*} maxLengthLine 
+	 * @param {*} maxLengthBranch 
 	 */
-	arrangeForMappingConstantObject(object, arrArrangedObj, maxLengthLine) {
-		let finalX = maxLengthLine + 200;
+	arrangeForMappingConstantObject(object, arrArrangedObj, maxLengthBranch) {
+		let finalX = maxLengthBranch + 200;
 		let finalY = 5;
 		if (arrArrangedObj.length > 0) {
 			let prevObj = arrArrangedObj[arrArrangedObj.length - 1];
@@ -983,103 +991,80 @@ class CltMessageMapping {
 
 	/**
 	 * 
-	 * @param {*} objectId 
-	 * @param {*} point 
-	 */
-	haveOverride(objectInfo) {
-		for (let i = 0; i < this.storeOperations.boundary.length; i++){
-			let boundary = this.storeOperations.boundary[i];
-			if (boundary.id != objectInfo.id && this.isOverride(objectInfo, boundary)) {
-				return boundary.y + boundary.height;
-			}
-		}
-
-		for (let i = 0; i < this.storeOperations.vertex.length; i++){
-			let vertex = this.storeOperations.vertex[i];
-			let rect = $(`#${vertex.id}`).get(0).getBoundingClientRect();
-			if (vertex.id != objectInfo.id && this.isOverride(objectInfo, {x: vertex.x, y: vertex.y, width: rect.width, height: rect.height})) {
-				return vertex.y + rect.height;
-			}
-		}
-
-		return -1;
-	}
-
-	isOverride(object1, object2) {
-		if (
-			(	// Top Left of object1 is in object2
-				(object1.y >= object2.y && object1.x >= object2.x && object1.y <= object2.y + object2.height + 4 && object1.x <= object2.x + object2.width)
-				// Top Right of object1 is in object2
-				|| (object1.y >= object2.y && object1.y <= object2.y + object2.height + 4 && object1.x + object1.width >= object2.x && object1.x + object1.width <= object2.x + object2.width)
-				// Bottom left of object1 is in object2
-				|| (object1.y + object1.height >= object2.y && object1.y + object1.height <= object2.y + object2.height + 4 && object1.x >= object2.x && object1.x <= object2.x + object2.width)
-				// Bottom Right of object1 is in object2
-				|| (object1.y  + object1.height >= object2.y && object1.y + object1.height <= object2.y + object2.height + 4 && object1.x + object1.width >= object2.x && object1.x + object1.width <= object2.x + object2.width)
-			)
-			||
-			( // Top Left of object2 is in object1
-				(object2.y >= object1.y && object2.x >= object1.x && object2.y <= object1.y + object1.height + 4 && object2.x <= object1.x + object1.width)
-				// Top Right of object2 is in object1
-				|| (object2.y >= object1.y && object2.y <= object1.y + object1.height + 4 && object2.x + object2.width >= object1.x && object2.x + object2.width <= object1.x + object1.width)
-				// Bottom left of object2 is in object1
-				|| (object2.y + object2.height >= object1.y && object2.y + object2.height <= object1.y + object1.height + 4 && object2.x >= object1.x && object2.x <= object1.x + object1.width)
-				// Bottom Right of object2 is in object1
-				|| (object2.y  + object2.height >= object1.y && object2.y + object2.height <= object1.y + object1.height + 4 && object2.x + object2.width >= object1.x && object2.x + object2.width <= object1.x + object1.width)
-			)
-		) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * 
-	 * @param {*} line 
+	 * @param {*} branch 
+	 * @param {*} idxChildBranch 
 	 * @param {*} top 
+	 * @param {*} arrArrangedObj 
+	 * @param {*} isUpdate 
 	 */
-	arrangeLine(line, top) {
-		// distance between each object
+	setPositionForChildBranch(branch, idxChildBranch, top, arrArrangedObj) {
 		let distance = 100;
 
-		for (let i = 0; i < line.length; i++) {
-			for (let j = 0; j < line[i].length; j++) {
+		let curChildBranch = branch[idxChildBranch];
+
+		for (let i = 0; i < curChildBranch.length; i++) {
+			let colChild = curChildBranch[i];
+			for (let j = 0; j < colChild.length; j++) {
+				let obj = colChild[j];
+				if (this.in(arrArrangedObj, obj.id)) continue;
+
 				let x, y;
-
-				// x
-				if (i == 0) {
-					x = distance;
-				} else {
-					let prevObj = line[i - 1][0];
-
-					if (prevObj.type == "V") {
-						x = prevObj.x + VERTEX_ATTR_SIZE.GROUP_WIDTH + distance;
-					} else {
-						x = prevObj.x + prevObj.width + distance;
-					}
-				}
-
-				// y
 				if (j == 0) {
+					// Normal case
+					x = (obj.level - 1) * VERTEX_ATTR_SIZE.GROUP_WIDTH + obj.level * distance;
+				} else {
+					// Contant object will be locate under lastest item of lastest childBranch
+					let aboveObj = curChildBranch[i][0];
+					x = aboveObj.x 
+				}
+				
+				// y
+				if (idxChildBranch == 0 && j == 0) {
 					y = top;
 				} else {
-					let aboveObj = line[i][j-1];
-					let rect = $(`#${aboveObj.id}`).get(0).getBoundingClientRect();
-					y = aboveObj.y + rect.height + 5;
+					let tmpY = 0;
+					if (j == 0) {
+						let preChildBranch = branch[idxChildBranch - 1];
+						let prevObj = curChildBranch[i-1][0];
+						tmpY = this.maxHeightOfChildBranch(preChildBranch, i) + 20;
+
+						if (tmpY < prevObj.y) tmpY = prevObj.y;
+						
+					} else {
+						let aboveObj = colChild[j-1];
+						let rect = $(`#${aboveObj.id}`).get(0).getBoundingClientRect();
+						tmpY = aboveObj.y + rect.height + 5;
+					}
+
+					y = tmpY;
 				}
 
-				line[i][j].setPosition({x,y});
+				obj.setPosition({x,y});
+				arrArrangedObj.push(obj);
 			}
 		}
 	}
 
 	/**
 	 * 
-	 * @param {*} line 
+	 * @param {*} branch 
+	 * @param {*} top 
 	 */
-	avoidEdgeGoThrowObject(line) {
+	arrangeBranch(branch, top) {
+		let arrArrangedObj = [];
+		for (let i = 0; i < branch.length; i++) {
+			this.setPositionForChildBranch(branch, i, top, arrArrangedObj);
+		}
+	}
+
+	/**
+	 * 
+	 * @param {*} branch 
+	 */
+	avoidEdgeGoThrowObject(branch) {
+		// All edges in Operations area
 		let listEdge = [];
-		this.storeConnect.edge.forEach((edge, index) => {
+		this.storeConnect.edge.forEach(edge => {
 			if (edge.source.svgId == this.operationsSvgId && edge.target.svgId == this.operationsSvgId) {
 				listEdge.push(edge);
 			}
@@ -1088,10 +1073,13 @@ class CltMessageMapping {
 		listEdge = _.cloneDeep(listEdge);
 		this.calculateCoordinateByOperationsAreaForEdge(listEdge);
 
-		for (let i = 1; i < line.length; i++) {
-			for (let j = 0; j < line[i].length; j++) {
-				
-				let obj = line[i][j];
+		for (let i = 0; i < branch.length; i++) {
+			let childBranch = branch[i];
+
+			let bHaveUpdate = false;
+			for (let j = 1; j < childBranch.length; j++) {
+				let colChild = childBranch[j];
+				let obj = colChild[0];
 				let pointRes = null;
 
 				// Find all edge that crossing objects
@@ -1105,21 +1093,38 @@ class CltMessageMapping {
 					}
 				})
 
-				// 
 				if (pointRes) {
-					let offset = pointRes.y - obj.y;
-					obj.setPosition({x: obj.x, y: obj.y + offset + 100});
+					bHaveUpdate = true;
 
-					// update position for below object in the same column
-					if (j < line[i].length - 1) {
-						for (let k = j + 1; k < line[i].length; k++) {
-							line[i][k].setPosition({x: line[i][k-1].x, y: line[i][k-1].y + $(`#${line[i][k-1].id}`).get(0).getBoundingClientRect().height + 5})
+					let offset = pointRes.y - obj.y;
+					obj.setPosition({x: obj.x, y: obj.y + offset + 50});
+				}
+			}
+
+			if (bHaveUpdate) {
+				let arrArrangedObj = [];
+				for (let l = 0; l <=i; l++) {
+					let childBranch = branch[l];
+					for (let m = 0; m < childBranch.length; m++) {
+						// Because constant objects are alway in last childBranch, so just case first object in each colChild of childBranch
+						let colChild = childBranch[m];
+						let obj = colChild[0];
+						if (this.notIn(arrArrangedObj, obj.id)) {
+							arrArrangedObj.push(obj);
 						}
 					}
 				}
+				
+				for (let k = i + 1; k < branch.length; k++) {
+					this.setPositionForChildBranch(branch, k, null, arrArrangedObj);
+				}
+
+				this.calculateCoordinateByOperationsAreaForEdge(listEdge);
 			}
 		}
 	}
+
+	
 
 	/**
 	 * get the intersection point between the edge and object then choose a point that has the highest y coordinate
@@ -1182,6 +1187,282 @@ class CltMessageMapping {
 		}
 
 		return pointRes;
+	}
+
+	// Find all objects connect to this object from right side
+	findNextObjects(object, operationsContainer) {
+		// If this object was run findNextObjects before then do nothing
+		if (object.child) return;
+
+		object.child = [];
+		this.storeConnect.edge.forEach(e => {
+			if (e.source.svgId == this.operationsSvgId && this.haveConnectToThisObject(object, e.source.vertexId)) {
+				let tmpObj = null;
+
+				if (e.target.vertexId[0] == "V") {
+					tmpObj = _.find(operationsContainer.vertex, {"id": e.target.vertexId})
+				} else {
+					tmpObj = _.find(operationsContainer.boundary, {"id": e.target.vertexId})
+				}
+
+				if (tmpObj) {
+					if (tmpObj.parent) {
+						tmpObj = _.find(operationsContainer.boundary, {"id":tmpObj.parent});
+					}
+
+					if (this.notIn(object.child, tmpObj.id)) {
+						object.child.push(tmpObj);
+					}
+				} 
+			}
+		})
+
+		for(let i = 0; i < object.child.length; i++) {
+			this.findNextObjects(object.child[i], operationsContainer);
+		}
+	}
+
+	/**
+	 * Return true if object exist in arr
+	 * @param {*} arr 
+	 * @param {*} object 
+	 */
+	in(arr, objectId) {
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i].id == objectId) return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Return true if object does not exist in arr
+	 * @param {*} arr 
+	 * @param {*} object 
+	 */
+	notIn(arr, objectId) {
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i].id == objectId) return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * 
+	 * @param {*} object 
+	 * @param {*} id 
+	 */
+	haveConnectToThisObject(object, id) {
+		if (object.type == "V") {
+			return object.id == id;
+		} else {
+			if (object.id == id) return true;
+
+			for (let i = 0; i < object.member.length; i++) {
+				if (object.member[i].id == id) return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param {*} object 
+	 * @param {*} childBranch 
+	 * @param {*} branch 
+	 */
+	findChildBranch(object, childBranch, branch, level) {
+		if (!object.level || object.level < level) {
+			object.level = level;
+		}
+
+		childBranch.push([object]);
+
+		if (object.child.length > 0) {
+			for (let i = 0; i < object.child.length; i++) {
+				let newChildBranch = _.clone(childBranch);
+				branch.push(newChildBranch);
+				this.findChildBranch(object.child[i], newChildBranch, branch, level + 1);
+			}
+		}
+	}
+
+	/**
+	 * 
+	 */
+	maxLength(arrBranch) {
+		if (arrBranch.length == 0) return 0;
+
+		let max = 0;
+		let idxBranch = -1;
+		let idxChildBranch = -1;
+		for (let i = 0; i < arrBranch.length; i++) {
+			let branch = arrBranch[i];
+			for (let j = 0; j < branch.length; j++) {
+				let childBranch = branch[j];
+				if (childBranch.length > max) {
+					max = childBranch.length;
+					idxBranch = i;
+					idxChildBranch = j;
+				} 
+			}	
+		}
+
+		return {maxLength: max, idxBranch, idxChildBranch};
+	}
+
+	/**
+	 * 
+	 * @param {*} arrFinalResult 
+	 */
+	removeUnexpectedResult(arrFinalResult) {
+		for (let i = 0; i < arrFinalResult.length; i++) {
+			let branch = arrFinalResult[i];
+
+			for (let j = 0; j < branch.length; j++) {
+				for (let k = 0; k < branch.length; k++) {
+					if (j != k && this.isContain(branch[k], branch[j])) {
+						branch.splice(j,1);
+						j--;
+						break;
+					}
+				}	
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param {*} arrLongestBranch 
+	 */
+	mergeFinalResult(arrLongestBranch) {
+		let arrRes = [];
+		for (let i = 0; i < arrLongestBranch.length; i++) {
+			let Branch = arrLongestBranch[i];
+			let tempBranch = Branch[0]; // Choose the first item in Branch for the base then merge other item into it
+			let arrResTemp = []; // store the final result for each Branch
+			arrRes.push(arrResTemp);
+
+			// use first item for base data
+			tempBranch.forEach((item, index) => {
+				arrResTemp[index] = [];
+				arrResTemp[index].push(item);
+			})
+
+			// if more than 1 item in Branch then merge them to the base
+			if (Branch.length > 1) {
+				for (let j = 1; j < Branch.length; j++) {
+					Branch[j].forEach((item, index) => {
+						if (index >= arrResTemp.length) {
+							arrResTemp[index] = [];
+							arrResTemp[index].push(item);
+						} else {
+							if (this.notIn(arrResTemp[index], item.id)) {
+								arrResTemp[index].push(item);
+							}
+						}
+					})
+				}
+			}
+		}
+
+		return arrRes;
+	}
+
+	/**
+	 * 
+	 * @param {*} arrEdge 
+	 */
+	calculateCoordinateByOperationsAreaForEdge(arrEdge) {
+
+		arrEdge.forEach((item, index) => {
+			// source
+			this.doCalculateCoordinateForNodeOfEdge(item.source, TYPE_CONNECT.OUTPUT, this.storeOperations);
+
+			// target
+			this.doCalculateCoordinateForNodeOfEdge(item.target, TYPE_CONNECT.INPUT, this.storeOperations);
+		})
+	}
+
+	/**
+	 * 
+	 * @param {*} node 
+	 * @param {*} connectType 
+	 * @param {*} dataContainer 
+	 */
+	doCalculateCoordinateForNodeOfEdge(node, connectType, dataContainer) {
+		let {vertexId, prop} = node;
+		let vertices = [];
+		vertices = vertices.concat(dataContainer.vertex);
+		vertices = vertices.concat(dataContainer.boundary);
+
+		let object = _.find(vertices, {"id": vertexId});
+
+		if (prop.indexOf('boundary_title') != -1){
+			node.y = object.y + BOUNDARY_ATTR_SIZE.HEADER_HEIGHT / 2;
+			node.x = connectType === TYPE_CONNECT.OUTPUT ? object.x + object.width : object.x
+
+    }else if (prop.indexOf('title') != -1){
+			node.y = object.y + VERTEX_ATTR_SIZE.HEADER_HEIGHT / 2;
+			node.x = connectType === TYPE_CONNECT.OUTPUT ? object.x + VERTEX_ATTR_SIZE.GROUP_WIDTH : object.x
+
+    } else{
+      // Get index prop in object
+      let index = this.objectUtils.findIndexPropInVertex(vertexId, prop);
+			node.y = object.y + VERTEX_ATTR_SIZE.HEADER_HEIGHT + index * VERTEX_ATTR_SIZE.PROP_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2;
+			node.x = connectType === TYPE_CONNECT.OUTPUT ? object.x + VERTEX_ATTR_SIZE.GROUP_WIDTH : object.x;
+    }
+	}
+
+	/**
+	 * 
+	 * @param {*} branch 
+	 */
+	maxHeight(branch) {
+		let maxHeight = 0;
+		let lastChildBranch = branch[branch.length - 1];
+
+		for (let i = 0; i < lastChildBranch.length; i++) {
+			let colChild = lastChildBranch[i];
+			let highestObj = colChild[colChild.length - 1];
+
+			let rect = $(`#${highestObj.id}`).get(0).getBoundingClientRect();
+			if (maxHeight < highestObj.y + rect.height) {
+				maxHeight = highestObj.y + rect.height;
+			}
+		}
+
+		return maxHeight;
+	}
+
+	/**
+	 * 
+	 * @param {*} childBranch 
+	 * @param {*} index 
+	 */
+	maxHeightOfChildBranch(childBranch, index) {
+		let maxHeight = 0;
+		for (let i = index; i < childBranch.length; i++) {
+			let colChild = childBranch[i];
+			let highestObj = colChild[colChild.length - 1];
+
+			let rect = $(`#${highestObj.id}`).get(0).getBoundingClientRect();
+			if (maxHeight < highestObj.y + rect.height) {
+				maxHeight = highestObj.y + rect.height;
+			}
+		}
+
+		return maxHeight;
+	}
+
+	isNodeConnectToObject(object, node) {
+		if (object.type == "V") {
+			return object.id == node.vertexId;
+		} else {
+			return object.id == node.vertexId || _.find(object.member, {"id": node.vertexId});
+		}
 	}
 
 	/**
@@ -1293,225 +1574,78 @@ class CltMessageMapping {
 		}
 	}
 
-	// Find all objects connect to this object from right side
-	findNextObjects(object, operationsContainer) {
-		// If this object was run findNextObjects before then do nothing
-		if (object.child) return;
-
-		object.child = [];
-		this.storeConnect.edge.forEach(e => {
-			if (e.source.svgId == this.operationsSvgId && this.haveConnectToThisObject(object, e.source.vertexId)) {
-				let tmpObj = null;
-
-				if (e.target.vertexId[0] == "V") {
-					tmpObj = _.find(operationsContainer.vertex, {"id": e.target.vertexId})
-				} else {
-					tmpObj = _.find(operationsContainer.boundary, {"id": e.target.vertexId})
-				}
-
-				if (tmpObj) {
-					if (tmpObj.parent) {
-						tmpObj = _.find(operationsContainer.boundary, {"id":tmpObj.parent});
-					}
-
-					if (this.notIn(object.child, tmpObj.id)) {
-						object.child.push(tmpObj);
-					}
-				} 
-			}
-		})
-
-		for(let i = 0; i < object.child.length; i++) {
-			this.findNextObjects(object.child[i], operationsContainer);
-		}
-	}
-
-	/**
-	 * Return true if object does not exist in arr
-	 * @param {*} arr 
-	 * @param {*} object 
-	 */
-	notIn(arr, objectId) {
-		for (let i = 0; i < arr.length; i++) {
-			if (arr[i].id == objectId) return false;
-		}
-
-		return true;
-	}
+	
 
 	/**
 	 * 
-	 * @param {*} object 
-	 * @param {*} id 
+	 * @param {*} objectId 
+	 * @param {*} point 
 	 */
-	haveConnectToThisObject(object, id) {
-		if (object.type == "V") {
-			return object.id == id;
-		} else {
-			if (object.id == id) return true;
-
-			for (let i = 0; i < object.member.length; i++) {
-				if (object.member[i].id == id) return true;
+	haveOverride(objectInfo) {
+		for (let i = 0; i < this.storeOperations.boundary.length; i++){
+			let boundary = this.storeOperations.boundary[i];
+			if (boundary.id != objectInfo.id && this.isOverride(objectInfo, boundary)) {
+				return boundary.y + boundary.height;
 			}
+		}
+
+		for (let i = 0; i < this.storeOperations.vertex.length; i++){
+			let vertex = this.storeOperations.vertex[i];
+			let rect = $(`#${vertex.id}`).get(0).getBoundingClientRect();
+			if (vertex.id != objectInfo.id && this.isOverride(objectInfo, {x: vertex.x, y: vertex.y, width: rect.width, height: rect.height})) {
+				return vertex.y + rect.height;
+			}
+		}
+
+		return -1;
+	}
+
+	isOverride(object1, object2) {
+		if (
+			(	// Top Left of object1 is in object2
+				(object1.y >= object2.y && object1.x >= object2.x && object1.y <= object2.y + object2.height + 4 && object1.x <= object2.x + object2.width)
+				// Top Right of object1 is in object2
+				|| (object1.y >= object2.y && object1.y <= object2.y + object2.height + 4 && object1.x + object1.width >= object2.x && object1.x + object1.width <= object2.x + object2.width)
+				// Bottom left of object1 is in object2
+				|| (object1.y + object1.height >= object2.y && object1.y + object1.height <= object2.y + object2.height + 4 && object1.x >= object2.x && object1.x <= object2.x + object2.width)
+				// Bottom Right of object1 is in object2
+				|| (object1.y  + object1.height >= object2.y && object1.y + object1.height <= object2.y + object2.height + 4 && object1.x + object1.width >= object2.x && object1.x + object1.width <= object2.x + object2.width)
+			)
+			||
+			( // Top Left of object2 is in object1
+				(object2.y >= object1.y && object2.x >= object1.x && object2.y <= object1.y + object1.height + 4 && object2.x <= object1.x + object1.width)
+				// Top Right of object2 is in object1
+				|| (object2.y >= object1.y && object2.y <= object1.y + object1.height + 4 && object2.x + object2.width >= object1.x && object2.x + object2.width <= object1.x + object1.width)
+				// Bottom left of object2 is in object1
+				|| (object2.y + object2.height >= object1.y && object2.y + object2.height <= object1.y + object1.height + 4 && object2.x >= object1.x && object2.x <= object1.x + object1.width)
+				// Bottom Right of object2 is in object1
+				|| (object2.y  + object2.height >= object1.y && object2.y + object2.height <= object1.y + object1.height + 4 && object2.x + object2.width >= object1.x && object2.x + object2.width <= object1.x + object1.width)
+			)
+		) {
+			return true;
 		}
 
 		return false;
 	}
 
 	/**
-	 * 
-	 * @param {*} object 
-	 * @param {*} arrCurLine 
-	 * @param {*} arrRes 
+	 * Is arrObj1 contain arrObj2
+	 * @param {*} arrObj1 
+	 * @param {*} arrObj2 
 	 */
-	findLongestLine(object, arrCurLine, arrRes) {
-		arrCurLine.push(object);
+	isContain(arrObj1, arrObj2) {
+		if (arrObj1.length < arrObj2.length) return false;
 
-		if (object.child.length > 0) {
-			for (let i = 0; i < object.child.length; i++) {
-				let newLine = _.clone(arrCurLine);
-				arrRes.push(newLine);
-				this.findLongestLine(object.child[i], newLine, arrRes);
-			}
-		}
-	}
-
-	/**
-	 * 
-	 */
-	maxLength(arr) {
-		if (arr.length == 0) return 0;
-
-		let max = arr[0].length;
-		let index = 0;
-
-		if (arr.length > 1) {
-			for (let i = 1; i < arr.length; i++) {
-				if (arr[i].length > max) {
-					max = arr[i].length;
-					index = i;
+		let cnt = 0;
+		for (let i = 0; i < arrObj1.length; i++) {
+			for (let j = 0; j < arrObj2.length; j++) {
+				if (arrObj2[j][0].id == arrObj1[i][0].id) {
+					cnt++;
 				}
 			}
 		}
 
-		return {maxLength: max, index: index};
-	}
-
-	/**
-	 * 
-	 * @param {*} arrLongestLine 
-	 */
-	removeUnexpectedResult(arrLongestLine) {
-		for (let i = 0; i < arrLongestLine.length; i++) {
-			let {maxLength} = this.maxLength(arrLongestLine[i]);
-			_.remove(arrLongestLine[i], item => {
-				return item.length < maxLength;
-			})
-		}
-	}
-
-	/**
-	 * 
-	 * @param {*} arrLongestLine 
-	 */
-	mergeFinalResult(arrLongestLine) {
-		let arrRes = [];
-		for (let i = 0; i < arrLongestLine.length; i++) {
-			let line = arrLongestLine[i];
-			let tempLine = line[0]; // Choose the first item in line for the base then merge other item into it
-			let arrResTemp = []; // store the final result for each line
-			arrRes.push(arrResTemp);
-
-			// use first item for base data
-			tempLine.forEach((item, index) => {
-				arrResTemp[index] = [];
-				arrResTemp[index].push(item);
-			})
-
-			// if more than 1 item in line then merge them to the base
-			if (line.length > 1) {
-				for (let j = 1; j < line.length; j++) {
-					line[j].forEach((item, index) => {
-						if (this.notIn(arrResTemp[index], item.id)) {
-							arrResTemp[index].push(item);
-						}
-					})
-				}
-			}
-		}
-
-		return arrRes;
-	}
-
-	/**
-	 * 
-	 * @param {*} arrEdge 
-	 */
-	calculateCoordinateByOperationsAreaForEdge(arrEdge) {
-
-		arrEdge.forEach((item, index) => {
-			// source
-			this.doCalculateCoordinateForNodeOfEdge(item.source, TYPE_CONNECT.OUTPUT, this.storeOperations);
-
-			// target
-			this.doCalculateCoordinateForNodeOfEdge(item.target, TYPE_CONNECT.INPUT, this.storeOperations);
-		})
-	}
-
-	/**
-	 * 
-	 * @param {*} node 
-	 * @param {*} connectType 
-	 * @param {*} dataContainer 
-	 */
-	doCalculateCoordinateForNodeOfEdge(node, connectType, dataContainer) {
-		let {vertexId, prop} = node;
-		let vertices = [];
-		vertices = vertices.concat(dataContainer.vertex);
-		vertices = vertices.concat(dataContainer.boundary);
-
-		let object = _.find(vertices, {"id": vertexId});
-
-		if (prop.indexOf('boundary_title') != -1){
-			node.y = object.y + BOUNDARY_ATTR_SIZE.HEADER_HEIGHT / 2;
-			node.x = connectType === TYPE_CONNECT.OUTPUT ? object.x + object.width : object.x
-
-    }else if (prop.indexOf('title') != -1){
-			node.y = object.y + VERTEX_ATTR_SIZE.HEADER_HEIGHT / 2;
-			node.x = connectType === TYPE_CONNECT.OUTPUT ? object.x + VERTEX_ATTR_SIZE.GROUP_WIDTH : object.x
-
-    } else{
-      // Get index prop in object
-      let index = this.objectUtils.findIndexPropInVertex(vertexId, prop);
-			node.y = object.y + VERTEX_ATTR_SIZE.HEADER_HEIGHT + index * VERTEX_ATTR_SIZE.PROP_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT / 2;
-			node.x = connectType === TYPE_CONNECT.OUTPUT ? object.x + VERTEX_ATTR_SIZE.GROUP_WIDTH : object.x;
-    }
-	}
-
-	/**
-	 * 
-	 * @param {*} line 
-	 */
-	maxHeight(line) {
-		let maxHeight = 0;
-		for (let i = 0; i < line.length; i++) {
-			for (let j = 0; j < line[i].length; j++) {
-				let rect = $(`#${line[i][j].id}`).get(0).getBoundingClientRect();
-				if (maxHeight < line[i][j].y + rect.height) {
-					maxHeight = line[i][j].y + rect.height;
-				}
-			}
-		}
-
-		return maxHeight;
-	}
-
-	isNodeConnectToObject(object, node) {
-		if (object.type == "V") {
-			return object.id == node.vertexId;
-		} else {
-			return object.id == node.vertexId || _.find(object.member, {"id": node.vertexId});
-		}
+		return cnt == arrObj2.length;
 	}
 	
 }
