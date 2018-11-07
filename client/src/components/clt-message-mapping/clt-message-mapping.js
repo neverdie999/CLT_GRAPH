@@ -12,9 +12,10 @@ import {
 } from '../../common/utilities/common.ult';
 
 import { 
-  VERTEX_FORMAT_TYPE, VERTEX_ATTR_SIZE, BOUNDARY_ATTR_SIZE, TYPE_CONNECT, PADDING_POSITION_SVG
+ VERTEX_ATTR_SIZE, BOUNDARY_ATTR_SIZE, TYPE_CONNECT
 } from '../../common/const/index';
-import { isObject } from 'util';
+
+
 
 
 class CltMessageMapping {
@@ -304,7 +305,12 @@ class CltMessageMapping {
     if (!fileName) {
       comShowMessage("Please input file name");
       return;
-    }
+		}
+		
+		if (!this.outputMgmt.validateConnectionByUsage()) {
+			comShowMessage("You missed mandatory things without any connection.")
+			//return
+		} 
 
     this.getContentGraphAsJson().then(content => {
       if (!content) {
@@ -757,23 +763,26 @@ class CltMessageMapping {
 		arrEdgeStartFromInput.forEach(e => {
 			let object = null;
 			if (e.target.vertexId[0] == "V") {
-				object = _.remove(operationsContainer.vertex, el => {
-					return el && el.id == e.target.vertexId;
+				object = _.find(operationsContainer.vertex, el => {
+					return el.id == e.target.vertexId;
 				})
 			} else {
-				object = _.remove(operationsContainer.boundary, el => {
-					return el && el.id == e.target.vertexId;
+				object = _.find(operationsContainer.boundary, el => {
+					return el.id == e.target.vertexId;
 				})
 			}
 
-			if (object.length > 0) {
-				if (object[0].parent) {
-					let parent = _.remove(operationsContainer.boundary, {"id":object[0].parent});
-					if (parent.length > 0) {
-						arrRes.push(parent[0]);
+			if (object) {
+				if (object.parent) {
+					let parent = _.find(operationsContainer.boundary, {"id": object.parent});
+					parent = parent.findAncestorOfMemberInNestedBoundary();
+					if (this.notIn(arrRes, parent.id)) {
+						arrRes.push(parent);
 					}
 				} else {
-					arrRes.push(object[0]);
+					if (this.notIn(arrRes, object.id)) {
+						arrRes.push(object);
+					}
 				}
 			}
 		})
@@ -820,23 +829,27 @@ class CltMessageMapping {
 			if (e.target.svgId == this.outputMessageSvgId && e.source.svgId == this.operationsSvgId) {
 				let object = null;
 				if (e.source.vertexId[0] == "V") {
-					object = _.remove(operationsContainer.vertex, el => {
-						return el && el.id == e.source.vertexId;
+					object = _.find(operationsContainer.vertex, el => {
+						return el.id == e.source.vertexId;
 					})
 				} else {
-					object = _.remove(operationsContainer.boundary, el => {
-						return el && el.id == e.source.vertexId;
+					object = _.find(operationsContainer.boundary, el => {
+						return el.id == e.source.vertexId;
 					})
 				}
 
-				if (object.length > 0) {
-					if (object[0].parent) {
-						let parent = _.remove(operationsContainer.boundary, {"id":object[0].parent});
-						if (parent.length > 0) {
-							arrMappingConstObj.push(parent[0]);
+				if (object) {
+					if (object.parent) {
+						let parent = _.find(operationsContainer.boundary, {"id":object.parent});
+						parent = parent.findAncestorOfMemberInNestedBoundary();
+						if (this.notIn(arrMappingConstObj, parent.id)) {
+							arrMappingConstObj.push(parent);
 						}
 					} else {
-						arrMappingConstObj.push(object[0]);
+
+						if (this.notIn(arrMappingConstObj, object.id)) {
+							arrMappingConstObj.push(object);
+						}
 					}
 				} 
 			}
@@ -953,7 +966,8 @@ class CltMessageMapping {
 
 				// If obj have parent then just arrange for parent then all childs will be effect
 				if (obj && obj.parent) {
-					obj = _.find(arrMappingConstObj, {"id": obj.parent});
+					obj = _.find(this.storeOperations.boundary, {"id": obj.parent});
+					obj = obj.findAncestorOfMemberInNestedBoundary();
 				}
 
 				this.arrangeForMappingConstantObject(obj, arrArrangedObj, maxLengthBranch);
@@ -1134,7 +1148,7 @@ class CltMessageMapping {
 	getIntersectionObject(edge, object) {
 
 		if (object.type == "B") {
-			if (!this.notIn(object.member, edge.target.vertexId) || !this.notIn(object.member, edge.source.vertexId)) return null;
+			if (object.isParentOf(edge.target.vertexId) || object.isParentOf(edge.source.vertexId)) return null;
 		}
 
 		let inputRect = $(`#${this.inputMessageContainerId}`).get(0).getBoundingClientRect();
@@ -1204,7 +1218,7 @@ class CltMessageMapping {
 
 		object.child = [];
 		arrEdges.forEach(e => {
-			if (this.haveConnectToThisObject(object, e.source.vertexId)) {
+			if (this.isNodeConnectToObject(object, e.source)) {
 				let tmpObj = null;
 
 				if (e.target.vertexId[0] == "V") {
@@ -1216,6 +1230,7 @@ class CltMessageMapping {
 				if (tmpObj) {
 					if (tmpObj.parent) {
 						tmpObj = _.find(operationsContainer.boundary, {"id":tmpObj.parent});
+						tmpObj = tmpObj.findAncestorOfMemberInNestedBoundary();
 					}
 
 					if (this.notIn(object.child, tmpObj.id)) {
@@ -1254,25 +1269,6 @@ class CltMessageMapping {
 		}
 
 		return true;
-	}
-
-	/**
-	 * 
-	 * @param {*} object 
-	 * @param {*} id 
-	 */
-	haveConnectToThisObject(object, id) {
-		if (object.type == "V") {
-			return object.id == id;
-		} else {
-			if (object.id == id) return true;
-
-			for (let i = 0; i < object.member.length; i++) {
-				if (object.member[i].id == id) return true;
-			}
-		}
-
-		return false;
 	}
 
 	/**
@@ -1469,8 +1465,23 @@ class CltMessageMapping {
 		if (object.type == "V") {
 			return object.id == node.vertexId;
 		} else {
-			return object.id == node.vertexId || _.find(object.member, {"id": node.vertexId});
+			if (object.id == node.vertexId) {
+				return true;
+			} else {
+				for (let i = 0; i < object.member.length; i++) {
+					let memObj = null;
+					if (object.member[i].type == "V") {
+						memObj = _.find(this.storeOperations.vertex, {"id": object.member[i].id})
+					} else {
+						memObj = _.find(this.storeOperations.boundary, {"id": object.member[i].id})
+					}
+
+					if (this.isNodeConnectToObject(memObj, node)) return true;
+				}
+			}
 		}
+
+		return false;
 	}
 
 	/**
@@ -1655,7 +1666,6 @@ class CltMessageMapping {
 
 		return cnt == arrObj2.length;
 	}
-	
 }
   
 export default CltMessageMapping;

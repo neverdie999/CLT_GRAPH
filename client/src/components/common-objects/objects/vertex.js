@@ -378,18 +378,24 @@ class Vertex {
     this.moveToFront();
 
     //Highlight the title background-color
-    const $vtxTitle = $(`#${this.id}`).find('.content_header_name');
+		const $vtxTitle = $(`#${this.id}`).find('.content_header_name');
+		const $headerConnectors = $(`#${this.id}`).find('.connect_header');
     const colorByName = this.colorHash.hex(this.name);
     for (let i = 0; i < 3; i++){
       setTimeout(function(){
-        $vtxTitle.css('background-color', 'white');
+				$vtxTitle.css('background-color', 'white');
+				for (let i = 0; i < $headerConnectors.length; i++) {
+					$($headerConnectors[i]).attr('fill', 'white');
+				}
       },i*400);
       setTimeout(function(){
-        $vtxTitle.css('background-color', `${colorByName})`);
+				$vtxTitle.css('background-color', `${colorByName}`);
+				for (let i = 0; i < $headerConnectors.length; i++) {
+					$($headerConnectors[i]).attr('fill', `${colorByName}`);
+				}
       }, 200 + i*400);
     }
 	}
-	
 }
 
 export default Vertex;

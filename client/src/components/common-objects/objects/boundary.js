@@ -678,6 +678,9 @@ class Boundary {
     }
   }
 
+	/**
+	 * Move this boundary and all it's child when selelecting on it
+	 */
   moveToFront(){
     d3.select(`#${this.id}`).moveToFront();
 
@@ -698,7 +701,27 @@ class Boundary {
       if (memObj)
         memObj.moveToFront();
     });
-  }
+	}
+	
+	/**
+	 * Checking if this boundary is the parent of object with objectId
+	 * @param {*} objectId 
+	 */
+	isParentOf(objectId) {
+		for (let i = 0; i < this.member.length; i++) {
+			let mem = this.member[i];
+			if (mem.id == objectId) {
+				return true;
+			} else if (mem.type == "B") {
+				let memObj = _.find(this.dataContainer.boundary, {"id": mem.id});
+				if (memObj.isParentOf(objectId)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 }
 
 export default Boundary

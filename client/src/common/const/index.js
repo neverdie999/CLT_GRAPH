@@ -95,6 +95,12 @@ export const VERTEX_GROUP_OPTION = {
   DYNAMIC_DATASET: 'DYNAMIC_DATASET',
 };
 
+export const DATA_ELEMENT_TYPE = {
+  SIMPLE: "SIMPLE",
+	COMPOSITE: "COMPOSITE",
+	COMPONENT: "COMPONENT"
+};
+
 export const COMMON_DATA = {
   //isCreatingEdge: false, // Define state creation connect (edge)
   //tmpSource: null, // Define source node for create connect
