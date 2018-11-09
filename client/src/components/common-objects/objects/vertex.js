@@ -5,7 +5,8 @@ import * as d3 from 'd3';
 import {
   VERTEX_ATTR_SIZE,
   CONNECT_SIDE,
-  TYPE_CONNECT
+  TYPE_CONNECT,
+	DATA_ELEMENT_TYPE
 } from '../../../common/const/index';
 
 import { 
@@ -395,6 +396,76 @@ class Vertex {
 				}
       }, 200 + i*400);
     }
+	}
+
+	/**
+	 * Checking and filling warning color for mandatory Data element that have no connection
+	 */
+	validateConnectionByUsage() {
+
+		if (!checkModePermission(this.viewMode.value, "mandatoryCheck")) return true;
+
+		// Don't check for none parent
+		if (!this.parent) return true;
+
+		// Clear warning color before checking
+		$(`#${this.id} .property`).css('background-color', '');
+
+		let parentObj = _.find(this.dataContainer.boundary, {"id": this.parent});
+
+		let bFlag = true;
+		let dataElement = _.cloneDeep(this.data);
+		this.getConnectionStatus(dataElement);
+
+		for (let i = 0; i < dataElement.length; i++) {
+			if ( ((dataElement[i].usage && dataElement[i].usage == "M") || (dataElement[i].mandatory))
+					&& (dataElement[i].type && dataElement[i].type != DATA_ELEMENT_TYPE.COMPOSITE)
+					&& !dataElement[i].hasConnection) {
+				if (parentObj.mandatory && this.mandatory) {
+					// GRP[M] - SGM[M] - DE[M]
+					if (bFlag) bFlag = false;
+					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', '#ff8100');
+
+				} else if (this.hasAnyConnectionOfOtherDataElement(dataElement, i)){
+					// GRP[M] - SGM[C] - DE[M]
+					// GRP[C] - SGM[M] - DE[M]
+					// GRP[C] - SGM[C] - DE[M]
+					if (bFlag) bFlag = false;
+					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', '#ff8100');
+				}
+			}
+		}
+
+		return bFlag;
+	}
+
+	/**
+	 * 
+	 * @param {*} vertexId 
+	 * @param {*} dataElement 
+	 */
+	getConnectionStatus(dataElement) {
+		for (let i = 0; i < this.vertexMgmt.edgeMgmt.dataContainer.edge.length; i++) {
+			let edge = this.vertexMgmt.edgeMgmt.dataContainer.edge[i];
+			for (let indexOfDataElement = 0; indexOfDataElement < dataElement.length; indexOfDataElement++) {
+				if (parseInt(edge.target.prop.replace(`${this.id}${CONNECT_KEY}`, '')) == indexOfDataElement) {
+					dataElement[indexOfDataElement].hasConnection = true;
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param {*} dataElement 
+	 * @param {*} idxCurDataElement 
+	 */
+	hasAnyConnectionOfOtherDataElement(dataElement, idxCurDataElement) {
+		for (let i = 0; i < dataElement.length; i++) {
+			if (i != idxCurDataElement && dataElement[i].hasConnection) return true;
+		}
+
+		return false;
 	}
 }
 

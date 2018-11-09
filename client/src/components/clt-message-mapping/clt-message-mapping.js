@@ -224,7 +224,10 @@ class CltMessageMapping {
     //Reload Vertex Define and draw graph
     await this.outputMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.outputMgmt.drawObjectsOnOutputGraph(graphData);
-    this.outputMgmt.initMenuContext();
+		this.outputMgmt.initMenuContext();
+		
+		// Validate for mandatory Data Element
+		this.outputMgmt.validateConnectionByUsage();
 
     setMinBoundaryGraph(this.storeOutputMessage,this.outputMessageSvgId, this.outputMgmt.viewMode.value);
   }
@@ -279,7 +282,8 @@ class CltMessageMapping {
     vertexTypes = outputMessage.vertexTypes;
     await this.outputMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.outputMgmt.drawObjectsOnOutputGraph(outputMessage);
-    this.outputMgmt.initMenuContext();
+		this.outputMgmt.initMenuContext();
+		this.outputMgmt.validateConnectionByUsage();
 
     //Operations Graph - Reload Vertex define and draw new graph.
     vertexTypes = {};
@@ -308,8 +312,8 @@ class CltMessageMapping {
 		}
 		
 		if (!this.outputMgmt.validateConnectionByUsage()) {
-			comShowMessage("You missed mandatory things without any connection.")
-			//return
+			if (!confirm("You missed mandatory things without any connection.\nContinue saving?"))
+				return;
 		} 
 
     this.getContentGraphAsJson().then(content => {

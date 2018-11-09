@@ -184,92 +184,28 @@ class OutputMgmt {
 
 	/**
 	 * 
-	 * @param {*} mem 
-	 * @param {*} parent 
+	 * @param {*} mem
+	 * @param {*} parent
 	 */
-	doValidateConnectionByUsage(mem, parent) {
+	doValidateConnectionByUsage(mem) {
 		let bFlag = true;
-		let obj = null;
 		if (mem.type == "V") {
-			obj = _.find(this.dataContainer.vertex, {"id": mem.id})
-			if (obj) {
-				let dataElement = _.cloneDeep(obj.data);
-				this.getConnectionStatus(obj.id, dataElement);
-
-				for (let i = 0; i < dataElement.length; i++) {
-					if ( ((dataElement[i].usage && dataElement[i].usage == "M") || (dataElement[i].mandatory))
-							&& (dataElement[i].type && dataElement[i].type != DATA_ELEMENT_TYPE.COMPOSITE)
-							&& !dataElement[i].hasConnection) {
-						if (parent.mandatory && obj.mandatory) {
-							// GRP[M] - SGM[M] - DE[M]
-							if (bFlag) bFlag = false;
-							$(`#${obj.id} .property[prop='${obj.id}${CONNECT_KEY}${i}']`).css('background-color', '#ff8100');
-
-						} else if (this.hasAnyConnectionOfOtherDataElement(dataElement, i)){
-							// GRP[M] - SGM[C] - DE[M]
-							// GRP[C] - SGM[M] - DE[M]
-							// GRP[C] - SGM[C] - DE[M]
-							if (bFlag) bFlag = false;
-							$(`#${obj.id} .property[prop='${obj.id}${CONNECT_KEY}${i}']`).css('background-color', '#ff8100');
-						}
-					}
+			let vertex = _.find(this.dataContainer.vertex, {"id": mem.id})
+			if (vertex) {
+				if (!vertex.validateConnectionByUsage() && bFlag) {
+					bFlag = false;
 				}
 			}
 		} else {
-			obj = _.find(this.dataContainer.boundary, {"id": mem.id})
-			obj.member.forEach(item => {
-				if (!this.doValidateConnectionByUsage(item, obj) && bFlag) {
+			let boundary = _.find(this.dataContainer.boundary, {"id": mem.id})
+			boundary.member.forEach(item => {
+				if (!this.doValidateConnectionByUsage(item) && bFlag) {
 					bFlag = false;
 				}
 			})
 		}
 
 		return bFlag;
-	}
-
-	/**
-	 * 
-	 * @param {*} vertexId 
-	 * @param {*} indexOfDataElement 
-	 */
-	haveConnectionToDataElement(vertexId, indexOfDataElement) {
-		for (let i = 0; i < this.storeConnect.edge.length; i++) {
-			let edge = this.storeConnect.edge[i];
-			if (parseInt(edge.target.prop.replace(`${vertexId}${CONNECT_KEY}`, '')) == indexOfDataElement) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * 
-	 * @param {*} vertexId 
-	 * @param {*} dataElement 
-	 */
-	getConnectionStatus(vertexId, dataElement) {
-		for (let i = 0; i < this.edgeMgmt.dataContainer.edge.length; i++) {
-			let edge = this.edgeMgmt.dataContainer.edge[i];
-			for (let indexOfDataElement = 0; indexOfDataElement < dataElement.length; indexOfDataElement++) {
-				if (parseInt(edge.target.prop.replace(`${vertexId}${CONNECT_KEY}`, '')) == indexOfDataElement) {
-					dataElement[indexOfDataElement].hasConnection = true;
-				}
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param {*} dataElement 
-	 * @param {*} idxCurDataElement 
-	 */
-	hasAnyConnectionOfOtherDataElement(dataElement, idxCurDataElement) {
-		for (let i = 0; i < dataElement.length; i++) {
-			if (i != idxCurDataElement && dataElement[i].hasConnection) return true;
-		}
-
-		return false;
 	}
 }
 

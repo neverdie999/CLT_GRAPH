@@ -95,6 +95,7 @@ export const VERTEX_GROUP_OPTION = {
   DYNAMIC_DATASET: 'DYNAMIC_DATASET',
 };
 
+// Padding size left and top
 export const DATA_ELEMENT_TYPE = {
   SIMPLE: "SIMPLE",
 	COMPOSITE: "COMPOSITE",

@@ -222,11 +222,11 @@ class EdgeMgmt {
         });
 
         //Vertex that draged to
-        let targetVertexObj = _.find(vertices, {'id': dropVertexId});
-        const {svgId, x, y} = targetVertexObj;
+        let targetObj = _.find(vertices, {'id': dropVertexId});
+        const {svgId, x, y} = targetObj;
 
         //Calculate new coordinate of ended point on CONNECT SVG for redraw edge
-        const newPoint = main.objectUtils.getCoordPropRelativeToParent(targetVertexObj, prop, pointType);
+        const newPoint = main.objectUtils.getCoordPropRelativeToParent(targetObj, prop, pointType);
         newPoint.vertexId = dropVertexId;
         newPoint.prop = prop;
         newPoint.svgId = svgId;
@@ -235,8 +235,22 @@ class EdgeMgmt {
 					edgeObj.updateMarkedConnector({source: newPoint});
 					edgeObj.updatePathConnect({source: newPoint})
 				} else {
+					// get old object before updating
+					const oldObj = _.find(vertices,{"id": edgeObj.target.vertexId});
+
 					edgeObj.updateMarkedConnector({target: newPoint});
 					edgeObj.updatePathConnect({target: newPoint})
+
+					// check mandatory data element for target vertex only (Output message of Message Mapping GUI)
+
+					if (oldObj.type == "V") {
+						oldObj.validateConnectionByUsage();
+					}
+
+					// If move target connection to another vertex then checking for new vertex
+					if (targetObj.id != oldObj.id && targetObj.type == "V") {
+						targetObj.validateConnectionByUsage();
+					}
 				}
       }
 
@@ -298,8 +312,8 @@ class EdgeMgmt {
       main.isCreatingEdge = false;
       if (d3.event.sourceEvent.target.tagName == "rect" 
           && this != d3.event.sourceEvent.target 
-          && d3.select(d3.event.sourceEvent.target.parentNode).attr("id") != main.tmpSource.vertexId) 
-      {
+					&& d3.select(d3.event.sourceEvent.target.parentNode).attr("id") != main.tmpSource.vertexId
+			) {
         let vertextId = d3.select(d3.event.sourceEvent.target.parentNode).attr("id");
         let prop = d3.select(d3.event.sourceEvent.target).attr("prop");
 
@@ -309,14 +323,17 @@ class EdgeMgmt {
           vertices = vertices.concat(arrVertex.boundary);
         });
 
-        let vertexObj = _.find(vertices, {'id': vertextId});
-        const des = main.objectUtils.getCoordPropRelativeToParent(vertexObj, prop, TYPE_CONNECT.INPUT);
+        let obj = _.find(vertices, {'id': vertextId});
+        const des = main.objectUtils.getCoordPropRelativeToParent(obj, prop, TYPE_CONNECT.INPUT);
         des.vertexId = vertextId;
         des.prop = prop;
-        des.svgId = vertexObj.svgId;
+        des.svgId = obj.svgId;
         let options = {source: main.tmpSource, target: des};
 
-        main.create(options);
+				main.create(options);
+				if (obj.type == "V") {
+					obj.validateConnectionByUsage();
+				}
       }
 
       d3.select(`#${main.dummyPathId}`).attr('d', null);

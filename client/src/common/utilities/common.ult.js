@@ -284,7 +284,7 @@ export function checkModePermission(viewMode, type){
     'showReduced',
     'editVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
-		'namePrefix'
+		'namePrefix', "mandatoryCheck"
   ];
 
   data[VIEW_MODE.SEGMENT] = [

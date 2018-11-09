@@ -191,7 +191,8 @@ class Edge {
     if (this.edgeMgmt.isSelectingEdge())
       this.edgeMgmt.cancleSelectedPath();
 
-    //Unmarked connector
+		//Unmarked connector
+		// For source connection
     if (this.source.prop.indexOf('title') == -1){
       let isSrcExist = false;
       this.dataContainer.edge.forEach(e => {
@@ -209,13 +210,12 @@ class Edge {
         const propNode = $(`rect[prop=${this.source.prop}][type='O']`)[0];
         //In case of updated vertex and poperties lost => propNode will not exist
         if (propNode){
-          const vertexId = $(propNode.parentNode).attr('id');
-          const vertex = _.find(vertices, {"id":vertexId});
           d3.select(`rect[prop=${this.source.prop}][type='O']`).classed('marked_connector',false);
         }
       }
     }
-    
+		
+		// For target connection
     if (this.target.prop.indexOf('title') == -1){
       let isTagExist = false;
       this.dataContainer.edge.forEach(e => {
@@ -233,12 +233,17 @@ class Edge {
         const propNode = $(`rect[prop=${this.target.prop}][type='I']`)[0];
         //In case of updated vertex and poperties lost => propNode will not exist
         if (propNode){
+					d3.select(`rect[prop=${this.target.prop}][type='I']`).classed('marked_connector',false);
+
+					// mandatory Data elelment checking for target vertex (case of output message of message mapping GUI)
           const vertexId = $(propNode.parentNode).attr('id');
-          const vertex = _.find(vertices, {"id":vertexId});
-          d3.select(`rect[prop=${this.target.prop}][type='I']`).classed('marked_connector',false);
+					const vertex = _.find(vertices, {"id":vertexId});
+					vertex.validateConnectionByUsage();
         }
       }
-    }
+		}
+		
+		
   }
 
   /**

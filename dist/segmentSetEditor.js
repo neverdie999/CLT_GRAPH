@@ -983,7 +983,7 @@ function checkModePermission(viewMode, type){
     'showReduced',
     'editVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
-		'namePrefix'
+		'namePrefix', "mandatoryCheck"
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].SEGMENT] = [
@@ -1194,6 +1194,7 @@ const VERTEX_GROUP_OPTION = {
 /* harmony export (immutable) */ __webpack_exports__["n"] = VERTEX_GROUP_OPTION;
 
 
+// Padding size left and top
 const DATA_ELEMENT_TYPE = {
   SIMPLE: "SIMPLE",
 	COMPOSITE: "COMPOSITE",
@@ -53016,6 +53017,76 @@ class Vertex {
       }, 200 + i*400);
     }
 	}
+
+	/**
+	 * Checking and filling warning color for mandatory Data element that have no connection
+	 */
+	validateConnectionByUsage() {
+
+		if (!Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, "mandatoryCheck")) return true;
+
+		// Don't check for none parent
+		if (!this.parent) return true;
+
+		// Clear warning color before checking
+		$(`#${this.id} .property`).css('background-color', '');
+
+		let parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.boundary, {"id": this.parent});
+
+		let bFlag = true;
+		let dataElement = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.data);
+		this.getConnectionStatus(dataElement);
+
+		for (let i = 0; i < dataElement.length; i++) {
+			if ( ((dataElement[i].usage && dataElement[i].usage == "M") || (dataElement[i].mandatory))
+					&& (dataElement[i].type && dataElement[i].type != __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPOSITE)
+					&& !dataElement[i].hasConnection) {
+				if (parentObj.mandatory && this.mandatory) {
+					// GRP[M] - SGM[M] - DE[M]
+					if (bFlag) bFlag = false;
+					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', '#ff8100');
+
+				} else if (this.hasAnyConnectionOfOtherDataElement(dataElement, i)){
+					// GRP[M] - SGM[C] - DE[M]
+					// GRP[C] - SGM[M] - DE[M]
+					// GRP[C] - SGM[C] - DE[M]
+					if (bFlag) bFlag = false;
+					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', '#ff8100');
+				}
+			}
+		}
+
+		return bFlag;
+	}
+
+	/**
+	 * 
+	 * @param {*} vertexId 
+	 * @param {*} dataElement 
+	 */
+	getConnectionStatus(dataElement) {
+		for (let i = 0; i < this.vertexMgmt.edgeMgmt.dataContainer.edge.length; i++) {
+			let edge = this.vertexMgmt.edgeMgmt.dataContainer.edge[i];
+			for (let indexOfDataElement = 0; indexOfDataElement < dataElement.length; indexOfDataElement++) {
+				if (parseInt(edge.target.prop.replace(`${this.id}${CONNECT_KEY}`, '')) == indexOfDataElement) {
+					dataElement[indexOfDataElement].hasConnection = true;
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param {*} dataElement 
+	 * @param {*} idxCurDataElement 
+	 */
+	hasAnyConnectionOfOtherDataElement(dataElement, idxCurDataElement) {
+		for (let i = 0; i < dataElement.length; i++) {
+			if (i != idxCurDataElement && dataElement[i].hasConnection) return true;
+		}
+
+		return false;
+	}
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Vertex);
@@ -53255,11 +53326,11 @@ class EdgeMgmt {
         });
 
         //Vertex that draged to
-        let targetVertexObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': dropVertexId});
-        const {svgId, x, y} = targetVertexObj;
+        let targetObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': dropVertexId});
+        const {svgId, x, y} = targetObj;
 
         //Calculate new coordinate of ended point on CONNECT SVG for redraw edge
-        const newPoint = main.objectUtils.getCoordPropRelativeToParent(targetVertexObj, prop, pointType);
+        const newPoint = main.objectUtils.getCoordPropRelativeToParent(targetObj, prop, pointType);
         newPoint.vertexId = dropVertexId;
         newPoint.prop = prop;
         newPoint.svgId = svgId;
@@ -53268,8 +53339,22 @@ class EdgeMgmt {
 					edgeObj.updateMarkedConnector({source: newPoint});
 					edgeObj.updatePathConnect({source: newPoint})
 				} else {
+					// get old object before updating
+					const oldObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices,{"id": edgeObj.target.vertexId});
+
 					edgeObj.updateMarkedConnector({target: newPoint});
 					edgeObj.updatePathConnect({target: newPoint})
+
+					// check mandatory data element for target vertex only (Output message of Message Mapping GUI)
+
+					if (oldObj.type == "V") {
+						oldObj.validateConnectionByUsage();
+					}
+
+					// If move target connection to another vertex then checking for new vertex
+					if (targetObj.id != oldObj.id && targetObj.type == "V") {
+						targetObj.validateConnectionByUsage();
+					}
 				}
       }
 
@@ -53331,8 +53416,8 @@ class EdgeMgmt {
       main.isCreatingEdge = false;
       if (__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.tagName == "rect" 
           && this != __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target 
-          && __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id") != main.tmpSource.vertexId) 
-      {
+					&& __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id") != main.tmpSource.vertexId
+			) {
         let vertextId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id");
         let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr("prop");
 
@@ -53342,14 +53427,17 @@ class EdgeMgmt {
           vertices = vertices.concat(arrVertex.boundary);
         });
 
-        let vertexObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': vertextId});
-        const des = main.objectUtils.getCoordPropRelativeToParent(vertexObj, prop, __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].INPUT);
+        let obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': vertextId});
+        const des = main.objectUtils.getCoordPropRelativeToParent(obj, prop, __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].INPUT);
         des.vertexId = vertextId;
         des.prop = prop;
-        des.svgId = vertexObj.svgId;
+        des.svgId = obj.svgId;
         let options = {source: main.tmpSource, target: des};
 
-        main.create(options);
+				main.create(options);
+				if (obj.type == "V") {
+					obj.validateConnectionByUsage();
+				}
       }
 
       __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.dummyPathId}`).attr('d', null);
@@ -53869,7 +53957,8 @@ class Edge {
     if (this.edgeMgmt.isSelectingEdge())
       this.edgeMgmt.cancleSelectedPath();
 
-    //Unmarked connector
+		//Unmarked connector
+		// For source connection
     if (this.source.prop.indexOf('title') == -1){
       let isSrcExist = false;
       this.dataContainer.edge.forEach(e => {
@@ -53887,13 +53976,12 @@ class Edge {
         const propNode = $(`rect[prop=${this.source.prop}][type='O']`)[0];
         //In case of updated vertex and poperties lost => propNode will not exist
         if (propNode){
-          const vertexId = $(propNode.parentNode).attr('id');
-          const vertex = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(vertices, {"id":vertexId});
           __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`rect[prop=${this.source.prop}][type='O']`).classed('marked_connector',false);
         }
       }
     }
-    
+		
+		// For target connection
     if (this.target.prop.indexOf('title') == -1){
       let isTagExist = false;
       this.dataContainer.edge.forEach(e => {
@@ -53911,12 +53999,17 @@ class Edge {
         const propNode = $(`rect[prop=${this.target.prop}][type='I']`)[0];
         //In case of updated vertex and poperties lost => propNode will not exist
         if (propNode){
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`rect[prop=${this.target.prop}][type='I']`).classed('marked_connector',false);
+
+					// mandatory Data elelment checking for target vertex (case of output message of message mapping GUI)
           const vertexId = $(propNode.parentNode).attr('id');
-          const vertex = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(vertices, {"id":vertexId});
-          __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`rect[prop=${this.target.prop}][type='I']`).classed('marked_connector',false);
+					const vertex = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(vertices, {"id":vertexId});
+					vertex.validateConnectionByUsage();
         }
       }
-    }
+		}
+		
+		
   }
 
   /**
