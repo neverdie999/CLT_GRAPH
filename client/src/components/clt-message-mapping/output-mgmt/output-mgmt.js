@@ -167,13 +167,11 @@ class OutputMgmt {
 	validateConnectionByUsage() {
 		let bFlag = true;
 
-		$(`#${this.svgId} .property`).css('background-color', '');
-
 		if (this.dataContainer.boundary.length > 0) {
 			let parent = this.dataContainer.boundary[0].findAncestorOfMemberInNestedBoundary();
 			for (let i = 0; i < parent.member.length; i++) {
 				let mem = parent.member[i];
-				if (!this.doValidateConnectionByUsage(mem, parent) && bFlag)  bFlag = false;
+				if (!this.doValidateConnectionByUsage(mem) && bFlag)  bFlag = false;
 			}
 		} else {
 
@@ -185,7 +183,6 @@ class OutputMgmt {
 	/**
 	 * 
 	 * @param {*} mem
-	 * @param {*} parent
 	 */
 	doValidateConnectionByUsage(mem) {
 		let bFlag = true;

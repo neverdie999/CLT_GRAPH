@@ -70,8 +70,11 @@ class OperationsMgmt {
    */
   clearAll() {
     this.vertexMgmt.clearAll();
-    this.boundaryMgmt.clearAll();
+		this.boundaryMgmt.clearAll();
 
+		// Update warning color for Output Message
+		this.parent.outputMgmt.validateConnectionByUsage();
+		
     setSizeGraph({ height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT }, this.svgId);
   }
 

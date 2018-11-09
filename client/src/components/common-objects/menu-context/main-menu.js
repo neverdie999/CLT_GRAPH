@@ -31,9 +31,9 @@ class MainMenu {
                 this.parent.createBoundary(params);
                 break;
 
-              case "clearAll":
+							case "clearAll":
+								this.parent.edgeMgmt.clearAll();
                 this.parent.clearAll();
-                this.parent.edgeMgmt.clearAll();
 								break;
 								
 							case "autoAlignment":

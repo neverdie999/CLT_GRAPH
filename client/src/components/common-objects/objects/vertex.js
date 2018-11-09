@@ -408,8 +408,8 @@ class Vertex {
 		// Don't check for none parent
 		if (!this.parent) return true;
 
-		// Clear warning color before checking
-		$(`#${this.id} .property`).css('background-color', '');
+		const clrWarning = "#ff8100"; // Orange
+		const clrAvailable = "#5aabff"; // light blue
 
 		let parentObj = _.find(this.dataContainer.boundary, {"id": this.parent});
 
@@ -420,18 +420,27 @@ class Vertex {
 		for (let i = 0; i < dataElement.length; i++) {
 			if ( ((dataElement[i].usage && dataElement[i].usage == "M") || (dataElement[i].mandatory))
 					&& (dataElement[i].type && dataElement[i].type != DATA_ELEMENT_TYPE.COMPOSITE)
-					&& !dataElement[i].hasConnection) {
-				if (parentObj.mandatory && this.mandatory) {
-					// GRP[M] - SGM[M] - DE[M]
-					if (bFlag) bFlag = false;
-					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', '#ff8100');
+			) {
+				
+				if (dataElement[i].hasConnection) {
+					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable);
 
-				} else if (this.hasAnyConnectionOfOtherDataElement(dataElement, i)){
-					// GRP[M] - SGM[C] - DE[M]
-					// GRP[C] - SGM[M] - DE[M]
-					// GRP[C] - SGM[C] - DE[M]
-					if (bFlag) bFlag = false;
-					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', '#ff8100');
+				} else {
+					if (parentObj.mandatory && this.mandatory) {
+						// GRP[M] - SGM[M] - DE[M]
+						if (bFlag) bFlag = false;
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning);
+	
+					} else if (this.hasAnyConnectionOfOtherDataElement(dataElement, i)) {
+						// GRP[M] - SGM[C] - DE[M]
+						// GRP[C] - SGM[M] - DE[M]
+						// GRP[C] - SGM[C] - DE[M]
+						if (bFlag) bFlag = false;
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning);
+
+					} else {
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable);
+					}
 				}
 			}
 		}

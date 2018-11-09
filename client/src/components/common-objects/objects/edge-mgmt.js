@@ -223,7 +223,7 @@ class EdgeMgmt {
 
         //Vertex that draged to
         let targetObj = _.find(vertices, {'id': dropVertexId});
-        const {svgId, x, y} = targetObj;
+        const {svgId} = targetObj;
 
         //Calculate new coordinate of ended point on CONNECT SVG for redraw edge
         const newPoint = main.objectUtils.getCoordPropRelativeToParent(targetObj, prop, pointType);
