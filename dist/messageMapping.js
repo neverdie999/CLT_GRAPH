@@ -955,14 +955,14 @@ function checkModePermission(viewMode, type){
     'showReduced',
     'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'namePrefix', 'horizontalScroll'
+		'nameSuffix', 'horizontalScroll'
 	];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'namePrefix', 'horizontalScroll'
+		'nameSuffix', 'horizontalScroll'
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].OPERATIONS] = [
@@ -976,14 +976,14 @@ function checkModePermission(viewMode, type){
     'showReduced',
     'editVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
-		'namePrefix'
+		'nameSuffix'
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].OUTPUT_MESSAGE] = [
     'showReduced',
     'editVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
-		'namePrefix', "mandatoryCheck"
+		'nameSuffix', "mandatoryCheck"
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].SEGMENT] = [
@@ -1037,10 +1037,11 @@ function htmlEncode (s) {
   return res;
 }
 
-function segmentName (segmentObject, viewMode) {
-	if (checkModePermission(viewMode, 'namePrefix')) {
+function segmentName(segmentObject, viewMode) {
+	if (checkModePermission(viewMode, 'nameSuffix')) {
 		let usage = segmentObject.mandatory ? "M" : "C";
-		return `[${usage}${segmentObject.repeat}] ${segmentObject.name}`
+		return `${segmentObject.name} [${usage}${segmentObject.repeat}]`
+		
 	} else {
 		return `${segmentObject.name}`
 	}

@@ -256,14 +256,14 @@ export function checkModePermission(viewMode, type){
     'showReduced',
     'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'namePrefix', 'horizontalScroll'
+		'nameSuffix', 'horizontalScroll'
 	];
 
   data[VIEW_MODE.EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'namePrefix', 'horizontalScroll'
+		'nameSuffix', 'horizontalScroll'
   ];
 
   data[VIEW_MODE.OPERATIONS] = [
@@ -277,14 +277,14 @@ export function checkModePermission(viewMode, type){
     'showReduced',
     'editVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
-		'namePrefix'
+		'nameSuffix'
   ];
 
   data[VIEW_MODE.OUTPUT_MESSAGE] = [
     'showReduced',
     'editVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
-		'namePrefix', "mandatoryCheck"
+		'nameSuffix', "mandatoryCheck"
   ];
 
   data[VIEW_MODE.SEGMENT] = [
@@ -338,10 +338,11 @@ export function htmlEncode (s) {
   return res;
 }
 
-export function segmentName (segmentObject, viewMode) {
-	if (checkModePermission(viewMode, 'namePrefix')) {
+export function segmentName(segmentObject, viewMode) {
+	if (checkModePermission(viewMode, 'nameSuffix')) {
 		let usage = segmentObject.mandatory ? "M" : "C";
-		return `[${usage}${segmentObject.repeat}] ${segmentObject.name}`
+		return `${segmentObject.name} [${usage}${segmentObject.repeat}]`
+		
 	} else {
 		return `${segmentObject.name}`
 	}
