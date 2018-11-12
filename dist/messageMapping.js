@@ -53914,12 +53914,24 @@ class Vertex {
 
 		const clrWarning = "#ff8100"; // Orange
 		const clrAvailable = "#5aabff"; // light blue
-
-		let parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.boundary, {"id": this.parent});
-
+		
 		let bFlag = true;
 		let dataElement = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.data);
 		this.getConnectionStatus(dataElement);
+
+		// Check if any parent is conditional
+		let bHasAnyConditionalParent = false;
+		let parentId = this.parent;
+		let parentObj = null;
+		do {
+			parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.boundary, {"id": parentId});
+			if (!parentObj.mandatory) {
+				bHasAnyConditionalParent = true;
+				break;
+			}
+			
+			parentId = parentObj.parent;
+		} while (parentId);
 
 		for (let i = 0; i < dataElement.length; i++) {
 			if ( ((dataElement[i].usage && dataElement[i].usage == "M") || (dataElement[i].mandatory))
@@ -53930,7 +53942,7 @@ class Vertex {
 					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable);
 
 				} else {
-					if (parentObj.mandatory && this.mandatory) {
+					if (!bHasAnyConditionalParent && this.mandatory) {
 						// GRP[M] - SGM[M] - DE[M]
 						if (bFlag) bFlag = false;
 						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning);
