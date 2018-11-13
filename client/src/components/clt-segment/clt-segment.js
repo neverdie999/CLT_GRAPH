@@ -12,7 +12,7 @@ import {
 } from '../../common/utilities/common.ult';
 
 import { 
-  DEFAULT_CONFIG_GRAPH, VIEW_MODE, VERTEX_ATTR_SIZE, PADDING_POSITION_SVG,
+  DEFAULT_CONFIG_GRAPH, VIEW_MODE, VERTEX_ATTR_SIZE, PADDING_POSITION_SVG, DATA_ELEMENT_TYPE,
 } from '../../common/const/index';
 
 class CltSegment {
@@ -26,7 +26,12 @@ class CltSegment {
     this.graphSvgId = `graphSvg_${this.selectorName}`;
     this.connectSvgId = `connectSvg_${this.selectorName}`;
 
-    this.isShowReduced = false;
+		this.isShowReduced = false;
+		
+		this.isMandatoryDataElement = function(dataElement) {
+			return 			((dataElement.usage && dataElement.usage == "M") || dataElement.mandatory)
+						   && (dataElement.type && dataElement.type != DATA_ELEMENT_TYPE.COMPOSITE)
+		}
 
     this.initialize();
   }
@@ -56,7 +61,8 @@ class CltSegment {
       containerId : this.graphContainerId,
       svgId : this.graphSvgId,
       viewMode: this.viewMode,
-			edgeMgmt : this.edgeMgmt
+			edgeMgmt : this.edgeMgmt,
+			isMandatoryDataElement: this.isMandatoryDataElement
     });
 
     this.initCustomFunctionD3();

@@ -955,14 +955,14 @@ function checkModePermission(viewMode, type){
     'showReduced',
     'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'nameSuffix', 'horizontalScroll'
+		'nameSuffix', 'horizontalScroll', "mandatoryCheck"
 	];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'nameSuffix', 'horizontalScroll'
+		'nameSuffix', 'horizontalScroll', "mandatoryCheck"
   ];
 
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].OPERATIONS] = [
@@ -989,7 +989,7 @@ function checkModePermission(viewMode, type){
   data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].SEGMENT] = [
     'createNew', 'find', 'showReduced',
 		'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
-		'horizontalScroll'
+		'horizontalScroll', "mandatoryCheck"
   ];
 
   return data[viewMode].indexOf(type) != -1;
@@ -52617,14 +52617,11 @@ module.exports = function(module) {
 
 
 
-
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
-const HTML_VERTEX_FORM_ID = 'vertexForm';
 const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
 const ATTR_DEL_CHECK_ALL = 'delCheckAll';
 const ATTR_DEL_CHECK = 'delCheck';
-const CONNECT_KEY = 'Connected';
 
 class VertexMgmt {
   constructor(props) {
@@ -52633,7 +52630,9 @@ class VertexMgmt {
     this.svgId                    = props.svgId;
     this.viewMode                 = props.viewMode;
     this.edgeMgmt                 = props.edgeMgmt;
-    this.connectSide              = props.connectSide || __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH;
+		this.connectSide              = props.connectSide || __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].BOTH;
+		
+		this.isMandatoryDataElement		= props.isMandatoryDataElement // function for checking if a data element is mandatory
 
     this.vertexDefinition = {
       vertexGroup: [],  // Group vertex
@@ -52793,13 +52792,13 @@ class VertexMgmt {
     let {vertexType} = sOptions;
 
     if (!vertexType)
-      return;
+      return null;
 
     let newVertex = new __WEBPACK_IMPORTED_MODULE_3__vertex__["a" /* default */]({
       vertexMgmt: this
     });
 
-    newVertex.create(sOptions, this.handleDragVertex, this.edgeMgmt.handleDragConnection);
+    return newVertex.create(sOptions, this.handleDragVertex, this.edgeMgmt.handleDragConnection);
   }
 
   startDrag(main) {
@@ -52838,9 +52837,13 @@ class VertexMgmt {
         //If object not out boundary parent , object change postion in boundary parent, so change index object
         if (main.objectUtils.checkDragObjectOutsideBoundary(d) == false) {
           main.objectUtils.changeIndexInBoundaryForObject(d);
-        }
+        } else {
+					d.validateConnectionByUsage();
+				}
       } else {
-        main.objectUtils.checkDragObjectInsideBoundary(d);
+        if (main.objectUtils.checkDragObjectInsideBoundary(d)) {
+					d.validateConnectionByUsage();
+				}
         main.objectUtils.restoreSizeBoundary(d);
       }
       
@@ -53271,7 +53274,10 @@ class VertexMgmt {
     this.updateVertexInfo(forms);
 
     //Check and mark connector if has connection
-    vertex.markedAllConnector();
+		vertex.markedAllConnector();
+		
+		// Check mandatory for Data element
+		vertex.validateConnectionByUsage();
 
     this.closePopVertexInfo();
   }
@@ -53528,14 +53534,16 @@ const CONNECT_KEY = 'Connected';
 
 class Vertex {
   constructor(props) {
-    this.dataContainer    = props.vertexMgmt.dataContainer;
-    this.containerId      = props.vertexMgmt.containerId;
-    this.svgId            = props.vertexMgmt.svgId;
-    this.selectorClass    = props.vertexMgmt.selectorClass || "defaul_vertex_class";
-    this.vertexDefinition = props.vertexMgmt.vertexDefinition;
-    this.viewMode         = props.vertexMgmt.viewMode;
-    this.connectSide      = props.vertexMgmt.connectSide;
-    this.vertexMgmt       = props.vertexMgmt;
+    this.dataContainer    			= props.vertexMgmt.dataContainer;
+    this.containerId      			= props.vertexMgmt.containerId;
+    this.svgId            			= props.vertexMgmt.svgId;
+    this.selectorClass    			= props.vertexMgmt.selectorClass || "defaul_vertex_class";
+    this.vertexDefinition 			= props.vertexMgmt.vertexDefinition;
+    this.viewMode         			= props.vertexMgmt.viewMode;
+		this.connectSide      			= props.vertexMgmt.connectSide;
+		this.isMandatoryDataElement = props.vertexMgmt.isMandatoryDataElement
+		this.vertexMgmt       			= props.vertexMgmt;		
+		
 
     this.id               = null;
     this.x                = 0; //type: number, require: true, purpose: coordinate x
@@ -53623,6 +53631,9 @@ class Vertex {
     if(!isImport) 
       Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId, this.viewMode.value);
 
+		// Check mandatory for data element
+		this.validateConnectionByUsage();
+		
     return this;
 	}
 	
@@ -53910,9 +53921,6 @@ class Vertex {
 
 		if (!Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, "mandatoryCheck")) return true;
 
-		// Don't check for none parent
-		if (!this.parent) return true;
-
 		const clrWarning = "#ff8100"; // Orange
 		const clrAvailable = "#5aabff"; // light blue
 		
@@ -53924,7 +53932,7 @@ class Vertex {
 		let bHasAnyConditionalParent = false;
 		let parentId = this.parent;
 		let parentObj = null;
-		do {
+		while(parentId) {
 			parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.boundary, {"id": parentId});
 			if (!parentObj.mandatory) {
 				bHasAnyConditionalParent = true;
@@ -53932,18 +53940,16 @@ class Vertex {
 			}
 			
 			parentId = parentObj.parent;
-		} while (parentId);
+		}
 
 		for (let i = 0; i < dataElement.length; i++) {
-			if ( ((dataElement[i].usage && dataElement[i].usage == "M") || (dataElement[i].mandatory))
-					&& (dataElement[i].type && dataElement[i].type != __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPOSITE)
-			) {
-				
+			if (this.isMandatoryDataElement(dataElement[i])) {
 				if (dataElement[i].hasConnection) {
 					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable);
 
 				} else {
-					if (!bHasAnyConditionalParent && this.mandatory) {
+					if ((!this.parent || !bHasAnyConditionalParent) && this.mandatory) {
+						// If have no parent or all parents are mandatory and segment is mandatory
 						// GRP[M] - SGM[M] - DE[M]
 						if (bFlag) bFlag = false;
 						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning);
@@ -54243,19 +54249,24 @@ class BoundaryMgmt {
 
         if (d.parent) {
           //If object not out boundary parent , object change postion in boundary parent, so change index object
-          if (main.objectUtils.checkDragObjectOutsideBoundary(d) == false) {
-            main.objectUtils.changeIndexInBoundaryForObject(d, "B");
-          }else{
-            // Update position of child element
+          if (main.objectUtils.checkDragObjectOutsideBoundary(d)) {
+						// Update position of child element
             if (d.member.length > 0)
-              d.moveMember(offsetX, offsetY);
+							d.moveMember(offsetX, offsetY);
+						
+						d.validateConnectionByUsage();
+            
+          }else{
+            main.objectUtils.changeIndexInBoundaryForObject(d, "B");
           }
         } else {
-          if (main.objectUtils.checkDragObjectInsideBoundary(d, "B") == false){
+          if (!main.objectUtils.checkDragObjectInsideBoundary(d, "B")){
             // Update position of child element
             if (d.member.length > 0)
               d.moveMember(offsetX, offsetY);
-          }
+          } else {
+						d.validateConnectionByUsage();
+					}
         }
       }
 
@@ -54349,6 +54360,9 @@ class BoundaryMgmt {
     __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.editingBoundary.id}Content`).style("border-color", `${this.colorHash.hex(name)}`);
 
     __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](`[prop='${this.editingBoundary.id}${CONNECT_KEY}boundary_title']`).style('fill', this.colorHash.hex(name));
+
+		// Check mandatary for member
+		this.editingBoundary.validateConnectionByUsage();
 
     this.closePopBoundaryInfo();
   }
@@ -57139,6 +57153,46 @@ class Boundary {
 
 		return false;
 	}
+
+	/**
+	 * 
+	 */
+	validateConnectionByUsage() {
+		let bFlag = true;
+
+		for (let i = 0; i < this.member.length; i++) {
+			let mem = this.member[i];
+			if (!this.doValidateConnectionByUsage(mem) && bFlag)  bFlag = false;
+		}
+
+		return bFlag;
+	}
+
+	/**
+	 * 
+	 * @param {*} mem
+	 */
+	doValidateConnectionByUsage(mem) {
+		let bFlag = true;
+		
+		if (mem.type == "V") {
+			let vertex = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.vertex, {"id": mem.id})
+			if (vertex) {
+				if (!vertex.validateConnectionByUsage() && bFlag) {
+					bFlag = false;
+				}
+			}
+		} else {
+			let boundary = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.dataContainer.boundary, {"id": mem.id})
+			boundary.member.forEach(item => {
+				if (!this.doValidateConnectionByUsage(item) && bFlag) {
+					bFlag = false;
+				}
+			})
+		}
+
+		return bFlag;
+	}
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Boundary);
@@ -59427,8 +59481,6 @@ class InputMgmt {
 
 
 
-const CONNECT_KEY = 'Connected';
-
 class OutputMgmt {
   constructor(props) {
     this.edgeMgmt = props.edgeMgmt;
@@ -59436,13 +59488,18 @@ class OutputMgmt {
     this.containerId = props.containerId;
     this.svgId = props.svgId;
     this.isShowReduced = false;
-    this.viewMode = {value: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["o" /* VIEW_MODE */].OUTPUT_MESSAGE};
-    
+		this.viewMode = {value: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["o" /* VIEW_MODE */].OUTPUT_MESSAGE};
+
+		this.isMandatoryDataElement = function(dataElement) {
+			return 			((dataElement.usage && dataElement.usage == "M") || dataElement.mandatory)
+						   && (dataElement.type && dataElement.type != __WEBPACK_IMPORTED_MODULE_4__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPOSITE)
+		}
+
+		
     this.initialize();
-  }
+	}
 
   initialize() {
-
     this.objectUtils = new __WEBPACK_IMPORTED_MODULE_3__common_utilities_object_ult__["a" /* default */]();
 
     this.defaultOptionsVertex = {
@@ -59455,7 +59512,8 @@ class OutputMgmt {
       svgId : this.svgId,
       viewMode: this.viewMode,
       connectSide: __WEBPACK_IMPORTED_MODULE_4__common_const_index__["d" /* CONNECT_SIDE */].LEFT,
-      edgeMgmt : this.edgeMgmt
+			edgeMgmt : this.edgeMgmt,
+			isMandatoryDataElement: this.isMandatoryDataElement
     });
 
     this.boundaryMgmt = new __WEBPACK_IMPORTED_MODULE_2__common_objects_objects_boundary_mgmt__["a" /* default */]({
@@ -59464,7 +59522,7 @@ class OutputMgmt {
       svgId: this.svgId,
       viewMode: this.viewMode,
       vertexMgmt: this.vertexMgmt,
-      edgeMgmt: this.edgeMgmt
+			edgeMgmt: this.edgeMgmt,
     });
   }
 
@@ -59580,44 +59638,13 @@ class OutputMgmt {
 	 * 
 	 */
 	validateConnectionByUsage() {
-		let bFlag = true;
-
 		if (this.dataContainer.boundary.length > 0) {
 			let parent = this.dataContainer.boundary[0].findAncestorOfMemberInNestedBoundary();
-			for (let i = 0; i < parent.member.length; i++) {
-				let mem = parent.member[i];
-				if (!this.doValidateConnectionByUsage(mem) && bFlag)  bFlag = false;
-			}
-		} else {
 
+			return parent.validateConnectionByUsage();
 		}
 
-		return bFlag;
-	}
-
-	/**
-	 * 
-	 * @param {*} mem
-	 */
-	doValidateConnectionByUsage(mem) {
-		let bFlag = true;
-		if (mem.type == "V") {
-			let vertex = _.find(this.dataContainer.vertex, {"id": mem.id})
-			if (vertex) {
-				if (!vertex.validateConnectionByUsage() && bFlag) {
-					bFlag = false;
-				}
-			}
-		} else {
-			let boundary = _.find(this.dataContainer.boundary, {"id": mem.id})
-			boundary.member.forEach(item => {
-				if (!this.doValidateConnectionByUsage(item) && bFlag) {
-					bFlag = false;
-				}
-			})
-		}
-
-		return bFlag;
+		return true;
 	}
 }
 

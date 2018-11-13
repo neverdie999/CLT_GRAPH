@@ -12,8 +12,6 @@ import {
 
 import { setSizeGraph } from '../../../common/utilities/common.ult';
 
-const CONNECT_KEY = 'Connected';
-
 class OutputMgmt {
   constructor(props) {
     this.edgeMgmt = props.edgeMgmt;
@@ -21,13 +19,18 @@ class OutputMgmt {
     this.containerId = props.containerId;
     this.svgId = props.svgId;
     this.isShowReduced = false;
-    this.viewMode = {value: VIEW_MODE.OUTPUT_MESSAGE};
-    
+		this.viewMode = {value: VIEW_MODE.OUTPUT_MESSAGE};
+
+		this.isMandatoryDataElement = function(dataElement) {
+			return 			((dataElement.usage && dataElement.usage == "M") || dataElement.mandatory)
+						   && (dataElement.type && dataElement.type != DATA_ELEMENT_TYPE.COMPOSITE)
+		}
+
+		
     this.initialize();
-  }
+	}
 
   initialize() {
-
     this.objectUtils = new ObjectUtils();
 
     this.defaultOptionsVertex = {
@@ -40,7 +43,8 @@ class OutputMgmt {
       svgId : this.svgId,
       viewMode: this.viewMode,
       connectSide: CONNECT_SIDE.LEFT,
-      edgeMgmt : this.edgeMgmt
+			edgeMgmt : this.edgeMgmt,
+			isMandatoryDataElement: this.isMandatoryDataElement
     });
 
     this.boundaryMgmt = new BoundaryMgmt({
@@ -49,7 +53,7 @@ class OutputMgmt {
       svgId: this.svgId,
       viewMode: this.viewMode,
       vertexMgmt: this.vertexMgmt,
-      edgeMgmt: this.edgeMgmt
+			edgeMgmt: this.edgeMgmt,
     });
   }
 
@@ -165,44 +169,13 @@ class OutputMgmt {
 	 * 
 	 */
 	validateConnectionByUsage() {
-		let bFlag = true;
-
 		if (this.dataContainer.boundary.length > 0) {
 			let parent = this.dataContainer.boundary[0].findAncestorOfMemberInNestedBoundary();
-			for (let i = 0; i < parent.member.length; i++) {
-				let mem = parent.member[i];
-				if (!this.doValidateConnectionByUsage(mem) && bFlag)  bFlag = false;
-			}
-		} else {
 
+			return parent.validateConnectionByUsage();
 		}
 
-		return bFlag;
-	}
-
-	/**
-	 * 
-	 * @param {*} mem
-	 */
-	doValidateConnectionByUsage(mem) {
-		let bFlag = true;
-		if (mem.type == "V") {
-			let vertex = _.find(this.dataContainer.vertex, {"id": mem.id})
-			if (vertex) {
-				if (!vertex.validateConnectionByUsage() && bFlag) {
-					bFlag = false;
-				}
-			}
-		} else {
-			let boundary = _.find(this.dataContainer.boundary, {"id": mem.id})
-			boundary.member.forEach(item => {
-				if (!this.doValidateConnectionByUsage(item) && bFlag) {
-					bFlag = false;
-				}
-			})
-		}
-
-		return bFlag;
+		return true;
 	}
 }
 

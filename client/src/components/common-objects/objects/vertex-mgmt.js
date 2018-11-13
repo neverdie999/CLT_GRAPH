@@ -11,8 +11,6 @@ import {
   VERTEX_FORMAT_TYPE,
   POPUP_CONFIG,
   VERTEX_GROUP_OPTION,
-  TYPE_CONNECT,
-  VERTEX_ATTR_SIZE,
   CONNECT_SIDE,
 
 } from '../../../common/const/index';
@@ -32,14 +30,11 @@ import {
 	segmentName,
 } from '../../../common/utilities/common.ult';
 
-
 const HTML_VERTEX_INFO_ID = 'vertexInfo';
 const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
-const HTML_VERTEX_FORM_ID = 'vertexForm';
 const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
 const ATTR_DEL_CHECK_ALL = 'delCheckAll';
 const ATTR_DEL_CHECK = 'delCheck';
-const CONNECT_KEY = 'Connected';
 
 class VertexMgmt {
   constructor(props) {
@@ -48,7 +43,9 @@ class VertexMgmt {
     this.svgId                    = props.svgId;
     this.viewMode                 = props.viewMode;
     this.edgeMgmt                 = props.edgeMgmt;
-    this.connectSide              = props.connectSide || CONNECT_SIDE.BOTH;
+		this.connectSide              = props.connectSide || CONNECT_SIDE.BOTH;
+		
+		this.isMandatoryDataElement		= props.isMandatoryDataElement // function for checking if a data element is mandatory
 
     this.vertexDefinition = {
       vertexGroup: [],  // Group vertex
@@ -208,13 +205,13 @@ class VertexMgmt {
     let {vertexType} = sOptions;
 
     if (!vertexType)
-      return;
+      return null;
 
     let newVertex = new Vertex({
       vertexMgmt: this
     });
 
-    newVertex.create(sOptions, this.handleDragVertex, this.edgeMgmt.handleDragConnection);
+    return newVertex.create(sOptions, this.handleDragVertex, this.edgeMgmt.handleDragConnection);
   }
 
   startDrag(main) {
@@ -253,9 +250,13 @@ class VertexMgmt {
         //If object not out boundary parent , object change postion in boundary parent, so change index object
         if (main.objectUtils.checkDragObjectOutsideBoundary(d) == false) {
           main.objectUtils.changeIndexInBoundaryForObject(d);
-        }
+        } else {
+					d.validateConnectionByUsage();
+				}
       } else {
-        main.objectUtils.checkDragObjectInsideBoundary(d);
+        if (main.objectUtils.checkDragObjectInsideBoundary(d)) {
+					d.validateConnectionByUsage();
+				}
         main.objectUtils.restoreSizeBoundary(d);
       }
       
@@ -686,7 +687,10 @@ class VertexMgmt {
     this.updateVertexInfo(forms);
 
     //Check and mark connector if has connection
-    vertex.markedAllConnector();
+		vertex.markedAllConnector();
+		
+		// Check mandatory for Data element
+		vertex.validateConnectionByUsage();
 
     this.closePopVertexInfo();
   }

@@ -37,7 +37,9 @@ class SegmentMgmt {
     this.svgId                    = props.svgId;
     this.viewMode                 = {value: VIEW_MODE.SEGMENT};
     this.edgeMgmt                 = props.edgeMgmt;
-    this.connectSide              = CONNECT_SIDE.NONE;
+		this.connectSide              = CONNECT_SIDE.NONE;
+
+		this.isMandatoryDataElement		= props.isMandatoryDataElement
    // this.parent                   = props.parent;
 
     this.vertexDefinition = {
@@ -561,12 +563,14 @@ class SegmentMgmt {
     // let newVertex = null;
     // let updatedVertexId = this.currentVertex.id;
     if (this.currentVertex.id) {
-      this.updateVertexInfo(this.currentVertex);
+			this.updateVertexInfo(this.currentVertex);
+			this.currentVertex.validateConnectionByUsage();
     } else {
       //Create New
-      //newVertex = this.create(this.currentVertex);
       this.create(this.currentVertex);
-    }
+		}
+		
+
 
     this.closePopVertexInfo();
   }

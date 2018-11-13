@@ -236,19 +236,24 @@ class BoundaryMgmt {
 
         if (d.parent) {
           //If object not out boundary parent , object change postion in boundary parent, so change index object
-          if (main.objectUtils.checkDragObjectOutsideBoundary(d) == false) {
-            main.objectUtils.changeIndexInBoundaryForObject(d, "B");
-          }else{
-            // Update position of child element
+          if (main.objectUtils.checkDragObjectOutsideBoundary(d)) {
+						// Update position of child element
             if (d.member.length > 0)
-              d.moveMember(offsetX, offsetY);
+							d.moveMember(offsetX, offsetY);
+						
+						d.validateConnectionByUsage();
+            
+          }else{
+            main.objectUtils.changeIndexInBoundaryForObject(d, "B");
           }
         } else {
-          if (main.objectUtils.checkDragObjectInsideBoundary(d, "B") == false){
+          if (!main.objectUtils.checkDragObjectInsideBoundary(d, "B")){
             // Update position of child element
             if (d.member.length > 0)
               d.moveMember(offsetX, offsetY);
-          }
+          } else {
+						d.validateConnectionByUsage();
+					}
         }
       }
 
@@ -342,6 +347,9 @@ class BoundaryMgmt {
     d3.select(`#${this.editingBoundary.id}Content`).style("border-color", `${this.colorHash.hex(name)}`);
 
     d3.selectAll(`[prop='${this.editingBoundary.id}${CONNECT_KEY}boundary_title']`).style('fill', this.colorHash.hex(name));
+
+		// Check mandatary for member
+		this.editingBoundary.validateConnectionByUsage();
 
     this.closePopBoundaryInfo();
   }

@@ -13,7 +13,7 @@ import {
 } from '../../common/utilities/common.ult';
 
 import { 
-  DEFAULT_CONFIG_GRAPH, VIEW_MODE,
+  DEFAULT_CONFIG_GRAPH, VIEW_MODE, DATA_ELEMENT_TYPE,
 } from '../../common/const/index';
 
 class CltGraph {
@@ -27,9 +27,14 @@ class CltGraph {
     this.graphSvgId = `graphSvg_${this.selectorName}`;
     this.connectSvgId = `connectSvg_${this.selectorName}`;
 
-    this.isShowReduced = false;
+		this.isShowReduced = false;
+		
+		this.isMandatoryDataElement = function(dataElement) {
+			return 			((dataElement.usage && dataElement.usage == "M") || dataElement.mandatory)
+						   && (dataElement.type && dataElement.type != DATA_ELEMENT_TYPE.COMPOSITE)
+		}
 
-    this.initialize();
+		this.initialize();
   }
 
   initialize() {
@@ -57,7 +62,8 @@ class CltGraph {
       containerId : this.graphContainerId,
       svgId : this.graphSvgId,
       viewMode: this.viewMode,
-      edgeMgmt : this.edgeMgmt
+      edgeMgmt : this.edgeMgmt,
+			isMandatoryDataElement: this.isMandatoryDataElement
     });
 
     this.boundaryMgmt = new BoundaryMgmt({
@@ -116,7 +122,7 @@ class CltGraph {
   }
 
   createVertex(opt) {
-    this.vertexMgmt.create(opt);
+		this.vertexMgmt.create(opt);
   }
 
   createBoundary(opt) {
@@ -199,7 +205,9 @@ class CltGraph {
     const {vertexTypes} = graphData;
     await this.vertexMgmt.processDataVertexTypeDefine(vertexTypes);
     await this.drawObjects(graphData);
-    this.initMenuContext();
+		this.initMenuContext();
+		
+		this.validateConnectionByUsage();
 
     //Solve in case of save and import from different window size
     this.objectUtils.updatePathConnectOnWindowResize(this.edgeMgmt, [this.dataContainer]);
@@ -542,7 +550,30 @@ class CltGraph {
         tmpEdgeMgmt.cancleSelectedPath();
       }
     })
-  }
+	}
+	
+	/**
+	 * 
+	 */
+	validateConnectionByUsage() {
+		let lstRootBoundary = [];
+		this.dataContainer.boundary.forEach(b => {
+			if (!b.parent) lstRootBoundary.push(b);
+		})
+
+		let lstNoneParentVertex = [];
+		this.dataContainer.vertex.forEach(v => {
+			if (!v.parent) lstNoneParentVertex.push(v);
+		})
+
+		lstRootBoundary.forEach(b => {
+			b.validateConnectionByUsage()
+		})
+
+		lstNoneParentVertex.forEach(item => {
+			this.doValidateConnectionByUsage(item)
+		})
+	}
 }
   
 export default CltGraph;

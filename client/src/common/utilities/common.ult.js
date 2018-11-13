@@ -256,14 +256,14 @@ export function checkModePermission(viewMode, type){
     'showReduced',
     'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'nameSuffix', 'horizontalScroll'
+		'nameSuffix', 'horizontalScroll', "mandatoryCheck"
 	];
 
   data[VIEW_MODE.EDIT] = [
     'createVertex', 'createBoundary', 'clearAll', 'showReduced',
     'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'nameSuffix', 'horizontalScroll'
+		'nameSuffix', 'horizontalScroll', "mandatoryCheck"
   ];
 
   data[VIEW_MODE.OPERATIONS] = [
@@ -290,7 +290,7 @@ export function checkModePermission(viewMode, type){
   data[VIEW_MODE.SEGMENT] = [
     'createNew', 'find', 'showReduced',
 		'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
-		'horizontalScroll'
+		'horizontalScroll', "mandatoryCheck"
   ];
 
   return data[viewMode].indexOf(type) != -1;

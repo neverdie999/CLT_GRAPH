@@ -722,6 +722,46 @@ class Boundary {
 
 		return false;
 	}
+
+	/**
+	 * 
+	 */
+	validateConnectionByUsage() {
+		let bFlag = true;
+
+		for (let i = 0; i < this.member.length; i++) {
+			let mem = this.member[i];
+			if (!this.doValidateConnectionByUsage(mem) && bFlag)  bFlag = false;
+		}
+
+		return bFlag;
+	}
+
+	/**
+	 * 
+	 * @param {*} mem
+	 */
+	doValidateConnectionByUsage(mem) {
+		let bFlag = true;
+		
+		if (mem.type == "V") {
+			let vertex = _.find(this.dataContainer.vertex, {"id": mem.id})
+			if (vertex) {
+				if (!vertex.validateConnectionByUsage() && bFlag) {
+					bFlag = false;
+				}
+			}
+		} else {
+			let boundary = _.find(this.dataContainer.boundary, {"id": mem.id})
+			boundary.member.forEach(item => {
+				if (!this.doValidateConnectionByUsage(item) && bFlag) {
+					bFlag = false;
+				}
+			})
+		}
+
+		return bFlag;
+	}
 }
 
 export default Boundary

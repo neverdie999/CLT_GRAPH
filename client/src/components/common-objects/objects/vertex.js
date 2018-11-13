@@ -5,8 +5,7 @@ import * as d3 from 'd3';
 import {
   VERTEX_ATTR_SIZE,
   CONNECT_SIDE,
-  TYPE_CONNECT,
-	DATA_ELEMENT_TYPE
+  TYPE_CONNECT
 } from '../../../common/const/index';
 
 import { 
@@ -23,14 +22,16 @@ const CONNECT_KEY = 'Connected';
 
 class Vertex {
   constructor(props) {
-    this.dataContainer    = props.vertexMgmt.dataContainer;
-    this.containerId      = props.vertexMgmt.containerId;
-    this.svgId            = props.vertexMgmt.svgId;
-    this.selectorClass    = props.vertexMgmt.selectorClass || "defaul_vertex_class";
-    this.vertexDefinition = props.vertexMgmt.vertexDefinition;
-    this.viewMode         = props.vertexMgmt.viewMode;
-    this.connectSide      = props.vertexMgmt.connectSide;
-    this.vertexMgmt       = props.vertexMgmt;
+    this.dataContainer    			= props.vertexMgmt.dataContainer;
+    this.containerId      			= props.vertexMgmt.containerId;
+    this.svgId            			= props.vertexMgmt.svgId;
+    this.selectorClass    			= props.vertexMgmt.selectorClass || "defaul_vertex_class";
+    this.vertexDefinition 			= props.vertexMgmt.vertexDefinition;
+    this.viewMode         			= props.vertexMgmt.viewMode;
+		this.connectSide      			= props.vertexMgmt.connectSide;
+		this.isMandatoryDataElement = props.vertexMgmt.isMandatoryDataElement
+		this.vertexMgmt       			= props.vertexMgmt;		
+		
 
     this.id               = null;
     this.x                = 0; //type: number, require: true, purpose: coordinate x
@@ -118,6 +119,9 @@ class Vertex {
     if(!isImport) 
       setMinBoundaryGraph(this.dataContainer, this.svgId, this.viewMode.value);
 
+		// Check mandatory for data element
+		this.validateConnectionByUsage();
+		
     return this;
 	}
 	
@@ -405,9 +409,6 @@ class Vertex {
 
 		if (!checkModePermission(this.viewMode.value, "mandatoryCheck")) return true;
 
-		// Don't check for none parent
-		if (!this.parent) return true;
-
 		const clrWarning = "#ff8100"; // Orange
 		const clrAvailable = "#5aabff"; // light blue
 		
@@ -419,7 +420,7 @@ class Vertex {
 		let bHasAnyConditionalParent = false;
 		let parentId = this.parent;
 		let parentObj = null;
-		do {
+		while(parentId) {
 			parentObj = _.find(this.dataContainer.boundary, {"id": parentId});
 			if (!parentObj.mandatory) {
 				bHasAnyConditionalParent = true;
@@ -427,18 +428,16 @@ class Vertex {
 			}
 			
 			parentId = parentObj.parent;
-		} while (parentId);
+		}
 
 		for (let i = 0; i < dataElement.length; i++) {
-			if ( ((dataElement[i].usage && dataElement[i].usage == "M") || (dataElement[i].mandatory))
-					&& (dataElement[i].type && dataElement[i].type != DATA_ELEMENT_TYPE.COMPOSITE)
-			) {
-				
+			if (this.isMandatoryDataElement(dataElement[i])) {
 				if (dataElement[i].hasConnection) {
 					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable);
 
 				} else {
-					if (!bHasAnyConditionalParent && this.mandatory) {
+					if ((!this.parent || !bHasAnyConditionalParent) && this.mandatory) {
+						// If have no parent or all parents are mandatory and segment is mandatory
 						// GRP[M] - SGM[M] - DE[M]
 						if (bFlag) bFlag = false;
 						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning);
