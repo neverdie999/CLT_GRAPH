@@ -32,15 +32,13 @@ const ATTR_DEL_CHECK = 'delCheck';
 
 class SegmentMgmt {
   constructor(props) {
-    this.dataContainer            = props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
-    this.containerId              = props.containerId;
-    this.svgId                    = props.svgId;
-    this.viewMode                 = {value: VIEW_MODE.SEGMENT};
-    this.edgeMgmt                 = props.edgeMgmt;
-		this.connectSide              = CONNECT_SIDE.NONE;
-
-		this.isMandatoryDataElement		= props.isMandatoryDataElement
-   // this.parent                   = props.parent;
+    this.dataContainer            		= props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
+    this.containerId              		= props.containerId;
+    this.svgId                    		= props.svgId;
+    this.viewMode                 		= {value: VIEW_MODE.SEGMENT};
+    this.edgeMgmt                 		= props.edgeMgmt;
+		this.connectSide              		= CONNECT_SIDE.NONE;
+		this.mandatoryDataElementConfig		= props.mandatoryDataElementConfig
 
     this.vertexDefinition = {
       vertexGroup: [],  // Group vertex

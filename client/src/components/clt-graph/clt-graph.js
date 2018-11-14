@@ -13,13 +13,22 @@ import {
 } from '../../common/utilities/common.ult';
 
 import { 
-  DEFAULT_CONFIG_GRAPH, VIEW_MODE, DATA_ELEMENT_TYPE,
+  DEFAULT_CONFIG_GRAPH, VIEW_MODE,
 } from '../../common/const/index';
 
 class CltGraph {
   constructor(props) {
     this.selector = props.selector;
-    this.viewMode = {value: props.viewMode || VIEW_MODE.EDIT};
+		this.viewMode = {value: props.viewMode || VIEW_MODE.EDIT};
+		
+		this.mandatoryDataElementConfig = props.mandatoryDataElementConfig; // The configuration for Data element validation
+		if (!this.mandatoryDataElementConfig) {
+			this.mandatoryDataElementConfig = { 
+				mandatoryEvolutionFunc: (dataElement) => { return false },
+				clrWarning: '#ff8100',
+				clrAvailable: '#5aabff'
+			}
+		}
 
     this.selectorName = this.selector.selector.replace(/[\.\#]/,'');
 
@@ -28,11 +37,6 @@ class CltGraph {
     this.connectSvgId = `connectSvg_${this.selectorName}`;
 
 		this.isShowReduced = false;
-		
-		this.isMandatoryDataElement = function(dataElement) {
-			return 			((dataElement.usage && dataElement.usage == "M") || dataElement.mandatory)
-						   && (dataElement.type && dataElement.type != DATA_ELEMENT_TYPE.COMPOSITE)
-		}
 
 		this.initialize();
   }
@@ -63,7 +67,7 @@ class CltGraph {
       svgId : this.graphSvgId,
       viewMode: this.viewMode,
       edgeMgmt : this.edgeMgmt,
-			isMandatoryDataElement: this.isMandatoryDataElement
+			mandatoryDataElementConfig: this.mandatoryDataElementConfig
     });
 
     this.boundaryMgmt = new BoundaryMgmt({

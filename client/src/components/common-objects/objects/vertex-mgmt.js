@@ -38,14 +38,13 @@ const ATTR_DEL_CHECK = 'delCheck';
 
 class VertexMgmt {
   constructor(props) {
-    this.dataContainer            = props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
-    this.containerId              = props.containerId;
-    this.svgId                    = props.svgId;
-    this.viewMode                 = props.viewMode;
-    this.edgeMgmt                 = props.edgeMgmt;
-		this.connectSide              = props.connectSide || CONNECT_SIDE.BOTH;
-		
-		this.isMandatoryDataElement		= props.isMandatoryDataElement // function for checking if a data element is mandatory
+    this.dataContainer            	= props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
+    this.containerId              	= props.containerId;
+    this.svgId                    	= props.svgId;
+    this.viewMode                 	= props.viewMode;
+    this.edgeMgmt                 	= props.edgeMgmt;
+		this.connectSide              	= props.connectSide || CONNECT_SIDE.BOTH;
+		this.mandatoryDataElementConfig	= props.mandatoryDataElementConfig; // The configuration for Data element validation
 
     this.vertexDefinition = {
       vertexGroup: [],  // Group vertex

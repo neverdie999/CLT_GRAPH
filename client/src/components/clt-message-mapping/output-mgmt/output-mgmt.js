@@ -7,7 +7,6 @@ import {
   CONNECT_SIDE,
   DEFAULT_CONFIG_GRAPH,
   VIEW_MODE,
-	DATA_ELEMENT_TYPE,
 } from '../../../common/const/index';
 
 import { setSizeGraph } from '../../../common/utilities/common.ult';
@@ -21,12 +20,8 @@ class OutputMgmt {
     this.isShowReduced = false;
 		this.viewMode = {value: VIEW_MODE.OUTPUT_MESSAGE};
 
-		this.isMandatoryDataElement = function(dataElement) {
-			return 			((dataElement.usage && dataElement.usage == "M") || dataElement.mandatory)
-						   && (dataElement.type && dataElement.type != DATA_ELEMENT_TYPE.COMPOSITE)
-		}
+		this.mandatoryDataElementConfig = props.mandatoryDataElementConfig;
 
-		
     this.initialize();
 	}
 
@@ -44,7 +39,7 @@ class OutputMgmt {
       viewMode: this.viewMode,
       connectSide: CONNECT_SIDE.LEFT,
 			edgeMgmt : this.edgeMgmt,
-			isMandatoryDataElement: this.isMandatoryDataElement
+			mandatoryDataElementConfig: this.mandatoryDataElementConfig
     });
 
     this.boundaryMgmt = new BoundaryMgmt({

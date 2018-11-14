@@ -22,15 +22,15 @@ const CONNECT_KEY = 'Connected';
 
 class Vertex {
   constructor(props) {
-    this.dataContainer    			= props.vertexMgmt.dataContainer;
-    this.containerId      			= props.vertexMgmt.containerId;
-    this.svgId            			= props.vertexMgmt.svgId;
-    this.selectorClass    			= props.vertexMgmt.selectorClass || "defaul_vertex_class";
-    this.vertexDefinition 			= props.vertexMgmt.vertexDefinition;
-    this.viewMode         			= props.vertexMgmt.viewMode;
-		this.connectSide      			= props.vertexMgmt.connectSide;
-		this.isMandatoryDataElement = props.vertexMgmt.isMandatoryDataElement
-		this.vertexMgmt       			= props.vertexMgmt;		
+    this.dataContainer    					= props.vertexMgmt.dataContainer;
+    this.containerId      					= props.vertexMgmt.containerId;
+    this.svgId            					= props.vertexMgmt.svgId;
+    this.selectorClass    					= props.vertexMgmt.selectorClass || "defaul_vertex_class";
+    this.vertexDefinition 					= props.vertexMgmt.vertexDefinition;
+    this.viewMode         					= props.vertexMgmt.viewMode;
+		this.connectSide      					= props.vertexMgmt.connectSide;
+		this.mandatoryDataElementConfig	= props.vertexMgmt.mandatoryDataElementConfig // The configuration for Data element validation
+		this.vertexMgmt       					= props.vertexMgmt;		
 		
 
     this.id               = null;
@@ -408,11 +408,10 @@ class Vertex {
 	validateConnectionByUsage() {
 
 		if (!checkModePermission(this.viewMode.value, "mandatoryCheck")) return true;
-
-		const clrWarning = "#ff8100"; // Orange
-		const clrAvailable = "#5aabff"; // light blue
 		
 		let bFlag = true;
+		const {mandatoryEvolutionFunc, clrWarning, clrAvailable} = this.mandatoryDataElementConfig;
+		
 		let dataElement = _.cloneDeep(this.data);
 		this.getConnectionStatus(dataElement);
 
@@ -431,7 +430,7 @@ class Vertex {
 		}
 
 		for (let i = 0; i < dataElement.length; i++) {
-			if (this.isMandatoryDataElement(dataElement[i])) {
+			if (mandatoryEvolutionFunc(dataElement[i])) {
 				if (dataElement[i].hasConnection) {
 					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable);
 

@@ -1,14 +1,27 @@
 import FileMgmt from '../file-mgmt/file-mgmt';
 import CltSegment from '../../../components/clt-segment/clt-segment';
-import { VIEW_MODE } from '../../../common/const/index';
+import { VIEW_MODE, DATA_ELEMENT_TYPE } from '../../../common/const/index';
 
 class MainMgmt {
   constructor(props) {
 
-    this.cltSegment = new CltSegment({
-      selector: $('.algetaContainer'),
-      viewMode: VIEW_MODE.SEGMENT
-    });
+		const options = {
+			selector: $('.algetaContainer'),
+      viewMode: VIEW_MODE.SEGMENT,
+			mandatoryDataElementConfig: {
+				mandatoryEvolutionFunc: (dataElement) => {
+					if (!dataElement) return false;
+					if ((dataElement.usage && dataElement.usage !== "M") && !dataElement.mandatory) return false;
+					if (dataElement.type && dataElement.type === DATA_ELEMENT_TYPE.COMPOSITE) return false;
+	
+					return true;
+				},
+				clrWarning: '#ff8100', // Orange
+				clrAvailable: '#5aabff' // Light blue
+			}
+		}
+		
+    this.cltSegment = new CltSegment(options);
 
     /**
      * Init file mgmt

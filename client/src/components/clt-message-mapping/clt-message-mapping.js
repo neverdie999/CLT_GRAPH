@@ -15,22 +15,28 @@ import {
  VERTEX_ATTR_SIZE, BOUNDARY_ATTR_SIZE, TYPE_CONNECT
 } from '../../common/const/index';
 
-
-
-
 class CltMessageMapping {
   constructor(props) {
     this.selector     = props.selector;
     this.selectorName = this.selector.selector.replace(/[\.\#]/,'');
 
-    this.inputMessageContainerId  = `inputMessageContainer_${this.selectorName}`;
-    this.inputMessageSvgId        = `inputMessageSvg_${this.selectorName}`;
-    this.outputMessageContainerId = `outputMessageContainer_${this.selectorName}`;
-    this.outputMessageSvgId       = `outputMessageSvg_${this.selectorName}`;
-    this.operationsContainerId    = `operationsContainer_${this.selectorName}`;
-    this.operationsSvgId          = `operationsSvg_${this.selectorName}`;
-    this.connectSvgId             = `connectSvg_${this.selectorName}`;
-
+    this.inputMessageContainerId  	= `inputMessageContainer_${this.selectorName}`;
+    this.inputMessageSvgId        	= `inputMessageSvg_${this.selectorName}`;
+    this.outputMessageContainerId 	= `outputMessageContainer_${this.selectorName}`;
+    this.outputMessageSvgId       	= `outputMessageSvg_${this.selectorName}`;
+    this.operationsContainerId    	= `operationsContainer_${this.selectorName}`;
+    this.operationsSvgId          	= `operationsSvg_${this.selectorName}`;
+		this.connectSvgId             	= `connectSvg_${this.selectorName}`;
+		
+		this.mandatoryDataElementConfig = props.mandatoryDataElementConfig;
+		if (!this.mandatoryDataElementConfig) {
+			this.mandatoryDataElementConfig = { 
+				mandatoryEvolutionFunc: (dataElement) => { return false },
+				clrWarning: '#ff8100',
+				clrAvailable: '#5aabff'
+			}
+		}
+		
     this.initialize();
   }
 
@@ -78,7 +84,8 @@ class CltMessageMapping {
       containerId: this.outputMessageContainerId,
       svgId: this.outputMessageSvgId,
       edgeMgmt: this.connectMgmt.edgeMgmt,
-      dataContainer: this.storeOutputMessage
+			dataContainer: this.storeOutputMessage,
+			mandatoryDataElementConfig: this.mandatoryDataElementConfig
     });
 
     this.operationsMgmt = new OperationsMgmt({
