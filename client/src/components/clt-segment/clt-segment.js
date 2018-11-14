@@ -1,228 +1,228 @@
-import * as d3 from 'd3';
-import _ from 'lodash';
-import ObjectUtils from '../../common/utilities/object.ult';
-import SegmentMgmt from '../common-objects/objects/segment-mgmt';
-import EdgeMgmt from '../common-objects/objects/edge-mgmt';
-import MainMenuSegment from '../common-objects/menu-context/main-menu-segment';
+import * as d3 from 'd3'
+import _ from 'lodash'
+import ObjectUtils from '../../common/utilities/object.ult'
+import SegmentMgmt from '../common-objects/objects/segment-mgmt'
+import EdgeMgmt from '../common-objects/objects/edge-mgmt'
+import MainMenuSegment from '../common-objects/menu-context/main-menu-segment'
 
 import {
-  comShowMessage,
-  setSizeGraph,
-  setMinBoundaryGraph
-} from '../../common/utilities/common.ult';
+	comShowMessage,
+	setSizeGraph,
+	setMinBoundaryGraph
+} from '../../common/utilities/common.ult'
 
 import { 
-  DEFAULT_CONFIG_GRAPH, VIEW_MODE, VERTEX_ATTR_SIZE, PADDING_POSITION_SVG, DATA_ELEMENT_TYPE,
-} from '../../common/const/index';
+	DEFAULT_CONFIG_GRAPH, VIEW_MODE, VERTEX_ATTR_SIZE, PADDING_POSITION_SVG, DATA_ELEMENT_TYPE,
+} from '../../common/const/index'
 
 class CltSegment {
-  constructor(props) {
-    this.selector = props.selector;
-    this.viewMode = {value: props.viewMode || VIEW_MODE.SEGMENT};
+	constructor(props) {
+		this.selector = props.selector
+		this.viewMode = {value: props.viewMode || VIEW_MODE.SEGMENT}
 
-    this.selectorName = this.selector.selector.replace(/[\.\#]/,'');
+		this.selectorName = this.selector.selector.replace(/[\.\#]/,'')
 
-    this.graphContainerId = `graphContainer_${this.selectorName}`;
-    this.graphSvgId = `graphSvg_${this.selectorName}`;
-    this.connectSvgId = `connectSvg_${this.selectorName}`;
+		this.graphContainerId = `graphContainer_${this.selectorName}`
+		this.graphSvgId = `graphSvg_${this.selectorName}`
+		this.connectSvgId = `connectSvg_${this.selectorName}`
 
-		this.isShowReduced = false;
+		this.isShowReduced = false
 		
-		this.mandatoryDataElementConfig = props.mandatoryDataElementConfig; // The configuration for Data element validation
+		this.mandatoryDataElementConfig = props.mandatoryDataElementConfig // The configuration for Data element validation
 		if (!this.mandatoryDataElementConfig) {
 			this.mandatoryDataElementConfig = { 
-				mandatoryEvolutionFunc: (dataElement) => { return false },
+				mandatoryEvaluationFunc: (dataElement) => { return false },
 				clrWarning: '#ff8100',
 				clrAvailable: '#5aabff'
 			}
 		}
 
-    this.initialize();
-  }
+		this.initialize()
+	}
 
-  initialize() {
+	initialize() {
 
-    this.objectUtils = new ObjectUtils();
+		this.objectUtils = new ObjectUtils()
 
-    this.initSvgHtml();
+		this.initSvgHtml()
 
-    this.dataContainer = {
-      vertex: [],
-      boundary: [],
-      edge: []
-    };
+		this.dataContainer = {
+			vertex: [],
+			boundary: [],
+			edge: []
+		}
 
-    this.edgeMgmt = new EdgeMgmt({
-      dataContainer    : this.dataContainer,
-      svgId            : this.connectSvgId,
-      vertexContainer  : [
-        this.dataContainer
-      ]
-    });
+		this.edgeMgmt = new EdgeMgmt({
+			dataContainer    : this.dataContainer,
+			svgId            : this.connectSvgId,
+			vertexContainer  : [
+				this.dataContainer
+			]
+		})
 
-    this.segmentMgmt = new SegmentMgmt({
-      dataContainer : this.dataContainer,
-      containerId : this.graphContainerId,
-      svgId : this.graphSvgId,
-      viewMode: this.viewMode,
+		this.segmentMgmt = new SegmentMgmt({
+			dataContainer : this.dataContainer,
+			containerId : this.graphContainerId,
+			svgId : this.graphSvgId,
+			viewMode: this.viewMode,
 			edgeMgmt : this.edgeMgmt,
 			mandatoryDataElementConfig: this.mandatoryDataElementConfig
-    });
+		})
 
-    this.initCustomFunctionD3();
-    this.objectUtils.initListenerContainerScroll(this.graphContainerId, this.edgeMgmt, [this.dataContainer]);
-		this.objectUtils.initListenerOnWindowResize(this.edgeMgmt, [this.dataContainer]);
-  };
+		this.initCustomFunctionD3()
+		this.objectUtils.initListenerContainerScroll(this.graphContainerId, this.edgeMgmt, [this.dataContainer])
+		this.objectUtils.initListenerOnWindowResize(this.edgeMgmt, [this.dataContainer])
+	}
 
-  initSvgHtml(){
-    let sHtml = 
+	initSvgHtml() {
+		let sHtml = 
     `<div id="${this.graphContainerId}" class="graphContainer" ref="${this.graphSvgId}">
 				<svg id="${this.graphSvgId}" class="svg"></svg>
       </div>
-      <svg id="${this.connectSvgId}" class="connect-svg"></svg>`;
+      <svg id="${this.connectSvgId}" class="connect-svg"></svg>`
 
-    this.selector.append(sHtml);
-  }
+		this.selector.append(sHtml)
+	}
 
-  initCustomFunctionD3() {
-    /**
+	initCustomFunctionD3() {
+		/**
      * Move DOM element to front of others
      */
-    d3.selection.prototype.moveToFront = function () {
-      return this.each(function () {
-        this.parentNode.appendChild(this);
-      });
-    };
+		d3.selection.prototype.moveToFront = function () {
+			return this.each(function () {
+				this.parentNode.appendChild(this)
+			})
+		}
 
-    /**
+		/**
      * Move DOM element to back of others
      */
-    d3.selection.prototype.moveToBack = function () {
-      this.each(function () {
-        this.parentNode.firstChild && this.parentNode.insertBefore(this, this.parentNode.firstChild);
-      });
-    };
-  }
+		d3.selection.prototype.moveToBack = function () {
+			this.each(function () {
+				this.parentNode.firstChild && this.parentNode.insertBefore(this, this.parentNode.firstChild)
+			})
+		}
+	}
 
-  initMenuContext() {
-    new MainMenuSegment({
-      selector: `#${this.graphSvgId}`,
-      containerId: `#${this.graphContainerId}`,
-      parent: this,
+	initMenuContext() {
+		new MainMenuSegment({
+			selector: `#${this.graphSvgId}`,
+			containerId: `#${this.graphContainerId}`,
+			parent: this,
 			viewMode: this.viewMode,
 			vertexDefinition: this.segmentMgmt.vertexDefinition
-    });
-  }
+		})
+	}
 
-  /**
+	/**
    * Clear all element on graph
    * And reinit marker def
    */
-  clearAll() {
-    this.segmentMgmt.clearAll();
+	clearAll() {
+		this.segmentMgmt.clearAll()
 
-    setSizeGraph({ width: DEFAULT_CONFIG_GRAPH.MIN_WIDTH, height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT }, this.graphSvgId);
-  }
+		setSizeGraph({ width: DEFAULT_CONFIG_GRAPH.MIN_WIDTH, height: DEFAULT_CONFIG_GRAPH.MIN_HEIGHT }, this.graphSvgId)
+	}
 
-  showReduced(){
-    this.isShowReduced = true;
+	showReduced() {
+		this.isShowReduced = true
     
-    this.dataContainer.vertex.forEach((vertex) => {
-      d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", true);
-      d3.select(`#${vertex.id}`).select('foreignObject').attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT);
-    });
+		this.dataContainer.vertex.forEach((vertex) => {
+			d3.select(`#${vertex.id}`).selectAll('.property').classed('hide', true)
+			d3.select(`#${vertex.id}`).select('foreignObject').attr('height', VERTEX_ATTR_SIZE.HEADER_HEIGHT)
+		})
     
-    this.sortByName();
-  }
+		this.sortByName()
+	}
 
-  showFull(){
-    this.isShowReduced = false;
+	showFull() {
+		this.isShowReduced = false
     
-    this.dataContainer.vertex.forEach((vertex) => {
-      let arrProp = d3.select(`#${vertex.id}`).selectAll('.property').classed("hide", false)._groups[0];
-      d3.select(`#${vertex.id}`).select('foreignObject').attr("height", VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * arrProp.length);
-    });
+		this.dataContainer.vertex.forEach((vertex) => {
+			let arrProp = d3.select(`#${vertex.id}`).selectAll('.property').classed('hide', false)._groups[0]
+			d3.select(`#${vertex.id}`).select('foreignObject').attr('height', VERTEX_ATTR_SIZE.HEADER_HEIGHT + VERTEX_ATTR_SIZE.PROP_HEIGHT * arrProp.length)
+		})
 
-    this.sortByName();
-  }
+		this.sortByName()
+	}
 
-  LoadVertexGroupDefinition(vertexDefinitionData){
-    if (this.dataContainer.vertex.length > 0 && !confirm('The current data will be cleared, do you want to continue ?')) {
-      return;
-    }
+	LoadVertexGroupDefinition(vertexDefinitionData) {
+		if (this.dataContainer.vertex.length > 0 && !confirm('The current data will be cleared, do you want to continue ?')) {
+			return
+		}
 
-    this.clearAll();
+		this.clearAll()
 
-    if (this.segmentMgmt.LoadVertexGroupDefinition(vertexDefinitionData)) {
-      this.initMenuContext();
-    }
-  }
+		if (this.segmentMgmt.LoadVertexGroupDefinition(vertexDefinitionData)) {
+			this.initMenuContext()
+		}
+	}
 
-  async drawObjects(data) {
-    const { VERTEX: vertices } = data;
-    // Draw Segment
+	async drawObjects(data) {
+		const { VERTEX: vertices } = data
+		// Draw Segment
 
-    let x = 5;
-    let y = 5;
-    vertices.forEach(e => {
-      e.x = x;
-      e.y = y;
-      e.isImport = true;
+		let x = 5
+		let y = 5
+		vertices.forEach(e => {
+			e.x = x
+			e.y = y
+			e.isImport = true
 
-      this.segmentMgmt.create(e);
-    });
-  }
+			this.segmentMgmt.create(e)
+		})
+	}
 
-  async loadSegmentSpecEditor(segmentData) {
+	async loadSegmentSpecEditor(segmentData) {
 
-    if (!this.validateSegmentSpecStructure(segmentData)) {
-      comShowMessage("Format or data in Segment Spec Structure is corrupted. You should check it!");
-      return false;
-    }
+		if (!this.validateSegmentSpecStructure(segmentData)) {
+			comShowMessage('Format or data in Segment Spec Structure is corrupted. You should check it!')
+			return false
+		}
 
-    this.segmentMgmt.processDataVertexTypeDefine(segmentData);
+		this.segmentMgmt.processDataVertexTypeDefine(segmentData)
 
-    //clear data
-    this.clearAll();
+		//clear data
+		this.clearAll()
 
-    await this.drawObjects(segmentData);
-    await this.sortByName();
+		await this.drawObjects(segmentData)
+		await this.sortByName()
 
-    this.initMenuContext();
-  }
+		this.initMenuContext()
+	}
 
-  save(fileName) {
+	save(fileName) {
 
-    if (!fileName) {
-      comShowMessage("Please input file name");
-      return;
-    }
+		if (!fileName) {
+			comShowMessage('Please input file name')
+			return
+		}
 
-    this.getContentGraphAsJson().then(content => {
-      if (!content) {
-        comShowMessage("No content to export");
-        return;
-      }
-      // stringify with tabs inserted at each level
-      let graph = JSON.stringify(content, null, "\t");
-      let blob = new Blob([graph], {type: "application/json", charset: "utf-8"});
+		this.getContentGraphAsJson().then(content => {
+			if (!content) {
+				comShowMessage('No content to export')
+				return
+			}
+			// stringify with tabs inserted at each level
+			let graph = JSON.stringify(content, null, '\t')
+			let blob = new Blob([graph], {type: 'application/json', charset: 'utf-8'})
 
-      if (navigator.msSaveBlob) {
-        navigator.msSaveBlob(blob, fileName);
-        return;
-      }
+			if (navigator.msSaveBlob) {
+				navigator.msSaveBlob(blob, fileName)
+				return
+			}
 
-      let fileUrl = window.URL.createObjectURL(blob);
-      let downLink = $('<a>');
-      downLink.attr("download", `${fileName}.json`);
-      downLink.attr("href", fileUrl);
-      downLink.css("display", "none");
-      $("body").append(downLink);
-      downLink[0].click();
-      downLink.remove();
-    }).catch(err => {
-      comShowMessage(err);
-    });
+			let fileUrl = window.URL.createObjectURL(blob)
+			let downLink = $('<a>')
+			downLink.attr('download', `${fileName}.json`)
+			downLink.attr('href', fileUrl)
+			downLink.css('display', 'none')
+			$('body').append(downLink)
+			downLink[0].click()
+			downLink.remove()
+		}).catch(err => {
+			comShowMessage(err)
+		})
 	}
 
 	/**
@@ -248,396 +248,396 @@ class CltSegment {
 	addInlineStyling(elements) {
 		if(elements && elements.length) {
 			elements.forEach(function(d) {
-				d3.selectAll(d.el).each(function(){
-					let element = this;
-					if (d.el == '.header_name') debugger;
+				d3.selectAll(d.el).each(function() {
+					let element = this
+					if (d.el == '.header_name') debugger
 					if(d.properties && d.properties.length) {
 						d.properties.forEach(function(prop) {
-								let computedStyle = getComputedStyle(element, null);
-								let value = computedStyle.getPropertyValue(prop);
+							let computedStyle = getComputedStyle(element, null)
+							let value = computedStyle.getPropertyValue(prop)
 
-								if (prop == 'height'){
-									if (element.className == 'content_header_name')
-										value = (parseInt(value.replace("px", ""))  - 2) + "px";
-									else
-										value = (parseInt(value.replace("px", ""))  - 1) + "px";
-								}
+							if (prop == 'height') {
+								if (element.className == 'content_header_name')
+									value = (parseInt(value.replace('px', ''))  - 2) + 'px'
+								else
+									value = (parseInt(value.replace('px', ''))  - 1) + 'px'
+							}
 								
-								element.style[prop] = value;
-						});
+							element.style[prop] = value
+						})
 					}
-				 });
-			});
+				 })
+			})
 		}
 	}
 	
 	/**
 	 * Save SVG to image
 	 */
-	saveToImage(fileName){
+	saveToImage(fileName) {
 
 		if (!fileName) {
-      comShowMessage("Please input file name");
-      return;
+			comShowMessage('Please input file name')
+			return
 		}
 		
 		// Show page loader 
-		$('#loader').show();
+		$('#loader').show()
 
 		setTimeout(()=>{
-			this.doSaveToImage(fileName);
-		}, 300);
+			this.doSaveToImage(fileName)
+		}, 300)
 	}
 
 	doSaveToImage(fileName) {
-		const {width, height} = $(`#${this.graphSvgId}`).get(0).getBoundingClientRect();
+		const {width, height} = $(`#${this.graphSvgId}`).get(0).getBoundingClientRect()
 
 		let html = d3.select(`#${this.graphSvgId}`)
-				.node().outerHTML;
+			.node().outerHTML
 
 		//Create dummy div for storing html that needed to be export
 		d3.select('body')
-				.append('div')
-					.attr('id', 'export_image')
-					.html(html);
+			.append('div')
+			.attr('id', 'export_image')
+			.html(html)
 
 		d3.select('#export_image svg')
 			.attr('xmlns', 'http://www.w3.org/2000/svg')
 			.attr('width', width)
-			.attr('height', height);
+			.attr('height', height)
 			
 		d3.selectAll('#export_image .vertex_content').attr('xmlns', 'http://www.w3.org/1999/xhtml')
 
 		//Appy css was defined
-		this.addInlineStyling(this.getStylingList());
+		this.addInlineStyling(this.getStylingList())
 
 		//Adding padding-left 2.5px for each first &nbsp; because it has an error while exporting with &nbsp;
-		$('#export_image .vertex_data .property .key').each(function(){
-			let innerHTML = this.innerHTML;
+		$('#export_image .vertex_data .property .key').each(function() {
+			let innerHTML = this.innerHTML
 
-			if (innerHTML != "") {
-				let nCount = 0;
-				let arr = innerHTML.split('&nbsp;');
+			if (innerHTML != '') {
+				let nCount = 0
+				let arr = innerHTML.split('&nbsp;')
 
 				for (let i = 0; i < arr.length; i++) {
-					if (arr[i] == "") nCount++;
-					else break;
+					if (arr[i] == '') nCount++
+					else break
 				}
 
 				if (nCount > 0) {
-					$(this).css('padding-left', nCount * 2.5);
+					$(this).css('padding-left', nCount * 2.5)
 				}
 			}
 		})
 
 		//Replace all &nbsp; by " "
-		html = d3.select(`#export_image`).node().innerHTML;
-		html = html.replace(/&nbsp;/g, " ");
+		html = d3.select('#export_image').node().innerHTML
+		html = html.replace(/&nbsp;/g, ' ')
 
 		//Remove dummy div
-		d3.select('#export_image').remove();
+		d3.select('#export_image').remove()
 
 		// Create data and export image file
-		let imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
+		let imgsrc = 'data:image/svg+xml;base64,'+ btoa(html)
 
 		d3.select('body')
-				.append('canvas')
-					.attr("width", width)
-					.attr("height", height);
+			.append('canvas')
+			.attr('width', width)
+			.attr('height', height)
 
-		let canvas = $('canvas').get(0);
-		let	context = canvas.getContext("2d");
+		let canvas = $('canvas').get(0)
+		let	context = canvas.getContext('2d')
 
-		let image = new Image;
-		image.src = imgsrc;
+		let image = new Image
+		image.src = imgsrc
 		image.onload = () => {
 
-			context.drawImage(image, 0, 0);
+			context.drawImage(image, 0, 0)
 	
-			let a = document.createElement("a");
-			a.download = `${fileName}.png`;
-			a.href = this.binaryblob();
+			let a = document.createElement('a')
+			a.download = `${fileName}.png`
+			a.href = this.binaryblob()
 
-			a.click();
+			a.click()
 
-			d3.select('canvas').remove();
+			d3.select('canvas').remove()
 			
-			$('#loader').hide();
-		};
-	}
-
-	binaryblob(){
-		let byteString = atob(document.querySelector("canvas").toDataURL().replace(/^data:image\/(png|jpg);base64,/, ""));
-		let ab = new ArrayBuffer(byteString.length);
-		let ia = new Uint8Array(ab);
-		for (let i = 0; i < byteString.length; i++) {
-			ia[i] = byteString.charCodeAt(i);
+			$('#loader').hide()
 		}
-		let dataView = new DataView(ab);
-		let blob = new Blob([dataView], {type: "image/png"});
-		let DOMURL = self.URL || self.webkitURL || self;
-		let newurl = DOMURL.createObjectURL(blob);
-	
-		return newurl;
 	}
 
-  getContentGraphAsJson() {
-    let dataContent = {VERTEX_GROUP: [], VERTEX: []};
+	binaryblob() {
+		let byteString = atob(document.querySelector('canvas').toDataURL().replace(/^data:image\/(png|jpg);base64,/, ''))
+		let ab = new ArrayBuffer(byteString.length)
+		let ia = new Uint8Array(ab)
+		for (let i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i)
+		}
+		let dataView = new DataView(ab)
+		let blob = new Blob([dataView], {type: 'image/png'})
+		let DOMURL = self.URL || self.webkitURL || self
+		let newurl = DOMURL.createObjectURL(blob)
+	
+		return newurl
+	}
 
-    if (this.isEmptyContainerData(this.dataContainer)){
-      return Promise.reject("There is no Input data. Please import!");
-    } 
+	getContentGraphAsJson() {
+		let dataContent = {VERTEX_GROUP: [], VERTEX: []}
 
-    const cloneVertexDefine = _.cloneDeep(this.segmentMgmt.vertexDefinition);
+		if (this.isEmptyContainerData(this.dataContainer)) {
+			return Promise.reject('There is no Input data. Please import!')
+		} 
 
-    if(cloneVertexDefine.vertexGroup){
-      dataContent.VERTEX_GROUP = this.getSaveVertexGroup(cloneVertexDefine.vertexGroup);
-    }
+		const cloneVertexDefine = _.cloneDeep(this.segmentMgmt.vertexDefinition)
 
-    // Process data to export
-    // Need clone data cause case user export
-    // later continue edit then lost parent scope
-    // Purpose prevent reference data.
+		if(cloneVertexDefine.vertexGroup) {
+			dataContent.VERTEX_GROUP = this.getSaveVertexGroup(cloneVertexDefine.vertexGroup)
+		}
 
-    //Vertex and Boundary data
-    const cloneData = _.cloneDeep(this.dataContainer);
-    cloneData.vertex.forEach(vertex => {
-      dataContent.VERTEX.push(this.getSaveDataVertex(vertex));
-    });
+		// Process data to export
+		// Need clone data cause case user export
+		// later continue edit then lost parent scope
+		// Purpose prevent reference data.
 
-    return Promise.resolve(dataContent);
-  }
+		//Vertex and Boundary data
+		const cloneData = _.cloneDeep(this.dataContainer)
+		cloneData.vertex.forEach(vertex => {
+			dataContent.VERTEX.push(this.getSaveDataVertex(vertex))
+		})
 
-  /**
+		return Promise.resolve(dataContent)
+	}
+
+	/**
    * Filter properties that need to save
    * @param {*} vertexGroup 
    */
-  getSaveVertexGroup(vertexGroup){
-    let resObj = [];
+	getSaveVertexGroup(vertexGroup) {
+		let resObj = []
 
-    vertexGroup.forEach(group => {
-      let tmpGroup = {};
+		vertexGroup.forEach(group => {
+			let tmpGroup = {}
 
-      tmpGroup.groupType          = group.groupType;
-      tmpGroup.option             = group.option;
-      tmpGroup.dataElementFormat  = group.dataElementFormat;
-      tmpGroup.vertexPresentation = group.vertexPresentation;
+			tmpGroup.groupType = group.groupType
+			tmpGroup.option = group.option
+			tmpGroup.dataElementFormat = group.dataElementFormat
+			tmpGroup.vertexPresentation = group.vertexPresentation
 
-      resObj.push(tmpGroup);
-    })
+			resObj.push(tmpGroup)
+		})
     
-    return resObj;
-  }
+		return resObj
+	}
 
-  /**
+	/**
    * Filter properties that need to save
    * @param {*} vertex 
    */
-  getSaveDataVertex(vertex){
-    let resObj = {};
-    resObj.groupType = vertex.groupType;
-    resObj.vertexType = vertex.vertexType;
-    resObj.description = vertex.description;
-    resObj.data = [];
+	getSaveDataVertex(vertex) {
+		let resObj = {}
+		resObj.groupType = vertex.groupType
+		resObj.vertexType = vertex.vertexType
+		resObj.description = vertex.description
+		resObj.data = []
 
-    const arrPropNeedToSave = Object.keys(this.segmentMgmt.vertexGroup.dataElementFormat);
+		const arrPropNeedToSave = Object.keys(this.segmentMgmt.vertexGroup.dataElementFormat)
 
-    vertex.data.forEach(e => {
-      let elementDataObj = {};
+		vertex.data.forEach(e => {
+			let elementDataObj = {}
 
-      arrPropNeedToSave.forEach(prop => {
-        elementDataObj[prop] = e[prop];
-      });
+			arrPropNeedToSave.forEach(prop => {
+				elementDataObj[prop] = e[prop]
+			})
 
-      resObj.data.push(elementDataObj);
-    });
+			resObj.data.push(elementDataObj)
+		})
 
-    return resObj;
-  }
+		return resObj
+	}
 
-  isEmptyContainerData(containerData){
-    return (containerData.vertex.length == 0 && containerData.boundary.length == 0)
-  }
+	isEmptyContainerData(containerData) {
+		return (containerData.vertex.length == 0 && containerData.boundary.length == 0)
+	}
 
-  /**
+	/**
    * Validate Vertex Group Define Structure
    */
-  validateSegmentSpecStructure(data) {
+	validateSegmentSpecStructure(data) {
 
-    //Validate data exists
-    if(data===undefined)
-    {
-      return false;
-    }
+		//Validate data exists
+		if(data===undefined)
+		{
+			return false
+		}
 
-    if (!data.VERTEX_GROUP || !data.VERTEX) {
-      return false;
-    }
+		if (!data.VERTEX_GROUP || !data.VERTEX) {
+			return false
+		}
 
-    if (Object.keys(data).length > 2) {
-      return false;
-    }
+		if (Object.keys(data).length > 2) {
+			return false
+		}
 
-    return true;
-  }
+		return true
+	}
 
-  sortBySize() {
-    let arrSort =  _.cloneDeep(this.dataContainer.vertex);
+	sortBySize() {
+		let arrSort =  _.cloneDeep(this.dataContainer.vertex)
 
-    // Sort descending by data lenght of vertex
-    arrSort.sort(function (a,b) {
-      return b.data.length - a.data.length;
-    });
+		// Sort descending by data lenght of vertex
+		arrSort.sort(function (a,b) {
+			return b.data.length - a.data.length
+		})
 
-    // get height for all vertex
-    for (let i = 0; i < arrSort.length; i++) {
-      const $vSelector = $(`#${arrSort[i].id}`);
-      arrSort[i].height = $vSelector.get(0).getBoundingClientRect().height;
-    }
+		// get height for all vertex
+		for (let i = 0; i < arrSort.length; i++) {
+			const $vSelector = $(`#${arrSort[i].id}`)
+			arrSort[i].height = $vSelector.get(0).getBoundingClientRect().height
+		}
    
-    const nMarginRight = 5;
-    const nMarginBottom = 5;
-    const $container = $(`#${this.graphContainerId}`);
-    const {width: cntrW} = $container.get(0).getBoundingClientRect();
-    let columnCount = parseInt((cntrW - ((parseInt(cntrW / VERTEX_ATTR_SIZE.GROUP_WIDTH) - 1) * nMarginRight)) / VERTEX_ATTR_SIZE.GROUP_WIDTH);
-    if (columnCount < 1) columnCount = 1;
+		const nMarginRight = 5
+		const nMarginBottom = 5
+		const $container = $(`#${this.graphContainerId}`)
+		const {width: cntrW} = $container.get(0).getBoundingClientRect()
+		let columnCount = parseInt((cntrW - ((parseInt(cntrW / VERTEX_ATTR_SIZE.GROUP_WIDTH) - 1) * nMarginRight)) / VERTEX_ATTR_SIZE.GROUP_WIDTH)
+		if (columnCount < 1) columnCount = 1
 
-    // Fist arrange
-    let arrSort2 = [];
-    let arrLenght = [];
-    for (let i = 0; i < columnCount && i < arrSort.length; i++) {
-      let arr = [];
-      arrSort[i].y = PADDING_POSITION_SVG.MIN_OFFSET_Y;
-      arr.push(arrSort[i]);
-      arrSort2.push(arr);
-      arrLenght[i] = PADDING_POSITION_SVG.MIN_OFFSET_Y + arrSort[i].height;
-    }
+		// Fist arrange
+		let arrSort2 = []
+		let arrLenght = []
+		for (let i = 0; i < columnCount && i < arrSort.length; i++) {
+			let arr = []
+			arrSort[i].y = PADDING_POSITION_SVG.MIN_OFFSET_Y
+			arr.push(arrSort[i])
+			arrSort2.push(arr)
+			arrLenght[i] = PADDING_POSITION_SVG.MIN_OFFSET_Y + arrSort[i].height
+		}
 
-    // Calculate for sorting
-    if (arrSort.length > columnCount) {
-      let nCount = columnCount;
-      while (nCount < arrSort.length) {
-        // Find the column has the min height
-        let indexOfMin = this.indexOfMinOf(arrLenght);
+		// Calculate for sorting
+		if (arrSort.length > columnCount) {
+			let nCount = columnCount
+			while (nCount < arrSort.length) {
+				// Find the column has the min height
+				let indexOfMin = this.indexOfMinOf(arrLenght)
 
-        arrSort[nCount].y = arrLenght[indexOfMin] + nMarginBottom;
-        arrSort2[indexOfMin].push(arrSort[nCount]);
-        arrLenght[indexOfMin] += arrSort[nCount].height + nMarginBottom;
+				arrSort[nCount].y = arrLenght[indexOfMin] + nMarginBottom
+				arrSort2[indexOfMin].push(arrSort[nCount])
+				arrLenght[indexOfMin] += arrSort[nCount].height + nMarginBottom
 
-        nCount++;
-      }
-    }
+				nCount++
+			}
+		}
 
-    // Arrange all vertex with arrSort2 was made
-    let x = PADDING_POSITION_SVG.MIN_OFFSET_X;
+		// Arrange all vertex with arrSort2 was made
+		let x = PADDING_POSITION_SVG.MIN_OFFSET_X
 
-    for (let row = 0; row < arrSort2.length; row++) {
-      for (let col = 0; col < arrSort2[row].length; col++) {
-        const vertex = _.find(this.dataContainer.vertex, {"id": arrSort2[row][col].id});
-        vertex.setPosition({x, y: arrSort2[row][col].y});
-      }
-      x += VERTEX_ATTR_SIZE.GROUP_WIDTH + nMarginRight;
-    }
+		for (let row = 0; row < arrSort2.length; row++) {
+			for (let col = 0; col < arrSort2[row].length; col++) {
+				const vertex = _.find(this.dataContainer.vertex, {'id': arrSort2[row][col].id})
+				vertex.setPosition({x, y: arrSort2[row][col].y})
+			}
+			x += VERTEX_ATTR_SIZE.GROUP_WIDTH + nMarginRight
+		}
 
-    setMinBoundaryGraph(this.dataContainer, this.graphSvgId, this.viewMode.value);
-  }
+		setMinBoundaryGraph(this.dataContainer, this.graphSvgId, this.viewMode.value)
+	}
 
-  sortByName() {
-    let arrSort =  _.cloneDeep(this.dataContainer.vertex);
+	sortByName() {
+		let arrSort =  _.cloneDeep(this.dataContainer.vertex)
 
-    arrSort.sort(function (a,b) {
-      return (a.name.toUpperCase()).localeCompare((b.name.toUpperCase()));
-    });
+		arrSort.sort(function (a,b) {
+			return (a.name.toUpperCase()).localeCompare((b.name.toUpperCase()))
+		})
 
-    // get height for all vertex
-    for (let i = 0; i < arrSort.length; i++) {
-      const $vSelector = $(`#${arrSort[i].id}`);
-      arrSort[i].height = $vSelector.get(0).getBoundingClientRect().height;
-    }
+		// get height for all vertex
+		for (let i = 0; i < arrSort.length; i++) {
+			const $vSelector = $(`#${arrSort[i].id}`)
+			arrSort[i].height = $vSelector.get(0).getBoundingClientRect().height
+		}
    
-    const nMarginRight = 5;
-    const nMarginBottom = 5;
-    const $container = $(`#${this.graphContainerId}`);
-    const {width: cntrW} = $container.get(0).getBoundingClientRect();
-    let columnCount = parseInt((cntrW - ((parseInt(cntrW / VERTEX_ATTR_SIZE.GROUP_WIDTH) - 1) * nMarginRight)) / VERTEX_ATTR_SIZE.GROUP_WIDTH);
-    if (columnCount < 1) columnCount = 1;
+		const nMarginRight = 5
+		const nMarginBottom = 5
+		const $container = $(`#${this.graphContainerId}`)
+		const {width: cntrW} = $container.get(0).getBoundingClientRect()
+		let columnCount = parseInt((cntrW - ((parseInt(cntrW / VERTEX_ATTR_SIZE.GROUP_WIDTH) - 1) * nMarginRight)) / VERTEX_ATTR_SIZE.GROUP_WIDTH)
+		if (columnCount < 1) columnCount = 1
 
-    // Fist arrange
-    let arrSort2 = [];
-    let arrLenght = [];
-    for (let i = 0; i < columnCount && i < arrSort.length; i++) {
-      let arr = [];
-      arrSort[i].y = PADDING_POSITION_SVG.MIN_OFFSET_Y;
-      arr.push(arrSort[i]);
-      arrSort2.push(arr);
-      arrLenght[i] = PADDING_POSITION_SVG.MIN_OFFSET_Y + arrSort[i].height;
-    }
+		// Fist arrange
+		let arrSort2 = []
+		let arrLenght = []
+		for (let i = 0; i < columnCount && i < arrSort.length; i++) {
+			let arr = []
+			arrSort[i].y = PADDING_POSITION_SVG.MIN_OFFSET_Y
+			arr.push(arrSort[i])
+			arrSort2.push(arr)
+			arrLenght[i] = PADDING_POSITION_SVG.MIN_OFFSET_Y + arrSort[i].height
+		}
 
-    // Calculate for sorting
-    if (arrSort.length > columnCount) {
-      let nCount = columnCount;
-      while (nCount < arrSort.length) {
-        // Find the column has the min height
-        let indexOfMax = this.indexOfMaxOf(arrLenght);
-        const maxLength = arrLenght[indexOfMax];
-        const y = arrLenght[indexOfMax] + nMarginBottom;
+		// Calculate for sorting
+		if (arrSort.length > columnCount) {
+			let nCount = columnCount
+			while (nCount < arrSort.length) {
+				// Find the column has the min height
+				let indexOfMax = this.indexOfMaxOf(arrLenght)
+				const maxLength = arrLenght[indexOfMax]
+				const y = arrLenght[indexOfMax] + nMarginBottom
 
-        for (let i = 0; i < columnCount && nCount < arrSort.length; i++) {
-          arrSort[nCount].y = y;
-          arrSort2[i].push(arrSort[nCount]);
+				for (let i = 0; i < columnCount && nCount < arrSort.length; i++) {
+					arrSort[nCount].y = y
+					arrSort2[i].push(arrSort[nCount])
 
-          arrLenght[i] = maxLength + nMarginBottom + arrSort[nCount].height;
+					arrLenght[i] = maxLength + nMarginBottom + arrSort[nCount].height
 
-          nCount++;
-        }
-      }
-    }
+					nCount++
+				}
+			}
+		}
 
-    // Arrange all vertex with arrSort2 was made
-    let x = PADDING_POSITION_SVG.MIN_OFFSET_X;
+		// Arrange all vertex with arrSort2 was made
+		let x = PADDING_POSITION_SVG.MIN_OFFSET_X
 
-    for (let row = 0; row < arrSort2.length; row++) {
-      for (let col = 0; col < arrSort2[row].length; col++) {
-        const vertex = _.find(this.dataContainer.vertex, {"id": arrSort2[row][col].id});
-        vertex.setPosition({x, y: arrSort2[row][col].y});
-      }
-      x += VERTEX_ATTR_SIZE.GROUP_WIDTH + nMarginRight;
-    }
+		for (let row = 0; row < arrSort2.length; row++) {
+			for (let col = 0; col < arrSort2[row].length; col++) {
+				const vertex = _.find(this.dataContainer.vertex, {'id': arrSort2[row][col].id})
+				vertex.setPosition({x, y: arrSort2[row][col].y})
+			}
+			x += VERTEX_ATTR_SIZE.GROUP_WIDTH + nMarginRight
+		}
 
-    setMinBoundaryGraph(this.dataContainer, this.graphSvgId, this.viewMode.value);
-  }
+		setMinBoundaryGraph(this.dataContainer, this.graphSvgId, this.viewMode.value)
+	}
 
-  indexOfMinOf(arr) {
-    if (arr.length == 0) return -1;
+	indexOfMinOf(arr) {
+		if (arr.length == 0) return -1
 
-    let min = arr[0];
-    let index = 0;
+		let min = arr[0]
+		let index = 0
 
-    for (let i = 1; i < arr.length; i++) {
-      if (arr[i] < min) {
-        min = arr[i];
-        index = i;
-      }
-    }
+		for (let i = 1; i < arr.length; i++) {
+			if (arr[i] < min) {
+				min = arr[i]
+				index = i
+			}
+		}
 
-    return index;
-  }
+		return index
+	}
 
-  indexOfMaxOf(arr) {
-    if (arr.length == 0) return -1;
+	indexOfMaxOf(arr) {
+		if (arr.length == 0) return -1
 
-    let max = arr[0];
-    let index = 0;
+		let max = arr[0]
+		let index = 0
 
-    for (let i = 1; i < arr.length; i++) {
-      if (arr[i] > max) {
-        max = arr[i];
-        index = i;
-      }
-    }
+		for (let i = 1; i < arr.length; i++) {
+			if (arr[i] > max) {
+				max = arr[i]
+				index = i
+			}
+		}
 
-    return index;
-  }
+		return index
+	}
 }
   
-export default CltSegment;
+export default CltSegment

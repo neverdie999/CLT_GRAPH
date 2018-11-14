@@ -555,7 +555,7 @@ module.exports = __webpack_require__(7) ? function (object, key, value) {
 
 var global = __webpack_require__(3);
 var hide = __webpack_require__(15);
-var has = __webpack_require__(19);
+var has = __webpack_require__(18);
 var SRC = __webpack_require__(49)('src');
 var TO_STRING = 'toString';
 var $toString = Function[TO_STRING];
@@ -613,189 +613,6 @@ module.exports = function (NAME, exec) {
 
 /***/ }),
 /* 18 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-// File management
-const ID_CONTAINER_INPUT_MESSAGE = 'containerInputMessage';
-/* unused harmony export ID_CONTAINER_INPUT_MESSAGE */
-
-const ID_CONTAINER_OPERATIONS = 'containerOperations';
-/* unused harmony export ID_CONTAINER_OPERATIONS */
-
-const ID_CONTAINER_OUTPUT_MESSAGE = 'containerOutputMessage';
-/* unused harmony export ID_CONTAINER_OUTPUT_MESSAGE */
-
-const ID_SVG_INPUT_MESSAGE = 'svgInputMessage';
-/* unused harmony export ID_SVG_INPUT_MESSAGE */
-
-const ID_SVG_OPERATIONS = 'svgOperations';
-/* unused harmony export ID_SVG_OPERATIONS */
-
-const ID_SVG_OUTPUT_MESSAGE = 'svgOutputMessage';
-/* unused harmony export ID_SVG_OUTPUT_MESSAGE */
-
-const ID_SVG_CONNECT = 'svgConnect';
-/* unused harmony export ID_SVG_CONNECT */
-
-
-// Vertex
-const CLASS_CONTAINER_VERTEX = 'groupVertex';
-/* unused harmony export CLASS_CONTAINER_VERTEX */
-
-const VERTEX_ATTR_SIZE = {
-  HEADER_HEIGHT: 38,
-  PROP_HEIGHT: 26,
-  GROUP_WIDTH: 220,
-  SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
-}
-/* harmony export (immutable) */ __webpack_exports__["l"] = VERTEX_ATTR_SIZE;
-
-const CONNECT_SIDE = {
-  NONE: 'NONE',
-  LEFT: 'LEFT',
-  RIGHT: 'RIGHT',
-  BOTH: 'BOTH'
-}
-/* harmony export (immutable) */ __webpack_exports__["d"] = CONNECT_SIDE;
-
-const TYPE_CONNECT = {
-  OUTPUT: 'O',
-  INPUT: 'I'
-};
-/* harmony export (immutable) */ __webpack_exports__["k"] = TYPE_CONNECT;
-
-
-const LINE_TYPE = {
-  SOLID: 'S',
-  DASH: 'D'
-};
-/* harmony export (immutable) */ __webpack_exports__["g"] = LINE_TYPE;
-
-
-const VIEW_MODE = {
-  SHOW_ONLY       : 'SHOW_ONLY',
-  EDIT            : 'EDIT',
-  OPERATIONS      : 'OPERATIONS',
-  INPUT_MESSAGE   : 'INPUT_MESSAGE',
-  OUTPUT_MESSAGE  : 'OUTPUT_MESSAGE',
-  SEGMENT         : 'SEGMENT',
-};
-/* harmony export (immutable) */ __webpack_exports__["o"] = VIEW_MODE;
-
-
-// Boundary
-const CLASS_CONTAINER_BOUNDARY = 'groupBoundary';
-/* unused harmony export CLASS_CONTAINER_BOUNDARY */
-
-const CLASS_MENU_ITEM_BOUNDARY = 'menuItemBoundary';
-/* unused harmony export CLASS_MENU_ITEM_BOUNDARY */
-
-const BOUNDARY_ATTR_SIZE = {
-  HEADER_HEIGHT: 38,
-  BOUND_WIDTH: 230,
-  BOUND_HEIGHT: 64,
-}
-/* harmony export (immutable) */ __webpack_exports__["b"] = BOUNDARY_ATTR_SIZE;
-
-
-// Repeat range
-const REPEAT_RANGE = {
-  MIN: 0,
-  MAX: 9999,
-};
-/* harmony export (immutable) */ __webpack_exports__["j"] = REPEAT_RANGE;
-
-
-// Vertex format type
-const VERTEX_FORMAT_TYPE = {
-  BOOLEAN: 1,
-  ARRAY: 2,
-  NUMBER: 3,
-  STRING: 4,
-}
-/* harmony export (immutable) */ __webpack_exports__["m"] = VERTEX_FORMAT_TYPE;
-
-
-// Padding size left and top
-const PADDING_POSITION_SVG = {
-  MIN_OFFSET_X: 5,
-  MIN_OFFSET_Y: 5,
-};
-/* harmony export (immutable) */ __webpack_exports__["h"] = PADDING_POSITION_SVG;
-
-
-// Graph size
-const DEFAULT_CONFIG_GRAPH = {
-  MIN_WIDTH: 1900,
-  MIN_HEIGHT: 1800,
-};
-/* harmony export (immutable) */ __webpack_exports__["f"] = DEFAULT_CONFIG_GRAPH;
-
-
-const AUTO_SCROLL_CONFIG = {
-  LIMIT_TO_SCROLL: 10,
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = AUTO_SCROLL_CONFIG;
-
-
-// Popup config
-const POPUP_CONFIG = {
-  MAX_WIDTH: 1550,
-  MIN_WIDTH: 450,
-  PADDING_CHAR: 18,
-  WIDTH_CHAR: 10,
-  WIDTH_CHAR_UPPER: 11.5,
-  WIDTH_COL_DEL_CHECK: 45,
-};
-/* harmony export (immutable) */ __webpack_exports__["i"] = POPUP_CONFIG;
-
-
-// Vertex group option
-const VERTEX_GROUP_OPTION = {
-  SHOW_FULL_ALWAYS: 'SHOW_FULL_ALWAYS',
-  DYNAMIC_DATASET: 'DYNAMIC_DATASET',
-};
-/* harmony export (immutable) */ __webpack_exports__["n"] = VERTEX_GROUP_OPTION;
-
-
-// Padding size left and top
-const DATA_ELEMENT_TYPE = {
-  SIMPLE: "SIMPLE",
-	COMPOSITE: "COMPOSITE",
-	COMPONENT: "COMPONENT"
-};
-/* harmony export (immutable) */ __webpack_exports__["e"] = DATA_ELEMENT_TYPE;
-
-
-const COMMON_DATA = {
-  //isCreatingEdge: false, // Define state creation connect (edge)
-  //tmpSource: null, // Define source node for create connect
-  sourceId: null, // Store temporary vertex id at source when start create edge
-  isSelectingEdge: false, // Define state has an edge is selecting
-  isDisabledCommand: false, // Define disable or enable command on menu context)
-  // vertexTypes: null, // Vertex types using in current graph
-  // vertexTypesOld: null, // Vertex types export in file Graph Data Structure => Used to validate
-  // isImportVertexTypeDefine: false, // If vertex type define was imported.
-  // isUpdateEdge: false, // Set state is updating an edge
-  // groupVertexOption: {}, // List vertex type have same option.
-  // vertexDefine: null, // Data of json file vertex type definition.
-  // vertexFormatType: {}, // Vertex group format type
-  // vertexFormat: {}, // Data element vertex format
-  // vertexGroupType: {}, // Group vertex type
-  // headerForm: {}, // Header group type
-  // vertexPresentation: {}, // Group vertex presentation
-  // vertexGroup: null, // Group vertex
-  currentWidth: 1900, // Default current width graph
-  currentHeight: 1800, // Default current height graph
-  viewMode: VIEW_MODE.EDIT
-};
-/* harmony export (immutable) */ __webpack_exports__["c"] = COMMON_DATA;
-
-
-
-/***/ }),
-/* 19 */
 /***/ (function(module, exports) {
 
 var hasOwnProperty = {}.hasOwnProperty;
@@ -805,7 +622,7 @@ module.exports = function (it, key) {
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
@@ -817,14 +634,14 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var pIE = __webpack_require__(74);
 var createDesc = __webpack_require__(48);
-var toIObject = __webpack_require__(20);
+var toIObject = __webpack_require__(19);
 var toPrimitive = __webpack_require__(30);
-var has = __webpack_require__(19);
+var has = __webpack_require__(18);
 var IE8_DOM_DEFINE = __webpack_require__(197);
 var gOPD = Object.getOwnPropertyDescriptor;
 
@@ -839,11 +656,11 @@ exports.f = __webpack_require__(7) ? gOPD : function getOwnPropertyDescriptor(O,
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __webpack_require__(19);
+var has = __webpack_require__(18);
 var toObject = __webpack_require__(10);
 var IE_PROTO = __webpack_require__(127)('IE_PROTO');
 var ObjectProto = Object.prototype;
@@ -858,7 +675,7 @@ module.exports = Object.getPrototypeOf || function (O) {
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -884,7 +701,7 @@ module.exports = Object.getPrototypeOf || function (O) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(23);
 
 
 
@@ -897,21 +714,21 @@ module.exports = Object.getPrototypeOf || function (O) {
  * @returns {Promise}
  */
 function readDataFileJson(file) {
-  return new Promise((resolve, reject) => {
-    let fileReader = new FileReader();
-    fileReader.onload = () => {
-      try {
-        let data = JSON.parse(fileReader.result);
-        resolve(data);
-      }
-      catch (ex) {
-        comShowMessage(`Read file error!\n${ex.message}`);
-      }
-    }
+	return new Promise((resolve, reject) => {
+		let fileReader = new FileReader()
+		fileReader.onload = () => {
+			try {
+				let data = JSON.parse(fileReader.result)
+				resolve(data)
+			}
+			catch (ex) {
+				comShowMessage(`Read file error!\n${ex.message}`)
+			}
+		}
 
-    if (file)
-      fileReader.readAsText(file);
-  });
+		if (file)
+			fileReader.readAsText(file)
+	})
 }
 
 /**
@@ -919,9 +736,9 @@ function readDataFileJson(file) {
  * @param msg
  */
 function comShowMessage(msg = null) {
-  if (!msg)
-    return;
-  alert(msg);
+	if (!msg)
+		return
+	alert(msg)
 }
 
 /**
@@ -932,10 +749,10 @@ function comShowMessage(msg = null) {
  * @returns {{x: number, y: number}}
  */
 function getCoorMouseClickRelativeToParent(e, parent) {
-  let container = $(`${parent}`);
-  let x = Math.round(e.clientX + container.scrollLeft() - container.offset().left);
-  let y = Math.round(e.clientY + container.scrollTop() - container.offset().top);
-  return {x, y};
+	let container = $(`${parent}`)
+	let x = Math.round(e.clientX + container.scrollLeft() - container.offset().left)
+	let y = Math.round(e.clientY + container.scrollTop() - container.offset().top)
+	return {x, y}
 }
 
 /**
@@ -943,14 +760,14 @@ function getCoorMouseClickRelativeToParent(e, parent) {
  * @param type
  */
 function generateObjectId(type) {
-  sleep(1);//Prevent duplicate Id
-  const date = new Date();
-  return `${type}${date.getTime()}`;
+	sleep(1)//Prevent duplicate Id
+	const date = new Date()
+	return `${type}${date.getTime()}`
 }
 
 function checkIsMatchRegexNumber(val) {
-  const regex = new RegExp('^(?=.)([+-]?([0-9]*)(\.([0-9]+))?)$');
-  return regex.test(val);
+	const regex = new RegExp('^(?=.)([+-]?([0-9]*)(\.([0-9]+))?)$')
+	return regex.test(val)
 }
 
 /**
@@ -959,27 +776,27 @@ function checkIsMatchRegexNumber(val) {
  * Allow: Ctrl+A, Command+A
  */
 function allowInputNumberOnly(e) {
-  // Allow: backspace, delete, tab, escape, enter, dot(.) and +
-  if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 187, 189]) !== -1 ||
+	// Allow: backspace, delete, tab, escape, enter, dot(.) and +
+	if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 187, 189]) !== -1 ||
     // Allow: Ctrl+A, Command+A
     (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
     // Allow: home, end, left, right, down, up
     (e.keyCode >= 35 && e.keyCode <= 40)) {
-    // let it happen, don't do anything
-    return;
-  }
-  // Ensure that it is a number and stop the key press
-  if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-    e.preventDefault();
-  }
+		// let it happen, don't do anything
+		return
+	}
+	// Ensure that it is a number and stop the key press
+	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+		e.preventDefault()
+	}
 }
 
 function checkMinMaxValue(val, min = 0, max = 9999) {
-  if (parseInt(val) < min || isNaN(parseInt(val)))
-    return min;
-  else if (parseInt(val) > max)
-    return max;
-  else return parseInt(val);
+	if (parseInt(val) < min || isNaN(parseInt(val)))
+		return min
+	else if (parseInt(val) > max)
+		return max
+	else return parseInt(val)
 }
 
 /**
@@ -988,39 +805,39 @@ function checkMinMaxValue(val, min = 0, max = 9999) {
  * @returns {string}
  */
 function replaceSpecialCharacter(id) {
-  return id.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
+	return id.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, '\\$&')
 }
 
 function createPath(src, des) {
-  return `M${src.x},${src.y} L${des.x},${des.y}`;
+	return `M${src.x},${src.y} L${des.x},${des.y}`
 }
 
 //move element in array
 function arrayMove(x, from, to) {
-  x.splice((to < 0 ? x.length + to : to), 0, x.splice(from, 1)[0]);
+	x.splice((to < 0 ? x.length + to : to), 0, x.splice(from, 1)[0])
 }
 
 function setSizeGraph(options, svgId) {
-  const offer = 200;
-  const {width, height} = options;
+	const offer = 200
+	const {width, height} = options
 
-  if (width) {
-    __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentWidth = width + offer;
-    $(`#${svgId}`).css("min-width", __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentWidth);
-  }
+	if (width) {
+		__WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentWidth = width + offer
+		$(`#${svgId}`).css('min-width', __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentWidth)
+	}
 
-  if (height) {
-    __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight = height + offer;
-    $(`#${svgId}`).css("min-height", __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight);
-  }
+	if (height) {
+		__WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight = height + offer
+		$(`#${svgId}`).css('min-height', __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight)
+	}
 }
 
 function sleep(millis)
 {
-    var date = new Date();
-    var curDate = null;
-    do { curDate = new Date(); }
-    while(curDate - date < millis);
+	var date = new Date()
+	var curDate = null
+	do { curDate = new Date() }
+	while(curDate - date < millis)
 }
 
 /**
@@ -1030,100 +847,100 @@ function sleep(millis)
  */
 function setMinBoundaryGraph(data, svgId, viewMode) {
 
-  // Array store size
-  let lstOffsetX = [__WEBPACK_IMPORTED_MODULE_2__const_index__["f" /* DEFAULT_CONFIG_GRAPH */].MIN_WIDTH];
-  let lstOffsetY = [__WEBPACK_IMPORTED_MODULE_2__const_index__["f" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT];
+	// Array store size
+	let lstOffsetX = [__WEBPACK_IMPORTED_MODULE_2__const_index__["f" /* DEFAULT_CONFIG_GRAPH */].MIN_WIDTH]
+	let lstOffsetY = [__WEBPACK_IMPORTED_MODULE_2__const_index__["f" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT]
 
-  // Filter boundary without parent
-  let boundaries = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(data.boundary, (g) => {
-    return g.parent == null;
-  });
+	// Filter boundary without parent
+	let boundaries = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(data.boundary, (g) => {
+		return g.parent == null
+	})
 
-  // Filter vertex without parent
-  let vertices = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(data.vertex, (g) => {
-    return g.parent == null;
-  });
+	// Filter vertex without parent
+	let vertices = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(data.vertex, (g) => {
+		return g.parent == null
+	})
 
 
-  boundaries.forEach(e => {
-    let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${e.id}`).node()
-    if (node) {
-      let {width, height} = node.getBBox();
-      lstOffsetX.push(width + e.x);
-      lstOffsetY.push(height + e.y);
-    }
-  });
+	boundaries.forEach(e => {
+		let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${e.id}`).node()
+		if (node) {
+			let {width, height} = node.getBBox()
+			lstOffsetX.push(width + e.x)
+			lstOffsetY.push(height + e.y)
+		}
+	})
 
-  vertices.forEach(e => {
-    let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${e.id}`).node()
-    if (node) {
-      let {width, height} = node.getBBox();
-      lstOffsetX.push(width + e.x);
-      lstOffsetY.push(height + e.y);
-    }
-  });
+	vertices.forEach(e => {
+		let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${e.id}`).node()
+		if (node) {
+			let {width, height} = node.getBBox()
+			lstOffsetX.push(width + e.x)
+			lstOffsetY.push(height + e.y)
+		}
+	})
 
-  // Get max width, max height
-  let width = Math.max.apply(null, lstOffsetX);
-  let height = Math.max.apply(null, lstOffsetY);
+	// Get max width, max height
+	let width = Math.max.apply(null, lstOffsetX)
+	let height = Math.max.apply(null, lstOffsetY)
 
-  if(checkModePermission(viewMode, 'horizontalScroll')){
-    setSizeGraph({width, height},svgId);
-  }else{
-    setSizeGraph({width: undefined, height},svgId);
-  }
+	if(checkModePermission(viewMode, 'horizontalScroll')) {
+		setSizeGraph({width, height},svgId)
+	}else{
+		setSizeGraph({width: undefined, height},svgId)
+	}
 }
 
 /**
  * Auto scroll when drag vertex or boundary
  */
 function autoScrollOnMousedrag(svgId, containerId, viewMode) {
-  // Auto scroll on mouse drag
-  let svg = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${svgId}`).node();
-  const $parent = $(`#${containerId}`);
+	// Auto scroll on mouse drag
+	let svg = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${svgId}`).node()
+	const $parent = $(`#${containerId}`)
 
-  let h = $parent.height();
-  let sT = $parent.scrollTop();
+	let h = $parent.height()
+	let sT = $parent.scrollTop()
 
-  let w = $parent.width();
-  let sL = $parent.scrollLeft();
+	let w = $parent.width()
+	let sL = $parent.scrollLeft()
 
-  let coordinates = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](svg);
-  let x = coordinates[0];
-  let y = coordinates[1];
+	let coordinates = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](svg)
+	let x = coordinates[0]
+	let y = coordinates[1]
 
-  if ((y + __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL) > h + sT) { 
-    $parent.scrollTop((y + __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL) - h);
-  } else if (y < __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL + sT) { 
-    $parent.scrollTop(y - __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL);
-  }
+	if ((y + __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL) > h + sT) { 
+		$parent.scrollTop((y + __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL) - h)
+	} else if (y < __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL + sT) { 
+		$parent.scrollTop(y - __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL)
+	}
 
-  if (checkModePermission(viewMode, 'horizontalScroll')){
-    if ((x + __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL) > w + sL) { 
-      $parent.scrollLeft((x + __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL) - w); 
-    } else if (x < __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL + sL) { 
-      $parent.scrollLeft(x - __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL);
-    }
-  }
+	if (checkModePermission(viewMode, 'horizontalScroll')) {
+		if ((x + __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL) > w + sL) { 
+			$parent.scrollLeft((x + __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL) - w) 
+		} else if (x < __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL + sL) { 
+			$parent.scrollLeft(x - __WEBPACK_IMPORTED_MODULE_2__const_index__["a" /* AUTO_SCROLL_CONFIG */].LIMIT_TO_SCROLL)
+		}
+	}
 }
 
 function updateSizeGraph(dragObj) {
-  const {width, height} = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${dragObj.id}`).node().getBBox();
-  let currentX = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x;
-  let currentY = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y;
-  let margin = 100;
+	const {width, height} = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${dragObj.id}`).node().getBBox()
+	let currentX = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].x
+	let currentY = __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].y
+	let margin = 100
 
-  if (checkModePermission(dragObj.viewMode.value, 'horizontalScroll')){
-    if ((currentX + width) > __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentWidth) {
-      __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentWidth = currentX + width + margin;
-      $(`#${dragObj.svgId}`).css("min-width", __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentWidth);
-    }
-  }
+	if (checkModePermission(dragObj.viewMode.value, 'horizontalScroll')) {
+		if ((currentX + width) > __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentWidth) {
+			__WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentWidth = currentX + width + margin
+			$(`#${dragObj.svgId}`).css('min-width', __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentWidth)
+		}
+	}
 
-  if ((currentY + height) > __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight) {
-    __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight = currentY + height + margin;
-    $(`#${dragObj.svgId}`).css("min-height", __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight);
-  }
+	if ((currentY + height) > __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight) {
+		__WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight = currentY + height + margin
+		$(`#${dragObj.svgId}`).css('min-height', __WEBPACK_IMPORTED_MODULE_2__const_index__["c" /* COMMON_DATA */].currentHeight)
+	}
 }
 
 /**
@@ -1131,51 +948,51 @@ function updateSizeGraph(dragObj) {
  * @param {*} viewMode 
  * @param {*} type 
  */
-function checkModePermission(viewMode, type){
-  let data = {};
+function checkModePermission(viewMode, type) {
+	let data = {}
 
-  data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].SHOW_ONLY] = [
-    'showReduced',
-    'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].SHOW_ONLY] = [
+		'showReduced',
+		'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'nameSuffix', 'horizontalScroll', "mandatoryCheck"
-	];
+		'nameSuffix', 'horizontalScroll', 'mandatoryCheck'
+	]
 
-  data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].EDIT] = [
-    'createVertex', 'createBoundary', 'clearAll', 'showReduced',
-    'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].EDIT] = [
+		'createVertex', 'createBoundary', 'clearAll', 'showReduced',
+		'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory',
-		'nameSuffix', 'horizontalScroll', "mandatoryCheck"
-  ];
+		'nameSuffix', 'horizontalScroll', 'mandatoryCheck'
+	]
 
-  data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].OPERATIONS] = [
-    'createVertex', 'createBoundary', 'clearAll',
-    'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].OPERATIONS] = [
+		'createVertex', 'createBoundary', 'clearAll',
+		'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',
 		'horizontalScroll', 'autoAlignment'
-  ];
+	]
 
-  data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].INPUT_MESSAGE] = [
-    'showReduced',
-    'editVertex', 'vertexRepeat', 'isVertexMandatory',
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].INPUT_MESSAGE] = [
+		'showReduced',
+		'editVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
 		'nameSuffix'
-  ];
+	]
 
-  data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].OUTPUT_MESSAGE] = [
-    'showReduced',
-    'editVertex', 'vertexRepeat', 'isVertexMandatory',
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].OUTPUT_MESSAGE] = [
+		'showReduced',
+		'editVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
-		'nameSuffix', "mandatoryCheck"
-  ];
+		'nameSuffix', 'mandatoryCheck'
+	]
 
-  data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].SEGMENT] = [
-    'createNew', 'find', 'showReduced',
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].SEGMENT] = [
+		'createNew', 'find', 'showReduced',
 		'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
-		'horizontalScroll', "mandatoryCheck"
-  ];
+		'horizontalScroll', 'mandatoryCheck'
+	]
 
-  return data[viewMode].indexOf(type) != -1;
+	return data[viewMode].indexOf(type) != -1
 }
 
 /**
@@ -1184,51 +1001,234 @@ function checkModePermission(viewMode, type){
  * @param {*} vertexDefinition 
  * @param {*} groupType 
  */
-function getKeyPrefix(dataElement, vertexDefinition, groupType){
+function getKeyPrefix(dataElement, vertexDefinition, groupType) {
 
-  const keyPrefix = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertexDefinition.vertexGroup, {"groupType": groupType}).vertexPresentation.keyPrefix;
-  if (!keyPrefix) return "";
+	const keyPrefix = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertexDefinition.vertexGroup, {'groupType': groupType}).vertexPresentation.keyPrefix
+	if (!keyPrefix) return ''
 
-  let res = "";
-  for (let propName in keyPrefix){
-    if (dataElement[propName]){
-      res += keyPrefix[propName][dataElement[propName]] ? keyPrefix[propName][dataElement[propName]] : "";
-    }
-  }
+	let res = ''
+	for (let propName in keyPrefix) {
+		if (dataElement[propName]) {
+			res += keyPrefix[propName][dataElement[propName]] ? keyPrefix[propName][dataElement[propName]] : ''
+		}
+	}
 
-  return res;
+	return res
 }
 
 function htmlEncode (s) {
-  var translate = {
-     " "  : "&nbsp;",
-     "&"  : "&amp;",
-     "\\" : "&quot;",
-     "<"  : "&lt;",
-     ">"  : "&gt;"  
-  };
+	var translate = {
+		' '  : '&nbsp;',
+		'&'  : '&amp;',
+		'\\' : '&quot;',
+		'<'  : '&lt;',
+		'>'  : '&gt;'  
+	}
 
-  let res = "";
-  s.split('').forEach(e => {
-    if (translate[e]){
-      res += translate[e]
-    }else{
-      res+= e;
-    }
-  })
+	let res = ''
+	s.split('').forEach(e => {
+		if (translate[e]) {
+			res += translate[e]
+		}else{
+			res+= e
+		}
+	})
 
-  return res;
+	return res
 }
 
 function segmentName(segmentObject, viewMode) {
 	if (checkModePermission(viewMode, 'nameSuffix')) {
-		let usage = segmentObject.mandatory ? "M" : "C";
+		let usage = segmentObject.mandatory ? 'M' : 'C'
 		return `${segmentObject.name} [${usage}${segmentObject.repeat}]`
 		
 	} else {
 		return `${segmentObject.name}`
 	}
 }
+
+/***/ }),
+/* 23 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// File management
+const ID_CONTAINER_INPUT_MESSAGE = 'containerInputMessage'
+/* unused harmony export ID_CONTAINER_INPUT_MESSAGE */
+
+const ID_CONTAINER_OPERATIONS = 'containerOperations'
+/* unused harmony export ID_CONTAINER_OPERATIONS */
+
+const ID_CONTAINER_OUTPUT_MESSAGE = 'containerOutputMessage'
+/* unused harmony export ID_CONTAINER_OUTPUT_MESSAGE */
+
+const ID_SVG_INPUT_MESSAGE = 'svgInputMessage'
+/* unused harmony export ID_SVG_INPUT_MESSAGE */
+
+const ID_SVG_OPERATIONS = 'svgOperations'
+/* unused harmony export ID_SVG_OPERATIONS */
+
+const ID_SVG_OUTPUT_MESSAGE = 'svgOutputMessage'
+/* unused harmony export ID_SVG_OUTPUT_MESSAGE */
+
+const ID_SVG_CONNECT = 'svgConnect'
+/* unused harmony export ID_SVG_CONNECT */
+
+
+// Vertex
+const CLASS_CONTAINER_VERTEX = 'groupVertex'
+/* unused harmony export CLASS_CONTAINER_VERTEX */
+
+const VERTEX_ATTR_SIZE = {
+	HEADER_HEIGHT: 38,
+	PROP_HEIGHT: 26,
+	GROUP_WIDTH: 220,
+	SPACE_COPY: 5, // When copy vertex then new coordinate = old coordinate + spaceAddVertex
+}
+/* harmony export (immutable) */ __webpack_exports__["l"] = VERTEX_ATTR_SIZE;
+
+const CONNECT_SIDE = {
+	NONE: 'NONE',
+	LEFT: 'LEFT',
+	RIGHT: 'RIGHT',
+	BOTH: 'BOTH'
+}
+/* harmony export (immutable) */ __webpack_exports__["d"] = CONNECT_SIDE;
+
+const TYPE_CONNECT = {
+	OUTPUT: 'O',
+	INPUT: 'I'
+}
+/* harmony export (immutable) */ __webpack_exports__["k"] = TYPE_CONNECT;
+
+
+const LINE_TYPE = {
+	SOLID: 'S',
+	DASH: 'D'
+}
+/* harmony export (immutable) */ __webpack_exports__["g"] = LINE_TYPE;
+
+
+const VIEW_MODE = {
+	SHOW_ONLY       : 'SHOW_ONLY',
+	EDIT            : 'EDIT',
+	OPERATIONS      : 'OPERATIONS',
+	INPUT_MESSAGE   : 'INPUT_MESSAGE',
+	OUTPUT_MESSAGE  : 'OUTPUT_MESSAGE',
+	SEGMENT         : 'SEGMENT',
+}
+/* harmony export (immutable) */ __webpack_exports__["o"] = VIEW_MODE;
+
+
+// Boundary
+const CLASS_CONTAINER_BOUNDARY = 'groupBoundary'
+/* unused harmony export CLASS_CONTAINER_BOUNDARY */
+
+const CLASS_MENU_ITEM_BOUNDARY = 'menuItemBoundary'
+/* unused harmony export CLASS_MENU_ITEM_BOUNDARY */
+
+const BOUNDARY_ATTR_SIZE = {
+	HEADER_HEIGHT: 38,
+	BOUND_WIDTH: 230,
+	BOUND_HEIGHT: 64,
+}
+/* harmony export (immutable) */ __webpack_exports__["b"] = BOUNDARY_ATTR_SIZE;
+
+
+// Repeat range
+const REPEAT_RANGE = {
+	MIN: 0,
+	MAX: 9999,
+}
+/* harmony export (immutable) */ __webpack_exports__["j"] = REPEAT_RANGE;
+
+
+// Vertex format type
+const VERTEX_FORMAT_TYPE = {
+	BOOLEAN: 1,
+	ARRAY: 2,
+	NUMBER: 3,
+	STRING: 4,
+}
+/* harmony export (immutable) */ __webpack_exports__["m"] = VERTEX_FORMAT_TYPE;
+
+
+// Padding size left and top
+const PADDING_POSITION_SVG = {
+	MIN_OFFSET_X: 5,
+	MIN_OFFSET_Y: 5,
+}
+/* harmony export (immutable) */ __webpack_exports__["h"] = PADDING_POSITION_SVG;
+
+
+// Graph size
+const DEFAULT_CONFIG_GRAPH = {
+	MIN_WIDTH: 1900,
+	MIN_HEIGHT: 1800,
+}
+/* harmony export (immutable) */ __webpack_exports__["f"] = DEFAULT_CONFIG_GRAPH;
+
+
+const AUTO_SCROLL_CONFIG = {
+	LIMIT_TO_SCROLL: 10,
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = AUTO_SCROLL_CONFIG;
+
+
+// Popup config
+const POPUP_CONFIG = {
+	MAX_WIDTH: 1550,
+	MIN_WIDTH: 450,
+	PADDING_CHAR: 18,
+	WIDTH_CHAR: 10,
+	WIDTH_CHAR_UPPER: 11.5,
+	WIDTH_COL_DEL_CHECK: 45,
+}
+/* harmony export (immutable) */ __webpack_exports__["i"] = POPUP_CONFIG;
+
+
+// Vertex group option
+const VERTEX_GROUP_OPTION = {
+	SHOW_FULL_ALWAYS: 'SHOW_FULL_ALWAYS',
+	DYNAMIC_DATASET: 'DYNAMIC_DATASET',
+}
+/* harmony export (immutable) */ __webpack_exports__["n"] = VERTEX_GROUP_OPTION;
+
+
+// Padding size left and top
+const DATA_ELEMENT_TYPE = {
+	SIMPLE: 'SIMPLE',
+	COMPOSITE: 'COMPOSITE',
+	COMPONENT: 'COMPONENT'
+}
+/* harmony export (immutable) */ __webpack_exports__["e"] = DATA_ELEMENT_TYPE;
+
+
+const COMMON_DATA = {
+	//isCreatingEdge: false, // Define state creation connect (edge)
+	//tmpSource: null, // Define source node for create connect
+	sourceId: null, // Store temporary vertex id at source when start create edge
+	isSelectingEdge: false, // Define state has an edge is selecting
+	isDisabledCommand: false, // Define disable or enable command on menu context)
+	// vertexTypes: null, // Vertex types using in current graph
+	// vertexTypesOld: null, // Vertex types export in file Graph Data Structure => Used to validate
+	// isImportVertexTypeDefine: false, // If vertex type define was imported.
+	// isUpdateEdge: false, // Set state is updating an edge
+	// groupVertexOption: {}, // List vertex type have same option.
+	// vertexDefine: null, // Data of json file vertex type definition.
+	// vertexFormatType: {}, // Vertex group format type
+	// vertexFormat: {}, // Data element vertex format
+	// vertexGroupType: {}, // Group vertex type
+	// headerForm: {}, // Header group type
+	// vertexPresentation: {}, // Group vertex presentation
+	// vertexGroup: null, // Group vertex
+	currentWidth: 1900, // Default current width graph
+	currentHeight: 1800, // Default current height graph
+	viewMode: VIEW_MODE.EDIT
+}
+/* harmony export (immutable) */ __webpack_exports__["c"] = COMMON_DATA;
+
+
 
 /***/ }),
 /* 24 */
@@ -19041,13 +19041,13 @@ if (__webpack_require__(7)) {
   var toIndex = __webpack_require__(223);
   var toAbsoluteIndex = __webpack_require__(51);
   var toPrimitive = __webpack_require__(30);
-  var has = __webpack_require__(19);
+  var has = __webpack_require__(18);
   var classof = __webpack_require__(75);
   var isObject = __webpack_require__(5);
   var toObject = __webpack_require__(10);
   var isArrayIter = __webpack_require__(141);
   var create = __webpack_require__(52);
-  var getPrototypeOf = __webpack_require__(22);
+  var getPrototypeOf = __webpack_require__(21);
   var gOPN = __webpack_require__(53).f;
   var getIterFn = __webpack_require__(143);
   var uid = __webpack_require__(49);
@@ -19062,7 +19062,7 @@ if (__webpack_require__(7)) {
   var arrayFill = __webpack_require__(145);
   var arrayCopyWithin = __webpack_require__(213);
   var $DP = __webpack_require__(8);
-  var $GOPD = __webpack_require__(21);
+  var $GOPD = __webpack_require__(20);
   var dP = $DP.f;
   var gOPD = $GOPD.f;
   var RangeError = global.RangeError;
@@ -19710,7 +19710,7 @@ var durationWeek = 6048e5;
 
 var META = __webpack_require__(49)('meta');
 var isObject = __webpack_require__(5);
-var has = __webpack_require__(19);
+var has = __webpack_require__(18);
 var setDesc = __webpack_require__(8).f;
 var id = 0;
 var isExtensible = Object.isExtensible || function () {
@@ -20194,7 +20194,7 @@ var slice = array.slice;
 /***/ (function(module, exports, __webpack_require__) {
 
 var def = __webpack_require__(8).f;
-var has = __webpack_require__(19);
+var has = __webpack_require__(18);
 var TAG = __webpack_require__(6)('toStringTag');
 
 module.exports = function (it, tag, stat) {
@@ -20364,50 +20364,50 @@ function add(adder, a, b) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_ult__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const_index__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_ult__ = __webpack_require__(22);
 
 
 
 
 
 class ObjectUtils {
-  /**
+	/**
    * Return position object limit in SVG container
    * @param event d3
    * @param svg
    * @param objectId
    * @returns {{x: number, y: number}}
    */
-  setPositionObjectJustInSvg(event, object) {
-    // Limit left
-    let x = event.x < __WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_X ? __WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_X : event.x;
-    let y = event.y < __WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y ? __WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y : event.y;
+	setPositionObjectJustInSvg(event, object) {
+		// Limit left
+		let x = event.x < __WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_X ? __WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_X : event.x
+		let y = event.y < __WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y ? __WEBPACK_IMPORTED_MODULE_2__const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y : event.y
     
-    // limit right
-    if (!Object(__WEBPACK_IMPORTED_MODULE_3__common_ult__["f" /* checkModePermission */])(object.viewMode.value, 'horizontalScroll')){
-      let limitWidth = $(`${object.svgId}`).width();
-      let {width} = this.getBBoxObject(object.id);
-      if (x + width > limitWidth)
-        x = limitWidth - width;
-    }
+		// limit right
+		if (!Object(__WEBPACK_IMPORTED_MODULE_3__common_ult__["f" /* checkModePermission */])(object.viewMode.value, 'horizontalScroll')) {
+			let limitWidth = $(`${object.svgId}`).width()
+			let {width} = this.getBBoxObject(object.id)
+			if (x + width > limitWidth)
+				x = limitWidth - width
+		}
 
-    return {x, y};
-  }
+		return {x, y}
+	}
 
-  /**
+	/**
    * Get bbox object match with selector
    * @param selector
    * @returns {*}
    */
-  getBBoxObject(selector) {
-    let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`${selector}`);
-    if (node)
-      return node.node().getBBox();
-    return null;
-  }
+	getBBoxObject(selector) {
+		let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`${selector}`)
+		if (node)
+			return node.node().getBBox()
+		return null
+	}
 
-  /**
+	/**
    * Get coordinate prop relative to parent
    * The order is important
    * @param info => require, type: object, purpose: current coordinate of vertex
@@ -20416,530 +20416,530 @@ class ObjectUtils {
    * @param svg => require, type: string, purpose: determined the area that object did draw on it.
    * @returns {{x: *, y: number}}
    */
-  getCoordPropRelativeToParent(info, prop, type) {
-    if (!type)
-      type = __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT;
-    const {x, y, id, svgId: svg} = info;
-    let axisX = x;
-    let axisY = y;
-    // Area draw element svg
-    let containerSvg = $(`#${svg}`);
-    // Parent id container the object SVG
-    let parent = $(`#${svg}`).parent().attr('id');
-    let parentSvg = $(`#${parent}`);
+	getCoordPropRelativeToParent(info, prop, type) {
+		if (!type)
+			type = __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT
+		const {x, y, id, svgId: svg} = info
+		let axisX = x
+		let axisY = y
+		// Area draw element svg
+		let containerSvg = $(`#${svg}`)
+		// Parent id container the object SVG
+		let parent = $(`#${svg}`).parent().attr('id')
+		let parentSvg = $(`#${parent}`)
 
-    if (!prop)
-      return {
-        x: axisX + containerSvg.offset().left + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH / 2,
-        y: axisY - parentSvg.scrollTop()
-      };
+		if (!prop)
+			return {
+				x: axisX + containerSvg.offset().left + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH / 2,
+				y: axisY - parentSvg.scrollTop()
+			}
 
-    if (prop.indexOf('boundary_title') != -1){
+		if (prop.indexOf('boundary_title') != -1) {
 
-      axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT / 2;
+			axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["b" /* BOUNDARY_ATTR_SIZE */].HEADER_HEIGHT / 2
 
-      return {
-        x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT ? axisX + info.width + containerSvg.offset().left : axisX + containerSvg.offset().left,
-        y: axisY - parentSvg.scrollTop()
-      };
-    }else if (prop.indexOf('title') != -1){
+			return {
+				x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT ? axisX + info.width + containerSvg.offset().left : axisX + containerSvg.offset().left,
+				y: axisY - parentSvg.scrollTop()
+			}
+		}else if (prop.indexOf('title') != -1) {
 
-      axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT / 2;
+			axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT / 2
 
-      return {
-        x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
-        y: axisY - parentSvg.scrollTop()
-      };
-    } else{
-      // Get index prop in object
-      let index = this.findIndexPropInVertex(id, prop);
-      // Calculate coordinate of prop
-      // Get coordinate
-      axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index * __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2;
-      return {
-        x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
-        y: axisY - parentSvg.scrollTop()
-      };
-    }
-  }
+			return {
+				x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
+				y: axisY - parentSvg.scrollTop()
+			}
+		} else{
+			// Get index prop in object
+			let index = this.findIndexPropInVertex(id, prop)
+			// Calculate coordinate of prop
+			// Get coordinate
+			axisY = axisY + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + index * __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2
+			return {
+				x: type === __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT ? axisX + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + containerSvg.offset().left : axisX + containerSvg.offset().left,
+				y: axisY - parentSvg.scrollTop()
+			}
+		}
+	}
 
-  /**
+	/**
    * Find index of prop in vertex properties
    * @param vertexId
    * @param prop
    * @returns {number}
    */
-  findIndexPropInVertex(vertexId, prop) {
-    // Find index prop in object
-    let arrayProp = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexId}`).selectAll('.property:not(.hide)');
-    let tmpArry = arrayProp._groups[0];
-    let length = tmpArry.length;
-    for (let i = 0; i < length; i++) {
-      let e = tmpArry[i];
-      if (__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](e).attr('prop') === prop) {
-        return i;
-      }
-    }
-    return null;
-  }
+	findIndexPropInVertex(vertexId, prop) {
+		// Find index prop in object
+		let arrayProp = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexId}`).selectAll('.property:not(.hide)')
+		let tmpArry = arrayProp._groups[0]
+		let length = tmpArry.length
+		for (let i = 0; i < length; i++) {
+			let e = tmpArry[i]
+			if (__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](e).attr('prop') === prop) {
+				return i
+			}
+		}
+		return null
+	}
 
   
-  /**
+	/**
    * When a vertex|boundary move
    * Resize if any boundary with size smaller than vertex|boundary size
    */
-  reSizeBoundaryWhenObjectDragged(obj) {
-    // Get box object
-    const {height, width} = this.getBBoxObject(`#${obj.id}`);
+	reSizeBoundaryWhenObjectDragged(obj) {
+		// Get box object
+		const {height, width} = this.getBBoxObject(`#${obj.id}`)
 
-    obj.dataContainer.boundary.forEach(boundary => {
-      if (boundary.id != obj.id && !boundary.parent) {
-        let boundaryBox = this.getBBoxObject(`#${boundary.id}`);
+		obj.dataContainer.boundary.forEach(boundary => {
+			if (boundary.id != obj.id && !boundary.parent) {
+				let boundaryBox = this.getBBoxObject(`#${boundary.id}`)
 
-        if (width >= boundaryBox.width){
-          //2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
-          boundary.ctrlSrcWidth = boundary.width;
-          boundary.setWidth(width + 15);
-          boundary.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(boundary);
-        }
-      }
-    });
-  }
+				if (width >= boundaryBox.width) {
+					//2018.07.03 - Vinh Vo - save this height for restoring to origin size if the object not drag in/out this boundary
+					boundary.ctrlSrcWidth = boundary.width
+					boundary.setWidth(width + 15)
+					boundary.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(boundary)
+				}
+			}
+		})
+	}
 
-  /**
+	/**
    * Check drag outside boundary
    */
-  checkDragObjectOutsideBoundary(obj) {
+	checkDragObjectOutsideBoundary(obj) {
 
-    // Get box object
-    const {id, parent} = obj;
-    let {height, width} = this.getBBoxObject(`#${id}`);
-    let xSrc = obj.x;
-    let ySrc = obj.y;
-    let wBSrc = xSrc + width;
-    let hBSrc = ySrc + height;
+		// Get box object
+		const {id, parent} = obj
+		let {height, width} = this.getBBoxObject(`#${id}`)
+		let xSrc = obj.x
+		let ySrc = obj.y
+		let wBSrc = xSrc + width
+		let hBSrc = ySrc + height
 
-    // Parent
-    const {x, y} = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(obj.dataContainer.boundary,{"id":parent});
-    let pBox = this.getBBoxObject(`#${parent}`);
-    let xParent = x + pBox.width;
-    let yParent = y + pBox.height;
+		// Parent
+		const {x, y} = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(obj.dataContainer.boundary,{'id':parent})
+		let pBox = this.getBBoxObject(`#${parent}`)
+		let xParent = x + pBox.width
+		let yParent = y + pBox.height
 
-    // Check drag outside a boundary
-    if ((( wBSrc < x) || ( xParent < xSrc )) || ((hBSrc < y ) || ( yParent < ySrc ))) {
-      let parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(obj.dataContainer.boundary,{"id": parent});
-      parentObj.removeMemberFromBoundary(obj);
-      obj.parent = null;
+		// Check drag outside a boundary
+		if ((( wBSrc < x) || ( xParent < xSrc )) || ((hBSrc < y ) || ( yParent < ySrc ))) {
+			let parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(obj.dataContainer.boundary,{'id': parent})
+			parentObj.removeMemberFromBoundary(obj)
+			obj.parent = null
       
-      return true;
-    }
+			return true
+		}
 
-    return false;
-  }
+		return false
+	}
 
-  // Check drag inside boundary
-  checkDragObjectInsideBoundary(obj, type) {
+	// Check drag inside boundary
+	checkDragObjectInsideBoundary(obj, type) {
 
-    let bIsInside = false;
-    // Get box object
-    const {height, width} = this.getBBoxObject(`#${obj.id}`);
-    let xSrc = obj.x;
-    let ySrc = obj.y;
-    let wBSrc = xSrc + width;
-    // let hBSrc = ySrc + height;
+		let bIsInside = false
+		// Get box object
+		const {height, width} = this.getBBoxObject(`#${obj.id}`)
+		let xSrc = obj.x
+		let ySrc = obj.y
+		let wBSrc = xSrc + width
+		// let hBSrc = ySrc + height;
 
-    // Define method reverse
-    let reverse = (input) => {
-      let ret = new Array;
-      for (let i = input.length - 1; i >= 0; i--) {
-        ret.push(input[i]);
-      }
-      return ret;
-    };
+		// Define method reverse
+		let reverse = (input) => {
+			let ret = new Array
+			for (let i = input.length - 1; i >= 0; i--) {
+				ret.push(input[i])
+			}
+			return ret
+		}
 
-    // Cause: When multi boundary overlap that drags an object inside
-    // then it will be added to => regulation add to the highest boundary
-    let reverseBoundary = reverse(obj.dataContainer.boundary);
-    reverseBoundary.forEach((item) => {
-      if (!item.parent && item.id != obj.id && !obj.parent) {
-        // Calculate box for boundary
-        let xTar = item.x;
-        let yTar = item.y;
-        let bBoxTar = this.getBBoxObject(`#${item.id}`);
-        let wBTar = xTar + bBoxTar.width;
-        let hBTar = yTar + bBoxTar.height;
+		// Cause: When multi boundary overlap that drags an object inside
+		// then it will be added to => regulation add to the highest boundary
+		let reverseBoundary = reverse(obj.dataContainer.boundary)
+		reverseBoundary.forEach((item) => {
+			if (!item.parent && item.id != obj.id && !obj.parent) {
+				// Calculate box for boundary
+				let xTar = item.x
+				let yTar = item.y
+				let bBoxTar = this.getBBoxObject(`#${item.id}`)
+				let wBTar = xTar + bBoxTar.width
+				let hBTar = yTar + bBoxTar.height
 
-        if ((xSrc >= xTar) && (ySrc >= yTar) && (wBSrc <= wBTar) && (ySrc <= hBTar)) {
-          let index = this.getIndexFromPositionForObject(item, obj);
-          item.addMemberToBoundaryWithIndex( obj, index );
-          obj.parent = item.id;
+				if ((xSrc >= xTar) && (ySrc >= yTar) && (wBSrc <= wBTar) && (ySrc <= hBTar)) {
+					let index = this.getIndexFromPositionForObject(item, obj)
+					item.addMemberToBoundaryWithIndex( obj, index )
+					obj.parent = item.id
 
-          bIsInside = true;
-        }
-      }
-    });
+					bIsInside = true
+				}
+			}
+		})
 
-    return bIsInside;
-  }
+		return bIsInside
+	}
 
-  /**
+	/**
    * @param obj Object drag
    * Function using change index of object in boundary parent when drag in boundary
    */
-  changeIndexInBoundaryForObject(obj) {
-    const {parent} = obj;
-    let parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(obj.dataContainer.boundary, {"id": parent});
-    let indexOld = this.getIndexBy(parentObj.member, "id", obj.id);
-    let indexNew = this.getIndexFromPositionForObject(parentObj, obj);
-    parentObj.changeIndexMemberToBoundary(indexOld, indexNew);
-    obj.parent = parent;
-  }
+	changeIndexInBoundaryForObject(obj) {
+		const {parent} = obj
+		let parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(obj.dataContainer.boundary, {'id': parent})
+		let indexOld = this.getIndexBy(parentObj.member, 'id', obj.id)
+		let indexNew = this.getIndexFromPositionForObject(parentObj, obj)
+		parentObj.changeIndexMemberToBoundary(indexOld, indexNew)
+		obj.parent = parent
+	}
 
-  /**
+	/**
    * Get index of object from drop position
    * @param parentObj boundary tagert drop
    * @param obj Object drap
    * Function using get index for insert to boundary
    */
-  getIndexFromPositionForObject(parentObj, obj) {
-    let xSrc = obj.x;
-    let ySrc = obj.y;
-    let index = 0;
+	getIndexFromPositionForObject(parentObj, obj) {
+		let xSrc = obj.x
+		let ySrc = obj.y
+		let index = 0
 
-    let memberAvailable = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(parentObj.member, (e) => {
-      return e.show === true
-    });
+		let memberAvailable = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(parentObj.member, (e) => {
+			return e.show === true
+		})
 
-    for (let mem of memberAvailable) {
+		for (let mem of memberAvailable) {
 
-      let memObj = null;
-      if(mem.type == "V"){
-        memObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(parentObj.dataContainer.vertex,{"id": mem.id});
-      }else{
-        memObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(parentObj.dataContainer.boundary,{"id": mem.id});
-      }
+			let memObj = null
+			if(mem.type == 'V') {
+				memObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(parentObj.dataContainer.vertex,{'id': mem.id})
+			}else{
+				memObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(parentObj.dataContainer.boundary,{'id': mem.id})
+			}
 
-      let {x, y} = memObj;
+			let {x, y} = memObj
 
-      if (y > ySrc) {
-        break;
-      }
+			if (y > ySrc) {
+				break
+			}
 
-      if (mem.id === obj.id) continue;
-      index++;
-    }
+			if (mem.id === obj.id) continue
+			index++
+		}
 
-    return index;
-  }
+		return index
+	}
 
-  /**
+	/**
    * Restore back the old size, dragingObject do not drag in/out these boundaries
    * @param {*} dragingObject
    */
-  restoreSizeBoundary(dragingObject) {
-    dragingObject.dataContainer.boundary.forEach(boundary => {
-      //do not restore for parent, it was resize by checkDragObjectOutsideBoundary() or checkDragObjectInsideBoundary()
-      if (boundary.id != dragingObject.id && (boundary.id != dragingObject.parent)){
-        if (boundary.ctrlSrcHeight != -1){
-          boundary.setHeight(boundary.ctrlSrcHeight);
-        }
+	restoreSizeBoundary(dragingObject) {
+		dragingObject.dataContainer.boundary.forEach(boundary => {
+			//do not restore for parent, it was resize by checkDragObjectOutsideBoundary() or checkDragObjectInsideBoundary()
+			if (boundary.id != dragingObject.id && (boundary.id != dragingObject.parent)) {
+				if (boundary.ctrlSrcHeight != -1) {
+					boundary.setHeight(boundary.ctrlSrcHeight)
+				}
 
-        if(boundary.ctrlSrcWidth != -1){
-          boundary.setWidth(boundary.ctrlSrcWidth);
-          boundary.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(boundary);
-        }
-      }
+				if(boundary.ctrlSrcWidth != -1) {
+					boundary.setWidth(boundary.ctrlSrcWidth)
+					boundary.boundaryMgmt.edgeMgmt.updatePathConnectForVertex(boundary)
+				}
+			}
 
-      boundary.ctrlSrcHeight = -1;
-      boundary.ctrlSrcWidth = -1;
-    })
-  }
+			boundary.ctrlSrcHeight = -1
+			boundary.ctrlSrcWidth = -1
+		})
+	}
 
-  /**
+	/**
    * @param arr Array object
    * @param name key compare
    * @param value value compare
    * @return i (index of object match condition)
    */
-  getIndexBy(arr, name, value) {
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i][name] == value) {
-        return i;
-      }
-    }
-    return -1;
-  }
+	getIndexBy(arr, name, value) {
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i][name] == value) {
+				return i
+			}
+		}
+		return -1
+	}
 
-  /** 
+	/** 
    * @param dataContainer from import 
    * Set all children of this boundary to show
    */
-  setAllChildrenToShow(dataContainer) {
-    // Set all children of this boundary to show  
-    let arrBoundary = dataContainer.boundary;
-    arrBoundary.forEach(boundary => {
-      let members = boundary.member;
-      members.forEach(member => {
-        member.show = true;
-      });
-    });
-  }
+	setAllChildrenToShow(dataContainer) {
+		// Set all children of this boundary to show  
+		let arrBoundary = dataContainer.boundary
+		arrBoundary.forEach(boundary => {
+			let members = boundary.member
+			members.forEach(member => {
+				member.show = true
+			})
+		})
+	}
 
-  /**
+	/**
    * Handle show/hide edge while scroll
    * @param {*} containerId Id of container div
    * @param {*} edgeMgmt 
    * @param {*} arrDataContainer each SVG area has a dataContainer, this array store all dataContainer of those SVG. Purpur
    */
-  initListenerContainerScroll(containerId, edgeMgmt, arrDataContainer) {
-    $(`#${containerId}`).on('scroll', (e) => {
-      let svgId = $(e.target).attr("ref");
-      this.onContainerSvgScroll(svgId, edgeMgmt, arrDataContainer);
-    });
-  }
+	initListenerContainerScroll(containerId, edgeMgmt, arrDataContainer) {
+		$(`#${containerId}`).on('scroll', (e) => {
+			let svgId = $(e.target).attr('ref')
+			this.onContainerSvgScroll(svgId, edgeMgmt, arrDataContainer)
+		})
+	}
 
-  onContainerSvgScroll(pSvgId, edgeMgmt, arrDataContainer) {
+	onContainerSvgScroll(pSvgId, edgeMgmt, arrDataContainer) {
 
-    if (edgeMgmt.isSelectingEdge()){
-      edgeMgmt.cancleSelectedPath();
-    }
+		if (edgeMgmt.isSelectingEdge()) {
+			edgeMgmt.cancleSelectedPath()
+		}
 
-    let vertices = [];
-    for (var i = 0; i < arrDataContainer.length; i++){
-      vertices = vertices.concat(arrDataContainer[i].vertex);
-      vertices = vertices.concat(arrDataContainer[i].boundary);
-    }
+		let vertices = []
+		for (var i = 0; i < arrDataContainer.length; i++) {
+			vertices = vertices.concat(arrDataContainer[i].vertex)
+			vertices = vertices.concat(arrDataContainer[i].boundary)
+		}
     
-    // Find edge start from this SVG
-    const srcEdges = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(edgeMgmt.dataContainer.edge, (e) => {
-      return e.source.svgId === pSvgId;
-    });
+		// Find edge start from this SVG
+		const srcEdges = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(edgeMgmt.dataContainer.edge, (e) => {
+			return e.source.svgId === pSvgId
+		})
     
-    // Find edge end at this SVG
-    const desEdges = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(edgeMgmt.dataContainer.edge, (e) => {
-      return e.target.svgId === pSvgId;
-    });
+		// Find edge end at this SVG
+		const desEdges = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(edgeMgmt.dataContainer.edge, (e) => {
+			return e.target.svgId === pSvgId
+		})
 
-    srcEdges.forEach(e => {
-      const {source: {vertexId: id, prop}} = e;
-      let obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': id});
-      let {x: propX, y: propY} = this.getCoordPropRelativeToParent(obj, prop, __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT);
-      e.source.x = propX;
-      e.source.y = propY;
-      let options = {source: e.source};
-      e.updatePathConnect(options);
-      e.setStatusEdgeOnCurrentView();
-    });
+		srcEdges.forEach(e => {
+			const {source: {vertexId: id, prop}} = e
+			let obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': id})
+			let {x: propX, y: propY} = this.getCoordPropRelativeToParent(obj, prop, __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT)
+			e.source.x = propX
+			e.source.y = propY
+			let options = {source: e.source}
+			e.updatePathConnect(options)
+			e.setStatusEdgeOnCurrentView()
+		})
 
-    desEdges.forEach(e => {
-      const {target: {vertexId: id, prop}} = e;
-      let obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': id});
-      let {x: propX, y: propY} = this.getCoordPropRelativeToParent(obj, prop, __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].INPUT);
-      e.target.x = propX;
-      e.target.y = propY;
-      let options = {target: e.target};
-      e.updatePathConnect(options);
-      e.setStatusEdgeOnCurrentView();
-    });
-  }
+		desEdges.forEach(e => {
+			const {target: {vertexId: id, prop}} = e
+			let obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': id})
+			let {x: propX, y: propY} = this.getCoordPropRelativeToParent(obj, prop, __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].INPUT)
+			e.target.x = propX
+			e.target.y = propY
+			let options = {target: e.target}
+			e.updatePathConnect(options)
+			e.setStatusEdgeOnCurrentView()
+		})
+	}
 
-  initListenerOnWindowResize(edgeMgmt, arrDataContainer) {
-    $(window).resize(() => {
+	initListenerOnWindowResize(edgeMgmt, arrDataContainer) {
+		$(window).resize(() => {
       
-      if(edgeMgmt.isSelectingEdge()){
-        edgeMgmt.cancleSelectedPath();
-      }
+			if(edgeMgmt.isSelectingEdge()) {
+				edgeMgmt.cancleSelectedPath()
+			}
 
-      this.updatePathConnectOnWindowResize(edgeMgmt, arrDataContainer);
-    });
-  }
+			this.updatePathConnectOnWindowResize(edgeMgmt, arrDataContainer)
+		})
+	}
 
-  updatePathConnectOnWindowResize(edgeMgmt, arrDataContainer) {
-    const edges = edgeMgmt.dataContainer.edge;
-    let vertices = [];
-    for (var i = 0; i < arrDataContainer.length; i++){
-      vertices = vertices.concat(arrDataContainer[i].vertex);
-      vertices = vertices.concat(arrDataContainer[i].boundary);
-    }
+	updatePathConnectOnWindowResize(edgeMgmt, arrDataContainer) {
+		const edges = edgeMgmt.dataContainer.edge
+		let vertices = []
+		for (var i = 0; i < arrDataContainer.length; i++) {
+			vertices = vertices.concat(arrDataContainer[i].vertex)
+			vertices = vertices.concat(arrDataContainer[i].boundary)
+		}
 
-    edges.forEach(e => {
-      const {source: {vertexId: idSrc, prop: propSrc}, target: {vertexId: idDes, prop: propDes}} = e;
-      let srcObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': idSrc});
-      let {x: newSX, y: newSY} = this.getCoordPropRelativeToParent(srcObj, propSrc, __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT);
-      e.source.x = newSX;
-      e.source.y = newSY;
+		edges.forEach(e => {
+			const {source: {vertexId: idSrc, prop: propSrc}, target: {vertexId: idDes, prop: propDes}} = e
+			let srcObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': idSrc})
+			let {x: newSX, y: newSY} = this.getCoordPropRelativeToParent(srcObj, propSrc, __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].OUTPUT)
+			e.source.x = newSX
+			e.source.y = newSY
 
-      let desObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': idDes});
-      let {x: newDX, y: newDY} = this.getCoordPropRelativeToParent(desObj, propDes, __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].INPUT);
-      e.target.x = newDX;
-      e.target.y = newDY;
+			let desObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': idDes})
+			let {x: newDX, y: newDY} = this.getCoordPropRelativeToParent(desObj, propDes, __WEBPACK_IMPORTED_MODULE_2__const_index__["k" /* TYPE_CONNECT */].INPUT)
+			e.target.x = newDX
+			e.target.y = newDY
 
-      let options = {source: e.source, target: e.target};
-      e.updatePathConnect(options);
-      e.setStatusEdgeOnCurrentView();
-    });
-  }
+			let options = {source: e.source, target: e.target}
+			e.updatePathConnect(options)
+			e.setStatusEdgeOnCurrentView()
+		})
+	}
 
-  /**
+	/**
    * Show boundary, vertex reduced as policy
    * Show graph elements connected by edges only
    * Boundary: show vertices which have any edges only and boundaries
    * Vertex: The vertices in group SHOW_FULL_ALWAYS not effected by show reduced
    * The remain vertex then show header and connected properties only
    */
-  async showReduced(dataContainer, edgeDataContainer, vertexDefinition, svgId, viewMode) {
-    let edge = edgeDataContainer.edge;
-    let lstVer = [], lstProp = [];
+	async showReduced(dataContainer, edgeDataContainer, vertexDefinition, svgId, viewMode) {
+		let edge = edgeDataContainer.edge
+		let lstVer = [], lstProp = []
 
-    let arrShowFullAlwayGroup = [];
-    vertexDefinition.vertexGroup.forEach(e => {
-      if (e.option.indexOf("SHOW_FULL_ALWAYS") != -1) {
-        arrShowFullAlwayGroup.push(e.groupType);
-      }
-    });
+		let arrShowFullAlwayGroup = []
+		vertexDefinition.vertexGroup.forEach(e => {
+			if (e.option.indexOf('SHOW_FULL_ALWAYS') != -1) {
+				arrShowFullAlwayGroup.push(e.groupType)
+			}
+		})
 
-    // Filter the vertex effected by show reduced
-    lstVer = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(dataContainer.vertex, (e) => {
-      return arrShowFullAlwayGroup.indexOf(e.groupType) < 0;
-    });
+		// Filter the vertex effected by show reduced
+		lstVer = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(dataContainer.vertex, (e) => {
+			return arrShowFullAlwayGroup.indexOf(e.groupType) < 0
+		})
     
-    lstVer.forEach((vertex) => {
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.drag_connect:not(.connect_header)').classed("hide", true);
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.property').classed("hide", true);
-    });
+		lstVer.forEach((vertex) => {
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.drag_connect:not(.connect_header)').classed('hide', true)
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.property').classed('hide', true)
+		})
 
-    // Get vertex and property can display
-    edge.forEach((edgeItem) => {
-      lstProp.push({
-        vert: edgeItem.source.vertexId,
-        prop: edgeItem.source.prop
-      },{
-        vert: edgeItem.target.vertexId,
-        prop: edgeItem.target.prop
-      });
-    });
+		// Get vertex and property can display
+		edge.forEach((edgeItem) => {
+			lstProp.push({
+				vert: edgeItem.source.vertexId,
+				prop: edgeItem.source.prop
+			},{
+				vert: edgeItem.target.vertexId,
+				prop: edgeItem.target.prop
+			})
+		})
 
-    lstVer.forEach((vertexItem) => {
-      let arrPropOfVertex = [];
-      lstProp.forEach((propItem) => {
-        if (propItem.vert === vertexItem.id) {
-          if (arrPropOfVertex.indexOf(propItem.prop) === -1 && propItem.prop.indexOf('title') == -1) {
-            arrPropOfVertex.push(propItem.prop);
-          }
-        }
-      });
-      //d3.select(`#${vertexItem.id}`).classed("hide", false); // Enable Vertex
-      arrPropOfVertex.forEach((propItem) => {
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexItem.id}`).selectAll("[prop='" + propItem + "']").classed("hide", false);
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexItem.id}`).selectAll(":not(.property)[prop='" + propItem + "']").classed("reduced", true);
-      });
+		lstVer.forEach((vertexItem) => {
+			let arrPropOfVertex = []
+			lstProp.forEach((propItem) => {
+				if (propItem.vert === vertexItem.id) {
+					if (arrPropOfVertex.indexOf(propItem.prop) === -1 && propItem.prop.indexOf('title') == -1) {
+						arrPropOfVertex.push(propItem.prop)
+					}
+				}
+			})
+			//d3.select(`#${vertexItem.id}`).classed("hide", false); // Enable Vertex
+			arrPropOfVertex.forEach((propItem) => {
+				__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexItem.id}`).selectAll('[prop=\'' + propItem + '\']').classed('hide', false)
+				__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexItem.id}`).selectAll(':not(.property)[prop=\'' + propItem + '\']').classed('reduced', true)
+			})
       
-      vertexItem.updatePathConnect(); // Re-draw edge
-      /* Update posittion of "rect" */
-      this.updatePositionRectConnect(arrPropOfVertex, vertexItem);
-    });
+			vertexItem.updatePathConnect() // Re-draw edge
+			/* Update posittion of "rect" */
+			this.updatePositionRectConnect(arrPropOfVertex, vertexItem)
+		})
 
-    this.resetSizeVertex(dataContainer, false);
-    if (dataContainer.boundary.length > 0)
-      await dataContainer.boundary[0].updateHeightBoundary();
+		this.resetSizeVertex(dataContainer, false)
+		if (dataContainer.boundary.length > 0)
+			await dataContainer.boundary[0].updateHeightBoundary()
     
-    Object(__WEBPACK_IMPORTED_MODULE_3__common_ult__["p" /* setMinBoundaryGraph */])(dataContainer, svgId, viewMode);
-  }
+		Object(__WEBPACK_IMPORTED_MODULE_3__common_ult__["p" /* setMinBoundaryGraph */])(dataContainer, svgId, viewMode)
+	}
 
-  /**
+	/**
    * Show full graph
    */
-  async showFull(dataContainer, vertexDefinition, svgId, viewMode) {
+	async showFull(dataContainer, vertexDefinition, svgId, viewMode) {
 
-    let arrShowFullAlwayGroup = [];
-    vertexDefinition.vertexGroup.forEach(e => {
-      if (e.option.indexOf("SHOW_FULL_ALWAYS") != -1) {
-        arrShowFullAlwayGroup.push(e.groupType);
-      }
-    });
+		let arrShowFullAlwayGroup = []
+		vertexDefinition.vertexGroup.forEach(e => {
+			if (e.option.indexOf('SHOW_FULL_ALWAYS') != -1) {
+				arrShowFullAlwayGroup.push(e.groupType)
+			}
+		})
 
-    let lstVer = []
-    // Filter the vertex effected by show reduced
-    lstVer = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(dataContainer.vertex, (e) => {
-      return arrShowFullAlwayGroup.indexOf(e.groupType) < 0;
-    });
+		let lstVer = []
+		// Filter the vertex effected by show reduced
+		lstVer = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(dataContainer.vertex, (e) => {
+			return arrShowFullAlwayGroup.indexOf(e.groupType) < 0
+		})
     
-    lstVer.forEach((vertex) => {
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.drag_connect:not(.connect_header)').classed("hide", false);
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.property').classed("hide", false);
-    });
+		lstVer.forEach((vertex) => {
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.drag_connect:not(.connect_header)').classed('hide', false)
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.property').classed('hide', false)
+		})
     
-    lstVer.forEach((vertexItem) => {
-      let arrPropOfVertex = []; //list of properties that have edge connected
-      let bFlag = false; // If this vertex has edge connected then this flag will be active
+		lstVer.forEach((vertexItem) => {
+			let arrPropOfVertex = [] //list of properties that have edge connected
+			let bFlag = false // If this vertex has edge connected then this flag will be active
 
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexItem.id}`).selectAll(".reduced")._groups[0].forEach(e => {
-        arrPropOfVertex.push($(e).attr("prop"));
-        bFlag = true;
-      });
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexItem.id}`).selectAll('.reduced')._groups[0].forEach(e => {
+				arrPropOfVertex.push($(e).attr('prop'))
+				bFlag = true
+			})
 
-      if(bFlag){
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexItem.id}`).selectAll(".reduced").classed("reduced", false);
+			if(bFlag) {
+				__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexItem.id}`).selectAll('.reduced').classed('reduced', false)
 
-        vertexItem.updatePathConnect(); // Re-draw edge
+				vertexItem.updatePathConnect() // Re-draw edge
 
-        /* Update posittion of "rect" */
-        this.updatePositionRectConnect(arrPropOfVertex, vertexItem);
-      }
-    });
+				/* Update posittion of "rect" */
+				this.updatePositionRectConnect(arrPropOfVertex, vertexItem)
+			}
+		})
     
-    this.resetSizeVertex(dataContainer, true);
-    if (dataContainer.boundary.length > 0)
-      await dataContainer.boundary[0].updateHeightBoundary();
+		this.resetSizeVertex(dataContainer, true)
+		if (dataContainer.boundary.length > 0)
+			await dataContainer.boundary[0].updateHeightBoundary()
 
-    Object(__WEBPACK_IMPORTED_MODULE_3__common_ult__["p" /* setMinBoundaryGraph */])(dataContainer, svgId, viewMode);
-  }
+		Object(__WEBPACK_IMPORTED_MODULE_3__common_ult__["p" /* setMinBoundaryGraph */])(dataContainer, svgId, viewMode)
+	}
 
-  /**
+	/**
    * Calculate height vertex base on properties connectted
    * @param id
    * @param isShowFull used in case vertex just have header.
    * @returns {number}
    */
-  resetSizeVertex(dataContainer, isShowFull = false) {
-    let vertexes = dataContainer.vertex;
-    vertexes.forEach(vertex => {
-      let exitConnect = false;
-      let vertexId = vertex.id;
-      // Get all prop that not hide
-      let arrProp = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexId}`).selectAll('.property:not(.hide)');
-      let tmpArry = arrProp._groups[0];
-      // When not any edge connect to properties of vertex,
-      // Check exit edge connect to vertex
-      if (tmpArry.length < 1)
-        exitConnect = vertex.vertexMgmt.edgeMgmt.checkExitEdgeConnectToVertex(vertexId);
+	resetSizeVertex(dataContainer, isShowFull = false) {
+		let vertexes = dataContainer.vertex
+		vertexes.forEach(vertex => {
+			let exitConnect = false
+			let vertexId = vertex.id
+			// Get all prop that not hide
+			let arrProp = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertexId}`).selectAll('.property:not(.hide)')
+			let tmpArry = arrProp._groups[0]
+			// When not any edge connect to properties of vertex,
+			// Check exit edge connect to vertex
+			if (tmpArry.length < 1)
+				exitConnect = vertex.vertexMgmt.edgeMgmt.checkExitEdgeConnectToVertex(vertexId)
 
-      let element = $(`#${vertexId} .vertex_content`);
-      element.parent()
-        .attr('height', tmpArry.length ?
-          __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * tmpArry.length : isShowFull ?
-            __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : exitConnect ? __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT);
-    });
-  }
+			let element = $(`#${vertexId} .vertex_content`)
+			element.parent()
+				.attr('height', tmpArry.length ?
+					__WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * tmpArry.length : isShowFull ?
+						__WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : exitConnect ? __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT : __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT)
+		})
+	}
 
-  /**
+	/**
    * Update position of "rect" connect on vertex
    * @param arrProp
    * @param vertex
    */
-  updatePositionRectConnect(arrProp, vertex) {
-    for (var i = 0; i < arrProp.length; i++) {
-      let prop = arrProp[i];
-      if (prop != null) {
-        //get new index of this property in vertex after hiding all properties have no edge connected for updatting new position of "rect"
-        let newIndexOfPropInVertex = this.findIndexPropInVertex(vertex.id, prop);
-        let newY = __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * newIndexOfPropInVertex + 1;
+	updatePositionRectConnect(arrProp, vertex) {
+		for (var i = 0; i < arrProp.length; i++) {
+			let prop = arrProp[i]
+			if (prop != null) {
+				//get new index of this property in vertex after hiding all properties have no edge connected for updatting new position of "rect"
+				let newIndexOfPropInVertex = this.findIndexPropInVertex(vertex.id, prop)
+				let newY = __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_2__const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * newIndexOfPropInVertex + 1
 
-        //update position of "rect"
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll(`:not(.property)[prop=${prop}]`).attr("y", newY);
-      }
-    }
-  }
+				//update position of "rect"
+				__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll(`:not(.property)[prop=${prop}]`).attr('y', newY)
+			}
+		}
+	}
 
   
 }
@@ -21560,7 +21560,7 @@ var store = global[SHARED] || (global[SHARED] = {});
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(20);
+var toIObject = __webpack_require__(19);
 var toLength = __webpack_require__(9);
 var toAbsoluteIndex = __webpack_require__(51);
 module.exports = function (IS_INCLUDES) {
@@ -23112,7 +23112,7 @@ module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
     function (test, buggy, set) {
       try {
-        set = __webpack_require__(25)(Function.call, __webpack_require__(21).f(Object.prototype, '__proto__').set, 2);
+        set = __webpack_require__(25)(Function.call, __webpack_require__(20).f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
       } catch (e) { buggy = true; }
@@ -23232,7 +23232,7 @@ var hide = __webpack_require__(15);
 var Iterators = __webpack_require__(65);
 var $iterCreate = __webpack_require__(138);
 var setToStringTag = __webpack_require__(63);
-var getPrototypeOf = __webpack_require__(22);
+var getPrototypeOf = __webpack_require__(21);
 var ITERATOR = __webpack_require__(6)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
 var FF_ITERATOR = '@@iterator';
@@ -23433,7 +23433,7 @@ module.exports = function fill(value /* , start = 0, end = @length */) {
 var addToUnscopables = __webpack_require__(45);
 var step = __webpack_require__(214);
 var Iterators = __webpack_require__(65);
-var toIObject = __webpack_require__(20);
+var toIObject = __webpack_require__(19);
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
@@ -27133,8 +27133,8 @@ exports.f = __webpack_require__(6);
 /* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has = __webpack_require__(19);
-var toIObject = __webpack_require__(20);
+var has = __webpack_require__(18);
+var toIObject = __webpack_require__(19);
 var arrayIndexOf = __webpack_require__(90)(false);
 var IE_PROTO = __webpack_require__(127)('IE_PROTO');
 
@@ -27176,7 +27176,7 @@ module.exports = __webpack_require__(7) ? Object.defineProperties : function def
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = __webpack_require__(20);
+var toIObject = __webpack_require__(19);
 var gOPN = __webpack_require__(53).f;
 var toString = {}.toString;
 
@@ -27795,7 +27795,7 @@ var isObject = __webpack_require__(5);
 var anInstance = __webpack_require__(55);
 var forOf = __webpack_require__(56);
 var createArrayMethod = __webpack_require__(34);
-var $has = __webpack_require__(19);
+var $has = __webpack_require__(18);
 var validate = __webpack_require__(66);
 var arrayFind = createArrayMethod(5);
 var arrayFindIndex = createArrayMethod(6);
@@ -27979,7 +27979,7 @@ module.exports = function (that, maxLength, fillString, left) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var getKeys = __webpack_require__(50);
-var toIObject = __webpack_require__(20);
+var toIObject = __webpack_require__(19);
 var isEnum = __webpack_require__(74).f;
 module.exports = function (isEntries) {
   return function (it) {
@@ -33005,49 +33005,49 @@ function transform(node) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__const_index__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__const_index__ = __webpack_require__(23);
 
 
 class PopUtils {
-  metSetShowPopup(options) {
+	metSetShowPopup(options) {
 
-    const {popupId, position, width} = options;
-    /**
+		const {popupId, position, width} = options
+		/**
      * Configure position, width for modal popup.
      */
-    if (!options.popupId) {
-      return;
-    }
-    // Configure show modal and prevent close modal when use
-    // click outside or press ESC
-    $(`#${popupId}`).modal({backdrop: 'static', keyboard: true})
+		if (!options.popupId) {
+			return
+		}
+		// Configure show modal and prevent close modal when use
+		// click outside or press ESC
+		$(`#${popupId}`).modal({backdrop: 'static', keyboard: true})
 
-    // Set position popup center
-    // Default is top center
-    if (position === 'center') {
-			$(`#${popupId} .modal-dialog`).css('left', 0);
-			$(`#${popupId} .modal-dialog`).css('top', 0);
-      //$(`#${popupId}` + ` .modal-dialog`).css("margin-top", Math.max(0, ($(window).height() - $('.modal-dialog').height()) / 4));
-    }
+		// Set position popup center
+		// Default is top center
+		if (position === 'center') {
+			$(`#${popupId} .modal-dialog`).css('left', 0)
+			$(`#${popupId} .modal-dialog`).css('top', 0)
+			//$(`#${popupId}` + ` .modal-dialog`).css("margin-top", Math.max(0, ($(window).height() - $('.modal-dialog').height()) / 4));
+		}
 
-    // Set width for modal.
-    if (width) {
-      $(`#${popupId}` + ` .modal-dialog`)
-        .css("width", width)
-        .css("max-width", __WEBPACK_IMPORTED_MODULE_0__const_index__["i" /* POPUP_CONFIG */].MAX_WIDTH)
-        .css("min-width", __WEBPACK_IMPORTED_MODULE_0__const_index__["i" /* POPUP_CONFIG */].MIN_WIDTH);
-    }
-  }
+		// Set width for modal.
+		if (width) {
+			$(`#${popupId}` + ' .modal-dialog')
+				.css('width', width)
+				.css('max-width', __WEBPACK_IMPORTED_MODULE_0__const_index__["i" /* POPUP_CONFIG */].MAX_WIDTH)
+				.css('min-width', __WEBPACK_IMPORTED_MODULE_0__const_index__["i" /* POPUP_CONFIG */].MIN_WIDTH)
+		}
+	}
 
-  metClosePopup(options) {
-    /**
+	metClosePopup(options) {
+		/**
      * Hide modal popup.
      */
-    if (!options.popupId) {
-      return;
-    }
-    $(`#${options.popupId}`).modal('hide');
-  }
+		if (!options.popupId) {
+			return
+		}
+		$(`#${options.popupId}`).modal('hide')
+	}
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (new PopUtils());
@@ -33299,7 +33299,7 @@ module.exports = __webpack_require__(24);
 
 // ECMAScript 6 symbols shim
 var global = __webpack_require__(3);
-var has = __webpack_require__(19);
+var has = __webpack_require__(18);
 var DESCRIPTORS = __webpack_require__(7);
 var $export = __webpack_require__(0);
 var redefine = __webpack_require__(16);
@@ -33315,12 +33315,12 @@ var enumKeys = __webpack_require__(330);
 var isArray = __webpack_require__(92);
 var anObject = __webpack_require__(2);
 var isObject = __webpack_require__(5);
-var toIObject = __webpack_require__(20);
+var toIObject = __webpack_require__(19);
 var toPrimitive = __webpack_require__(30);
 var createDesc = __webpack_require__(48);
 var _create = __webpack_require__(52);
 var gOPNExt = __webpack_require__(201);
-var $GOPD = __webpack_require__(21);
+var $GOPD = __webpack_require__(20);
 var $DP = __webpack_require__(8);
 var $keys = __webpack_require__(50);
 var gOPD = $GOPD.f;
@@ -33585,8 +33585,8 @@ $export($export.S + $export.F * !__webpack_require__(7), 'Object', { definePrope
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-var toIObject = __webpack_require__(20);
-var $getOwnPropertyDescriptor = __webpack_require__(21).f;
+var toIObject = __webpack_require__(19);
+var $getOwnPropertyDescriptor = __webpack_require__(20).f;
 
 __webpack_require__(33)('getOwnPropertyDescriptor', function () {
   return function getOwnPropertyDescriptor(it, key) {
@@ -33601,7 +33601,7 @@ __webpack_require__(33)('getOwnPropertyDescriptor', function () {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
 var toObject = __webpack_require__(10);
-var $getPrototypeOf = __webpack_require__(22);
+var $getPrototypeOf = __webpack_require__(21);
 
 __webpack_require__(33)('getPrototypeOf', function () {
   return function getPrototypeOf(it) {
@@ -33817,7 +33817,7 @@ NAME in FProto || __webpack_require__(7) && dP(FProto, NAME, {
 "use strict";
 
 var isObject = __webpack_require__(5);
-var getPrototypeOf = __webpack_require__(22);
+var getPrototypeOf = __webpack_require__(21);
 var HAS_INSTANCE = __webpack_require__(6)('hasInstance');
 var FunctionProto = Function.prototype;
 // 19.2.3.6 Function.prototype[@@hasInstance](V)
@@ -33857,13 +33857,13 @@ $export($export.G + $export.F * (parseFloat != $parseFloat), { parseFloat: $pars
 "use strict";
 
 var global = __webpack_require__(3);
-var has = __webpack_require__(19);
+var has = __webpack_require__(18);
 var cof = __webpack_require__(26);
 var inheritIfRequired = __webpack_require__(132);
 var toPrimitive = __webpack_require__(30);
 var fails = __webpack_require__(4);
 var gOPN = __webpack_require__(53).f;
-var gOPD = __webpack_require__(21).f;
+var gOPD = __webpack_require__(20).f;
 var dP = __webpack_require__(8).f;
 var $trim = __webpack_require__(64).trim;
 var NUMBER = 'Number';
@@ -34488,7 +34488,7 @@ $export($export.S + $export.F * (!!$fromCodePoint && $fromCodePoint.length != 1)
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
-var toIObject = __webpack_require__(20);
+var toIObject = __webpack_require__(19);
 var toLength = __webpack_require__(9);
 
 $export($export.S, 'String', {
@@ -35038,7 +35038,7 @@ $export($export.S + $export.F * __webpack_require__(4)(function () {
 
 // 22.1.3.13 Array.prototype.join(separator)
 var $export = __webpack_require__(0);
-var toIObject = __webpack_require__(20);
+var toIObject = __webpack_require__(19);
 var arrayJoin = [].join;
 
 // fallback for not array-like strings
@@ -35285,7 +35285,7 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(27)($nati
 "use strict";
 
 var $export = __webpack_require__(0);
-var toIObject = __webpack_require__(20);
+var toIObject = __webpack_require__(19);
 var toInteger = __webpack_require__(32);
 var toLength = __webpack_require__(9);
 var $native = [].lastIndexOf;
@@ -36174,7 +36174,7 @@ $export($export.S + $export.F * __webpack_require__(4)(function () {
 
 // 26.1.4 Reflect.deleteProperty(target, propertyKey)
 var $export = __webpack_require__(0);
-var gOPD = __webpack_require__(21).f;
+var gOPD = __webpack_require__(20).f;
 var anObject = __webpack_require__(2);
 
 $export($export.S, 'Reflect', {
@@ -36223,9 +36223,9 @@ $export($export.S, 'Reflect', {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.6 Reflect.get(target, propertyKey [, receiver])
-var gOPD = __webpack_require__(21);
-var getPrototypeOf = __webpack_require__(22);
-var has = __webpack_require__(19);
+var gOPD = __webpack_require__(20);
+var getPrototypeOf = __webpack_require__(21);
+var has = __webpack_require__(18);
 var $export = __webpack_require__(0);
 var isObject = __webpack_require__(5);
 var anObject = __webpack_require__(2);
@@ -36250,7 +36250,7 @@ $export($export.S, 'Reflect', { get: get });
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.7 Reflect.getOwnPropertyDescriptor(target, propertyKey)
-var gOPD = __webpack_require__(21);
+var gOPD = __webpack_require__(20);
 var $export = __webpack_require__(0);
 var anObject = __webpack_require__(2);
 
@@ -36267,7 +36267,7 @@ $export($export.S, 'Reflect', {
 
 // 26.1.8 Reflect.getPrototypeOf(target)
 var $export = __webpack_require__(0);
-var getProto = __webpack_require__(22);
+var getProto = __webpack_require__(21);
 var anObject = __webpack_require__(2);
 
 $export($export.S, 'Reflect', {
@@ -36346,9 +36346,9 @@ $export($export.S, 'Reflect', {
 
 // 26.1.13 Reflect.set(target, propertyKey, V [, receiver])
 var dP = __webpack_require__(8);
-var gOPD = __webpack_require__(21);
-var getPrototypeOf = __webpack_require__(22);
-var has = __webpack_require__(19);
+var gOPD = __webpack_require__(20);
+var getPrototypeOf = __webpack_require__(21);
+var has = __webpack_require__(18);
 var $export = __webpack_require__(0);
 var createDesc = __webpack_require__(48);
 var anObject = __webpack_require__(2);
@@ -36617,8 +36617,8 @@ __webpack_require__(126)('observable');
 // https://github.com/tc39/proposal-object-getownpropertydescriptors
 var $export = __webpack_require__(0);
 var ownKeys = __webpack_require__(224);
-var toIObject = __webpack_require__(20);
-var gOPD = __webpack_require__(21);
+var toIObject = __webpack_require__(19);
+var gOPD = __webpack_require__(20);
 var createProperty = __webpack_require__(142);
 
 $export($export.S, 'Object', {
@@ -36715,8 +36715,8 @@ __webpack_require__(7) && $export($export.P + __webpack_require__(101), 'Object'
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(10);
 var toPrimitive = __webpack_require__(30);
-var getPrototypeOf = __webpack_require__(22);
-var getOwnPropertyDescriptor = __webpack_require__(21).f;
+var getPrototypeOf = __webpack_require__(21);
+var getOwnPropertyDescriptor = __webpack_require__(20).f;
 
 // B.2.2.4 Object.prototype.__lookupGetter__(P)
 __webpack_require__(7) && $export($export.P + __webpack_require__(101), 'Object', {
@@ -36740,8 +36740,8 @@ __webpack_require__(7) && $export($export.P + __webpack_require__(101), 'Object'
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(10);
 var toPrimitive = __webpack_require__(30);
-var getPrototypeOf = __webpack_require__(22);
-var getOwnPropertyDescriptor = __webpack_require__(21).f;
+var getPrototypeOf = __webpack_require__(21);
+var getOwnPropertyDescriptor = __webpack_require__(20).f;
 
 // B.2.2.5 Object.prototype.__lookupSetter__(P)
 __webpack_require__(7) && $export($export.P + __webpack_require__(101), 'Object', {
@@ -37143,7 +37143,7 @@ metadata.exp({ deleteMetadata: function deleteMetadata(metadataKey, target /* , 
 
 var metadata = __webpack_require__(39);
 var anObject = __webpack_require__(2);
-var getPrototypeOf = __webpack_require__(22);
+var getPrototypeOf = __webpack_require__(21);
 var ordinaryHasOwnMetadata = metadata.has;
 var ordinaryGetOwnMetadata = metadata.get;
 var toMetaKey = metadata.key;
@@ -37168,7 +37168,7 @@ var Set = __webpack_require__(220);
 var from = __webpack_require__(229);
 var metadata = __webpack_require__(39);
 var anObject = __webpack_require__(2);
-var getPrototypeOf = __webpack_require__(22);
+var getPrototypeOf = __webpack_require__(21);
 var ordinaryOwnMetadataKeys = metadata.keys;
 var toMetaKey = metadata.key;
 
@@ -37220,7 +37220,7 @@ metadata.exp({ getOwnMetadataKeys: function getOwnMetadataKeys(target /* , targe
 
 var metadata = __webpack_require__(39);
 var anObject = __webpack_require__(2);
-var getPrototypeOf = __webpack_require__(22);
+var getPrototypeOf = __webpack_require__(21);
 var ordinaryHasOwnMetadata = metadata.has;
 var toMetaKey = metadata.key;
 
@@ -52630,8 +52630,8 @@ module.exports = BKDRHash;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_const_index__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_const_index__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__ = __webpack_require__(22);
 
 
 
@@ -52640,44 +52640,44 @@ module.exports = BKDRHash;
 
 
 
-const CONNECT_KEY = 'Connected';
+const CONNECT_KEY = 'Connected'
 
 class Vertex {
-  constructor(props) {
-    this.dataContainer    					= props.vertexMgmt.dataContainer;
-    this.containerId      					= props.vertexMgmt.containerId;
-    this.svgId            					= props.vertexMgmt.svgId;
-    this.selectorClass    					= props.vertexMgmt.selectorClass || "defaul_vertex_class";
-    this.vertexDefinition 					= props.vertexMgmt.vertexDefinition;
-    this.viewMode         					= props.vertexMgmt.viewMode;
-		this.connectSide      					= props.vertexMgmt.connectSide;
+	constructor(props) {
+		this.dataContainer = props.vertexMgmt.dataContainer
+		this.containerId = props.vertexMgmt.containerId
+		this.svgId = props.vertexMgmt.svgId
+		this.selectorClass = props.vertexMgmt.selectorClass || 'defaul_vertex_class'
+		this.vertexDefinition = props.vertexMgmt.vertexDefinition
+		this.viewMode = props.vertexMgmt.viewMode
+		this.connectSide = props.vertexMgmt.connectSide
 		this.mandatoryDataElementConfig	= props.vertexMgmt.mandatoryDataElementConfig // The configuration for Data element validation
-		this.vertexMgmt       					= props.vertexMgmt;		
+		this.vertexMgmt = props.vertexMgmt		
 		
 
-    this.id               = null;
-    this.x                = 0; //type: number, require: true, purpose: coordinate x
-    this.y                = 0; //type: number, require: true, purpose: coordinate y
-    this.groupType        = ""; // Current is OPERATIONS or SEGMENT
-    this.vertexType       = ""; // The details of group type
-    this.name             = ""; //type: string, require: false, purpose: vertex name
-    this.description      = ""; //type: string, require: false, purpose: content title when hover to vertex
-    this.data             = []; //type: array, require: false, default: empty array, purpose: define the content of vertex
-    this.parent           = null;
-    this.mandatory        = false;
-    this.repeat           = 1;
-    this.type;
-    this.show;
+		this.id = null
+		this.x = 0 //type: number, require: true, purpose: coordinate x
+		this.y = 0 //type: number, require: true, purpose: coordinate y
+		this.groupType = '' // Current is OPERATIONS or SEGMENT
+		this.vertexType = '' // The details of group type
+		this.name = '' //type: string, require: false, purpose: vertex name
+		this.description = '' //type: string, require: false, purpose: content title when hover to vertex
+		this.data = [] //type: array, require: false, default: empty array, purpose: define the content of vertex
+		this.parent = null
+		this.mandatory = false
+		this.repeat = 1
+		this.type
+		this.show
 
-    this.initialize();
-  }
+		this.initialize()
+	}
 
-  initialize() {
-    this.colorHash = new __WEBPACK_IMPORTED_MODULE_0_color_hash___default.a({lightness: 0.7});
-    this.colorHashConnection = new __WEBPACK_IMPORTED_MODULE_0_color_hash___default.a({lightness: 0.8});
-  }
+	initialize() {
+		this.colorHash = new __WEBPACK_IMPORTED_MODULE_0_color_hash___default.a({lightness: 0.7})
+		this.colorHashConnection = new __WEBPACK_IMPORTED_MODULE_0_color_hash___default.a({lightness: 0.8})
+	}
 
-  /**
+	/**
    * Create vertex with options
    * @param x => type: number, require: true, purpose: coordinate x
    * @param y => type: number, require: true, purpose: coordinate y
@@ -52691,85 +52691,85 @@ class Vertex {
    * @param callbackDragVertex => type: function, require: false, default: anonymous function, purpose: call back drag vertex
    * @param callbackDragConnection => type: function, require: false, default: anonymous function, purpose: call back drag connection
    */
-  create(sOptions = {}, callbackDragVertex = ()=>{}, callbackDragConnection = ()=>{}) {
+	create(sOptions = {}, callbackDragVertex = ()=>{}, callbackDragConnection = ()=>{}) {
 
-    let {id, x, y, groupType, vertexType, name, description, data, parent, mandatory, repeat, isMenu, isImport} = sOptions;
+		let {id, x, y, groupType, vertexType, name, description, data, parent, mandatory, repeat, isMenu, isImport} = sOptions
 
-    if (isMenu) {
-      let vertexTypeInfo = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.vertexDefinition.vertex, {'vertexType': vertexType}));
-      data = vertexTypeInfo.data;
-      description = vertexTypeInfo.description;
-      groupType = vertexTypeInfo.groupType;
-    }
+		if (isMenu) {
+			let vertexTypeInfo = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(__WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.vertexDefinition.vertex, {'vertexType': vertexType}))
+			data = vertexTypeInfo.data
+			description = vertexTypeInfo.description
+			groupType = vertexTypeInfo.groupType
+		}
 
-    this.id           = id || Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["i" /* generateObjectId */])('V');
-    this.x            = x || 0;
-    this.y            = y || 0;
-    this.groupType    = groupType;
-    this.vertexType   = vertexType;
-    this.name         = name || vertexType;
-    this.description  = description || "Description";
-    this.data         = data || [];
-    this.parent       = parent || null;
-    this.mandatory    = mandatory || false;
-    this.repeat       = repeat || 1;
-    this.type         = "V";
-    this.show         = true;
+		this.id = id || Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["i" /* generateObjectId */])('V')
+		this.x = x || 0
+		this.y = y || 0
+		this.groupType = groupType
+		this.vertexType = vertexType
+		this.name = name || vertexType
+		this.description = description || 'Description'
+		this.data = data || []
+		this.parent = parent || null
+		this.mandatory = mandatory || false
+		this.repeat = repeat || 1
+		this.type = 'V'
+		this.show = true
 
-    if ( !this.dataContainer.vertex ) this.dataContainer.vertex = [];
-    this.dataContainer.vertex.push(this);
+		if ( !this.dataContainer.vertex ) this.dataContainer.vertex = []
+		this.dataContainer.vertex.push(this)
 
-    let group = __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`)
-      .data(this.dataContainer.vertex)
-      .enter().append("g")
-      .attr("transform", `translate(${this.x}, ${this.y})`)
-      .attr("id", this.id)
-      .attr("class", `${this.selectorClass}`);
+		let group = __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`)
+			.data(this.dataContainer.vertex)
+			.enter().append('g')
+			.attr('transform', `translate(${this.x}, ${this.y})`)
+			.attr('id', this.id)
+			.attr('class', `${this.selectorClass}`)
 
-			// If isEnableDragVertex => emphasizePathConnectForVertex will be call at StartDrag
-			// else => have to bind emphasizePathConnectForVertex for click event
-      if(Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, "isEnableDragVertex")){
-        group.call(callbackDragVertex);
-      }else{
-        $(`#${this.id}`).click( () => {
-          this.vertexMgmt.edgeMgmt.emphasizePathConnectForVertex(this);
-        })
-      }
+		// If isEnableDragVertex => emphasizePathConnectForVertex will be call at StartDrag
+		// else => have to bind emphasizePathConnectForVertex for click event
+		if(Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'isEnableDragVertex')) {
+			group.call(callbackDragVertex)
+		}else{
+			$(`#${this.id}`).click( () => {
+				this.vertexMgmt.edgeMgmt.emphasizePathConnectForVertex(this)
+			})
+		}
     
-    this.generateContent(callbackDragConnection);
+		this.generateContent(callbackDragConnection)
 
-    if(!isImport) 
-      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId, this.viewMode.value);
+		if(!isImport) 
+			Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId, this.viewMode.value)
 
 		// Check mandatory for data element
-		this.validateConnectionByUsage();
+		this.validateConnectionByUsage()
 		
-    return this;
+		return this
 	}
 	
 	generateContent(callbackDragConnection = ()=>{}) {
-		let htmlContent = '';
-		let presentation = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.vertexDefinition.vertexGroup, {"groupType":this.groupType}).vertexPresentation;
-    let countData = this.data.length;
-    let hasLeftConnector = (this.connectSide == __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].LEFT || this.connectSide == __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH) ? " has_left_connect" : "";
-    let hasRightConnector = (this.connectSide == __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].RIGHT || this.connectSide == __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH) ? " has_right_connect" : "";
-    for (let i = 0; i < countData; i++) {
-      let item = this.data[i];
-      htmlContent += `
+		let htmlContent = ''
+		let presentation = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.vertexDefinition.vertexGroup, {'groupType':this.groupType}).vertexPresentation
+		let countData = this.data.length
+		let hasLeftConnector = (this.connectSide == __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].LEFT || this.connectSide == __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH) ? ' has_left_connect' : ''
+		let hasRightConnector = (this.connectSide == __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].RIGHT || this.connectSide == __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH) ? ' has_right_connect' : ''
+		for (let i = 0; i < countData; i++) {
+			let item = this.data[i]
+			htmlContent += `
         <div class="property" prop="${this.id}${CONNECT_KEY}${i}" style="height: ${__WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT}px">
-          <label class="key${hasLeftConnector}" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || "No data to show"}">${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["l" /* htmlEncode */])(Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["k" /* getKeyPrefix */])(item, this.vertexDefinition, this.groupType))}${item[presentation.key] || ""}</label>
-          <label class="data${hasRightConnector}" id="${this.id}${presentation.value}${i}" title="${item[presentation.valueTooltip] || "No data to show"}">${item[presentation.value] || ""}</label>
-        </div>`;
-    }
+          <label class="key${hasLeftConnector}" id="${this.id}${presentation.key}${i}" title="${item[presentation.keyTooltip] || 'No data to show'}">${Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["l" /* htmlEncode */])(Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["k" /* getKeyPrefix */])(item, this.vertexDefinition, this.groupType))}${item[presentation.key] || ''}</label>
+          <label class="data${hasRightConnector}" id="${this.id}${presentation.value}${i}" title="${item[presentation.valueTooltip] || 'No data to show'}">${item[presentation.value] || ''}</label>
+        </div>`
+		}
 
-		let vertexHeight = __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * countData;
+		let vertexHeight = __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * countData
 		
-		let group = __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`);
-    group.append("foreignObject")
-      .attr("width", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
-      .attr("height", vertexHeight)
-			.append("xhtml:div")
-      .attr("class", "vertex_content")
+		let group = __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`)
+		group.append('foreignObject')
+			.attr('width', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
+			.attr('height', vertexHeight)
+			.append('xhtml:div')
+			.attr('class', 'vertex_content')
 			.html(`
 			<div class="content_header_name" style="height: ${__WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT}px;
 									background-color: ${this.colorHash.hex(this.name)};
@@ -52780,248 +52780,248 @@ class Vertex {
         <div class="vertex_data">
           ${htmlContent}
         </div>
-      `);
+      `)
     
-    //Rect connect title INPUT
-    if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].LEFT){
-      group.append("rect")
-      .attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
-      .attr("type", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* TYPE_CONNECT */].INPUT)
-      .attr("prop", `${this.id}${CONNECT_KEY}title`)
-      .attr("pointer-events", "all")
-      .attr("width", 12)
-      .attr("height", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT - 1)
-      .attr("x", 1)
-      .attr("y", 1)
-      .attr("fill", this.colorHash.hex(this.name))
-      .call(callbackDragConnection);
-    }
+		//Rect connect title INPUT
+		if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].LEFT) {
+			group.append('rect')
+				.attr('class', `drag_connect connect_header drag_connect_${this.svgId}`)
+				.attr('type', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* TYPE_CONNECT */].INPUT)
+				.attr('prop', `${this.id}${CONNECT_KEY}title`)
+				.attr('pointer-events', 'all')
+				.attr('width', 12)
+				.attr('height', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT - 1)
+				.attr('x', 1)
+				.attr('y', 1)
+				.attr('fill', this.colorHash.hex(this.name))
+				.call(callbackDragConnection)
+		}
 
-    //Rect connect title OUTPUT
-    if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].RIGHT){
-      group.append("rect")
-				.attr("class", `drag_connect connect_header drag_connect_${this.svgId}`)
-				.attr("type", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* TYPE_CONNECT */].OUTPUT)
-        .attr("prop", `${this.id}${CONNECT_KEY}title`)
-        .attr("pointer-events", "all")
-        .attr("width", 12)
-        .attr("height", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT - 1)
-        .attr("x", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH - (__WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2))
-        .attr("y", 1)
-        .attr("fill", this.colorHash.hex(this.name))
-        .call(callbackDragConnection);
-    }
+		//Rect connect title OUTPUT
+		if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].RIGHT) {
+			group.append('rect')
+				.attr('class', `drag_connect connect_header drag_connect_${this.svgId}`)
+				.attr('type', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* TYPE_CONNECT */].OUTPUT)
+				.attr('prop', `${this.id}${CONNECT_KEY}title`)
+				.attr('pointer-events', 'all')
+				.attr('width', 12)
+				.attr('height', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT - 1)
+				.attr('x', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH - (__WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2))
+				.attr('y', 1)
+				.attr('fill', this.colorHash.hex(this.name))
+				.call(callbackDragConnection)
+		}
 
-    for (let i = 0; i < countData; i++) {
-      // Input
-      if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].LEFT){
-        let connect = group.append("rect")
-          .attr("class", `drag_connect drag_connect_${this.svgId}`)
-          .attr("type", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* TYPE_CONNECT */].INPUT)
-          .attr("prop", `${this.id}${CONNECT_KEY}${i}`)
-          .attr("pointer-events", "all")
-          .attr("width", 12)
-          .attr("height", 25)
-          .attr("x", 1)
-          .attr("y", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * i + 1)
-          .attr("fill", this.colorHashConnection.hex(this.name))
-          .call(callbackDragConnection);
-      }
+		for (let i = 0; i < countData; i++) {
+			// Input
+			if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].LEFT) {
+				let connect = group.append('rect')
+					.attr('class', `drag_connect drag_connect_${this.svgId}`)
+					.attr('type', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* TYPE_CONNECT */].INPUT)
+					.attr('prop', `${this.id}${CONNECT_KEY}${i}`)
+					.attr('pointer-events', 'all')
+					.attr('width', 12)
+					.attr('height', 25)
+					.attr('x', 1)
+					.attr('y', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * i + 1)
+					.attr('fill', this.colorHashConnection.hex(this.name))
+					.call(callbackDragConnection)
+			}
 
-      // Output
-      if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].RIGHT){
-        let connect =  group.append("rect")
-					.attr("class", `drag_connect drag_connect_${this.svgId}`)
-					.attr("type", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* TYPE_CONNECT */].OUTPUT)
-          .attr("prop", `${this.id}${CONNECT_KEY}${i}`)
-          .attr("pointer-events", "all")
-          .attr("width", 12)
-          .attr("height", 25)
-          .attr("x", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH - (__WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2))
-          .attr("y", __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * i + 1)
-          .attr("fill", this.colorHashConnection.hex(this.name))
-          .call(callbackDragConnection);
-      }
-    }
+			// Output
+			if (this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].BOTH || this.connectSide === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["d" /* CONNECT_SIDE */].RIGHT) {
+				let connect =  group.append('rect')
+					.attr('class', `drag_connect drag_connect_${this.svgId}`)
+					.attr('type', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["k" /* TYPE_CONNECT */].OUTPUT)
+					.attr('prop', `${this.id}${CONNECT_KEY}${i}`)
+					.attr('pointer-events', 'all')
+					.attr('width', 12)
+					.attr('height', 25)
+					.attr('x', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH - (__WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT / 2))
+					.attr('y', __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * i + 1)
+					.attr('fill', this.colorHashConnection.hex(this.name))
+					.call(callbackDragConnection)
+			}
+		}
 	}
 
-  /**
+	/**
    * Set position for vertex
    * Called in function dragBoundary (Object boundary)
    * @param position
    */
-  setPosition(position) {
-    let {x, y} = position;
-    this.x = x;
-    this.y = y;
-    this.updatePathConnect();
+	setPosition(position) {
+		let {x, y} = position
+		this.x = x
+		this.y = y
+		this.updatePathConnect()
 
-    __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).attr("transform","translate(" + [x, y] + ")");
-  }
+		__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).attr('transform','translate(' + [x, y] + ')')
+	}
 
-  /**
+	/**
    * Copy vertex selected
    */
-  copy() {
-    let {x, y, name, description, vertexType, data, repeat, mandatory, groupType} = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this);
-    x = x + __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].SPACE_COPY;
-    y = y + __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].SPACE_COPY;
+	copy() {
+		let {x, y, name, description, vertexType, data, repeat, mandatory, groupType} = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this)
+		x = x + __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].SPACE_COPY
+		y = y + __WEBPACK_IMPORTED_MODULE_3__common_const_index__["l" /* VERTEX_ATTR_SIZE */].SPACE_COPY
 
-    this.vertexMgmt.create({x, y, name, description, vertexType, data, repeat, mandatory, groupType});
-  }
+		this.vertexMgmt.create({x, y, name, description, vertexType, data, repeat, mandatory, groupType})
+	}
 
-  /**
+	/**
    * Remove vertex
    */
-  remove() {
-    // Remove all edge relate to vertex
-    this.vertexMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this);
+	remove() {
+		// Remove all edge relate to vertex
+		this.vertexMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this)
 
-    if (this.parent){
-      let parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.boundary, {"id": this.parent});
-      parentObj.removeMemberFromBoundary(this);
-    }
+		if (this.parent) {
+			let parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.boundary, {'id': this.parent})
+			parentObj.removeMemberFromBoundary(this)
+		}
       
-    // Remove from DOM
-    __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).remove();
+		// Remove from DOM
+		__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).remove()
 
-    // Remove from data container
-    let vertexInfo = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(this.dataContainer.vertex, (e) => {
-      return e.id === this.id;
-    });
+		// Remove from data container
+		let vertexInfo = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(this.dataContainer.vertex, (e) => {
+			return e.id === this.id
+		})
 
-    Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId, this.viewMode.value);
-  }
+		Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId, this.viewMode.value)
+	}
   
-  /**
+	/**
    * The function called from boundary via mainMgmt
    * In case that delete all boundary parent of vertex
    * Different between this func and remove func is, in this case we don't care the parent, because it was deleted 
    */
-  delete() {
-    // Remove all edge relate to vertex
-    this.vertexMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this);
+	delete() {
+		// Remove all edge relate to vertex
+		this.vertexMgmt.edgeMgmt.removeAllEdgeConnectToVertex(this)
 
-    // Remove from DOM
-    __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).remove();
-    // Remove from data container
-    __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(this.dataContainer.vertex, (e) => {
-      return e.id === this.id;
-    });
-  }  
+		// Remove from DOM
+		__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).remove()
+		// Remove from data container
+		__WEBPACK_IMPORTED_MODULE_1_lodash___default.a.remove(this.dataContainer.vertex, (e) => {
+			return e.id === this.id
+		})
+	}  
 
-  /**
+	/**
    * Move to new position with parent offset(called when moving the boundary that contain this vertex)
    * @param {*} offsetX
    * @param {*} offsetY
    */
-  move(offsetX, offsetY) {
-    this.x = this.x + offsetX;
-    this.y = this.y + offsetY;
-    __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).attr("transform", "translate(" + [this.x, this.y] + ")");
+	move(offsetX, offsetY) {
+		this.x = this.x + offsetX
+		this.y = this.y + offsetY
+		__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).attr('transform', 'translate(' + [this.x, this.y] + ')')
 
-    this.updatePathConnect()
-  }
+		this.updatePathConnect()
+	}
 
-  updatePathConnect(){
-    this.vertexMgmt.updatePathConnectForVertex(this);
-  }
+	updatePathConnect() {
+		this.vertexMgmt.updatePathConnectForVertex(this)
+	}
 
-  moveToFront(){
-    __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).moveToFront();
+	moveToFront() {
+		__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.id}`).moveToFront()
 
-    if (this.dataContainer.vertex.length > 1){
-      let curIndex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.findIndex(this.dataContainer.vertex, {"id": this.id});
+		if (this.dataContainer.vertex.length > 1) {
+			let curIndex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.findIndex(this.dataContainer.vertex, {'id': this.id})
 
-      Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["b" /* arrayMove */])(this.dataContainer.vertex, curIndex, this.dataContainer.vertex.length - 1);
-    }
-  }
+			Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["b" /* arrayMove */])(this.dataContainer.vertex, curIndex, this.dataContainer.vertex.length - 1)
+		}
+	}
 
-  /**
+	/**
    * 
    * @param {*} prop 
    * @param {*} type 
    */
-  markedConnectorByProp(prop, type){
-    __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`[prop="${prop}"][type=${type}]`).classed("marked_connector", true);
-  }
+	markedConnectorByProp(prop, type) {
+		__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`[prop="${prop}"][type=${type}]`).classed('marked_connector', true)
+	}
 
-  /**
+	/**
    * Checked connected and marked connector for vertex
    */
-  markedAllConnector(){
+	markedAllConnector() {
 
-    let lstMarkedInput = [];
-    let lstMarkedOutput = [];
+		let lstMarkedInput = []
+		let lstMarkedOutput = []
 
-    lstMarkedOutput = this.vertexMgmt.edgeMgmt.dataContainer.edge.filter(e => {
-      return  e.source.prop.indexOf('title') == -1 && e.source.vertexId == this.id;
-    });
+		lstMarkedOutput = this.vertexMgmt.edgeMgmt.dataContainer.edge.filter(e => {
+			return  e.source.prop.indexOf('title') == -1 && e.source.vertexId == this.id
+		})
 
-    lstMarkedInput = this.vertexMgmt.edgeMgmt.dataContainer.edge.filter(e => {
-      return e.target.prop.indexOf('title') == -1 && e.target.vertexId == this.id;
-    });
+		lstMarkedInput = this.vertexMgmt.edgeMgmt.dataContainer.edge.filter(e => {
+			return e.target.prop.indexOf('title') == -1 && e.target.vertexId == this.id
+		})
 
-    lstMarkedInput.forEach(e => {
-      __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`[prop="${e.target.prop}"][type="I"]`).classed("marked_connector", true);
-    });
+		lstMarkedInput.forEach(e => {
+			__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`[prop="${e.target.prop}"][type="I"]`).classed('marked_connector', true)
+		})
 
-    lstMarkedOutput.forEach(e => {
-      __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`[prop="${e.source.prop}"][type="O"]`).classed("marked_connector", true);
-    });
-  }
+		lstMarkedOutput.forEach(e => {
+			__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`[prop="${e.source.prop}"][type="O"]`).classed('marked_connector', true)
+		})
+	}
 
-  /**
+	/**
    * Calculate for scroll left and scroll top to show this vertex to user (Find feature of SegmentSetEditor)
    */
-  showToUser(){
-    const $container = $(`#${this.containerId}`);
-    const $vertex = $(`#${this.id}`);
+	showToUser() {
+		const $container = $(`#${this.containerId}`)
+		const $vertex = $(`#${this.id}`)
 
-    const {width: cntrW, height: cntrH} = $container.get(0).getBoundingClientRect();
-    const cntrLeft = $container.scrollLeft();
-    const cntrTop = $container.scrollTop();
-    const {width: vtxW, height: vtxH} = $vertex.get(0).getBoundingClientRect();
+		const {width: cntrW, height: cntrH} = $container.get(0).getBoundingClientRect()
+		const cntrLeft = $container.scrollLeft()
+		const cntrTop = $container.scrollTop()
+		const {width: vtxW, height: vtxH} = $vertex.get(0).getBoundingClientRect()
 
-    //Horizontal
-    if (this.x < cntrLeft) {
-      $container.scrollLeft(this.x - 5);
-    }else if (this.x + vtxW > cntrLeft + cntrW) {
-      $container.scrollLeft(this.x - (cntrW - vtxW) + 15);
-    }
+		//Horizontal
+		if (this.x < cntrLeft) {
+			$container.scrollLeft(this.x - 5)
+		}else if (this.x + vtxW > cntrLeft + cntrW) {
+			$container.scrollLeft(this.x - (cntrW - vtxW) + 15)
+		}
 
-    //Vertical
-    if (this.y < cntrTop) {
-      $container.scrollTop(this.y - 5);
-    }else if (this.y + vtxH > cntrTop + cntrH) {
-      if (vtxH > cntrH - 15) {
-        $container.scrollTop(this.y - 5);
-      } else {
-        $container.scrollTop(this.y - (cntrH - vtxH) + 15);
-      }
-    }
+		//Vertical
+		if (this.y < cntrTop) {
+			$container.scrollTop(this.y - 5)
+		}else if (this.y + vtxH > cntrTop + cntrH) {
+			if (vtxH > cntrH - 15) {
+				$container.scrollTop(this.y - 5)
+			} else {
+				$container.scrollTop(this.y - (cntrH - vtxH) + 15)
+			}
+		}
 
-    //Show this vertex on the Top
-    this.moveToFront();
+		//Show this vertex on the Top
+		this.moveToFront()
 
-    //Highlight the title background-color
-		const $vtxTitle = $(`#${this.id}`).find('.content_header_name');
-		const $headerConnectors = $(`#${this.id}`).find('.connect_header');
-    const colorByName = this.colorHash.hex(this.name);
-    for (let i = 0; i < 3; i++){
-      setTimeout(function(){
-				$vtxTitle.css('background-color', 'white');
+		//Highlight the title background-color
+		const $vtxTitle = $(`#${this.id}`).find('.content_header_name')
+		const $headerConnectors = $(`#${this.id}`).find('.connect_header')
+		const colorByName = this.colorHash.hex(this.name)
+		for (let i = 0; i < 3; i++) {
+			setTimeout(function() {
+				$vtxTitle.css('background-color', 'white')
 				for (let i = 0; i < $headerConnectors.length; i++) {
-					$($headerConnectors[i]).attr('fill', 'white');
+					$($headerConnectors[i]).attr('fill', 'white')
 				}
-      },i*400);
-      setTimeout(function(){
-				$vtxTitle.css('background-color', `${colorByName}`);
+			},i*400)
+			setTimeout(function() {
+				$vtxTitle.css('background-color', `${colorByName}`)
 				for (let i = 0; i < $headerConnectors.length; i++) {
-					$($headerConnectors[i]).attr('fill', `${colorByName}`);
+					$($headerConnectors[i]).attr('fill', `${colorByName}`)
 				}
-      }, 200 + i*400);
-    }
+			}, 200 + i*400)
+		}
 	}
 
 	/**
@@ -53029,55 +53029,55 @@ class Vertex {
 	 */
 	validateConnectionByUsage() {
 
-		if (!Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, "mandatoryCheck")) return true;
+		if (!Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'mandatoryCheck')) return true
 		
-		let bFlag = true;
-		const {mandatoryEvolutionFunc, clrWarning, clrAvailable} = this.mandatoryDataElementConfig;
+		let bFlag = true
+		const {mandatoryEvaluationFunc, clrWarning, clrAvailable} = this.mandatoryDataElementConfig
 		
-		let dataElement = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.data);
-		this.getConnectionStatus(dataElement);
+		let dataElement = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.data)
+		this.getConnectionStatus(dataElement)
 
 		// Check if any parent is conditional
-		let bHasAnyConditionalParent = false;
-		let parentId = this.parent;
-		let parentObj = null;
+		let bHasAnyConditionalParent = false
+		let parentId = this.parent
+		let parentObj = null
 		while(parentId) {
-			parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.boundary, {"id": parentId});
+			parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.boundary, {'id': parentId})
 			if (!parentObj.mandatory) {
-				bHasAnyConditionalParent = true;
-				break;
+				bHasAnyConditionalParent = true
+				break
 			}
 			
-			parentId = parentObj.parent;
+			parentId = parentObj.parent
 		}
 
 		for (let i = 0; i < dataElement.length; i++) {
-			if (mandatoryEvolutionFunc(dataElement[i])) {
+			if (mandatoryEvaluationFunc(dataElement[i])) {
 				if (dataElement[i].hasConnection) {
-					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable);
+					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable)
 
 				} else {
 					if ((!this.parent || !bHasAnyConditionalParent) && this.mandatory) {
 						// If have no parent or all parents are mandatory and segment is mandatory
 						// GRP[M] - SGM[M] - DE[M]
-						if (bFlag) bFlag = false;
-						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning);
+						if (bFlag) bFlag = false
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning)
 	
 					} else if (this.hasAnyConnectionOfOtherDataElement(dataElement, i)) {
 						// GRP[M] - SGM[C] - DE[M]
 						// GRP[C] - SGM[M] - DE[M]
 						// GRP[C] - SGM[C] - DE[M]
-						if (bFlag) bFlag = false;
-						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning);
+						if (bFlag) bFlag = false
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning)
 
 					} else {
-						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable);
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable)
 					}
 				}
 			}
 		}
 
-		return bFlag;
+		return bFlag
 	}
 
 	/**
@@ -53087,10 +53087,10 @@ class Vertex {
 	 */
 	getConnectionStatus(dataElement) {
 		for (let i = 0; i < this.vertexMgmt.edgeMgmt.dataContainer.edge.length; i++) {
-			let edge = this.vertexMgmt.edgeMgmt.dataContainer.edge[i];
+			let edge = this.vertexMgmt.edgeMgmt.dataContainer.edge[i]
 			for (let indexOfDataElement = 0; indexOfDataElement < dataElement.length; indexOfDataElement++) {
 				if (parseInt(edge.target.prop.replace(`${this.id}${CONNECT_KEY}`, '')) == indexOfDataElement) {
-					dataElement[indexOfDataElement].hasConnection = true;
+					dataElement[indexOfDataElement].hasConnection = true
 				}
 			}
 		}
@@ -53103,10 +53103,10 @@ class Vertex {
 	 */
 	hasAnyConnectionOfOtherDataElement(dataElement, idxCurDataElement) {
 		for (let i = 0; i < dataElement.length; i++) {
-			if (i != idxCurDataElement && dataElement[i].hasConnection) return true;
+			if (i != idxCurDataElement && dataElement[i].hasConnection) return true
 		}
 
-		return false;
+		return false
 	}
 }
 
@@ -53125,8 +53125,8 @@ class Vertex {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__edge__ = __webpack_require__(854);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_object_ult__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_context_edge_menu__ = __webpack_require__(855);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_const_index__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_const_index__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__ = __webpack_require__(22);
 
 
 
@@ -53137,133 +53137,133 @@ class Vertex {
 
 
 
-const CONNECT_KEY = 'Connected';
+const CONNECT_KEY = 'Connected'
 
 class EdgeMgmt {
-  constructor(props) {
-    this.dataContainer    = props.dataContainer;
-    this.svgId            = props.svgId;
-    this.vertexContainer  = props.vertexContainer;
+	constructor(props) {
+		this.dataContainer = props.dataContainer
+		this.svgId = props.svgId
+		this.vertexContainer = props.vertexContainer
 
-    this.initialize();
-  }
+		this.initialize()
+	}
 
-  initialize() {
-    this.objectUtils = new __WEBPACK_IMPORTED_MODULE_3__common_utilities_object_ult__["a" /* default */]();
-    this.svgSelector = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`);
+	initialize() {
+		this.objectUtils = new __WEBPACK_IMPORTED_MODULE_3__common_utilities_object_ult__["a" /* default */]()
+		this.svgSelector = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`)
 
-    this.selectorClass    = `_edge_${this.svgId}`;
-    this.arrowId          = `arrow_${this.svgId}`;
-    this.groupEdgePathId  = `groupEdgePath_${this.svgId}`;
-    this.edgePathId       = `edgePath_${this.svgId}`;
-    this.groupEdgePointId = `groupEdgePoint_${this.svgId}`;
-    this.pointStartId     = `pointStart_${this.svgId}`;
-    this.pointEndId       = `pointEnd_${this.svgId}`;
-    this.dummyPathId      = `dummyPath_${this.svgId}`;
+		this.selectorClass = `_edge_${this.svgId}`
+		this.arrowId = `arrow_${this.svgId}`
+		this.groupEdgePathId = `groupEdgePath_${this.svgId}`
+		this.edgePathId = `edgePath_${this.svgId}`
+		this.groupEdgePointId = `groupEdgePoint_${this.svgId}`
+		this.pointStartId = `pointStart_${this.svgId}`
+		this.pointEndId = `pointEnd_${this.svgId}`
+		this.dummyPathId = `dummyPath_${this.svgId}`
 
-    this.isCreatingEdge   = false;
-    this.tmpSource        = null;
-    this.selectingEdge    = null;
+		this.isCreatingEdge = false
+		this.tmpSource = null
+		this.selectingEdge = null
 
 
-    this.dragPointConnector = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
-      .on("start", this.dragPointStarted(this))
-      .on("drag", this.draggedPoint(this))
-      .on("end", this.dragPointEnded(this));
+		this.dragPointConnector = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
+			.on('start', this.dragPointStarted(this))
+			.on('drag', this.draggedPoint(this))
+			.on('end', this.dragPointEnded(this))
 
-    this.handleDragConnection = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
-      .on("start", this.startConnect(this))
-      .on("drag", this.drawConnect(this))
-      .on("end", this.endConnect(this));
+		this.handleDragConnection = __WEBPACK_IMPORTED_MODULE_0_d3__["a" /* drag */]()
+			.on('start', this.startConnect(this))
+			.on('drag', this.drawConnect(this))
+			.on('end', this.endConnect(this))
 
-    this.svgSelector = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`);
+		this.svgSelector = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`)
 
-    this.initMarkerArrow();
-    this.initPathConnect();
-    this.initEdgePath();
+		this.initMarkerArrow()
+		this.initPathConnect()
+		this.initEdgePath()
 
-    new __WEBPACK_IMPORTED_MODULE_4__menu_context_edge_menu__["a" /* default */]({
-      selector: `.${this.selectorClass}`,
-      dataContainer: this.dataContainer,
-      edgeMgmt: this
-    });
-  }
+		new __WEBPACK_IMPORTED_MODULE_4__menu_context_edge_menu__["a" /* default */]({
+			selector: `.${this.selectorClass}`,
+			dataContainer: this.dataContainer,
+			edgeMgmt: this
+		})
+	}
 
-  /**
+	/**
    * Init Marker Arrow use for edge
    */
-  initMarkerArrow() {
-    this.svgSelector.append("svg:defs").append("svg:marker")
-      .attr("id", this.arrowId)
-      .attr("viewBox", "0 0 10 10")
-      .attr("refX", 10)
-      .attr("refY", 5)
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
-      .append("path")
-      .attr("d", "M 0 0 L 10 5 L 0 10 z")
-      .style("stroke", "black");
-  }
+	initMarkerArrow() {
+		this.svgSelector.append('svg:defs').append('svg:marker')
+			.attr('id', this.arrowId)
+			.attr('viewBox', '0 0 10 10')
+			.attr('refX', 10)
+			.attr('refY', 5)
+			.attr('markerWidth', 6)
+			.attr('markerHeight', 6)
+			.attr('orient', 'auto')
+			.append('path')
+			.attr('d', 'M 0 0 L 10 5 L 0 10 z')
+			.style('stroke', 'black')
+	}
 
-  /**
+	/**
    * Init path connect used to create path
    */
-  initPathConnect() {
-    this.svgSelector.append("svg:g").append("svg:path")
-      .attr("id", `${this.dummyPathId}`)
-      .attr("class", "dummy-edge solid")
-      .attr("fill", "none")
-      .attr("marker-end", `url(#${this.arrowId})`);
-  }
+	initPathConnect() {
+		this.svgSelector.append('svg:g').append('svg:path')
+			.attr('id', `${this.dummyPathId}`)
+			.attr('class', 'dummy-edge solid')
+			.attr('fill', 'none')
+			.attr('marker-end', `url(#${this.arrowId})`)
+	}
 
-  /**
+	/**
    * Init path use for simulate change source or target connect
    */
-  initEdgePath() {
+	initEdgePath() {
 
-    let group = this.svgSelector.append("g")
-      .attr("transform", `translate(0.5, 0.5)`)
-      .attr("id", this.groupEdgePathId);
-    group.append("path")
-      .attr("id", this.edgePathId)
-      .attr("class", "dummy-path dash")
-      .attr("fill", "none")
-      .attr("stroke", "#2795EE");
-    let groupPoint = this.svgSelector.append("g")
-      .attr("transform", `translate(0.5, 0.5)`)
-      .attr("id", this.groupEdgePointId);
-    groupPoint.append("circle")
-      .attr("id", this.pointStartId)
-      .attr("class", `dragPoint dragPoint_${this.svgId}`)
-      .attr("type", __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].OUTPUT)
-      .attr("fill", "#2795EE")
-      .attr("pointer-events", "all")
-      .attr("r", 4)
-      .attr("cx", 0)
-      .attr("cy", 0)
-      .attr("stroke-width", 1)
-      .style("cursor", "pointer")
-      .attr("stroke", "#2795EE");
+		let group = this.svgSelector.append('g')
+			.attr('transform', 'translate(0.5, 0.5)')
+			.attr('id', this.groupEdgePathId)
+		group.append('path')
+			.attr('id', this.edgePathId)
+			.attr('class', 'dummy-path dash')
+			.attr('fill', 'none')
+			.attr('stroke', '#2795EE')
+		let groupPoint = this.svgSelector.append('g')
+			.attr('transform', 'translate(0.5, 0.5)')
+			.attr('id', this.groupEdgePointId)
+		groupPoint.append('circle')
+			.attr('id', this.pointStartId)
+			.attr('class', `dragPoint dragPoint_${this.svgId}`)
+			.attr('type', __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].OUTPUT)
+			.attr('fill', '#2795EE')
+			.attr('pointer-events', 'all')
+			.attr('r', 4)
+			.attr('cx', 0)
+			.attr('cy', 0)
+			.attr('stroke-width', 1)
+			.style('cursor', 'pointer')
+			.attr('stroke', '#2795EE')
 
-    groupPoint.append("circle")
-      .attr("id", this.pointEndId)
-      .attr("class", `dragPoint dragPoint_${this.svgId}`)
-      .attr("type", __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].INPUT)
-      .attr("fill", "#2795EE")
-      .attr("pointer-events", "all")
-      .attr("r", 4)
-      .attr("cx", 0)
-      .attr("cy", 0)
-      .attr("stroke-width", 1)
-      .style("cursor", "pointer")
-      .attr("stroke", "#2795EE");
+		groupPoint.append('circle')
+			.attr('id', this.pointEndId)
+			.attr('class', `dragPoint dragPoint_${this.svgId}`)
+			.attr('type', __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].INPUT)
+			.attr('fill', '#2795EE')
+			.attr('pointer-events', 'all')
+			.attr('r', 4)
+			.attr('cx', 0)
+			.attr('cy', 0)
+			.attr('stroke-width', 1)
+			.style('cursor', 'pointer')
+			.attr('stroke', '#2795EE')
 
-    __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](`.dragPoint_${this.svgId}`).call(this.dragPointConnector);
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`).style("display", "none");
-  }
+		__WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](`.dragPoint_${this.svgId}`).call(this.dragPointConnector)
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`).style('display', 'none')
+	}
 
-  /**
+	/**
    *
    * @param options
    * source: object, required {x: 1, y: 2, vertexId: 'V***', prop: 'spd'}
@@ -53273,463 +53273,463 @@ class EdgeMgmt {
    * id: string, option E*********
    * Ex
    */
-  create(sOptions) {
-    let newEdge = new __WEBPACK_IMPORTED_MODULE_2__edge__["a" /* default */]({
-      edgeMgmt: this
-    });
+	create(sOptions) {
+		let newEdge = new __WEBPACK_IMPORTED_MODULE_2__edge__["a" /* default */]({
+			edgeMgmt: this
+		})
 
-    newEdge.create(sOptions);
-  }
+		newEdge.create(sOptions)
+	}
 
-  dragPointStarted(main) {
-    return function () {
-    }
-  }
+	dragPointStarted(main) {
+		return function () {
+		}
+	}
 
-  /**
+	/**
    * Drag connect belong to mouse position
    * @param self
    * @returns {Function}
    */
-  draggedPoint(main) {
-    return function () {
-      let edgeId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.edgePathId}`).attr('ref');
-      let edgeObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(main.dataContainer.edge, {"id":edgeId});
+	draggedPoint(main) {
+		return function () {
+			let edgeId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.edgePathId}`).attr('ref')
+			let edgeObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(main.dataContainer.edge, {'id':edgeId})
 
-      let pathStr = null;
-      let x = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](main.svgSelector.node())[0];
-      let y = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](main.svgSelector.node())[1];
-      const type = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this).attr("type");
-      if (type === "O") {
-        let px = Number(__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.pointEndId}`).attr("cx"));
-        let py = Number(__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.pointEndId}`).attr("cy"));
-        pathStr = Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["h" /* createPath */])({x, y}, {x: px, y: py});
-      } else {
-        let px = Number(__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.pointStartId}`).attr("cx"));
-        let py = Number(__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.pointStartId}`).attr("cy"));
-        pathStr = Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["h" /* createPath */])({x: px, y: py}, {x, y});
-      }
+			let pathStr = null
+			let x = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](main.svgSelector.node())[0]
+			let y = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](main.svgSelector.node())[1]
+			const type = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this).attr('type')
+			if (type === 'O') {
+				let px = Number(__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.pointEndId}`).attr('cx'))
+				let py = Number(__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.pointEndId}`).attr('cy'))
+				pathStr = Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["h" /* createPath */])({x, y}, {x: px, y: py})
+			} else {
+				let px = Number(__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.pointStartId}`).attr('cx'))
+				let py = Number(__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.pointStartId}`).attr('cy'))
+				pathStr = Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["h" /* createPath */])({x: px, y: py}, {x, y})
+			}
 
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.edgePathId}`).attr('d', pathStr);
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.groupEdgePathId}`).style("display", "block");
-    }
-  }
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.edgePathId}`).attr('d', pathStr)
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.groupEdgePathId}`).style('display', 'block')
+		}
+	}
 
-  /**
+	/**
    * End creation connect if destination is connect point
    * @param self
    * @returns {Function}
    */
-  dragPointEnded(main) {
-    return function () {
-      //Editing edge
-      let edgeId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.edgePathId}`).attr('ref');
-      let edgeObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(main.dataContainer.edge, {"id":edgeId});
+	dragPointEnded(main) {
+		return function () {
+			//Editing edge
+			let edgeId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.edgePathId}`).attr('ref')
+			let edgeObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(main.dataContainer.edge, {'id':edgeId})
 
-      if (__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.tagName == "rect") {
-        //Data use for processing
-        const pointType = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this).attr("type");
-        let dropVertexId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id");
-        let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr("prop");
+			if (__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.tagName == 'rect') {
+				//Data use for processing
+				const pointType = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](this).attr('type')
+				let dropVertexId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr('id')
+				let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr('prop')
   
-        //Prevent drag on same vertex
-        if ((pointType === "O" && edgeObj.target.vertexId == dropVertexId)
-            || (pointType === "I" && edgeObj.source.vertexId == dropVertexId)) 
-        {
-          main.handlerOnClickEdge(main.selectingEdge);
-          return;
-        }
+				//Prevent drag on same vertex
+				if ((pointType === 'O' && edgeObj.target.vertexId == dropVertexId)
+            || (pointType === 'I' && edgeObj.source.vertexId == dropVertexId)) 
+				{
+					main.handlerOnClickEdge(main.selectingEdge)
+					return
+				}
 
-        let vertices = [];
-        main.vertexContainer.forEach(arrVertex => {
-          vertices = vertices.concat(arrVertex.vertex);
-          vertices = vertices.concat(arrVertex.boundary);
-        });
+				let vertices = []
+				main.vertexContainer.forEach(arrVertex => {
+					vertices = vertices.concat(arrVertex.vertex)
+					vertices = vertices.concat(arrVertex.boundary)
+				})
 
-        //Vertex that draged to
-        let targetObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': dropVertexId});
-        const {svgId} = targetObj;
+				//Vertex that draged to
+				let targetObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': dropVertexId})
+				const {svgId} = targetObj
 
-        //Calculate new coordinate of ended point on CONNECT SVG for redraw edge
-        const newPoint = main.objectUtils.getCoordPropRelativeToParent(targetObj, prop, pointType);
-        newPoint.vertexId = dropVertexId;
-        newPoint.prop = prop;
-        newPoint.svgId = svgId;
+				//Calculate new coordinate of ended point on CONNECT SVG for redraw edge
+				const newPoint = main.objectUtils.getCoordPropRelativeToParent(targetObj, prop, pointType)
+				newPoint.vertexId = dropVertexId
+				newPoint.prop = prop
+				newPoint.svgId = svgId
 
-				if (pointType === "O") {
-					edgeObj.updateMarkedConnector({source: newPoint});
+				if (pointType === 'O') {
+					edgeObj.updateMarkedConnector({source: newPoint})
 					edgeObj.updatePathConnect({source: newPoint})
 				} else {
 					// get old object before updating
-					const oldObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices,{"id": edgeObj.target.vertexId});
+					const oldObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices,{'id': edgeObj.target.vertexId})
 
-					edgeObj.updateMarkedConnector({target: newPoint});
+					edgeObj.updateMarkedConnector({target: newPoint})
 					edgeObj.updatePathConnect({target: newPoint})
 
 					// check mandatory data element for target vertex only (Output message of Message Mapping GUI)
 
-					if (oldObj.type == "V") {
-						oldObj.validateConnectionByUsage();
+					if (oldObj.type == 'V') {
+						oldObj.validateConnectionByUsage()
 					}
 
 					// If move target connection to another vertex then checking for new vertex
-					if (targetObj.id != oldObj.id && targetObj.type == "V") {
-						targetObj.validateConnectionByUsage();
+					if (targetObj.id != oldObj.id && targetObj.type == 'V') {
+						targetObj.validateConnectionByUsage()
 					}
 				}
-      }
+			}
 
-      main.handlerOnClickEdge(main.selectingEdge);
-    }
-  }
+			main.handlerOnClickEdge(main.selectingEdge)
+		}
+	}
 
-  startConnect(main) {
-    return function () {
+	startConnect(main) {
+		return function () {
 
-      if (main.isSelectingEdge())
-        main.cancleSelectedPath();
+			if (main.isSelectingEdge())
+				main.cancleSelectedPath()
 
-      main.isCreatingEdge = true;
-      let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr("prop");
-      let vertexId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id");
+			main.isCreatingEdge = true
+			let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr('prop')
+			let vertexId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr('id')
 
-      let obj;
-      if (prop.indexOf('boundary_title') != -1){
-        let boudaries = [];
-        main.vertexContainer.forEach(arrBoundary => {
-          boudaries = boudaries.concat(arrBoundary.boundary);
-        });
+			let obj
+			if (prop.indexOf('boundary_title') != -1) {
+				let boudaries = []
+				main.vertexContainer.forEach(arrBoundary => {
+					boudaries = boudaries.concat(arrBoundary.boundary)
+				})
 
-        obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(boudaries, {'id': vertexId});
+				obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(boudaries, {'id': vertexId})
 
-      }else{
-        let vertices = [];
-        main.vertexContainer.forEach(arrVertex => {
-          vertices = vertices.concat(arrVertex.vertex);
-        });
+			}else{
+				let vertices = []
+				main.vertexContainer.forEach(arrVertex => {
+					vertices = vertices.concat(arrVertex.vertex)
+				})
 
-        obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': vertexId});
-      }
+				obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': vertexId})
+			}
 
-      const src = main.objectUtils.getCoordPropRelativeToParent(obj, prop, __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].OUTPUT);
-      src.vertexId = vertexId;
-      src.prop = prop;
-      src.svgId = obj.svgId;
-      main.tmpSource = src;
-    }
-  }
+			const src = main.objectUtils.getCoordPropRelativeToParent(obj, prop, __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].OUTPUT)
+			src.vertexId = vertexId
+			src.prop = prop
+			src.svgId = obj.svgId
+			main.tmpSource = src
+		}
+	}
 
-  drawConnect(main) {
-    return function () {
-      if (main.isCreatingEdge) {
-        const {x: x1, y: y1} = main.tmpSource;
-        let x2 = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.svgId}`).node())[0];
-        let y2 = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.svgId}`).node())[1];
-        let pathStr = Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["h" /* createPath */])({x: x1, y: y1}, {x: x2, y: y2});
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.dummyPathId}`).attr('d', pathStr);
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.dummyPathId}`).style("display", "block");
-      }
-    }
-  }
+	drawConnect(main) {
+		return function () {
+			if (main.isCreatingEdge) {
+				const {x: x1, y: y1} = main.tmpSource
+				let x2 = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.svgId}`).node())[0]
+				let y2 = __WEBPACK_IMPORTED_MODULE_0_d3__["c" /* mouse */](__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.svgId}`).node())[1]
+				let pathStr = Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["h" /* createPath */])({x: x1, y: y1}, {x: x2, y: y2})
+				__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.dummyPathId}`).attr('d', pathStr)
+				__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.dummyPathId}`).style('display', 'block')
+			}
+		}
+	}
 
-  endConnect(main) {
-    return function () {
-      main.isCreatingEdge = false;
-      if (__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.tagName == "rect" 
+	endConnect(main) {
+		return function () {
+			main.isCreatingEdge = false
+			if (__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.tagName == 'rect' 
           && this != __WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target 
-					&& __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id") != main.tmpSource.vertexId
+					&& __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr('id') != main.tmpSource.vertexId
 			) {
-        let vertextId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr("id");
-        let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr("prop");
+				let vertextId = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target.parentNode).attr('id')
+				let prop = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](__WEBPACK_IMPORTED_MODULE_0_d3__["b" /* event */].sourceEvent.target).attr('prop')
 
-        let vertices = [];
-        main.vertexContainer.forEach(arrVertex => {
-          vertices = vertices.concat(arrVertex.vertex);
-          vertices = vertices.concat(arrVertex.boundary);
-        });
+				let vertices = []
+				main.vertexContainer.forEach(arrVertex => {
+					vertices = vertices.concat(arrVertex.vertex)
+					vertices = vertices.concat(arrVertex.boundary)
+				})
 
-        let obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': vertextId});
-        const des = main.objectUtils.getCoordPropRelativeToParent(obj, prop, __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].INPUT);
-        des.vertexId = vertextId;
-        des.prop = prop;
-        des.svgId = obj.svgId;
-        let options = {source: main.tmpSource, target: des};
+				let obj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': vertextId})
+				const des = main.objectUtils.getCoordPropRelativeToParent(obj, prop, __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].INPUT)
+				des.vertexId = vertextId
+				des.prop = prop
+				des.svgId = obj.svgId
+				let options = {source: main.tmpSource, target: des}
 
-				main.create(options);
-				if (obj.type == "V") {
-					obj.validateConnectionByUsage();
+				main.create(options)
+				if (obj.type == 'V') {
+					obj.validateConnectionByUsage()
 				}
-      }
+			}
 
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.dummyPathId}`).attr('d', null);
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.dummyPathId}`).style("display", "none");
-      main.tmpSource = null;
-    }
-  }
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.dummyPathId}`).attr('d', null)
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${main.dummyPathId}`).style('display', 'none')
+			main.tmpSource = null
+		}
+	}
 
-  /**
+	/**
   * Find and update position connect to vertex when in move
   * @param vertex
   * @param dataContainer edge container
   */
-  updatePathConnectForVertex(vertex) {
-    const {id} = vertex;
+	updatePathConnectForVertex(vertex) {
+		const {id} = vertex
 
-    // Find edge start from this vertex
-    const arrSrcPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-      return e.source.vertexId === id;
-    });
-    // Find edge end at this vertex
-    const arrDesPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-      return e.target.vertexId === id;
-    });
+		// Find edge start from this vertex
+		const arrSrcPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
+			return e.source.vertexId === id
+		})
+		// Find edge end at this vertex
+		const arrDesPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
+			return e.target.vertexId === id
+		})
 
-    arrSrcPaths.forEach(src => {
-      let prop = src.source.prop;
-      let newPos = this.objectUtils.getCoordPropRelativeToParent(vertex, prop, __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].OUTPUT);
-      src.source.x = newPos.x;
-      src.source.y = newPos.y;
-      let options = {source: src.source};
-      src.updatePathConnect(options);
-      src.setStatusEdgeOnCurrentView();
-    });
+		arrSrcPaths.forEach(src => {
+			let prop = src.source.prop
+			let newPos = this.objectUtils.getCoordPropRelativeToParent(vertex, prop, __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].OUTPUT)
+			src.source.x = newPos.x
+			src.source.y = newPos.y
+			let options = {source: src.source}
+			src.updatePathConnect(options)
+			src.setStatusEdgeOnCurrentView()
+		})
 
-    arrDesPaths.forEach(des => {
-      let prop = des.target.prop;
-      let newPos = this.objectUtils.getCoordPropRelativeToParent(vertex, prop, __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].INPUT);
-      des.target.x = newPos.x;
-      des.target.y = newPos.y;
-      let options = {target: des.target};
-      des.updatePathConnect(options);
-      des.setStatusEdgeOnCurrentView();
-    });
-  }
+		arrDesPaths.forEach(des => {
+			let prop = des.target.prop
+			let newPos = this.objectUtils.getCoordPropRelativeToParent(vertex, prop, __WEBPACK_IMPORTED_MODULE_5__common_const_index__["k" /* TYPE_CONNECT */].INPUT)
+			des.target.x = newPos.x
+			des.target.y = newPos.y
+			let options = {target: des.target}
+			des.updatePathConnect(options)
+			des.setStatusEdgeOnCurrentView()
+		})
+	}
 
-  /**
+	/**
    * 
    * @param {*} vertex 
    */
- emphasizePathConnectForVertex(vertex, isEffectFromParent = false) {
-    const {id} = vertex;
+	emphasizePathConnectForVertex(vertex, isEffectFromParent = false) {
+		const {id} = vertex
 
-    if (!isEffectFromParent){
-      __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */]('.emphasizePath').classed('emphasizePath', false);
-      __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */]('.emphasizeArrow').classed('emphasizeArrow', false);
-    }
+		if (!isEffectFromParent) {
+			__WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */]('.emphasizePath').classed('emphasizePath', false)
+			__WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */]('.emphasizeArrow').classed('emphasizeArrow', false)
+		}
 
-    // Find edge start from this vertex
-    const arrSrcPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-      return e.source.vertexId === id;
-    });
-    // Find edge end at this vertex
-    const arrDesPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-      return e.target.vertexId === id;
-    });
+		// Find edge start from this vertex
+		const arrSrcPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
+			return e.source.vertexId === id
+		})
+		// Find edge end at this vertex
+		const arrDesPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
+			return e.target.vertexId === id
+		})
 
-    arrSrcPaths.forEach(src => {
-      src.emphasize();
-    });
+		arrSrcPaths.forEach(src => {
+			src.emphasize()
+		})
 
-    arrDesPaths.forEach(des => {
-      des.emphasize();
-    });
-  }
+		arrDesPaths.forEach(des => {
+			des.emphasize()
+		})
+	}
 
-  /**
+	/**
    * 
    * @param {*} boundary 
    */
- emphasizePathConnectForBoundary(boundary, isEffectFromParent = false) {
-  const {id} = boundary;
+	emphasizePathConnectForBoundary(boundary, isEffectFromParent = false) {
+		const {id} = boundary
 
-  if (!isEffectFromParent){
-    __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */]('.emphasizePath').classed('emphasizePath', false);
-    __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */]('.emphasizeArrow').classed('emphasizeArrow', false);
-  }
+		if (!isEffectFromParent) {
+			__WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */]('.emphasizePath').classed('emphasizePath', false)
+			__WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */]('.emphasizeArrow').classed('emphasizeArrow', false)
+		}
 
-  // Find edge start from this vertex
-  const arrSrcPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-    return e.source.vertexId === id;
-  });
-  // Find edge end at this vertex
-  const arrDesPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-    return e.target.vertexId === id;
-  });
+		// Find edge start from this vertex
+		const arrSrcPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
+			return e.source.vertexId === id
+		})
+		// Find edge end at this vertex
+		const arrDesPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
+			return e.target.vertexId === id
+		})
 
-  arrSrcPaths.forEach(src => {
-    src.emphasize();
-  });
+		arrSrcPaths.forEach(src => {
+			src.emphasize()
+		})
 
-  arrDesPaths.forEach(des => {
-    des.emphasize();
-  });
+		arrDesPaths.forEach(des => {
+			des.emphasize()
+		})
 
-  boundary.member.forEach(e => {
-    if (e.type === 'V'){
-      let vertices = [];
-      this.vertexContainer.forEach(e=>{
-        vertices = vertices.concat(e.vertex);
-      })
+		boundary.member.forEach(e => {
+			if (e.type === 'V') {
+				let vertices = []
+				this.vertexContainer.forEach(e=>{
+					vertices = vertices.concat(e.vertex)
+				})
 
-      const childVertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {"id": e.id});
-      this.emphasizePathConnectForVertex(childVertex, true);
-    }else{
-      let boudaries = [];
-      this.vertexContainer.forEach(e=>{
-        boudaries = boudaries.concat(e.boundary);
-      })
-      const childBoundary = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(boudaries, {"id": e.id});
-      this.emphasizePathConnectForBoundary(childBoundary, true);
-    }
-  });
-}
+				const childVertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(vertices, {'id': e.id})
+				this.emphasizePathConnectForVertex(childVertex, true)
+			}else{
+				let boudaries = []
+				this.vertexContainer.forEach(e=>{
+					boudaries = boudaries.concat(e.boundary)
+				})
+				const childBoundary = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(boudaries, {'id': e.id})
+				this.emphasizePathConnectForBoundary(childBoundary, true)
+			}
+		})
+	}
 
-  clearAll(){
-    this.dataContainer.edge = [];
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`).select('defs').selectAll(`marker:not(#${this.arrowId})`).remove();
-    __WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](`.marked_connector`).classed('marked_connector', false);
-  }
+	clearAll() {
+		this.dataContainer.edge = []
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove()
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.svgId}`).select('defs').selectAll(`marker:not(#${this.arrowId})`).remove()
+		__WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */]('.marked_connector').classed('marked_connector', false)
+	}
 
-  /**
+	/**
    * Remove edge connect to this vertexs
    * @param vertex vertex list
    */
-  removeAllEdgeConnectToVertex(vertex)
-  {
-    this.findEdgeRelateToVertex(vertex.id).forEach(edge=>{
-      edge.remove();
-    })
-  }
+	removeAllEdgeConnectToVertex(vertex)
+	{
+		this.findEdgeRelateToVertex(vertex.id).forEach(edge=>{
+			edge.remove()
+		})
+	}
 
-  /**
+	/**
    * Remove edge connect to these vertexs
    * @param vertex vertex list
    */
-  removeAllEdgeConnectToTheseVertex(lstVertex)
-  {
-    lstVertex.forEach(e=>{
-      this.findEdgeRelateToVertex(e.id).forEach(edge=>{
-        edge.remove();
-      })
-    })
-  }
+	removeAllEdgeConnectToTheseVertex(lstVertex)
+	{
+		lstVertex.forEach(e=>{
+			this.findEdgeRelateToVertex(e.id).forEach(edge=>{
+				edge.remove()
+			})
+		})
+	}
 
-  /**
+	/**
    * Find all path (edge, connect) start or end at this vertex
    * @param vertexId
    * @returns {Array}
    */
-  findEdgeRelateToVertex(vertexId) {
-    if (!vertexId)
-      return [];
+	findEdgeRelateToVertex(vertexId) {
+		if (!vertexId)
+			return []
 
-    return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-        return e.target.vertexId === vertexId || e.source.vertexId === vertexId;
-      }
-    );
-  }
+		return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
+			return e.target.vertexId === vertexId || e.source.vertexId === vertexId
+		}
+		)
+	}
 
-  checkExitEdgeConnectToVertex(vertexId) {
-    let numEdges = this.findEdgeRelateToVertex(vertexId);
-    if (numEdges.length)
-      return true;
-    else
-      return false;
-  }
+	checkExitEdgeConnectToVertex(vertexId) {
+		let numEdges = this.findEdgeRelateToVertex(vertexId)
+		if (numEdges.length)
+			return true
+		else
+			return false
+	}
 
-  /**
+	/**
    * Remove edge that lost prop connect on vertex edit
    * @param vertex
    */
-  removeEdgeLostPropOnVertex(vertex) {
-    // Find edge start from this vertex
-    const arrSrcPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-      return e.source.vertexId === vertex.id;
-    });
+	removeEdgeLostPropOnVertex(vertex) {
+		// Find edge start from this vertex
+		const arrSrcPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
+			return e.source.vertexId === vertex.id
+		})
 
-    // Find edge end at this vertex
-    const arrDesPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-      return e.target.vertexId === vertex.id;
-    });
+		// Find edge end at this vertex
+		const arrDesPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
+			return e.target.vertexId === vertex.id
+		})
 
-    arrSrcPaths.forEach(src => {
-      const {source: {prop, vertexId}} = src;
+		arrSrcPaths.forEach(src => {
+			const {source: {prop, vertexId}} = src
 
-      if(prop.indexOf('title') == -1 && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
-        src.remove();
-    });
+			if(prop.indexOf('title') == -1 && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
+				src.remove()
+		})
 
-    arrDesPaths.forEach(des => {
-      const {target: {prop, vertexId}} = des;
+		arrDesPaths.forEach(des => {
+			const {target: {prop, vertexId}} = des
 
-      if(prop.indexOf('title') == -1 && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
-        des.remove();
-    });
-  }
+			if(prop.indexOf('title') == -1 && this.objectUtils.findIndexPropInVertex(vertexId, prop) === null)
+				des.remove()
+		})
+	}
 
-  hideAllEdgeRelatedToVertex(vertexId, flag) {
-    // Find all edge relate
-    let edges = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, e => {
-      return e.source.vertexId === vertexId || e.target.vertexId === vertexId;
-    });
+	hideAllEdgeRelatedToVertex(vertexId, flag) {
+		// Find all edge relate
+		let edges = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, e => {
+			return e.source.vertexId === vertexId || e.target.vertexId === vertexId
+		})
 
-    edges.forEach(e => {
-      let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${e.id}`);
-      if (node.node())
-        __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](node.node().parentNode).classed('hide-edge-on-menu-items', !flag);
-    });
-  }
+		edges.forEach(e => {
+			let node = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${e.id}`)
+			if (node.node())
+				__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](node.node().parentNode).classed('hide-edge-on-menu-items', !flag)
+		})
+	}
 
-  isSelectingEdge(){
-    return this.selectingEdge != null;
-  }
+	isSelectingEdge() {
+		return this.selectingEdge != null
+	}
 
-  /**
+	/**
    * Handler on click a path connection
    * @param edgeId
    * @param source
    * @param target
    */
-  handlerOnClickEdge(edge) {
-    this.selectingEdge = edge;
+	handlerOnClickEdge(edge) {
+		this.selectingEdge = edge
 
-    let selected = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${edge.id}`);
-    let currentPath = selected.attr("d");
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`)
-      .style("display", "block")
-      .moveToFront();
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePathId}`)
-      .style("display", "block")
-      .moveToFront();
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.edgePathId}`)
-      .attr("d", currentPath)
-      .attr("ref", edge.id);
+		let selected = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${edge.id}`)
+		let currentPath = selected.attr('d')
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`)
+			.style('display', 'block')
+			.moveToFront()
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePathId}`)
+			.style('display', 'block')
+			.moveToFront()
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.edgePathId}`)
+			.attr('d', currentPath)
+			.attr('ref', edge.id)
 
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.pointStartId}`)
-      .attr("cx", edge.source.x)
-      .attr("cy", edge.source.y);
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.pointEndId}`)
-      .attr("cx", edge.target.x)
-      .attr("cy", edge.target.y);
-  }
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.pointStartId}`)
+			.attr('cx', edge.source.x)
+			.attr('cy', edge.source.y)
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.pointEndId}`)
+			.attr('cx', edge.target.x)
+			.attr('cy', edge.target.y)
+	}
 
-  cancleSelectedPath() {
-    this.selectingEdge = null;
+	cancleSelectedPath() {
+		this.selectingEdge = null
 
-    this.hideEdgeGroupPoint();
-    this.hideEdgeGroupPath();
+		this.hideEdgeGroupPoint()
+		this.hideEdgeGroupPath()
     
-  }
+	}
 
-  hideEdgeGroupPoint(){
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`).style("display", "none");
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`).moveToBack();
-  }
+	hideEdgeGroupPoint() {
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`).style('display', 'none')
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePointId}`).moveToBack()
+	}
 
-  hideEdgeGroupPath(){
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePathId}`).style("display", "none");
-    __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePathId}`).moveToBack();
+	hideEdgeGroupPath() {
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePathId}`).style('display', 'none')
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.groupEdgePathId}`).moveToBack()
 	}
 	
 	/**
@@ -53740,33 +53740,33 @@ class EdgeMgmt {
 	updateConnectorPositionRelatedToVertex(vertexId, arrPosition) {
 		// Find edge start from this vertex
 		let arrSrcPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-      return e.source.vertexId === vertexId && e.source.prop.indexOf('title') == -1;
-		});
+			return e.source.vertexId === vertexId && e.source.prop.indexOf('title') == -1
+		})
 		
-    // Find edge end at this vertex
-    let arrDesPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
-      return e.target.vertexId === vertexId && e.target.prop.indexOf('title') == -1;
-		});
+		// Find edge end at this vertex
+		let arrDesPaths = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.filter(this.dataContainer.edge, (e) => {
+			return e.target.vertexId === vertexId && e.target.prop.indexOf('title') == -1
+		})
 
 		arrSrcPaths.forEach((edge)=>{
-			let oldIndex = edge.source.prop.replace(`${vertexId}${CONNECT_KEY}`, "");
-			let newIndex = arrPosition.indexOf(oldIndex);
+			let oldIndex = edge.source.prop.replace(`${vertexId}${CONNECT_KEY}`, '')
+			let newIndex = arrPosition.indexOf(oldIndex)
 
 			if (newIndex == -1) {
-				edge.remove();
+				edge.remove()
 			}else if (newIndex != parseInt(oldIndex)) {
-				edge.source.prop = `${vertexId}${CONNECT_KEY}${newIndex}`;
+				edge.source.prop = `${vertexId}${CONNECT_KEY}${newIndex}`
 			}
 		})
 
 		arrDesPaths.forEach((edge)=>{
-			let oldIndex = edge.target.prop.replace(`${vertexId}${CONNECT_KEY}`, "");
-			let newIndex = arrPosition.indexOf(oldIndex);
+			let oldIndex = edge.target.prop.replace(`${vertexId}${CONNECT_KEY}`, '')
+			let newIndex = arrPosition.indexOf(oldIndex)
 
 			if (newIndex == -1) {
-				edge.remove();
+				edge.remove()
 			}else if (newIndex != parseInt(oldIndex)) {
-				edge.target.prop = `${vertexId}${CONNECT_KEY}${newIndex}`;
+				edge.target.prop = `${vertexId}${CONNECT_KEY}${newIndex}`
 			}
 		})
 	}
@@ -53783,8 +53783,8 @@ class EdgeMgmt {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_const_index__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_const_index__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__ = __webpack_require__(22);
 
 
 
@@ -53792,41 +53792,41 @@ class EdgeMgmt {
 
 
 class Edge {
-  constructor(props) {
-    this.dataContainer      = props.edgeMgmt.dataContainer;
-    this.svgId              = props.edgeMgmt.svgId;
-    this.selectorClass      = props.edgeMgmt.selectorClass;
-    this.arrowId            = props.edgeMgmt.arrowId;
-    this.edgeMgmt           = props.edgeMgmt;
+	constructor(props) {
+		this.dataContainer = props.edgeMgmt.dataContainer
+		this.svgId = props.edgeMgmt.svgId
+		this.selectorClass = props.edgeMgmt.selectorClass
+		this.arrowId = props.edgeMgmt.arrowId
+		this.edgeMgmt = props.edgeMgmt
 
-    this.groupEdgePathId    = props.edgeMgmt.groupEdgePathId;
-    this.edgePathId         = props.edgeMgmt.edgePathId;
-    this.groupEdgePointId   = props.edgeMgmt.groupEdgePointId;
-    this.pointStartId       = props.edgeMgmt.pointStartId;
-    this.pointEndId         = props.edgeMgmt.pointEndId;
-    this.dummyPathId        = props.edgeMgmt.dummyPathId;
+		this.groupEdgePathId = props.edgeMgmt.groupEdgePathId
+		this.edgePathId = props.edgeMgmt.edgePathId
+		this.groupEdgePointId = props.edgeMgmt.groupEdgePointId
+		this.pointStartId = props.edgeMgmt.pointStartId
+		this.pointEndId = props.edgeMgmt.pointEndId
+		this.dummyPathId = props.edgeMgmt.dummyPathId
 
-    this.id;
-    this.source;
-    this.target;
-    this.lineType = __WEBPACK_IMPORTED_MODULE_2__common_const_index__["g" /* LINE_TYPE */].SOLID;// "S" or "D" (Solid/Dash)
-    this.useMarker = "Y"; // "Y" | "N"
-    this.originNote = '';
-    this.middleNote = '';
-    this.destNote = '';
+		this.id
+		this.source
+		this.target
+		this.lineType = __WEBPACK_IMPORTED_MODULE_2__common_const_index__["g" /* LINE_TYPE */].SOLID// "S" or "D" (Solid/Dash)
+		this.useMarker = 'Y' // "Y" | "N"
+		this.originNote = ''
+		this.middleNote = ''
+		this.destNote = ''
 
-    this.initialize();
-  }
+		this.initialize()
+	}
 
-  initialize() {
+	initialize() {
     
-    this.limitTop       = 0;
-    this.limitBottom    = $(window).height();
-    this.limitLeft      = 0;
-    this.limitRight     = $(window).width();
-  };
+		this.limitTop = 0
+		this.limitBottom = $(window).height()
+		this.limitLeft = 0
+		this.limitRight = $(window).width()
+	}
 
-  /**
+	/**
    *
    * @param svgSelector => type: object, require: true, purpose: the place where the DOM append to
    * @param pathStr => type: string, require: true, purpose: use to draw edge from to
@@ -53837,331 +53837,331 @@ class Edge {
    * @param callbackOnFocusOut => type: function, require: false, default: anonymous function, purpose: call back drag connection
    * @param containerClass => type: string, require: false, purpose: the class used as selector for menu context on edge
    */
-  create(sOptions) {
+	create(sOptions) {
 
-    const {id, source, target, style , note} = sOptions;
+		const {id, source, target, style , note} = sOptions
 
-    this.id = id || Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["i" /* generateObjectId */])('E');
-    this.source = source;
-    this.target = target;
+		this.id = id || Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["i" /* generateObjectId */])('E')
+		this.source = source
+		this.target = target
 
-    if(style){
-      this.lineType = style.line || this.lineType;
-      this.useMarker = style.arrow || this.useMarker;
-    }
-    if(note){
-      this.originNote = note.originNote;
-      this.middleNote = note.middleNote;
-      this.destNote = note.destNote;
-    }
+		if(style) {
+			this.lineType = style.line || this.lineType
+			this.useMarker = style.arrow || this.useMarker
+		}
+		if(note) {
+			this.originNote = note.originNote
+			this.middleNote = note.middleNote
+			this.destNote = note.destNote
+		}
 
-    if(!this.dataContainer.edge) this.dataContainer.edge = [];
-    this.dataContainer.edge.push(this);
+		if(!this.dataContainer.edge) this.dataContainer.edge = []
+		this.dataContainer.edge.push(this)
 
-    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["h" /* createPath */])(this.source, this.target);
+		let pathStr = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["h" /* createPath */])(this.source, this.target)
 
-    //Edge group
-    let group = __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.svgId}`).append("g")
-      .attr("transform", `translate(0.5, 0.5)`)
-      .attr("class", `edge ${this.selectorClass}`)
-      .attr("ref", this.id)
-      .style('visibility', 'visible')
-      .style('cursor', 'crosshair')
-      .on("click", () => {
-        this.edgeMgmt.handlerOnClickEdge(this);
-      })
-      .on("focus", () => {
-        group.on("keydown", () => {
-          //callbackOnKeyDown(this.id, d3.event);
-          if (event.keyCode === 46 || event.keyCode === 8) {
-            this.remove();
-          }
-        })
-      })
+		//Edge group
+		let group = __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.svgId}`).append('g')
+			.attr('transform', 'translate(0.5, 0.5)')
+			.attr('class', `edge ${this.selectorClass}`)
+			.attr('ref', this.id)
+			.style('visibility', 'visible')
+			.style('cursor', 'crosshair')
+			.on('click', () => {
+				this.edgeMgmt.handlerOnClickEdge(this)
+			})
+			.on('focus', () => {
+				group.on('keydown', () => {
+					//callbackOnKeyDown(this.id, d3.event);
+					if (event.keyCode === 46 || event.keyCode === 8) {
+						this.remove()
+					}
+				})
+			})
 
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.svgId}`).select('defs').append("marker")
-      .attr("id", `arrow${this.id}`)
-      .attr("viewBox", "0 0 10 10")
-      .attr("refX", 10)
-      .attr("refY", 5)
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
-      .append("path")
-      .attr("d", "M 0 0 L 10 5 L 0 10 z")
-      .attr("fill", `black`);
+		__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.svgId}`).select('defs').append('marker')
+			.attr('id', `arrow${this.id}`)
+			.attr('viewBox', '0 0 10 10')
+			.attr('refX', 10)
+			.attr('refY', 5)
+			.attr('markerWidth', 6)
+			.attr('markerHeight', 6)
+			.attr('orient', 'auto')
+			.append('path')
+			.attr('d', 'M 0 0 L 10 5 L 0 10 z')
+			.attr('fill', 'black')
 
-    //hidden line, it has larger width for selecting easily
-    group.append("path")
-      .attr('d', pathStr)
-      .attr("id", this.id)
-      .attr('focusable', true)
-      .attr('stroke', 'white')
-      .attr('stroke-miterlimit', 10)
-      .attr('pointer-events', 'stroke')
-      .attr('visibility', 'hidden')
-      .attr('stroke-width', 9)
-      .attr("marker-end", `url(#arrow${this.id})`);
+		//hidden line, it has larger width for selecting easily
+		group.append('path')
+			.attr('d', pathStr)
+			.attr('id', this.id)
+			.attr('focusable', true)
+			.attr('stroke', 'white')
+			.attr('stroke-miterlimit', 10)
+			.attr('pointer-events', 'stroke')
+			.attr('visibility', 'hidden')
+			.attr('stroke-width', 9)
+			.attr('marker-end', `url(#arrow${this.id})`)
 
-    group.append("path")
-      .attr('d', pathStr)
-      .attr("id", this.id)
-      .attr('focusable', true)
-      .attr('stroke', `black`)
-      .attr('stroke-miterlimit', 10)
-      .attr('focusable', true)
-      .attr("marker-end", this.useMarker === 'Y' ? `url(#arrow${this.id})` : '')
-      .attr("stroke-dasharray", this.lineType === __WEBPACK_IMPORTED_MODULE_2__common_const_index__["g" /* LINE_TYPE */].SOLID ? '0 0' : '3 3'); // Make arrow at end path
+		group.append('path')
+			.attr('d', pathStr)
+			.attr('id', this.id)
+			.attr('focusable', true)
+			.attr('stroke', 'black')
+			.attr('stroke-miterlimit', 10)
+			.attr('focusable', true)
+			.attr('marker-end', this.useMarker === 'Y' ? `url(#arrow${this.id})` : '')
+			.attr('stroke-dasharray', this.lineType === __WEBPACK_IMPORTED_MODULE_2__common_const_index__["g" /* LINE_TYPE */].SOLID ? '0 0' : '3 3') // Make arrow at end path
 
-    let origin = group.append("text")
-      .style("font-size", "12px")
-      .attr("x", 5)   // Move the text from the start angle of the arc
-      .attr("dy", -5); // Move the text down
-    let middle = group.append("text")
-      .style("font-size", "12px")
-      .attr("dy", -5); // Move the text down
-    let dest = group.append("text")
-      .style("font-size", "12px")
-      .attr("x", -5)   // Move the text from the start angle of the arc
-      .attr("dy", -5); // Move the text down
+		let origin = group.append('text')
+			.style('font-size', '12px')
+			.attr('x', 5)   // Move the text from the start angle of the arc
+			.attr('dy', -5) // Move the text down
+		let middle = group.append('text')
+			.style('font-size', '12px')
+			.attr('dy', -5) // Move the text down
+		let dest = group.append('text')
+			.style('font-size', '12px')
+			.attr('x', -5)   // Move the text from the start angle of the arc
+			.attr('dy', -5) // Move the text down
 
-    origin.append("textPath")
-      .style("text-anchor", "start")
-      .attr("fill", "#000000")
-      .attr("id", `originNote${this.id}`)
-      .attr("xlink:href", `#${this.id}`)
-      .attr("startOffset", "0%")
-      .text(this.originNote);
+		origin.append('textPath')
+			.style('text-anchor', 'start')
+			.attr('fill', '#000000')
+			.attr('id', `originNote${this.id}`)
+			.attr('xlink:href', `#${this.id}`)
+			.attr('startOffset', '0%')
+			.text(this.originNote)
 
-    middle.append("textPath")
-      .style("text-anchor", "middle")
-      .attr("fill", "#000000")
-      .attr("id", `middleNote${this.id}`)
-      .attr("xlink:href", `#${this.id}`)
-      .attr("startOffset", "50%")
-      .text(this.middleNote);
+		middle.append('textPath')
+			.style('text-anchor', 'middle')
+			.attr('fill', '#000000')
+			.attr('id', `middleNote${this.id}`)
+			.attr('xlink:href', `#${this.id}`)
+			.attr('startOffset', '50%')
+			.text(this.middleNote)
 
-    dest.append("textPath")
-      .style("text-anchor", "end")
-      .attr("fill", "#000000")
-      .attr("id", `destNote${this.id}`)
-      .attr("xlink:href", `#${this.id}`)
-      .attr("startOffset", "100%")
-      .text(this.destNote);
+		dest.append('textPath')
+			.style('text-anchor', 'end')
+			.attr('fill', '#000000')
+			.attr('id', `destNote${this.id}`)
+			.attr('xlink:href', `#${this.id}`)
+			.attr('startOffset', '100%')
+			.text(this.destNote)
 
-    //Marked connector as connected
-    if (this.source.prop.indexOf('title') == -1){
-      __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.source.prop}"][type="O"]`).classed("marked_connector", true);
-    }
-    if (this.target.prop.indexOf('title') == -1){
-      __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.target.prop}"][type="I"]`).classed("marked_connector", true);
-    }
-  }
+		//Marked connector as connected
+		if (this.source.prop.indexOf('title') == -1) {
+			__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.source.prop}"][type="O"]`).classed('marked_connector', true)
+		}
+		if (this.target.prop.indexOf('title') == -1) {
+			__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.target.prop}"][type="I"]`).classed('marked_connector', true)
+		}
+	}
 
-  /**
+	/**
    * Remove edge by id
    * @param edgeId
    */
-  remove() {
-    // Remove from DOM
-    let selected = __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.id}`);
-    if (selected) {
-      selected.node().parentNode.remove();
-      // Mutates array edge
-      __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.remove(this.dataContainer.edge, (e) => {
-        return e.id === this.id;
-      });
-    }
+	remove() {
+		// Remove from DOM
+		let selected = __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${this.id}`)
+		if (selected) {
+			selected.node().parentNode.remove()
+			// Mutates array edge
+			__WEBPACK_IMPORTED_MODULE_0_lodash___default.a.remove(this.dataContainer.edge, (e) => {
+				return e.id === this.id
+			})
+		}
 
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#arrow${this.id}`).remove();
+		__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#arrow${this.id}`).remove()
 
-    if (this.edgeMgmt.isSelectingEdge())
-      this.edgeMgmt.cancleSelectedPath();
+		if (this.edgeMgmt.isSelectingEdge())
+			this.edgeMgmt.cancleSelectedPath()
 
 		//Unmarked connector
 		// For source connection
-    if (this.source.prop.indexOf('title') == -1){
-      let isSrcExist = false;
-      this.dataContainer.edge.forEach(e => {
-        if (e.source.prop == this.source.prop){
-          isSrcExist = true;
-        }
-      });
+		if (this.source.prop.indexOf('title') == -1) {
+			let isSrcExist = false
+			this.dataContainer.edge.forEach(e => {
+				if (e.source.prop == this.source.prop) {
+					isSrcExist = true
+				}
+			})
 
-      if (!isSrcExist){
-        let vertices = [];
-        this.edgeMgmt.vertexContainer.forEach(e=>{
-          vertices = vertices.concat(e.vertex);
-        })
+			if (!isSrcExist) {
+				let vertices = []
+				this.edgeMgmt.vertexContainer.forEach(e=>{
+					vertices = vertices.concat(e.vertex)
+				})
         
-        const propNode = $(`rect[prop=${this.source.prop}][type='O']`)[0];
-        //In case of updated vertex and poperties lost => propNode will not exist
-        if (propNode){
-          __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`rect[prop=${this.source.prop}][type='O']`).classed('marked_connector',false);
-        }
-      }
-    }
+				const propNode = $(`rect[prop=${this.source.prop}][type='O']`)[0]
+				//In case of updated vertex and poperties lost => propNode will not exist
+				if (propNode) {
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`rect[prop=${this.source.prop}][type='O']`).classed('marked_connector',false)
+				}
+			}
+		}
 		
 		// For target connection
-    if (this.target.prop.indexOf('title') == -1){
-      let isTagExist = false;
-      this.dataContainer.edge.forEach(e => {
-        if (e.target.prop == this.target.prop){
-          isTagExist = true;
-        }
-      });
+		if (this.target.prop.indexOf('title') == -1) {
+			let isTagExist = false
+			this.dataContainer.edge.forEach(e => {
+				if (e.target.prop == this.target.prop) {
+					isTagExist = true
+				}
+			})
 
-      if (!isTagExist){
-        let vertices = [];
-        this.edgeMgmt.vertexContainer.forEach(e=>{
-          vertices = vertices.concat(e.vertex);
-        })
+			if (!isTagExist) {
+				let vertices = []
+				this.edgeMgmt.vertexContainer.forEach(e=>{
+					vertices = vertices.concat(e.vertex)
+				})
         
-        const propNode = $(`rect[prop=${this.target.prop}][type='I']`)[0];
-        //In case of updated vertex and poperties lost => propNode will not exist
-        if (propNode){
-					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`rect[prop=${this.target.prop}][type='I']`).classed('marked_connector',false);
+				const propNode = $(`rect[prop=${this.target.prop}][type='I']`)[0]
+				//In case of updated vertex and poperties lost => propNode will not exist
+				if (propNode) {
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`rect[prop=${this.target.prop}][type='I']`).classed('marked_connector',false)
 
 					// mandatory Data elelment checking for target vertex (case of output message of message mapping GUI)
-          const vertexId = $(propNode.parentNode).attr('id');
-					const vertex = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(vertices, {"id":vertexId});
-					vertex.validateConnectionByUsage();
-        }
-      }
+					const vertexId = $(propNode.parentNode).attr('id')
+					const vertex = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(vertices, {'id':vertexId})
+					vertex.validateConnectionByUsage()
+				}
+			}
 		}
 		
 		
-  }
+	}
 
-  /**
+	/**
    * Update attribute d of path (connect)
    * @param id
    * @param options: object
    */
-  updatePathConnect(sOptions = {}) {
-    __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(this, sOptions);
-    const {source, target} = this;
-    let pathStr = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["h" /* createPath */])(source, target);
-    // Get DOM and update attribute
-		__WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('d', pathStr);
+	updatePathConnect(sOptions = {}) {
+		__WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(this, sOptions)
+		const {source, target} = this
+		let pathStr = Object(__WEBPACK_IMPORTED_MODULE_3__common_utilities_common_ult__["h" /* createPath */])(source, target)
+		// Get DOM and update attribute
+		__WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('d', pathStr)
 	}
 	
 	updateMarkedConnector(sOptions = {}) {
 		
-		if (Object.keys(sOptions)[0] == "source") {
+		if (Object.keys(sOptions)[0] == 'source') {
 			// Unmarked old connector
-			if (this.source.prop.indexOf('title') == -1){
+			if (this.source.prop.indexOf('title') == -1) {
 				let isExist = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.edge, (e) => {
-					return e.id != this.id && e.source.vertexId == this.source.vertexId && e.source.prop == this.source.prop;
+					return e.id != this.id && e.source.vertexId == this.source.vertexId && e.source.prop == this.source.prop
 				})
 
 				// If there is no any connection to this connector then unmark it
 				if (!isExist) {
-					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.source.prop}"][type="O"]`).classed("marked_connector", false);
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.source.prop}"][type="O"]`).classed('marked_connector', false)
 				}
 			}
 
 			//Marked new connector
-			if (sOptions.source.prop.indexOf('title') == -1){
-				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${sOptions.source.prop}"][type="O"]`).classed("marked_connector", true);
+			if (sOptions.source.prop.indexOf('title') == -1) {
+				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${sOptions.source.prop}"][type="O"]`).classed('marked_connector', true)
 			}
 		} else {
 			// Unmarked old connector
-			if (this.target.prop.indexOf('title') == -1){
+			if (this.target.prop.indexOf('title') == -1) {
 				let isExist = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.dataContainer.edge, (e) => {
-					return e.id != this.id && e.target.vertexId == this.target.vertexId && e.target.prop == this.target.prop;
+					return e.id != this.id && e.target.vertexId == this.target.vertexId && e.target.prop == this.target.prop
 				})
 
 				// If there is no any connection to this connector then unmark it
 				if (!isExist) {
-					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.target.prop}"][type="I"]`).classed("marked_connector", false);
+					__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${this.target.prop}"][type="I"]`).classed('marked_connector', false)
 				}
 			}
 
 			//Marked new connector
-			if (sOptions.target.prop.indexOf('title') == -1){
-				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${sOptions.target.prop}"][type="I"]`).classed("marked_connector", true);
+			if (sOptions.target.prop.indexOf('title') == -1) {
+				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`[prop="${sOptions.target.prop}"][type="I"]`).classed('marked_connector', true)
 			}
 		}
 	}
 
-  setStatusEdgeOnCurrentView() {
-    const {id, source: {x: xSrc, y: ySrc, svgId: svgSrc}, target: {x: xDes, y: yDes, svgId: svgDes}} = this;
+	setStatusEdgeOnCurrentView() {
+		const {id, source: {x: xSrc, y: ySrc, svgId: svgSrc}, target: {x: xDes, y: yDes, svgId: svgDes}} = this
 
-    let srcContainerRect  = $(`#${svgSrc}`)[0].parentNode.getBoundingClientRect();
-    let desContainerRect  = $(`#${svgDes}`)[0].parentNode.getBoundingClientRect();
+		let srcContainerRect = $(`#${svgSrc}`)[0].parentNode.getBoundingClientRect()
+		let desContainerRect = $(`#${svgDes}`)[0].parentNode.getBoundingClientRect()
 
-    let srcOffsetRight = 0; // thickness of vertical scrollbar
-    let srcOffsetBottom = 0; // thickness of horizontal scrollbar
-    let desOffsetRight = 0; // thickness of vertical scrollbar
-    let desOffsetBottom = 0; // thickness of horizontal scrollbar
+		let srcOffsetRight = 0 // thickness of vertical scrollbar
+		let srcOffsetBottom = 0 // thickness of horizontal scrollbar
+		let desOffsetRight = 0 // thickness of vertical scrollbar
+		let desOffsetBottom = 0 // thickness of horizontal scrollbar
 
-    if ($(`#${svgSrc}`)[0].parentNode.scrollHeight  > $($(`#${svgSrc}`)[0].parentNode).height()) srcOffsetRight = 10;
-    if ($(`#${svgSrc}`)[0].parentNode.scrollWidth   > $($(`#${svgSrc}`)[0].parentNode).width()) srcOffsetBottom = 10;
-    if ($(`#${svgDes}`)[0].parentNode.scrollHeight  > $($(`#${svgDes}`)[0].parentNode).height()) desOffsetRight = 10;
-    if ($(`#${svgDes}`)[0].parentNode.scrollWidth   > $($(`#${svgDes}`)[0].parentNode).width()) desOffsetBottom = 10;
+		if ($(`#${svgSrc}`)[0].parentNode.scrollHeight  > $($(`#${svgSrc}`)[0].parentNode).height()) srcOffsetRight = 10
+		if ($(`#${svgSrc}`)[0].parentNode.scrollWidth   > $($(`#${svgSrc}`)[0].parentNode).width()) srcOffsetBottom = 10
+		if ($(`#${svgDes}`)[0].parentNode.scrollHeight  > $($(`#${svgDes}`)[0].parentNode).height()) desOffsetRight = 10
+		if ($(`#${svgDes}`)[0].parentNode.scrollWidth   > $($(`#${svgDes}`)[0].parentNode).width()) desOffsetBottom = 10
 
-    const node = __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${id}`);
-    if (   xSrc < srcContainerRect.left || xSrc > srcContainerRect.right - srcOffsetRight 
+		const node = __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${id}`)
+		if (   xSrc < srcContainerRect.left || xSrc > srcContainerRect.right - srcOffsetRight 
         || ySrc < srcContainerRect.top  || ySrc > srcContainerRect.bottom - srcOffsetBottom
         || xDes < desContainerRect.left || xDes > desContainerRect.right - desOffsetRight 
         || yDes < desContainerRect.top  || yDes > desContainerRect.bottom - desOffsetBottom
-    ) {
-      if (node.node()) {
-        __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](node.node().parentNode).classed('hide-edge-on-parent-scroll', true);
-      }
-    } else {
-      if (node.node()) {
-        __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](node.node().parentNode).classed('hide-edge-on-parent-scroll', false);
-      }
-    }
-  }
+		) {
+			if (node.node()) {
+				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](node.node().parentNode).classed('hide-edge-on-parent-scroll', true)
+			}
+		} else {
+			if (node.node()) {
+				__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](node.node().parentNode).classed('hide-edge-on-parent-scroll', false)
+			}
+		}
+	}
 
-  /**
+	/**
    * Set text note on edge
    * @param value changed value
    * @param targetNote originNote | middleNote | destNote
    */
-  setNote(value, targetNote) {
-    this[targetNote] = value;
+	setNote(value, targetNote) {
+		this[targetNote] = value
 
-    // Update note on view
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${targetNote}${this.id}`)
-      .text(value);
-  }
+		// Update note on view
+		__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#${targetNote}${this.id}`)
+			.text(value)
+	}
 
-  /**
+	/**
    * Set style path connect solid, dash
    * @param type
    */
-  setLineType(type) {
-    this.lineType = type;
-    let path = __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).filter((d, i) => {
-      return i == 1;
-    });
-    path.style('stroke-dasharray', type === __WEBPACK_IMPORTED_MODULE_2__common_const_index__["g" /* LINE_TYPE */].SOLID ? '0 0' : '3 3');
-  }
+	setLineType(type) {
+		this.lineType = type
+		let path = __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).filter((d, i) => {
+			return i == 1
+		})
+		path.style('stroke-dasharray', type === __WEBPACK_IMPORTED_MODULE_2__common_const_index__["g" /* LINE_TYPE */].SOLID ? '0 0' : '3 3')
+	}
 
-  /**
+	/**
    * Set use arrow marker
    * @param flag
    */
-  setUseMarker(flag) {
-    this.useMarker = flag;
-    __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('marker-end', flag === 'Y' ? `url(#arrow${this.id})` : '');
-  }
+	setUseMarker(flag) {
+		this.useMarker = flag
+		__WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).attr('marker-end', flag === 'Y' ? `url(#arrow${this.id})` : '')
+	}
 
-  /**
+	/**
    * emphasize edge for selected Object (Vertex, Boundary)
    */
-  emphasize(){
-    let path = __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).filter((d, i) => {
-      return i == 1;
-    });
+	emphasize() {
+		let path = __WEBPACK_IMPORTED_MODULE_1_d3__["e" /* selectAll */](`#${this.id}`).filter((d, i) => {
+			return i == 1
+		})
 
-    path.classed('emphasizePath', true);
-    __WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#arrow${this.id}`).select('path').classed('emphasizeArrow', true);
-  }
+		path.classed('emphasizePath', true)
+		__WEBPACK_IMPORTED_MODULE_1_d3__["d" /* select */](`#arrow${this.id}`).select('path').classed('emphasizeArrow', true)
+	}
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Edge);
@@ -54173,107 +54173,107 @@ class Edge {
 
 "use strict";
 class EdgeMenu {
-  constructor(props) {
-    this.dataContainer = props.dataContainer; // a reference to dataContain of Edge
-    this.selector = props.selector;
-    this.edgeMgmt = props.edgeMgmt;
-    this.initEdgeMenu();
-    this.selectedEdge = null;
-  }
+	constructor(props) {
+		this.dataContainer = props.dataContainer // a reference to dataContain of Edge
+		this.selector = props.selector
+		this.edgeMgmt = props.edgeMgmt
+		this.initEdgeMenu()
+		this.selectedEdge = null
+	}
 
-  initEdgeMenu() {
-    // Context menu for Edge
-    $.contextMenu({
-      selector: this.selector,
-      delay: 300,
-      zIndex: 100,
-      build: () => {
-        return {
-          callback: (key, options) => {
-            switch (key) {
-              case "removeEdge":
-                this.selectedEdge.remove();
-                break;
+	initEdgeMenu() {
+		// Context menu for Edge
+		$.contextMenu({
+			selector: this.selector,
+			delay: 300,
+			zIndex: 100,
+			build: () => {
+				return {
+					callback: (key, options) => {
+						switch (key) {
+						case 'removeEdge':
+							this.selectedEdge.remove()
+							break
 
-              default:
-                break;
-            }
-          },
-          items: {
-            originNote: {
-              type: 'text',
-              value: "",
-              placeholder: 'Origin note',
-              events: {
-                keyup: this.onNoteChanged(this, "originNote")
-              }
-            },
-            middleNote: {
-              type: 'text',
-              value: "",
-              placeholder: 'Middle note',
-              events: {
-                keyup: this.onNoteChanged(this, "middleNote")
-              }
-            },
-            destNote: {
-              type: 'text',
-              value: "",
-              placeholder: 'Destination note',
-              events: {
-                keyup: this.onNoteChanged(this, "destNote")
-              }
-            },
-            lineType: {
-              type: 'select',
-              options: {'S': 'Solid', 'D': 'Dash'},
-              events: {
-                change: this.onLineTypeChanged(this)
-              }
-            },
-            useMarker: {
-              type: 'select',
-              options: {'Y': 'Arrow', 'N': 'None'},
-              events: {
-                change: this.onUseMarkerChanged(this)
-              }
-            },
-            removeEdge: {
-              name: "Delete",
-              icon: "fa-times"
-            },
-          },
-          events: {
-            show: (opt) => {
-              // Get edge notes
-              let edgeId = opt.$trigger.attr('ref');
-              this.selectedEdge = _.find(this.dataContainer.edge, {"id":edgeId});
-              this.edgeMgmt.handlerOnClickEdge(this.selectedEdge);
-              $.contextMenu.setInputValues(opt, this.selectedEdge);
-            }
-          }
-        }
-      }
-    });
-  }
+						default:
+							break
+						}
+					},
+					items: {
+						originNote: {
+							type: 'text',
+							value: '',
+							placeholder: 'Origin note',
+							events: {
+								keyup: this.onNoteChanged(this, 'originNote')
+							}
+						},
+						middleNote: {
+							type: 'text',
+							value: '',
+							placeholder: 'Middle note',
+							events: {
+								keyup: this.onNoteChanged(this, 'middleNote')
+							}
+						},
+						destNote: {
+							type: 'text',
+							value: '',
+							placeholder: 'Destination note',
+							events: {
+								keyup: this.onNoteChanged(this, 'destNote')
+							}
+						},
+						lineType: {
+							type: 'select',
+							options: {'S': 'Solid', 'D': 'Dash'},
+							events: {
+								change: this.onLineTypeChanged(this)
+							}
+						},
+						useMarker: {
+							type: 'select',
+							options: {'Y': 'Arrow', 'N': 'None'},
+							events: {
+								change: this.onUseMarkerChanged(this)
+							}
+						},
+						removeEdge: {
+							name: 'Delete',
+							icon: 'fa-times'
+						},
+					},
+					events: {
+						show: (opt) => {
+							// Get edge notes
+							let edgeId = opt.$trigger.attr('ref')
+							this.selectedEdge = _.find(this.dataContainer.edge, {'id':edgeId})
+							this.edgeMgmt.handlerOnClickEdge(this.selectedEdge)
+							$.contextMenu.setInputValues(opt, this.selectedEdge)
+						}
+					}
+				}
+			}
+		})
+	}
 
-  onNoteChanged(main, targetNote) {
-    return function () {
-      main.selectedEdge.setNote(this.value, targetNote);
-    }
-  }
+	onNoteChanged(main, targetNote) {
+		return function () {
+			main.selectedEdge.setNote(this.value, targetNote)
+		}
+	}
 
-  onLineTypeChanged(main) {
-    return function () {
-      main.selectedEdge.setLineType(this.value);
-    }
-  }
+	onLineTypeChanged(main) {
+		return function () {
+			main.selectedEdge.setLineType(this.value)
+		}
+	}
 
-  onUseMarkerChanged(main) {
-    return function () {
-      main.selectedEdge.setUseMarker(this.value);
-    }
-  }
+	onUseMarkerChanged(main) {
+		return function () {
+			main.selectedEdge.setUseMarker(this.value)
+		}
+	}
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (EdgeMenu);
@@ -54911,20 +54911,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 class Starter {
-  constructor() {
-    this.initialize();
-  }
+	constructor() {
+		this.initialize()
+	}
 
-  initialize() {
-    /**
+	initialize() {
+		/**
      * Init Main Mgmt
      * @type {MainMgmt}
      */
-    this.mainMgmt = new __WEBPACK_IMPORTED_MODULE_0__main_mgmt_main_mgmt__["a" /* default */]();
-  }
+		this.mainMgmt = new __WEBPACK_IMPORTED_MODULE_0__main_mgmt_main_mgmt__["a" /* default */]()
+	}
 }
 
-new Starter();
+new Starter()
 
 
 /***/ }),
@@ -54934,61 +54934,61 @@ new Starter();
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__file_mgmt_file_mgmt__ = __webpack_require__(886);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_clt_segment_clt_segment__ = __webpack_require__(887);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_const_index__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_const_index__ = __webpack_require__(23);
 
 
 
 
 class MainMgmt {
-  constructor(props) {
+	constructor(props) {
 
 		const options = {
 			selector: $('.algetaContainer'),
-      viewMode: __WEBPACK_IMPORTED_MODULE_2__common_const_index__["o" /* VIEW_MODE */].SEGMENT,
+			viewMode: __WEBPACK_IMPORTED_MODULE_2__common_const_index__["o" /* VIEW_MODE */].SEGMENT,
 			mandatoryDataElementConfig: {
-				mandatoryEvolutionFunc: (dataElement) => {
-					if (!dataElement) return false;
-					if ((dataElement.usage && dataElement.usage !== "M") && !dataElement.mandatory) return false;
-					if (dataElement.type && dataElement.type === __WEBPACK_IMPORTED_MODULE_2__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPOSITE) return false;
+				mandatoryEvaluationFunc: (dataElement) => {
+					if (!dataElement) return false
+					if ((dataElement.usage && dataElement.usage !== 'M') && !dataElement.mandatory) return false
+					if (dataElement.type && dataElement.type === __WEBPACK_IMPORTED_MODULE_2__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPOSITE) return false
 	
-					return true;
+					return true
 				},
 				clrWarning: '#ff8100', // Orange
 				clrAvailable: '#5aabff' // Light blue
 			}
 		}
 		
-    this.cltSegment = new __WEBPACK_IMPORTED_MODULE_1__components_clt_segment_clt_segment__["a" /* default */](options);
+		this.cltSegment = new __WEBPACK_IMPORTED_MODULE_1__components_clt_segment_clt_segment__["a" /* default */](options)
 
-    /**
+		/**
      * Init file mgmt
      */
-    new __WEBPACK_IMPORTED_MODULE_0__file_mgmt_file_mgmt__["a" /* default */]({
-      parent: this
-    });
-  }
+		new __WEBPACK_IMPORTED_MODULE_0__file_mgmt_file_mgmt__["a" /* default */]({
+			parent: this
+		})
+	}
 
-  /**
+	/**
    * Validation data input match structure of graph data
    * @param data
    * @param option
    */
-  async separateDataToManagement(data, option) {
-    if (option === "VERTEX_TYPE") {
-      await this.cltSegment.LoadVertexGroupDefinition(data);
-    }else if (option === "GRPH_DATA") {
-      await this.cltSegment.loadSegmentSpecEditor(data);
-    }
-  }
+	async separateDataToManagement(data, option) {
+		if (option === 'VERTEX_TYPE') {
+			await this.cltSegment.LoadVertexGroupDefinition(data)
+		}else if (option === 'GRPH_DATA') {
+			await this.cltSegment.loadSegmentSpecEditor(data)
+		}
+	}
 
-  save(fileName){
-    this.cltSegment.save(fileName);
+	save(fileName) {
+		this.cltSegment.save(fileName)
 	}
 	
 	saveToImage(fileName) {
-		this.cltSegment.saveToImage(fileName);
+		this.cltSegment.saveToImage(fileName)
 	}
-};
+}
 /* harmony default export */ __webpack_exports__["a"] = (MainMgmt);
 
 
@@ -54997,92 +54997,92 @@ class MainMgmt {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__ = __webpack_require__(22);
 
 
 
 
-const ID_FOLDER_OPEN_FILE_MGMT = 'folderOpenFileMgmt';
-const ID_CONTAINER_FILE_MGMT = 'containerFileMgmt';
-const ID_OPTION_FILE_TYPE_INPUT = 'optionFileTypeInput';
-const ID_INPUT_FILE_DATA = 'inputFileData';
-const GROUP_OPTION_MODE_GRAPH = 'input:radio[name=graphMode]';
-const ID_OUTPUT_FILE_NAME = 'outputFileName';
-const ID_BUTTON_DOWNLOAD_FILE = 'btnDownloadFile';
-const ID_BUTTON_EXPORT_IMAGE = 'btnExportImage';
+const ID_FOLDER_OPEN_FILE_MGMT = 'folderOpenFileMgmt'
+const ID_CONTAINER_FILE_MGMT = 'containerFileMgmt'
+const ID_OPTION_FILE_TYPE_INPUT = 'optionFileTypeInput'
+const ID_INPUT_FILE_DATA = 'inputFileData'
+const GROUP_OPTION_MODE_GRAPH = 'input:radio[name=graphMode]'
+const ID_OUTPUT_FILE_NAME = 'outputFileName'
+const ID_BUTTON_DOWNLOAD_FILE = 'btnDownloadFile'
+const ID_BUTTON_EXPORT_IMAGE = 'btnExportImage'
 
 class FileMgmt {
-  constructor(props) {
-    this.parent = props.parent;
-    this.initButtonEvent();
-  }
+	constructor(props) {
+		this.parent = props.parent
+		this.initButtonEvent()
+	}
 
-  initButtonEvent() {
-    $(`#${ID_FOLDER_OPEN_FILE_MGMT}`).click(() => {
-      $(`#${ID_CONTAINER_FILE_MGMT}`).slideToggle();
-    });
+	initButtonEvent() {
+		$(`#${ID_FOLDER_OPEN_FILE_MGMT}`).click(() => {
+			$(`#${ID_CONTAINER_FILE_MGMT}`).slideToggle()
+		})
 
-    // Handle event on value change on input file
-    $(`#${ID_INPUT_FILE_DATA}`).change((event) => {
-      this.readJsonFile(event);
-    });
+		// Handle event on value change on input file
+		$(`#${ID_INPUT_FILE_DATA}`).change((event) => {
+			this.readJsonFile(event)
+		})
 
-    // Handle event change value on group radio Mode
-    $(GROUP_OPTION_MODE_GRAPH).change((event) => {
-      let modeGraph = event.target.value;
-      this.parent.setGraphMode(modeGraph);
-    });
+		// Handle event change value on group radio Mode
+		$(GROUP_OPTION_MODE_GRAPH).change((event) => {
+			let modeGraph = event.target.value
+			this.parent.setGraphMode(modeGraph)
+		})
 
-    // Handle event click on button Download
-    $(`#${ID_BUTTON_DOWNLOAD_FILE}`).click((event) => {
-      let fileName = $(`#${ID_OUTPUT_FILE_NAME}`).val();
-      this.parent.save(fileName);
-    });
+		// Handle event click on button Download
+		$(`#${ID_BUTTON_DOWNLOAD_FILE}`).click((event) => {
+			let fileName = $(`#${ID_OUTPUT_FILE_NAME}`).val()
+			this.parent.save(fileName)
+		})
 
-    // Handle event press enter on input file name
-    $(`#${ID_OUTPUT_FILE_NAME}`).keypress((event) => {
-      if (event.keyCode == 13) {
-        let fileName = $(`#${ID_OUTPUT_FILE_NAME}`).val();
-        this.parent.save(fileName);
-        event.preventDefault();
-      }
-		});
+		// Handle event press enter on input file name
+		$(`#${ID_OUTPUT_FILE_NAME}`).keypress((event) => {
+			if (event.keyCode == 13) {
+				let fileName = $(`#${ID_OUTPUT_FILE_NAME}`).val()
+				this.parent.save(fileName)
+				event.preventDefault()
+			}
+		})
 		
 		$(`#${ID_BUTTON_EXPORT_IMAGE}`).click(()=>{
-			let fileName = $(`#${ID_OUTPUT_FILE_NAME}`).val();
-			this.parent.saveToImage(fileName);
+			let fileName = $(`#${ID_OUTPUT_FILE_NAME}`).val()
+			this.parent.saveToImage(fileName)
 		})
-  }
+	}
 
-  /**
+	/**
    * Read content file Vertex Type Definition
    * or  read content file Graph Data Structure
    * @param event
    */
-  async readJsonFile(event) {
-    let file = event.target.files[0];
-    if (!file)
-      return;
+	async readJsonFile(event) {
+		let file = event.target.files[0]
+		if (!file)
+			return
 
-    const data = await Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["m" /* readDataFileJson */])(file);
-    if (!data)
-      return;
+		const data = await Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["m" /* readDataFileJson */])(file)
+		if (!data)
+			return
 
-    const options = $(`#${ID_OPTION_FILE_TYPE_INPUT}`).val();
-    this.parent.separateDataToManagement(data, options);
+		const options = $(`#${ID_OPTION_FILE_TYPE_INPUT}`).val()
+		this.parent.separateDataToManagement(data, options)
 
-    //Hide file managememnt area
-    $(`#${ID_CONTAINER_FILE_MGMT}`).slideToggle();
-    $(`#${ID_INPUT_FILE_DATA}`).val(null);
-  }
+		//Hide file managememnt area
+		$(`#${ID_CONTAINER_FILE_MGMT}`).slideToggle()
+		$(`#${ID_INPUT_FILE_DATA}`).val(null)
+	}
 
-  clearInputFile() {
-    $(`#${ID_INPUT_FILE_DATA}`).val(null);
-  }
+	clearInputFile() {
+		$(`#${ID_INPUT_FILE_DATA}`).val(null)
+	}
 
-  clearOutFileName() {
-    $(`#${ID_OUTPUT_FILE_NAME}`).val(null);
-  }
+	clearOutFileName() {
+		$(`#${ID_OUTPUT_FILE_NAME}`).val(null)
+	}
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (FileMgmt);
@@ -55100,8 +55100,8 @@ class FileMgmt {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_objects_objects_segment_mgmt__ = __webpack_require__(888);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_objects_objects_edge_mgmt__ = __webpack_require__(853);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_objects_menu_context_main_menu_segment__ = __webpack_require__(890);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_const_index__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_const_index__ = __webpack_require__(23);
 
 
 
@@ -55114,213 +55114,213 @@ class FileMgmt {
 
 
 class CltSegment {
-  constructor(props) {
-    this.selector = props.selector;
-    this.viewMode = {value: props.viewMode || __WEBPACK_IMPORTED_MODULE_7__common_const_index__["o" /* VIEW_MODE */].SEGMENT};
+	constructor(props) {
+		this.selector = props.selector
+		this.viewMode = {value: props.viewMode || __WEBPACK_IMPORTED_MODULE_7__common_const_index__["o" /* VIEW_MODE */].SEGMENT}
 
-    this.selectorName = this.selector.selector.replace(/[\.\#]/,'');
+		this.selectorName = this.selector.selector.replace(/[\.\#]/,'')
 
-    this.graphContainerId = `graphContainer_${this.selectorName}`;
-    this.graphSvgId = `graphSvg_${this.selectorName}`;
-    this.connectSvgId = `connectSvg_${this.selectorName}`;
+		this.graphContainerId = `graphContainer_${this.selectorName}`
+		this.graphSvgId = `graphSvg_${this.selectorName}`
+		this.connectSvgId = `connectSvg_${this.selectorName}`
 
-		this.isShowReduced = false;
+		this.isShowReduced = false
 		
-		this.mandatoryDataElementConfig = props.mandatoryDataElementConfig; // The configuration for Data element validation
+		this.mandatoryDataElementConfig = props.mandatoryDataElementConfig // The configuration for Data element validation
 		if (!this.mandatoryDataElementConfig) {
 			this.mandatoryDataElementConfig = { 
-				mandatoryEvolutionFunc: (dataElement) => { return false },
+				mandatoryEvaluationFunc: (dataElement) => { return false },
 				clrWarning: '#ff8100',
 				clrAvailable: '#5aabff'
 			}
 		}
 
-    this.initialize();
-  }
+		this.initialize()
+	}
 
-  initialize() {
+	initialize() {
 
-    this.objectUtils = new __WEBPACK_IMPORTED_MODULE_2__common_utilities_object_ult__["a" /* default */]();
+		this.objectUtils = new __WEBPACK_IMPORTED_MODULE_2__common_utilities_object_ult__["a" /* default */]()
 
-    this.initSvgHtml();
+		this.initSvgHtml()
 
-    this.dataContainer = {
-      vertex: [],
-      boundary: [],
-      edge: []
-    };
+		this.dataContainer = {
+			vertex: [],
+			boundary: [],
+			edge: []
+		}
 
-    this.edgeMgmt = new __WEBPACK_IMPORTED_MODULE_4__common_objects_objects_edge_mgmt__["a" /* default */]({
-      dataContainer    : this.dataContainer,
-      svgId            : this.connectSvgId,
-      vertexContainer  : [
-        this.dataContainer
-      ]
-    });
+		this.edgeMgmt = new __WEBPACK_IMPORTED_MODULE_4__common_objects_objects_edge_mgmt__["a" /* default */]({
+			dataContainer    : this.dataContainer,
+			svgId            : this.connectSvgId,
+			vertexContainer  : [
+				this.dataContainer
+			]
+		})
 
-    this.segmentMgmt = new __WEBPACK_IMPORTED_MODULE_3__common_objects_objects_segment_mgmt__["a" /* default */]({
-      dataContainer : this.dataContainer,
-      containerId : this.graphContainerId,
-      svgId : this.graphSvgId,
-      viewMode: this.viewMode,
+		this.segmentMgmt = new __WEBPACK_IMPORTED_MODULE_3__common_objects_objects_segment_mgmt__["a" /* default */]({
+			dataContainer : this.dataContainer,
+			containerId : this.graphContainerId,
+			svgId : this.graphSvgId,
+			viewMode: this.viewMode,
 			edgeMgmt : this.edgeMgmt,
 			mandatoryDataElementConfig: this.mandatoryDataElementConfig
-    });
+		})
 
-    this.initCustomFunctionD3();
-    this.objectUtils.initListenerContainerScroll(this.graphContainerId, this.edgeMgmt, [this.dataContainer]);
-		this.objectUtils.initListenerOnWindowResize(this.edgeMgmt, [this.dataContainer]);
-  };
+		this.initCustomFunctionD3()
+		this.objectUtils.initListenerContainerScroll(this.graphContainerId, this.edgeMgmt, [this.dataContainer])
+		this.objectUtils.initListenerOnWindowResize(this.edgeMgmt, [this.dataContainer])
+	}
 
-  initSvgHtml(){
-    let sHtml = 
+	initSvgHtml() {
+		let sHtml = 
     `<div id="${this.graphContainerId}" class="graphContainer" ref="${this.graphSvgId}">
 				<svg id="${this.graphSvgId}" class="svg"></svg>
       </div>
-      <svg id="${this.connectSvgId}" class="connect-svg"></svg>`;
+      <svg id="${this.connectSvgId}" class="connect-svg"></svg>`
 
-    this.selector.append(sHtml);
-  }
+		this.selector.append(sHtml)
+	}
 
-  initCustomFunctionD3() {
-    /**
+	initCustomFunctionD3() {
+		/**
      * Move DOM element to front of others
      */
-    __WEBPACK_IMPORTED_MODULE_0_d3__["f" /* selection */].prototype.moveToFront = function () {
-      return this.each(function () {
-        this.parentNode.appendChild(this);
-      });
-    };
+		__WEBPACK_IMPORTED_MODULE_0_d3__["f" /* selection */].prototype.moveToFront = function () {
+			return this.each(function () {
+				this.parentNode.appendChild(this)
+			})
+		}
 
-    /**
+		/**
      * Move DOM element to back of others
      */
-    __WEBPACK_IMPORTED_MODULE_0_d3__["f" /* selection */].prototype.moveToBack = function () {
-      this.each(function () {
-        this.parentNode.firstChild && this.parentNode.insertBefore(this, this.parentNode.firstChild);
-      });
-    };
-  }
+		__WEBPACK_IMPORTED_MODULE_0_d3__["f" /* selection */].prototype.moveToBack = function () {
+			this.each(function () {
+				this.parentNode.firstChild && this.parentNode.insertBefore(this, this.parentNode.firstChild)
+			})
+		}
+	}
 
-  initMenuContext() {
-    new __WEBPACK_IMPORTED_MODULE_5__common_objects_menu_context_main_menu_segment__["a" /* default */]({
-      selector: `#${this.graphSvgId}`,
-      containerId: `#${this.graphContainerId}`,
-      parent: this,
+	initMenuContext() {
+		new __WEBPACK_IMPORTED_MODULE_5__common_objects_menu_context_main_menu_segment__["a" /* default */]({
+			selector: `#${this.graphSvgId}`,
+			containerId: `#${this.graphContainerId}`,
+			parent: this,
 			viewMode: this.viewMode,
 			vertexDefinition: this.segmentMgmt.vertexDefinition
-    });
-  }
+		})
+	}
 
-  /**
+	/**
    * Clear all element on graph
    * And reinit marker def
    */
-  clearAll() {
-    this.segmentMgmt.clearAll();
+	clearAll() {
+		this.segmentMgmt.clearAll()
 
-    Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["q" /* setSizeGraph */])({ width: __WEBPACK_IMPORTED_MODULE_7__common_const_index__["f" /* DEFAULT_CONFIG_GRAPH */].MIN_WIDTH, height: __WEBPACK_IMPORTED_MODULE_7__common_const_index__["f" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT }, this.graphSvgId);
-  }
+		Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["q" /* setSizeGraph */])({ width: __WEBPACK_IMPORTED_MODULE_7__common_const_index__["f" /* DEFAULT_CONFIG_GRAPH */].MIN_WIDTH, height: __WEBPACK_IMPORTED_MODULE_7__common_const_index__["f" /* DEFAULT_CONFIG_GRAPH */].MIN_HEIGHT }, this.graphSvgId)
+	}
 
-  showReduced(){
-    this.isShowReduced = true;
+	showReduced() {
+		this.isShowReduced = true
     
-    this.dataContainer.vertex.forEach((vertex) => {
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.property').classed("hide", true);
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).select('foreignObject').attr("height", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT);
-    });
+		this.dataContainer.vertex.forEach((vertex) => {
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.property').classed('hide', true)
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).select('foreignObject').attr('height', __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT)
+		})
     
-    this.sortByName();
-  }
+		this.sortByName()
+	}
 
-  showFull(){
-    this.isShowReduced = false;
+	showFull() {
+		this.isShowReduced = false
     
-    this.dataContainer.vertex.forEach((vertex) => {
-      let arrProp = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.property').classed("hide", false)._groups[0];
-      __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).select('foreignObject').attr("height", __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * arrProp.length);
-    });
+		this.dataContainer.vertex.forEach((vertex) => {
+			let arrProp = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).selectAll('.property').classed('hide', false)._groups[0]
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${vertex.id}`).select('foreignObject').attr('height', __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].HEADER_HEIGHT + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].PROP_HEIGHT * arrProp.length)
+		})
 
-    this.sortByName();
-  }
+		this.sortByName()
+	}
 
-  LoadVertexGroupDefinition(vertexDefinitionData){
-    if (this.dataContainer.vertex.length > 0 && !confirm('The current data will be cleared, do you want to continue ?')) {
-      return;
-    }
+	LoadVertexGroupDefinition(vertexDefinitionData) {
+		if (this.dataContainer.vertex.length > 0 && !confirm('The current data will be cleared, do you want to continue ?')) {
+			return
+		}
 
-    this.clearAll();
+		this.clearAll()
 
-    if (this.segmentMgmt.LoadVertexGroupDefinition(vertexDefinitionData)) {
-      this.initMenuContext();
-    }
-  }
+		if (this.segmentMgmt.LoadVertexGroupDefinition(vertexDefinitionData)) {
+			this.initMenuContext()
+		}
+	}
 
-  async drawObjects(data) {
-    const { VERTEX: vertices } = data;
-    // Draw Segment
+	async drawObjects(data) {
+		const { VERTEX: vertices } = data
+		// Draw Segment
 
-    let x = 5;
-    let y = 5;
-    vertices.forEach(e => {
-      e.x = x;
-      e.y = y;
-      e.isImport = true;
+		let x = 5
+		let y = 5
+		vertices.forEach(e => {
+			e.x = x
+			e.y = y
+			e.isImport = true
 
-      this.segmentMgmt.create(e);
-    });
-  }
+			this.segmentMgmt.create(e)
+		})
+	}
 
-  async loadSegmentSpecEditor(segmentData) {
+	async loadSegmentSpecEditor(segmentData) {
 
-    if (!this.validateSegmentSpecStructure(segmentData)) {
-      Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Segment Spec Structure is corrupted. You should check it!");
-      return false;
-    }
+		if (!this.validateSegmentSpecStructure(segmentData)) {
+			Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])('Format or data in Segment Spec Structure is corrupted. You should check it!')
+			return false
+		}
 
-    this.segmentMgmt.processDataVertexTypeDefine(segmentData);
+		this.segmentMgmt.processDataVertexTypeDefine(segmentData)
 
-    //clear data
-    this.clearAll();
+		//clear data
+		this.clearAll()
 
-    await this.drawObjects(segmentData);
-    await this.sortByName();
+		await this.drawObjects(segmentData)
+		await this.sortByName()
 
-    this.initMenuContext();
-  }
+		this.initMenuContext()
+	}
 
-  save(fileName) {
+	save(fileName) {
 
-    if (!fileName) {
-      Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])("Please input file name");
-      return;
-    }
+		if (!fileName) {
+			Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])('Please input file name')
+			return
+		}
 
-    this.getContentGraphAsJson().then(content => {
-      if (!content) {
-        Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])("No content to export");
-        return;
-      }
-      // stringify with tabs inserted at each level
-      let graph = JSON.stringify(content, null, "\t");
-      let blob = new Blob([graph], {type: "application/json", charset: "utf-8"});
+		this.getContentGraphAsJson().then(content => {
+			if (!content) {
+				Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])('No content to export')
+				return
+			}
+			// stringify with tabs inserted at each level
+			let graph = JSON.stringify(content, null, '\t')
+			let blob = new Blob([graph], {type: 'application/json', charset: 'utf-8'})
 
-      if (navigator.msSaveBlob) {
-        navigator.msSaveBlob(blob, fileName);
-        return;
-      }
+			if (navigator.msSaveBlob) {
+				navigator.msSaveBlob(blob, fileName)
+				return
+			}
 
-      let fileUrl = window.URL.createObjectURL(blob);
-      let downLink = $('<a>');
-      downLink.attr("download", `${fileName}.json`);
-      downLink.attr("href", fileUrl);
-      downLink.css("display", "none");
-      $("body").append(downLink);
-      downLink[0].click();
-      downLink.remove();
-    }).catch(err => {
-      Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])(err);
-    });
+			let fileUrl = window.URL.createObjectURL(blob)
+			let downLink = $('<a>')
+			downLink.attr('download', `${fileName}.json`)
+			downLink.attr('href', fileUrl)
+			downLink.css('display', 'none')
+			$('body').append(downLink)
+			downLink[0].click()
+			downLink.remove()
+		}).catch(err => {
+			Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])(err)
+		})
 	}
 
 	/**
@@ -55346,396 +55346,396 @@ class CltSegment {
 	addInlineStyling(elements) {
 		if(elements && elements.length) {
 			elements.forEach(function(d) {
-				__WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](d.el).each(function(){
-					let element = this;
-					if (d.el == '.header_name') debugger;
+				__WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */](d.el).each(function() {
+					let element = this
+					if (d.el == '.header_name') debugger
 					if(d.properties && d.properties.length) {
 						d.properties.forEach(function(prop) {
-								let computedStyle = getComputedStyle(element, null);
-								let value = computedStyle.getPropertyValue(prop);
+							let computedStyle = getComputedStyle(element, null)
+							let value = computedStyle.getPropertyValue(prop)
 
-								if (prop == 'height'){
-									if (element.className == 'content_header_name')
-										value = (parseInt(value.replace("px", ""))  - 2) + "px";
-									else
-										value = (parseInt(value.replace("px", ""))  - 1) + "px";
-								}
+							if (prop == 'height') {
+								if (element.className == 'content_header_name')
+									value = (parseInt(value.replace('px', ''))  - 2) + 'px'
+								else
+									value = (parseInt(value.replace('px', ''))  - 1) + 'px'
+							}
 								
-								element.style[prop] = value;
-						});
+							element.style[prop] = value
+						})
 					}
-				 });
-			});
+				 })
+			})
 		}
 	}
 	
 	/**
 	 * Save SVG to image
 	 */
-	saveToImage(fileName){
+	saveToImage(fileName) {
 
 		if (!fileName) {
-      Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])("Please input file name");
-      return;
+			Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["g" /* comShowMessage */])('Please input file name')
+			return
 		}
 		
 		// Show page loader 
-		$('#loader').show();
+		$('#loader').show()
 
 		setTimeout(()=>{
-			this.doSaveToImage(fileName);
-		}, 300);
+			this.doSaveToImage(fileName)
+		}, 300)
 	}
 
 	doSaveToImage(fileName) {
-		const {width, height} = $(`#${this.graphSvgId}`).get(0).getBoundingClientRect();
+		const {width, height} = $(`#${this.graphSvgId}`).get(0).getBoundingClientRect()
 
 		let html = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#${this.graphSvgId}`)
-				.node().outerHTML;
+			.node().outerHTML
 
 		//Create dummy div for storing html that needed to be export
 		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('body')
-				.append('div')
-					.attr('id', 'export_image')
-					.html(html);
+			.append('div')
+			.attr('id', 'export_image')
+			.html(html)
 
 		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#export_image svg')
 			.attr('xmlns', 'http://www.w3.org/2000/svg')
 			.attr('width', width)
-			.attr('height', height);
+			.attr('height', height)
 			
 		__WEBPACK_IMPORTED_MODULE_0_d3__["e" /* selectAll */]('#export_image .vertex_content').attr('xmlns', 'http://www.w3.org/1999/xhtml')
 
 		//Appy css was defined
-		this.addInlineStyling(this.getStylingList());
+		this.addInlineStyling(this.getStylingList())
 
 		//Adding padding-left 2.5px for each first &nbsp; because it has an error while exporting with &nbsp;
-		$('#export_image .vertex_data .property .key').each(function(){
-			let innerHTML = this.innerHTML;
+		$('#export_image .vertex_data .property .key').each(function() {
+			let innerHTML = this.innerHTML
 
-			if (innerHTML != "") {
-				let nCount = 0;
-				let arr = innerHTML.split('&nbsp;');
+			if (innerHTML != '') {
+				let nCount = 0
+				let arr = innerHTML.split('&nbsp;')
 
 				for (let i = 0; i < arr.length; i++) {
-					if (arr[i] == "") nCount++;
-					else break;
+					if (arr[i] == '') nCount++
+					else break
 				}
 
 				if (nCount > 0) {
-					$(this).css('padding-left', nCount * 2.5);
+					$(this).css('padding-left', nCount * 2.5)
 				}
 			}
 		})
 
 		//Replace all &nbsp; by " "
-		html = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */](`#export_image`).node().innerHTML;
-		html = html.replace(/&nbsp;/g, " ");
+		html = __WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#export_image').node().innerHTML
+		html = html.replace(/&nbsp;/g, ' ')
 
 		//Remove dummy div
-		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#export_image').remove();
+		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('#export_image').remove()
 
 		// Create data and export image file
-		let imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
+		let imgsrc = 'data:image/svg+xml;base64,'+ btoa(html)
 
 		__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('body')
-				.append('canvas')
-					.attr("width", width)
-					.attr("height", height);
+			.append('canvas')
+			.attr('width', width)
+			.attr('height', height)
 
-		let canvas = $('canvas').get(0);
-		let	context = canvas.getContext("2d");
+		let canvas = $('canvas').get(0)
+		let	context = canvas.getContext('2d')
 
-		let image = new Image;
-		image.src = imgsrc;
+		let image = new Image
+		image.src = imgsrc
 		image.onload = () => {
 
-			context.drawImage(image, 0, 0);
+			context.drawImage(image, 0, 0)
 	
-			let a = document.createElement("a");
-			a.download = `${fileName}.png`;
-			a.href = this.binaryblob();
+			let a = document.createElement('a')
+			a.download = `${fileName}.png`
+			a.href = this.binaryblob()
 
-			a.click();
+			a.click()
 
-			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('canvas').remove();
+			__WEBPACK_IMPORTED_MODULE_0_d3__["d" /* select */]('canvas').remove()
 			
-			$('#loader').hide();
-		};
-	}
-
-	binaryblob(){
-		let byteString = atob(document.querySelector("canvas").toDataURL().replace(/^data:image\/(png|jpg);base64,/, ""));
-		let ab = new ArrayBuffer(byteString.length);
-		let ia = new Uint8Array(ab);
-		for (let i = 0; i < byteString.length; i++) {
-			ia[i] = byteString.charCodeAt(i);
+			$('#loader').hide()
 		}
-		let dataView = new DataView(ab);
-		let blob = new Blob([dataView], {type: "image/png"});
-		let DOMURL = self.URL || self.webkitURL || self;
-		let newurl = DOMURL.createObjectURL(blob);
-	
-		return newurl;
 	}
 
-  getContentGraphAsJson() {
-    let dataContent = {VERTEX_GROUP: [], VERTEX: []};
+	binaryblob() {
+		let byteString = atob(document.querySelector('canvas').toDataURL().replace(/^data:image\/(png|jpg);base64,/, ''))
+		let ab = new ArrayBuffer(byteString.length)
+		let ia = new Uint8Array(ab)
+		for (let i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i)
+		}
+		let dataView = new DataView(ab)
+		let blob = new Blob([dataView], {type: 'image/png'})
+		let DOMURL = self.URL || self.webkitURL || self
+		let newurl = DOMURL.createObjectURL(blob)
+	
+		return newurl
+	}
 
-    if (this.isEmptyContainerData(this.dataContainer)){
-      return Promise.reject("There is no Input data. Please import!");
-    } 
+	getContentGraphAsJson() {
+		let dataContent = {VERTEX_GROUP: [], VERTEX: []}
 
-    const cloneVertexDefine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.segmentMgmt.vertexDefinition);
+		if (this.isEmptyContainerData(this.dataContainer)) {
+			return Promise.reject('There is no Input data. Please import!')
+		} 
 
-    if(cloneVertexDefine.vertexGroup){
-      dataContent.VERTEX_GROUP = this.getSaveVertexGroup(cloneVertexDefine.vertexGroup);
-    }
+		const cloneVertexDefine = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.segmentMgmt.vertexDefinition)
 
-    // Process data to export
-    // Need clone data cause case user export
-    // later continue edit then lost parent scope
-    // Purpose prevent reference data.
+		if(cloneVertexDefine.vertexGroup) {
+			dataContent.VERTEX_GROUP = this.getSaveVertexGroup(cloneVertexDefine.vertexGroup)
+		}
 
-    //Vertex and Boundary data
-    const cloneData = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.dataContainer);
-    cloneData.vertex.forEach(vertex => {
-      dataContent.VERTEX.push(this.getSaveDataVertex(vertex));
-    });
+		// Process data to export
+		// Need clone data cause case user export
+		// later continue edit then lost parent scope
+		// Purpose prevent reference data.
 
-    return Promise.resolve(dataContent);
-  }
+		//Vertex and Boundary data
+		const cloneData = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.dataContainer)
+		cloneData.vertex.forEach(vertex => {
+			dataContent.VERTEX.push(this.getSaveDataVertex(vertex))
+		})
 
-  /**
+		return Promise.resolve(dataContent)
+	}
+
+	/**
    * Filter properties that need to save
    * @param {*} vertexGroup 
    */
-  getSaveVertexGroup(vertexGroup){
-    let resObj = [];
+	getSaveVertexGroup(vertexGroup) {
+		let resObj = []
 
-    vertexGroup.forEach(group => {
-      let tmpGroup = {};
+		vertexGroup.forEach(group => {
+			let tmpGroup = {}
 
-      tmpGroup.groupType          = group.groupType;
-      tmpGroup.option             = group.option;
-      tmpGroup.dataElementFormat  = group.dataElementFormat;
-      tmpGroup.vertexPresentation = group.vertexPresentation;
+			tmpGroup.groupType = group.groupType
+			tmpGroup.option = group.option
+			tmpGroup.dataElementFormat = group.dataElementFormat
+			tmpGroup.vertexPresentation = group.vertexPresentation
 
-      resObj.push(tmpGroup);
-    })
+			resObj.push(tmpGroup)
+		})
     
-    return resObj;
-  }
+		return resObj
+	}
 
-  /**
+	/**
    * Filter properties that need to save
    * @param {*} vertex 
    */
-  getSaveDataVertex(vertex){
-    let resObj = {};
-    resObj.groupType = vertex.groupType;
-    resObj.vertexType = vertex.vertexType;
-    resObj.description = vertex.description;
-    resObj.data = [];
+	getSaveDataVertex(vertex) {
+		let resObj = {}
+		resObj.groupType = vertex.groupType
+		resObj.vertexType = vertex.vertexType
+		resObj.description = vertex.description
+		resObj.data = []
 
-    const arrPropNeedToSave = Object.keys(this.segmentMgmt.vertexGroup.dataElementFormat);
+		const arrPropNeedToSave = Object.keys(this.segmentMgmt.vertexGroup.dataElementFormat)
 
-    vertex.data.forEach(e => {
-      let elementDataObj = {};
+		vertex.data.forEach(e => {
+			let elementDataObj = {}
 
-      arrPropNeedToSave.forEach(prop => {
-        elementDataObj[prop] = e[prop];
-      });
+			arrPropNeedToSave.forEach(prop => {
+				elementDataObj[prop] = e[prop]
+			})
 
-      resObj.data.push(elementDataObj);
-    });
+			resObj.data.push(elementDataObj)
+		})
 
-    return resObj;
-  }
+		return resObj
+	}
 
-  isEmptyContainerData(containerData){
-    return (containerData.vertex.length == 0 && containerData.boundary.length == 0)
-  }
+	isEmptyContainerData(containerData) {
+		return (containerData.vertex.length == 0 && containerData.boundary.length == 0)
+	}
 
-  /**
+	/**
    * Validate Vertex Group Define Structure
    */
-  validateSegmentSpecStructure(data) {
+	validateSegmentSpecStructure(data) {
 
-    //Validate data exists
-    if(data===undefined)
-    {
-      return false;
-    }
+		//Validate data exists
+		if(data===undefined)
+		{
+			return false
+		}
 
-    if (!data.VERTEX_GROUP || !data.VERTEX) {
-      return false;
-    }
+		if (!data.VERTEX_GROUP || !data.VERTEX) {
+			return false
+		}
 
-    if (Object.keys(data).length > 2) {
-      return false;
-    }
+		if (Object.keys(data).length > 2) {
+			return false
+		}
 
-    return true;
-  }
+		return true
+	}
 
-  sortBySize() {
-    let arrSort =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.dataContainer.vertex);
+	sortBySize() {
+		let arrSort =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.dataContainer.vertex)
 
-    // Sort descending by data lenght of vertex
-    arrSort.sort(function (a,b) {
-      return b.data.length - a.data.length;
-    });
+		// Sort descending by data lenght of vertex
+		arrSort.sort(function (a,b) {
+			return b.data.length - a.data.length
+		})
 
-    // get height for all vertex
-    for (let i = 0; i < arrSort.length; i++) {
-      const $vSelector = $(`#${arrSort[i].id}`);
-      arrSort[i].height = $vSelector.get(0).getBoundingClientRect().height;
-    }
+		// get height for all vertex
+		for (let i = 0; i < arrSort.length; i++) {
+			const $vSelector = $(`#${arrSort[i].id}`)
+			arrSort[i].height = $vSelector.get(0).getBoundingClientRect().height
+		}
    
-    const nMarginRight = 5;
-    const nMarginBottom = 5;
-    const $container = $(`#${this.graphContainerId}`);
-    const {width: cntrW} = $container.get(0).getBoundingClientRect();
-    let columnCount = parseInt((cntrW - ((parseInt(cntrW / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH) - 1) * nMarginRight)) / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH);
-    if (columnCount < 1) columnCount = 1;
+		const nMarginRight = 5
+		const nMarginBottom = 5
+		const $container = $(`#${this.graphContainerId}`)
+		const {width: cntrW} = $container.get(0).getBoundingClientRect()
+		let columnCount = parseInt((cntrW - ((parseInt(cntrW / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH) - 1) * nMarginRight)) / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
+		if (columnCount < 1) columnCount = 1
 
-    // Fist arrange
-    let arrSort2 = [];
-    let arrLenght = [];
-    for (let i = 0; i < columnCount && i < arrSort.length; i++) {
-      let arr = [];
-      arrSort[i].y = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y;
-      arr.push(arrSort[i]);
-      arrSort2.push(arr);
-      arrLenght[i] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y + arrSort[i].height;
-    }
+		// Fist arrange
+		let arrSort2 = []
+		let arrLenght = []
+		for (let i = 0; i < columnCount && i < arrSort.length; i++) {
+			let arr = []
+			arrSort[i].y = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y
+			arr.push(arrSort[i])
+			arrSort2.push(arr)
+			arrLenght[i] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y + arrSort[i].height
+		}
 
-    // Calculate for sorting
-    if (arrSort.length > columnCount) {
-      let nCount = columnCount;
-      while (nCount < arrSort.length) {
-        // Find the column has the min height
-        let indexOfMin = this.indexOfMinOf(arrLenght);
+		// Calculate for sorting
+		if (arrSort.length > columnCount) {
+			let nCount = columnCount
+			while (nCount < arrSort.length) {
+				// Find the column has the min height
+				let indexOfMin = this.indexOfMinOf(arrLenght)
 
-        arrSort[nCount].y = arrLenght[indexOfMin] + nMarginBottom;
-        arrSort2[indexOfMin].push(arrSort[nCount]);
-        arrLenght[indexOfMin] += arrSort[nCount].height + nMarginBottom;
+				arrSort[nCount].y = arrLenght[indexOfMin] + nMarginBottom
+				arrSort2[indexOfMin].push(arrSort[nCount])
+				arrLenght[indexOfMin] += arrSort[nCount].height + nMarginBottom
 
-        nCount++;
-      }
-    }
+				nCount++
+			}
+		}
 
-    // Arrange all vertex with arrSort2 was made
-    let x = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_X;
+		// Arrange all vertex with arrSort2 was made
+		let x = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_X
 
-    for (let row = 0; row < arrSort2.length; row++) {
-      for (let col = 0; col < arrSort2[row].length; col++) {
-        const vertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.vertex, {"id": arrSort2[row][col].id});
-        vertex.setPosition({x, y: arrSort2[row][col].y});
-      }
-      x += __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + nMarginRight;
-    }
+		for (let row = 0; row < arrSort2.length; row++) {
+			for (let col = 0; col < arrSort2[row].length; col++) {
+				const vertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.vertex, {'id': arrSort2[row][col].id})
+				vertex.setPosition({x, y: arrSort2[row][col].y})
+			}
+			x += __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + nMarginRight
+		}
 
-    Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.graphSvgId, this.viewMode.value);
-  }
+		Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.graphSvgId, this.viewMode.value)
+	}
 
-  sortByName() {
-    let arrSort =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.dataContainer.vertex);
+	sortByName() {
+		let arrSort =  __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.dataContainer.vertex)
 
-    arrSort.sort(function (a,b) {
-      return (a.name.toUpperCase()).localeCompare((b.name.toUpperCase()));
-    });
+		arrSort.sort(function (a,b) {
+			return (a.name.toUpperCase()).localeCompare((b.name.toUpperCase()))
+		})
 
-    // get height for all vertex
-    for (let i = 0; i < arrSort.length; i++) {
-      const $vSelector = $(`#${arrSort[i].id}`);
-      arrSort[i].height = $vSelector.get(0).getBoundingClientRect().height;
-    }
+		// get height for all vertex
+		for (let i = 0; i < arrSort.length; i++) {
+			const $vSelector = $(`#${arrSort[i].id}`)
+			arrSort[i].height = $vSelector.get(0).getBoundingClientRect().height
+		}
    
-    const nMarginRight = 5;
-    const nMarginBottom = 5;
-    const $container = $(`#${this.graphContainerId}`);
-    const {width: cntrW} = $container.get(0).getBoundingClientRect();
-    let columnCount = parseInt((cntrW - ((parseInt(cntrW / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH) - 1) * nMarginRight)) / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH);
-    if (columnCount < 1) columnCount = 1;
+		const nMarginRight = 5
+		const nMarginBottom = 5
+		const $container = $(`#${this.graphContainerId}`)
+		const {width: cntrW} = $container.get(0).getBoundingClientRect()
+		let columnCount = parseInt((cntrW - ((parseInt(cntrW / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH) - 1) * nMarginRight)) / __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH)
+		if (columnCount < 1) columnCount = 1
 
-    // Fist arrange
-    let arrSort2 = [];
-    let arrLenght = [];
-    for (let i = 0; i < columnCount && i < arrSort.length; i++) {
-      let arr = [];
-      arrSort[i].y = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y;
-      arr.push(arrSort[i]);
-      arrSort2.push(arr);
-      arrLenght[i] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y + arrSort[i].height;
-    }
+		// Fist arrange
+		let arrSort2 = []
+		let arrLenght = []
+		for (let i = 0; i < columnCount && i < arrSort.length; i++) {
+			let arr = []
+			arrSort[i].y = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y
+			arr.push(arrSort[i])
+			arrSort2.push(arr)
+			arrLenght[i] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_Y + arrSort[i].height
+		}
 
-    // Calculate for sorting
-    if (arrSort.length > columnCount) {
-      let nCount = columnCount;
-      while (nCount < arrSort.length) {
-        // Find the column has the min height
-        let indexOfMax = this.indexOfMaxOf(arrLenght);
-        const maxLength = arrLenght[indexOfMax];
-        const y = arrLenght[indexOfMax] + nMarginBottom;
+		// Calculate for sorting
+		if (arrSort.length > columnCount) {
+			let nCount = columnCount
+			while (nCount < arrSort.length) {
+				// Find the column has the min height
+				let indexOfMax = this.indexOfMaxOf(arrLenght)
+				const maxLength = arrLenght[indexOfMax]
+				const y = arrLenght[indexOfMax] + nMarginBottom
 
-        for (let i = 0; i < columnCount && nCount < arrSort.length; i++) {
-          arrSort[nCount].y = y;
-          arrSort2[i].push(arrSort[nCount]);
+				for (let i = 0; i < columnCount && nCount < arrSort.length; i++) {
+					arrSort[nCount].y = y
+					arrSort2[i].push(arrSort[nCount])
 
-          arrLenght[i] = maxLength + nMarginBottom + arrSort[nCount].height;
+					arrLenght[i] = maxLength + nMarginBottom + arrSort[nCount].height
 
-          nCount++;
-        }
-      }
-    }
+					nCount++
+				}
+			}
+		}
 
-    // Arrange all vertex with arrSort2 was made
-    let x = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_X;
+		// Arrange all vertex with arrSort2 was made
+		let x = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["h" /* PADDING_POSITION_SVG */].MIN_OFFSET_X
 
-    for (let row = 0; row < arrSort2.length; row++) {
-      for (let col = 0; col < arrSort2[row].length; col++) {
-        const vertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.vertex, {"id": arrSort2[row][col].id});
-        vertex.setPosition({x, y: arrSort2[row][col].y});
-      }
-      x += __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + nMarginRight;
-    }
+		for (let row = 0; row < arrSort2.length; row++) {
+			for (let col = 0; col < arrSort2[row].length; col++) {
+				const vertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.vertex, {'id': arrSort2[row][col].id})
+				vertex.setPosition({x, y: arrSort2[row][col].y})
+			}
+			x += __WEBPACK_IMPORTED_MODULE_7__common_const_index__["l" /* VERTEX_ATTR_SIZE */].GROUP_WIDTH + nMarginRight
+		}
 
-    Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.graphSvgId, this.viewMode.value);
-  }
+		Object(__WEBPACK_IMPORTED_MODULE_6__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.graphSvgId, this.viewMode.value)
+	}
 
-  indexOfMinOf(arr) {
-    if (arr.length == 0) return -1;
+	indexOfMinOf(arr) {
+		if (arr.length == 0) return -1
 
-    let min = arr[0];
-    let index = 0;
+		let min = arr[0]
+		let index = 0
 
-    for (let i = 1; i < arr.length; i++) {
-      if (arr[i] < min) {
-        min = arr[i];
-        index = i;
-      }
-    }
+		for (let i = 1; i < arr.length; i++) {
+			if (arr[i] < min) {
+				min = arr[i]
+				index = i
+			}
+		}
 
-    return index;
-  }
+		return index
+	}
 
-  indexOfMaxOf(arr) {
-    if (arr.length == 0) return -1;
+	indexOfMaxOf(arr) {
+		if (arr.length == 0) return -1
 
-    let max = arr[0];
-    let index = 0;
+		let max = arr[0]
+		let index = 0
 
-    for (let i = 1; i < arr.length; i++) {
-      if (arr[i] > max) {
-        max = arr[i];
-        index = i;
-      }
-    }
+		for (let i = 1; i < arr.length; i++) {
+			if (arr[i] > max) {
+				max = arr[i]
+				index = i
+			}
+		}
 
-    return index;
-  }
+		return index
+	}
 }
   
 /* harmony default export */ __webpack_exports__["a"] = (CltSegment);
@@ -55755,8 +55755,8 @@ class CltSegment {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utilities_popup_ult__ = __webpack_require__(326);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_utilities_object_ult__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__menu_context_segment_menu__ = __webpack_require__(889);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_const_index__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_const_index__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__ = __webpack_require__(22);
 
 
 
@@ -55770,58 +55770,58 @@ class CltSegment {
 
 
 
-const HTML_VERTEX_INFO_ID = 'vertexInfo';
-const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties';
-const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet';
-const ATTR_DEL_CHECK_ALL = 'delCheckAll';
-const ATTR_DEL_CHECK = 'delCheck';
+const HTML_VERTEX_INFO_ID = 'vertexInfo'
+const HTML_VERTEX_PROPERTIES_ID = 'vertexProperties'
+const HTML_GROUP_BTN_DYNAMIC_DATASET = 'groupBtnDynamicDataSet'
+const ATTR_DEL_CHECK_ALL = 'delCheckAll'
+const ATTR_DEL_CHECK = 'delCheck'
 
 class SegmentMgmt {
-  constructor(props) {
-    this.dataContainer            		= props.dataContainer; // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
-    this.containerId              		= props.containerId;
-    this.svgId                    		= props.svgId;
-    this.viewMode                 		= {value: __WEBPACK_IMPORTED_MODULE_7__common_const_index__["o" /* VIEW_MODE */].SEGMENT};
-    this.edgeMgmt                 		= props.edgeMgmt;
-		this.connectSide              		= __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].NONE;
-		this.mandatoryDataElementConfig		= props.mandatoryDataElementConfig
+	constructor(props) {
+		this.dataContainer = props.dataContainer // {[vertex array], [boundary array]} store all vertex and boundary for this SVG
+		this.containerId = props.containerId
+		this.svgId = props.svgId
+		this.viewMode = {value: __WEBPACK_IMPORTED_MODULE_7__common_const_index__["o" /* VIEW_MODE */].SEGMENT}
+		this.edgeMgmt = props.edgeMgmt
+		this.connectSide = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["d" /* CONNECT_SIDE */].NONE
+		this.mandatoryDataElementConfig = props.mandatoryDataElementConfig
 
-    this.vertexDefinition = {
-      vertexGroup: [],  // Group vertex
-      vertex:[]         // List of vertex type
-    };
+		this.vertexDefinition = {
+			vertexGroup: [],  // Group vertex
+			vertex:[]         // List of vertex type
+		}
 
-    this.initialize();
-  }
+		this.initialize()
+	}
 
-  initialize() {
-    this.colorHash = new __WEBPACK_IMPORTED_MODULE_1_color_hash___default.a({lightness: 0.7});
-    this.colorHashConnection = new __WEBPACK_IMPORTED_MODULE_1_color_hash___default.a({lightness: 0.8});
-    this.objectUtils = new __WEBPACK_IMPORTED_MODULE_5__common_utilities_object_ult__["a" /* default */]();
+	initialize() {
+		this.colorHash = new __WEBPACK_IMPORTED_MODULE_1_color_hash___default.a({lightness: 0.7})
+		this.colorHashConnection = new __WEBPACK_IMPORTED_MODULE_1_color_hash___default.a({lightness: 0.8})
+		this.objectUtils = new __WEBPACK_IMPORTED_MODULE_5__common_utilities_object_ult__["a" /* default */]()
 
-    this.selectorClass = `_vertex_${this.svgId}`;
-    this.currentVertex = null; //vertex is being edited
-    this.vertexGroup = null;
+		this.selectorClass = `_vertex_${this.svgId}`
+		this.currentVertex = null //vertex is being edited
+		this.vertexGroup = null
 
-    new __WEBPACK_IMPORTED_MODULE_6__menu_context_segment_menu__["a" /* default */]({
-      selector: `.${this.selectorClass}`,
-      parent: this,
-      dataContainer: this.dataContainer,
+		new __WEBPACK_IMPORTED_MODULE_6__menu_context_segment_menu__["a" /* default */]({
+			selector: `.${this.selectorClass}`,
+			parent: this,
+			dataContainer: this.dataContainer,
 			viewMode: this.viewMode
-    });
+		})
 
-    this.initVertexPopupHtml();
-    this.bindEventForPopupVertex();
+		this.initVertexPopupHtml()
+		this.bindEventForPopupVertex()
 
-    this.handleDragVertex = __WEBPACK_IMPORTED_MODULE_2_d3__["a" /* drag */]()
-      .on("start", this.startDrag(this))
-      .on("drag", this.dragTo(this))
-			.on("end", this.endDrag(this));
-  }
+		this.handleDragVertex = __WEBPACK_IMPORTED_MODULE_2_d3__["a" /* drag */]()
+			.on('start', this.startDrag(this))
+			.on('drag', this.dragTo(this))
+			.on('end', this.endDrag(this))
+	}
 
-  initVertexPopupHtml(){
+	initVertexPopupHtml() {
 
-    let sHtml = `
+		let sHtml = `
     <!-- Vertex Info Popup (S) -->
     <div id="${HTML_VERTEX_INFO_ID}_${this.svgId}" class="modal fade" role="dialog" tabindex="-1">
       <div class="modal-dialog">
@@ -55876,628 +55876,628 @@ class SegmentMgmt {
         </div>
       </div>
     </div>
-    <!-- Vertex Info Popup (E) -->`;
-    $($(`#${this.svgId}`)[0].parentNode).append(sHtml);
-  }
-
-  bindEventForPopupVertex() {
-    const main = this;
-    
-    $(`#vertexBtnConfirm_${main.svgId}`).click(() => {
-      this.confirmEditVertexInfo();
-    });
-
-    $(`#vertexBtnAdd_${main.svgId}`).click(() => {
-      this.addDataElement();
-    });
-
-    $(`#vertexBtnDelete_${main.svgId}`).click(() => {
-      this.removeDataElement();
-    });
-
-    $(`#vertexBtnCancel_${main.svgId}`).click(() => {
-      this.closePopVertexInfo();
-      this.currentVertex = null;
-		});
-
-		// Prevent refresh page after pressing enter on form control (Edit popup)
-		$("form").submit(function() { return false; });
-		
-		this.initDialogDragEvent();
+    <!-- Vertex Info Popup (E) -->`
+		$($(`#${this.svgId}`)[0].parentNode).append(sHtml)
 	}
 
-  create(sOptions) {
-    let {vertexType} = sOptions;
+	bindEventForPopupVertex() {
+		const main = this
+    
+		$(`#vertexBtnConfirm_${main.svgId}`).click(() => {
+			this.confirmEditVertexInfo()
+		})
 
-    if (!vertexType)
-      return;
+		$(`#vertexBtnAdd_${main.svgId}`).click(() => {
+			this.addDataElement()
+		})
 
-    let newVertex = new __WEBPACK_IMPORTED_MODULE_3__vertex__["a" /* default */]({
-      vertexMgmt: this
-    });
+		$(`#vertexBtnDelete_${main.svgId}`).click(() => {
+			this.removeDataElement()
+		})
 
-    return newVertex.create(sOptions, this.handleDragVertex);
-  }
+		$(`#vertexBtnCancel_${main.svgId}`).click(() => {
+			this.closePopVertexInfo()
+			this.currentVertex = null
+		})
 
-  startDrag(main) {
-    return function (d) {
-      d.moveToFront();
-    }
-  }
+		// Prevent refresh page after pressing enter on form control (Edit popup)
+		$('form').submit(function() { return false })
+		
+		this.initDialogDragEvent()
+	}
 
-  dragTo(main) {
-    return function (d) {
-      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["r" /* updateSizeGraph */])(d);
-      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["c" /* autoScrollOnMousedrag */])(d.svgId, d.containerId, main.viewMode.value);
+	create(sOptions) {
+		let {vertexType} = sOptions
+
+		if (!vertexType)
+			return
+
+		let newVertex = new __WEBPACK_IMPORTED_MODULE_3__vertex__["a" /* default */]({
+			vertexMgmt: this
+		})
+
+		return newVertex.create(sOptions, this.handleDragVertex)
+	}
+
+	startDrag(main) {
+		return function (d) {
+			d.moveToFront()
+		}
+	}
+
+	dragTo(main) {
+		return function (d) {
+			Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["r" /* updateSizeGraph */])(d)
+			Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["c" /* autoScrollOnMousedrag */])(d.svgId, d.containerId, main.viewMode.value)
       
-      // Prevent drag object outside the window
-      let {x, y} = main.objectUtils.setPositionObjectJustInSvg(__WEBPACK_IMPORTED_MODULE_2_d3__["b" /* event */], d);
-      d.x = x;
-      d.y = y;
-      // Transform group
-      __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${d.id}`).attr("transform", "translate(" + [d.x, d.y] + ")");
-    }
-  }
+			// Prevent drag object outside the window
+			let {x, y} = main.objectUtils.setPositionObjectJustInSvg(__WEBPACK_IMPORTED_MODULE_2_d3__["b" /* event */], d)
+			d.x = x
+			d.y = y
+			// Transform group
+			__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${d.id}`).attr('transform', 'translate(' + [d.x, d.y] + ')')
+		}
+	}
 
-  endDrag(main) {
-    return function (d) {
-    }
-  }
+	endDrag(main) {
+		return function (d) {
+		}
+	}
 
-  /**
+	/**
    * Make popup edit vertex info
    * @param vertex
    */
-  makePopupEditVertex(vertex) {
-    this.currentVertex = vertex;
-    // Use in function updateVertexInfo()
-    let {name, description, data, groupType} = vertex;
+	makePopupEditVertex(vertex) {
+		this.currentVertex = vertex
+		// Use in function updateVertexInfo()
+		let {name, description, data, groupType} = vertex
 
-    // Get vertex group with group type
+		// Get vertex group with group type
    
-		this.vertexGroup = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroup, {"groupType": groupType})
+		this.vertexGroup = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.vertexDefinition.vertexGroup, {'groupType': groupType})
 		
-    this.currentVertex.groupType = groupType;
+		this.currentVertex.groupType = groupType
 
-    // Append content to popup
-    $(`#vertexName_${this.svgId}`).val(name);
-    $(`#vertexDesc_${this.svgId}`).val(description);
+		// Append content to popup
+		$(`#vertexName_${this.svgId}`).val(name)
+		$(`#vertexDesc_${this.svgId}`).val(description)
 
-    // Generate properties vertex
-    let columnTitle = Object.keys(this.vertexGroup.dataElementFormat);
-    let cols = columnTitle.length;
-    let rows = data.length;
-    const dataType = this.vertexGroup.elementDataType;
+		// Generate properties vertex
+		let columnTitle = Object.keys(this.vertexGroup.dataElementFormat)
+		let cols = columnTitle.length
+		let rows = data.length
+		const dataType = this.vertexGroup.elementDataType
 
-    let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).empty();
-    let $contentHeader = $('<thead>');
-    // Generate header table
-    let $headerRow = $('<tr>');
-    let $colGroup = $('<colgroup>');
-    let $popWidth = 0;
-    for (let i = 0; i < cols; i++) {
-      let $colHdr = $('<th>').text(this.capitalizeFirstLetter(columnTitle[i]));
-      $colHdr.attr('class', 'col_header');
-      $colHdr.appendTo($headerRow);
+		let $table = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).empty()
+		let $contentHeader = $('<thead>')
+		// Generate header table
+		let $headerRow = $('<tr>')
+		let $colGroup = $('<colgroup>')
+		let $popWidth = 0
+		for (let i = 0; i < cols; i++) {
+			let $colHdr = $('<th>').text(this.capitalizeFirstLetter(columnTitle[i]))
+			$colHdr.attr('class', 'col_header')
+			$colHdr.appendTo($headerRow)
 
-      // Init col in col group
-      let prop = columnTitle[i];
-      let type = dataType[prop];
-      let value = this.vertexGroup.dataElementFormat[prop];
-      let width = this.findLongestContent({data, prop, type, value});
-      $popWidth += width;
-      let $colWidth = $('<col>').attr('width', width);
-      $colWidth.appendTo($colGroup);
-    }
+			// Init col in col group
+			let prop = columnTitle[i]
+			let type = dataType[prop]
+			let value = this.vertexGroup.dataElementFormat[prop]
+			let width = this.findLongestContent({data, prop, type, value})
+			$popWidth += width
+			let $colWidth = $('<col>').attr('width', width)
+			$colWidth.appendTo($colGroup)
+		}
 
-    // Prepend col group del check
-    let $colWidth = $('<col>').attr('width', __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_COL_DEL_CHECK);
-    $colWidth.prependTo($colGroup);
+		// Prepend col group del check
+		let $colWidth = $('<col>').attr('width', __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_COL_DEL_CHECK)
+		$colWidth.prependTo($colGroup)
 
-    let $colHdr = this.initCellDelCheck({
-      'className': 'col_header',
-      'name': `${ATTR_DEL_CHECK_ALL}_${this.svgId}`,
-      'checked': false,
-      'colType': '<th>',
-      'isCheckAll': true,
-    });
-    $colHdr.prependTo($headerRow);
+		let $colHdr = this.initCellDelCheck({
+			'className': 'col_header',
+			'name': `${ATTR_DEL_CHECK_ALL}_${this.svgId}`,
+			'checked': false,
+			'colType': '<th>',
+			'isCheckAll': true,
+		})
+		$colHdr.prependTo($headerRow)
 
-    $colGroup.appendTo($table);
-    $headerRow.appendTo($contentHeader);
-    $contentHeader.appendTo($table);
+		$colGroup.appendTo($table)
+		$headerRow.appendTo($contentHeader)
+		$contentHeader.appendTo($table)
 
-    // Generate content table
-    let $contentBody = $('<tbody>');
-    for (let i = 0; i < rows; i++) {
-      const dataRow = data[i];
-      const $row = $('<tr>');
-      for (let j = 0; j < cols; j++) {
-        let prop = columnTitle[j];
-        let type = dataType[prop];
-        let val = dataRow[prop];
-        let opt = [];
+		// Generate content table
+		let $contentBody = $('<tbody>')
+		for (let i = 0; i < rows; i++) {
+			const dataRow = data[i]
+			const $row = $('<tr>')
+			for (let j = 0; j < cols; j++) {
+				let prop = columnTitle[j]
+				let type = dataType[prop]
+				let val = dataRow[prop]
+				let opt = []
 
-        const $col = $('<td>');
-        // Get option if type is array
-        if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY) {
-          opt = this.vertexGroup.dataElementFormat[prop];
-        } else if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
-          $col.attr('class', 'checkbox_center');
-        }
+				const $col = $('<td>')
+				// Get option if type is array
+				if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY) {
+					opt = this.vertexGroup.dataElementFormat[prop]
+				} else if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
+					$col.attr('class', 'checkbox_center')
+				}
 
-        let $control = this.generateControlByType({i, type, val, prop, opt, groupType});
-        $control.appendTo($col);
-        $col.appendTo($row);
-      }
+				let $control = this.generateControlByType({i, type, val, prop, opt, groupType})
+				$control.appendTo($col)
+				$col.appendTo($row)
+			}
 
-      // Append del check to row
-      let $col = this.initCellDelCheck({
-        'className': 'checkbox_center',
-        'name': `${ATTR_DEL_CHECK}_${this.svgId}` ,
-        'checked': false,
-        'colType': '<td>'
-      });
-      $col.prependTo($row);
+			// Append del check to row
+			let $col = this.initCellDelCheck({
+				'className': 'checkbox_center',
+				'name': `${ATTR_DEL_CHECK}_${this.svgId}` ,
+				'checked': false,
+				'colType': '<td>'
+			})
+			$col.prependTo($row)
 
-      $row.appendTo($contentBody);
-    }
+			$row.appendTo($contentBody)
+		}
 
-    $contentBody.appendTo($table);
+		$contentBody.appendTo($table)
 
-    let options = {
-      popupId: `${HTML_VERTEX_INFO_ID}_${this.svgId}`,
-      position: 'center',
-      width: $popWidth + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].PADDING_CHAR + 45
-    }
+		let options = {
+			popupId: `${HTML_VERTEX_INFO_ID}_${this.svgId}`,
+			position: 'center',
+			width: $popWidth + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].PADDING_CHAR + 45
+		}
 
-		__WEBPACK_IMPORTED_MODULE_4__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options);
+		__WEBPACK_IMPORTED_MODULE_4__common_utilities_popup_ult__["a" /* default */].metSetShowPopup(options)
 		
-		$(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tbody').sortable();
-  }
+		$(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tbody').sortable()
+	}
 
-  /**
+	/**
    * Generate control with options
    * @param options
    * @returns {*}
    */
-  generateControlByType(options) {
-    let $control = null;
-    let {i, type, val, prop, opt} = options;
-    let defaultVal = this.vertexGroup.dataElementFormat[prop];
-    i = 0;
-    switch (type) {
-      case __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN:
-        $control = $('<input>');
-        $control.attr('type', 'checkbox');
-        $control.attr('name', `${prop}`);
-        $control.prop('checked', typeof(val) == 'boolean' ? val : defaultVal);
-        $control.attr("value", val);
-        break;
-      case __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY:
-        let firstOpt = opt[0];
-        $control = $('<select>');
-        $control.attr('name', `${prop}`);
-        $control.attr('class', 'form-control');
-        $.each(opt, (key, value) => {
-          $control
-            .append($("<option></option>")
-              .attr("value", value || firstOpt)
-              .prop('selected', value === (val || firstOpt))
-              .text(value));
-        });
-        break;
-      case __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].NUMBER:
-        $control = $('<input>');
-        $control.attr('type', 'text');
-        $control.attr('name', `${prop}`);
-        $control.attr("value", !isNaN(val) ? val : defaultVal);
-        $control.attr('class', 'form-control');
-        $control
-          .on('keydown', function (e) {
-            Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["a" /* allowInputNumberOnly */])(e);
-          })
-          .on('focusout', function (e) {
-            if (this.value && !Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["d" /* checkIsMatchRegexNumber */])(this.value)) {
-              Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Input invalid");
-              this.value = "";
-            } else {
-              if (isNaN(this.value)) {
-                Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Input invalid");
-                this.value = "";
-              }
-            }
-          });
-        break;
-      default:
-        $control = $('<input>');
-        $control.attr('type', 'text');
-        $control.attr('autocomplete', 'off');
-        $control.attr('name', `${prop}`);
-        $control.attr("value", val != undefined ? val : defaultVal);
-        $control.attr('class', 'form-control');
-    }
+	generateControlByType(options) {
+		let $control = null
+		let {i, type, val, prop, opt} = options
+		let defaultVal = this.vertexGroup.dataElementFormat[prop]
+		i = 0
+		switch (type) {
+		case __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN:
+			$control = $('<input>')
+			$control.attr('type', 'checkbox')
+			$control.attr('name', `${prop}`)
+			$control.prop('checked', typeof(val) == 'boolean' ? val : defaultVal)
+			$control.attr('value', val)
+			break
+		case __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY:
+			let firstOpt = opt[0]
+			$control = $('<select>')
+			$control.attr('name', `${prop}`)
+			$control.attr('class', 'form-control')
+			$.each(opt, (key, value) => {
+				$control
+					.append($('<option></option>')
+						.attr('value', value || firstOpt)
+						.prop('selected', value === (val || firstOpt))
+						.text(value))
+			})
+			break
+		case __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].NUMBER:
+			$control = $('<input>')
+			$control.attr('type', 'text')
+			$control.attr('name', `${prop}`)
+			$control.attr('value', !isNaN(val) ? val : defaultVal)
+			$control.attr('class', 'form-control')
+			$control
+				.on('keydown', function (e) {
+					Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["a" /* allowInputNumberOnly */])(e)
+				})
+				.on('focusout', function (e) {
+					if (this.value && !Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["d" /* checkIsMatchRegexNumber */])(this.value)) {
+						Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])('Input invalid')
+						this.value = ''
+					} else {
+						if (isNaN(this.value)) {
+							Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])('Input invalid')
+							this.value = ''
+						}
+					}
+				})
+			break
+		default:
+			$control = $('<input>')
+			$control.attr('type', 'text')
+			$control.attr('autocomplete', 'off')
+			$control.attr('name', `${prop}`)
+			$control.attr('value', val != undefined ? val : defaultVal)
+			$control.attr('class', 'form-control')
+		}
 
-    return $control;
-  }
+		return $control
+	}
 
-  /**
+	/**
    * Upper case first letter
    */
-  capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+	capitalizeFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1)
+	}
 
-  findLongestContent(configs) {
-    let {data, prop, type, value} = configs;
-    let firstRow = data[0];
-    let arr = [];
+	findLongestContent(configs) {
+		let {data, prop, type, value} = configs
+		let firstRow = data[0]
+		let arr = []
 
-    // If type is boolean or first undefined or firstRow is empty
-    if ((type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN) || !firstRow)
-      return this.getLongestSpecialCase(prop, value);
-    // prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
+		// If type is boolean or first undefined or firstRow is empty
+		if ((type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN) || !firstRow)
+			return this.getLongestSpecialCase(prop, value)
+		// prop.toString().length * POPUP_CONFIG.WIDTH_CHAR + POPUP_CONFIG.PADDING_CHAR;
 
-    //  If object firstRow hasn't it own the specified property
-    if (!firstRow.hasOwnProperty(prop)) {
-      return this.getLongestSpecialCase(prop, value);
-    }
+		//  If object firstRow hasn't it own the specified property
+		if (!firstRow.hasOwnProperty(prop)) {
+			return this.getLongestSpecialCase(prop, value)
+		}
 
-    // From an array of objects, extract value of a property as array
-    if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY) {
-      arr = value;
-    } else {
-      arr = data.map(e => e[prop]);
-    }
-    let longest = this.getLongestContentFromArry(arr);
-    if (longest.toString().length < prop.toString().length)
-      return prop.toString().length * __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].PADDING_CHAR;
+		// From an array of objects, extract value of a property as array
+		if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY) {
+			arr = value
+		} else {
+			arr = data.map(e => e[prop])
+		}
+		let longest = this.getLongestContentFromArry(arr)
+		if (longest.toString().length < prop.toString().length)
+			return prop.toString().length * __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].PADDING_CHAR
 
-    return longest.toString().length * (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY ? __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR_UPPER : __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR) + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].PADDING_CHAR;
-  }
+		return longest.toString().length * (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY ? __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR_UPPER : __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR) + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].PADDING_CHAR
+	}
 
-  getLongestSpecialCase(prop, value) {
-    let lengthProp = prop.toString().length;
-    let lengthDef = value.toString().length;
-    let type = typeof(value);
-    // Has type is array
-    if (type === "object" && Array.isArray(value)) {
-      type = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY
-      lengthDef = this.getLongestContentFromArry(value).toString().length;
-    }
+	getLongestSpecialCase(prop, value) {
+		let lengthProp = prop.toString().length
+		let lengthDef = value.toString().length
+		let type = typeof(value)
+		// Has type is array
+		if (type === 'object' && Array.isArray(value)) {
+			type = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY
+			lengthDef = this.getLongestContentFromArry(value).toString().length
+		}
 
-    return (lengthProp > lengthDef ? lengthProp * __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR :
-      lengthDef * (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY ? __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR_UPPER : __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR ))
-      + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].PADDING_CHAR;
-  }
+		return (lengthProp > lengthDef ? lengthProp * __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR :
+			lengthDef * (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY ? __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR_UPPER : __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].WIDTH_CHAR ))
+      + __WEBPACK_IMPORTED_MODULE_7__common_const_index__["i" /* POPUP_CONFIG */].PADDING_CHAR
+	}
 
-  getLongestContentFromArry(arr) {
-    return arr.reduce((a, b) => {
-      let firstTmp = a + "";
-      let secondTmp = b + "";
-      return firstTmp.length > secondTmp.length ? firstTmp : secondTmp;
-    });
-  }
+	getLongestContentFromArry(arr) {
+		return arr.reduce((a, b) => {
+			let firstTmp = a + ''
+			let secondTmp = b + ''
+			return firstTmp.length > secondTmp.length ? firstTmp : secondTmp
+		})
+	}
 
-  addDataElement() {
-    const groupType = this.currentVertex.groupType;
-    const columnTitle = Object.keys(this.vertexGroup.dataElementFormat);
-    const cols = columnTitle.length;
-    const dataType = this.vertexGroup.elementDataType;
-    let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`);
+	addDataElement() {
+		const groupType = this.currentVertex.groupType
+		const columnTitle = Object.keys(this.vertexGroup.dataElementFormat)
+		const cols = columnTitle.length
+		const dataType = this.vertexGroup.elementDataType
+		let $appendTo = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`)
 
-    const $row = $('<tr>');
-    for (let j = 0; j < cols; j++) {
-      let prop = columnTitle[j];
-      let type = dataType[prop];
-      // let val = dataRow[prop];
-      let opt = [];
+		const $row = $('<tr>')
+		for (let j = 0; j < cols; j++) {
+			let prop = columnTitle[j]
+			let type = dataType[prop]
+			// let val = dataRow[prop];
+			let opt = []
 
-      const $col = $('<td>');
-      // Get option if type is array
-      if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY) {
-        opt = this.vertexGroup.dataElementFormat[prop];
-      } else if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
-        $col.attr('class', 'checkbox_center');
-      }
+			const $col = $('<td>')
+			// Get option if type is array
+			if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY) {
+				opt = this.vertexGroup.dataElementFormat[prop]
+			} else if (type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN) {
+				$col.attr('class', 'checkbox_center')
+			}
 
-      let $control = this.generateControlByType({'i': j, type, prop, opt, groupType});
-      $control.appendTo($col);
-      $col.appendTo($row);
-    }
+			let $control = this.generateControlByType({'i': j, type, prop, opt, groupType})
+			$control.appendTo($col)
+			$col.appendTo($row)
+		}
 
-    // Append del check to row
-    let $col = this.initCellDelCheck({
-      'className': 'checkbox_center',
-      'name': `${ATTR_DEL_CHECK}_${this.svgId}`,
-      'checked': false,
-      'colType': '<td>'
-    });
-    $col.prependTo($row);
+		// Append del check to row
+		let $col = this.initCellDelCheck({
+			'className': 'checkbox_center',
+			'name': `${ATTR_DEL_CHECK}_${this.svgId}`,
+			'checked': false,
+			'colType': '<td>'
+		})
+		$col.prependTo($row)
 
-    $row.appendTo($appendTo);
-  }
+		$row.appendTo($appendTo)
+	}
 
-  removeDataElement() {
-    $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`).find(`input[name=${ATTR_DEL_CHECK}_${this.svgId}]`).each(function () {
-      if ($(this).is(":checked")) {
-        $(this).parents("tr").remove();
-      }
-    });
+	removeDataElement() {
+		$(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId} > tbody`).find(`input[name=${ATTR_DEL_CHECK}_${this.svgId}]`).each(function () {
+			if ($(this).is(':checked')) {
+				$(this).parents('tr').remove()
+			}
+		})
 
-    // Uncheck all
-    $(`#${ATTR_DEL_CHECK_ALL}_${this.svgId}`).prop('checked', false);
-  }
+		// Uncheck all
+		$(`#${ATTR_DEL_CHECK_ALL}_${this.svgId}`).prop('checked', false)
+	}
 
-  initCellDelCheck(options) {
-    const {className, name, checked, colType, isCheckAll} = options;
+	initCellDelCheck(options) {
+		const {className, name, checked, colType, isCheckAll} = options
     
-    let $col = $(colType);
-    $col.attr('class', className);
-    let $chk = $('<input>');
-    $chk.attr('type', 'checkbox');
-    if (isCheckAll){
-      $chk.attr('id', name);
-    }
-    $chk.prop('checked', checked);
+		let $col = $(colType)
+		$col.attr('class', className)
+		let $chk = $('<input>')
+		$chk.attr('type', 'checkbox')
+		if (isCheckAll) {
+			$chk.attr('id', name)
+		}
+		$chk.prop('checked', checked)
 
-    const main = this;
-    $chk.attr('name', name)
-      .on('click', function () {
-        if (isCheckAll)
-          $(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}_${main.svgId}]`)
-            .prop('checked', this.checked);
-        else {
-          $(`#${ATTR_DEL_CHECK_ALL}_${main.svgId}`).prop('checked',
-            ($(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}_${main.svgId}]:checked`).length ==
-              $(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}_${main.svgId}]`).length));
-        }
-      });
-    $chk.appendTo($col);
+		const main = this
+		$chk.attr('name', name)
+			.on('click', function () {
+				if (isCheckAll)
+					$(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}_${main.svgId}]`)
+						.prop('checked', this.checked)
+				else {
+					$(`#${ATTR_DEL_CHECK_ALL}_${main.svgId}`).prop('checked',
+						($(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}_${main.svgId}]:checked`).length ==
+              $(this).closest('table').find(`tbody :checkbox[name=${ATTR_DEL_CHECK}_${main.svgId}]`).length))
+				}
+			})
+		$chk.appendTo($col)
 
-    return $col;
-  }
+		return $col
+	}
 
-  /**
+	/**
    * Close popup edit vertex info
    */
-  closePopVertexInfo() {
-    let options = {popupId: `${HTML_VERTEX_INFO_ID}_${this.svgId}`}
-    __WEBPACK_IMPORTED_MODULE_4__common_utilities_popup_ult__["a" /* default */].metClosePopup(options);
-  }
+	closePopVertexInfo() {
+		let options = {popupId: `${HTML_VERTEX_INFO_ID}_${this.svgId}`}
+		__WEBPACK_IMPORTED_MODULE_4__common_utilities_popup_ult__["a" /* default */].metClosePopup(options)
+	}
 
-  /**
+	/**
    * Get data vertex change
    */
-  confirmEditVertexInfo() {
+	confirmEditVertexInfo() {
 
-    if ($(`#vertexName_${this.svgId}`).val() === ''){
-      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Please enter Name.");
-      $(`#vertexName_${this.svgId}`).focus();
-      return;
+		if ($(`#vertexName_${this.svgId}`).val() === '') {
+			Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])('Please enter Name.')
+			$(`#vertexName_${this.svgId}`).focus()
+			return
 		}
 		
-		if (!this.validateDataElementTable()) return;
+		if (!this.validateDataElementTable()) return
 
-    // Get data on form
-    this.currentVertex.name = this.currentVertex.vertexType = $(`#vertexName_${this.svgId}`).val();
-    this.currentVertex.description = $(`#vertexDesc_${this.svgId}`).val();
-    const groupType = this.currentVertex.groupType;
-    const dataType = this.vertexGroup.elementDataType;
+		// Get data on form
+		this.currentVertex.name = this.currentVertex.vertexType = $(`#vertexName_${this.svgId}`).val()
+		this.currentVertex.description = $(`#vertexDesc_${this.svgId}`).val()
+		const groupType = this.currentVertex.groupType
+		const dataType = this.vertexGroup.elementDataType
     
-    let elements = [];
-    // Get data element
-    $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr').each(function () {
-      let row = {};
-      $(this).find("td input:text, td input:checkbox, td select").each(function () {
-        let prop = $(this).attr("name");
-        let type = dataType[prop];
-        if (prop != `${ATTR_DEL_CHECK}_${this.svgId}`)
-          row[prop] = type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN ? ($(this).is(':checked') ? true : false) : this.value;
-      });
-      elements.push(row);
-    });
+		let elements = []
+		// Get data element
+		$(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr').each(function () {
+			let row = {}
+			$(this).find('td input:text, td input:checkbox, td select').each(function () {
+				let prop = $(this).attr('name')
+				let type = dataType[prop]
+				if (prop != `${ATTR_DEL_CHECK}_${this.svgId}`)
+					row[prop] = type === __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN ? ($(this).is(':checked') ? true : false) : this.value
+			})
+			elements.push(row)
+		})
 
-    // Remove first row (header table)
-    elements.shift();
+		// Remove first row (header table)
+		elements.shift()
 
-    this.currentVertex.data = elements;
-    this.currentVertex.groupType = groupType;
+		this.currentVertex.data = elements
+		this.currentVertex.groupType = groupType
 
-    // let newVertex = null;
-    // let updatedVertexId = this.currentVertex.id;
-    if (this.currentVertex.id) {
-			this.updateVertexInfo(this.currentVertex);
-			this.currentVertex.validateConnectionByUsage();
-    } else {
-      //Create New
-      this.create(this.currentVertex);
+		// let newVertex = null;
+		// let updatedVertexId = this.currentVertex.id;
+		if (this.currentVertex.id) {
+			this.updateVertexInfo(this.currentVertex)
+			this.currentVertex.validateConnectionByUsage()
+		} else {
+			//Create New
+			this.create(this.currentVertex)
 		}
 		
 
 
-    this.closePopVertexInfo();
-  }
+		this.closePopVertexInfo()
+	}
 
-  /**
+	/**
    * Update vertex info
    * Update value properties
    * Update name, type, ...
    * Update present (DOM)
    */
-  updateVertexInfo(forms) {
-    const {id} = forms;
+	updateVertexInfo(forms) {
+		const {id} = forms
 
-    __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${id}`).selectAll("*").remove();
-    this.reRenderContentInsideVertex(this.currentVertex);
-  }
+		__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${id}`).selectAll('*').remove()
+		this.reRenderContentInsideVertex(this.currentVertex)
+	}
 
-  async reRenderContentInsideVertex(vertex) {
-    const {vertexType} = vertex;
+	async reRenderContentInsideVertex(vertex) {
+		const {vertexType} = vertex
 
-    if (!vertexType)
-      return;
+		if (!vertexType)
+			return
 
-    vertex.generateContent();
+		vertex.generateContent()
 
-    Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId, this.viewMode.value);
-  }
+		Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["p" /* setMinBoundaryGraph */])(this.dataContainer, this.svgId, this.viewMode.value)
+	}
 
-  updatePathConnectForVertex(vertex){
-    this.edgeMgmt.updatePathConnectForVertex(vertex);
-  }
+	updatePathConnectForVertex(vertex) {
+		this.edgeMgmt.updatePathConnectForVertex(vertex)
+	}
 
-  clearAll(){
-    __WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove();
-    this.dataContainer.vertex = [];
-  }
+	clearAll() {
+		__WEBPACK_IMPORTED_MODULE_2_d3__["d" /* select */](`#${this.svgId}`).selectAll(`.${this.selectorClass}`).remove()
+		this.dataContainer.vertex = []
+	}
 
-  LoadVertexGroupDefinition(vertexDefinitionData){
-    //Validate data struct
-    if (!this.validateVertexGourpDefineStructure(vertexDefinitionData)){
-      Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Format or data in Vertex Group Definition Structure is corrupted. You should check it!");
-      return false;
-    }
+	LoadVertexGroupDefinition(vertexDefinitionData) {
+		//Validate data struct
+		if (!this.validateVertexGourpDefineStructure(vertexDefinitionData)) {
+			Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])('Format or data in Vertex Group Definition Structure is corrupted. You should check it!')
+			return false
+		}
 
-    //Reload Vertex Define and init main menu
-    this.processDataVertexTypeDefine(vertexDefinitionData);
+		//Reload Vertex Define and init main menu
+		this.processDataVertexTypeDefine(vertexDefinitionData)
 
-    return true;
-  }
+		return true
+	}
 
-  getVertexFormatType(vertexGroup) {
-    for (let i = 0; i < vertexGroup.length; i++) {
-      this.vertexDefinition.vertexGroup.push(vertexGroup[i]);
-      const {dataElementFormat} = vertexGroup[i];
-      let dataType = {};
-      let header = Object.keys(dataElementFormat);
-      let len = header.length;
-      for (let i = 0; i < len; i++) {
-        let key = header[i];
-        let value = dataElementFormat[key];
-        let type = typeof(value);
+	getVertexFormatType(vertexGroup) {
+		for (let i = 0; i < vertexGroup.length; i++) {
+			this.vertexDefinition.vertexGroup.push(vertexGroup[i])
+			const {dataElementFormat} = vertexGroup[i]
+			let dataType = {}
+			let header = Object.keys(dataElementFormat)
+			let len = header.length
+			for (let i = 0; i < len; i++) {
+				let key = header[i]
+				let value = dataElementFormat[key]
+				let type = typeof(value)
 
-        dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].STRING; // For string and other type
-        if (type === "boolean")
-          dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN; // For boolean
+				dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].STRING // For string and other type
+				if (type === 'boolean')
+					dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].BOOLEAN // For boolean
 
-        if (type === "object" && Array.isArray(value))
-          dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY; // For array
+				if (type === 'object' && Array.isArray(value))
+					dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].ARRAY // For array
 
-        if (type === "number")
-          dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].NUMBER; // For number
-      }
+				if (type === 'number')
+					dataType[key] = __WEBPACK_IMPORTED_MODULE_7__common_const_index__["m" /* VERTEX_FORMAT_TYPE */].NUMBER // For number
+			}
 
-      this.vertexDefinition.vertexGroup[i].elementDataType = dataType;
-    };
-  }
+			this.vertexDefinition.vertexGroup[i].elementDataType = dataType
+		}
+	}
 
-  getVertexTypesShowFull(data, container) {
-    const group = data["VERTEX_GROUP"];
-    const vertex = data["VERTEX"];
-    let len = group.length;
-    for (let i = 0; i < len; i++) {
-      let groupType = group[i].groupType;
-      let groupOption = group[i].option;
-      let lenOpt = groupOption.length;
-      for (let j = 0; j < lenOpt; j++) {
-        let option = groupOption[j];
-        let groupVertex = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.filter(vertex, (e) => {
-            return e.groupType === groupType;
-          }
-        );
-        let groupAction = [];
-        groupVertex.forEach(e => {
-          groupAction.push(e.vertexType);
-        });
-        container.groupVertexOption[option] = groupAction;
-      }
-    }
-  }
+	getVertexTypesShowFull(data, container) {
+		const group = data['VERTEX_GROUP']
+		const vertex = data['VERTEX']
+		let len = group.length
+		for (let i = 0; i < len; i++) {
+			let groupType = group[i].groupType
+			let groupOption = group[i].option
+			let lenOpt = groupOption.length
+			for (let j = 0; j < lenOpt; j++) {
+				let option = groupOption[j]
+				let groupVertex = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.filter(vertex, (e) => {
+					return e.groupType === groupType
+				}
+				)
+				let groupAction = []
+				groupVertex.forEach(e => {
+					groupAction.push(e.vertexType)
+				})
+				container.groupVertexOption[option] = groupAction
+			}
+		}
+	}
 
-  processDataVertexTypeDefine(data) {
-    this.resetVertexDefinition();
+	processDataVertexTypeDefine(data) {
+		this.resetVertexDefinition()
 
-    const {VERTEX_GROUP} = data;
-    this.getVertexFormatType(VERTEX_GROUP);
-  }
+		const {VERTEX_GROUP} = data
+		this.getVertexFormatType(VERTEX_GROUP)
+	}
 
-  resetVertexDefinition(){
-    this.vertexDefinition.vertexGroup = [];
-    this.vertexDefinition.vertex = [];
-  }
+	resetVertexDefinition() {
+		this.vertexDefinition.vertexGroup = []
+		this.vertexDefinition.vertex = []
+	}
 
-  /**
+	/**
    * Validate Vertex Group Define Structure
    */
-  validateVertexGourpDefineStructure(data) {
+	validateVertexGourpDefineStructure(data) {
 
-    //Validate data exists
-    if(data===undefined)
-    {
-      return false;
-    }
+		//Validate data exists
+		if(data===undefined)
+		{
+			return false
+		}
 
-    if (!data.VERTEX_GROUP) {
-      return false;
-    }
+		if (!data.VERTEX_GROUP) {
+			return false
+		}
 
-    if (Object.keys(data).length > 1) {
-      return false;
-    }
+		if (Object.keys(data).length > 1) {
+			return false
+		}
 
-    return true;
+		return true
 	}
 	
 	validateDataElementTable() {
-		let $tr = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr');
+		let $tr = $(`#${HTML_VERTEX_PROPERTIES_ID}_${this.svgId}`).find('tr')
 
-		let rowCount = $tr.length;
+		let rowCount = $tr.length
 
-		if (rowCount <= 1) return true;
+		if (rowCount <= 1) return true
 
 		for(let i = 1; i < rowCount; i++) {
-			let $name = $($tr[i]).find("td input:text[name='name']");
-			if ($name.val() == "") {
-				Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])("Enter name.");
-				$name.focus();
-				return false;
+			let $name = $($tr[i]).find('td input:text[name=\'name\']')
+			if ($name.val() == '') {
+				Object(__WEBPACK_IMPORTED_MODULE_8__common_utilities_common_ult__["g" /* comShowMessage */])('Enter name.')
+				$name.focus()
+				return false
 			}
 		}
 		
-		return true;
+		return true
 	}
 	
 	/**
 	 * Enable dragging for popup
 	 */
 	initDialogDragEvent() {
-		let main = this;
-		$(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .dialog-title`).css('cursor', 'move').on("mousedown", (e) => {
-			let $drag = $(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .modal-dialog`).addClass('draggable');
+		let main = this
+		$(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .dialog-title`).css('cursor', 'move').on('mousedown', (e) => {
+			let $drag = $(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .modal-dialog`).addClass('draggable')
 				
 			let pos_y = $drag.offset().top - e.pageY,
 				pos_x = $drag.offset().left - e.pageX,
 				winH = window.innerHeight,
 				winW = window.innerWidth,
-				dlgW = $drag.get(0).getBoundingClientRect().width;
+				dlgW = $drag.get(0).getBoundingClientRect().width
 				
-			$(window).on("mousemove", function(e) {
-				let x = e.pageX + pos_x;
-				let y = e.pageY + pos_y;
+			$(window).on('mousemove', function(e) {
+				let x = e.pageX + pos_x
+				let y = e.pageY + pos_y
 
-				if (x < 10) x = 10;
-				else if (x + dlgW > winW - 10) x = winW - dlgW - 10;
+				if (x < 10) x = 10
+				else if (x + dlgW > winW - 10) x = winW - dlgW - 10
 
 				if (y < 10) y = 10
-				else if (y > winH - 10) y = winH - 10;
+				else if (y > winH - 10) y = winH - 10
 
 				$(`#${HTML_VERTEX_INFO_ID}_${main.svgId} .draggable`).offset({
-						top: y,
-						left: x
+					top: y,
+					left: x
 				})
-			});
-			e.preventDefault(); // disable selection
+			})
+			e.preventDefault() // disable selection
 		})
 
 		$(window).on('mouseup', function(e) {
@@ -56514,65 +56514,65 @@ class SegmentMgmt {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__ = __webpack_require__(22);
 
 
 class SegmentMenu {
-  constructor(props) {
-    this.selector = props.selector;
-    this.parent = props.parent;
-    this.dataContainer = props.dataContainer;
-		this.viewMode = props.viewMode;
-    this.initVertexMenu();
-  }
+	constructor(props) {
+		this.selector = props.selector
+		this.parent = props.parent
+		this.dataContainer = props.dataContainer
+		this.viewMode = props.viewMode
+		this.initVertexMenu()
+	}
 
-  initVertexMenu() {
-    $.contextMenu({
-      selector: this.selector,
-      zIndex: 100,
-      build: () => {
-        return {
-          callback: (key, options) => {
-            let vertexId = options.$trigger.attr('id');
-            let vertexObj = _.find(this.dataContainer.vertex, {"id": vertexId});
-            switch (key) {
-              case "editVertex":
-                this.parent.makePopupEditVertex(vertexObj);
-                break;
+	initVertexMenu() {
+		$.contextMenu({
+			selector: this.selector,
+			zIndex: 100,
+			build: () => {
+				return {
+					callback: (key, options) => {
+						let vertexId = options.$trigger.attr('id')
+						let vertexObj = _.find(this.dataContainer.vertex, {'id': vertexId})
+						switch (key) {
+						case 'editVertex':
+							this.parent.makePopupEditVertex(vertexObj)
+							break
 
-              case "copyVertex":
-                vertexObj.copy();
-                break;
+						case 'copyVertex':
+							vertexObj.copy()
+							break
 
-              case "removeVertex":
-                vertexObj.remove();
-                break;
+						case 'removeVertex':
+							vertexObj.remove()
+							break
 
-              default:
-                break;
-            }
-          },
-          items: {
-            "editVertex": {
-              name: "Edit Vertex Info",
-              icon: "fa-pencil-square-o",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, "editVertex")
-            },
-            "copyVertex": {
-              name: "Copy",
-              icon: "fa-files-o",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, "copyVertex")
-            },
-            "removeVertex": {
-              name: "Delete",
-              icon: "fa-times",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, "removeVertex")
-            }
-          }
-        }
-      }
-    });
-  }
+						default:
+							break
+						}
+					},
+					items: {
+						'editVertex': {
+							name: 'Edit Vertex Info',
+							icon: 'fa-pencil-square-o',
+							disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'editVertex')
+						},
+						'copyVertex': {
+							name: 'Copy',
+							icon: 'fa-files-o',
+							disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'copyVertex')
+						},
+						'removeVertex': {
+							name: 'Delete',
+							icon: 'fa-times',
+							disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'removeVertex')
+						}
+					}
+				}
+			}
+		})
+	}
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (SegmentMenu);
@@ -56583,215 +56583,215 @@ class SegmentMenu {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 
 
 
 class MainMenuSegment {
-  constructor(props) {
-    this.selector = props.selector;
-    this.containerId = props.containerId;
-    this.parent = props.parent;
-		this.viewMode = props.viewMode;
-		this.vertexDefinition = props.vertexDefinition;
+	constructor(props) {
+		this.selector = props.selector
+		this.containerId = props.containerId
+		this.parent = props.parent
+		this.viewMode = props.viewMode
+		this.vertexDefinition = props.vertexDefinition
     
-    this.initMainMenu();
-  }
+		this.initMainMenu()
+	}
 
-  initMainMenu() {
-    // Main menu config
-    $.contextMenu({
-      selector: this.selector,
-      autoHide: true,
-      zIndex: 100,
-      build: () => {
-        return {
-          callback: (key, options) => {
-            switch (key) {
+	initMainMenu() {
+		// Main menu config
+		$.contextMenu({
+			selector: this.selector,
+			autoHide: true,
+			zIndex: 100,
+			build: () => {
+				return {
+					callback: (key, options) => {
+						switch (key) {
               
-              case "createNew":
-                let params = {
-                  x: options.x,
-									y: options.y,
-									groupType: this.vertexDefinition.vertexGroup[0].groupType,
-                  data: {}
-                };
-                this.parent.segmentMgmt.makePopupEditVertex(params);
-                break;
+						case 'createNew':
+							let params = {
+								x: options.x,
+								y: options.y,
+								groupType: this.vertexDefinition.vertexGroup[0].groupType,
+								data: {}
+							}
+							this.parent.segmentMgmt.makePopupEditVertex(params)
+							break
 
-              case "showReduced":
-                this.parent.isShowReduced ? this.parent.showFull() : this.parent.showReduced();
-                break;
+						case 'showReduced':
+							this.parent.isShowReduced ? this.parent.showFull() : this.parent.showReduced()
+							break
 
-              case "sort":
-                this.parent.sortByName();
-                break;
+						case 'sort':
+							this.parent.sortByName()
+							break
 
-              default:
-                break;
-            }
-          },
-          items: {
-            "createNew": this.makeCreateNewOption(),
-            "sep1": "-",
-            "find": {
-              name: "Find...",
-              type: "sub",
-              icon: "fa-search",
-              items: Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'find') ? this.loadItems() : {},
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'find')
-            },
-            "sep2": "-",
-            "showReduced": {
-              name: this.parent.isShowReduced ? "Show Full" : "Show Reduced",
-              icon: "fa-link",
-              disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'showReduced')
-            },
-            "sep3": "-",
-            "sort": {
-              name: "Sort",
-              icon: "fa-sort"
-            },
-          },
-          events: {
-            show: (opt) => {
-              if (!event)
-                return;
+						default:
+							break
+						}
+					},
+					items: {
+						'createNew': this.makeCreateNewOption(),
+						'sep1': '-',
+						'find': {
+							name: 'Find...',
+							type: 'sub',
+							icon: 'fa-search',
+							items: Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'find') ? this.loadItems() : {},
+							disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'find')
+						},
+						'sep2': '-',
+						'showReduced': {
+							name: this.parent.isShowReduced ? 'Show Full' : 'Show Reduced',
+							icon: 'fa-link',
+							disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'showReduced')
+						},
+						'sep3': '-',
+						'sort': {
+							name: 'Sort',
+							icon: 'fa-sort'
+						},
+					},
+					events: {
+						show: (opt) => {
+							if (!event)
+								return
 
-              const {x, y} = Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["j" /* getCoorMouseClickRelativeToParent */])(event, this.containerId);
-              opt["x"] = x;
-              opt["y"] = y;
-              opt.isMenu = true;
-              this.opt = opt;
-            }
-          }
-        };
-      }
-    });
-  }
+							const {x, y} = Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["j" /* getCoorMouseClickRelativeToParent */])(event, this.containerId)
+							opt['x'] = x
+							opt['y'] = y
+							opt.isMenu = true
+							this.opt = opt
+						}
+					}
+				}
+			}
+		})
+	}
 
-  /**
+	/**
    * Generate verties from array vertexTypes
    */
-  loadItems() {
-    const subItems = {};
-    subItems.isHtmlItem = {
-      placeholder: 'Type to search',
-      type: 'text',
-      value: '',
-      events: {
-        keyup: this.searchVertexType()
-      }
-    };
-    subItems["sep4"] = "-";
-    // Build options
-    const options = {};
+	loadItems() {
+		const subItems = {}
+		subItems.isHtmlItem = {
+			placeholder: 'Type to search',
+			type: 'text',
+			value: '',
+			events: {
+				keyup: this.searchVertexType()
+			}
+		}
+		subItems['sep4'] = '-'
+		// Build options
+		const options = {}
 
-    // Sort array object
-    let vertices = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.parent.dataContainer.vertex);
+		// Sort array object
+		let vertices = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.parent.dataContainer.vertex)
 
-    vertices.sort(function (a,b) {
-      return (a.vertexType.toUpperCase()).localeCompare((b.vertexType.toUpperCase()));
-    });
+		vertices.sort(function (a,b) {
+			return (a.vertexType.toUpperCase()).localeCompare((b.vertexType.toUpperCase()))
+		})
 
-    const len = vertices.length;
-    for (let i = 0; i < len; i++) {
-      let type = vertices[i].vertexType;
-      options[`${type}`] = type;
-    }
+		const len = vertices.length
+		for (let i = 0; i < len; i++) {
+			let type = vertices[i].vertexType
+			options[`${type}`] = type
+		}
 
-    subItems.select = {
-      type: 'select',
-      size: 10,
-      options: options,
-      events: {
-        click: this.onSelectVertex(this)
-      }
-    };
+		subItems.select = {
+			type: 'select',
+			size: 10,
+			options: options,
+			events: {
+				click: this.onSelectVertex(this)
+			}
+		}
 
-    let dfd = jQuery.Deferred();
-    setTimeout(() => {
-      dfd.resolve(subItems);
-    }, 10);
-    return dfd.promise();
-  }
+		let dfd = jQuery.Deferred()
+		setTimeout(() => {
+			dfd.resolve(subItems)
+		}, 10)
+		return dfd.promise()
+	}
 
-  searchVertexType() {
+	searchVertexType() {
 		return function () {
-			let filter = this.value.toUpperCase();
-			let $select = $(this).closest('ul').find(`select`);
-			let options = $select.find(`option`);
+			let filter = this.value.toUpperCase()
+			let $select = $(this).closest('ul').find('select')
+			let options = $select.find('option')
 
 			// Remove first li cause it is input search
-			let length = options.length;
+			let length = options.length
 			for (let i = 0; i < length; i++) {
-				let element = options[i];
-				let value = $(element).val();
+				let element = options[i]
+				let value = $(element).val()
 				if (value.toUpperCase().indexOf(filter) > -1) {
-					$(element).css('display', '');
+					$(element).css('display', '')
 				} else {
-					$(element).css('display', 'none');
+					$(element).css('display', 'none')
 				}
 			}
 		}
-  }
+	}
 
-  onSelectVertex(main) {
-    return function () {
-      const vertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(main.parent.dataContainer.vertex, {"vertexType": this.value});
+	onSelectVertex(main) {
+		return function () {
+			const vertex = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(main.parent.dataContainer.vertex, {'vertexType': this.value})
 
-      if (vertex){
-        vertex.showToUser();
-      }
-    }
+			if (vertex) {
+				vertex.showToUser()
+			}
+		}
 	}
 	
 	/**
    * Submenu for Create New option
    */
-  loadGroupTypeItems() {
-    const subItems = {};
-    subItems.isHtmlItem = {
-      placeholder: 'Type to search',
-      type: 'text',
-      value: '',
-      events: {
-        keyup: this.searchVertexType()
-      }
-    };
-    subItems["sep4"] = "-";
-    // Build options
-    const options = {};
+	loadGroupTypeItems() {
+		const subItems = {}
+		subItems.isHtmlItem = {
+			placeholder: 'Type to search',
+			type: 'text',
+			value: '',
+			events: {
+				keyup: this.searchVertexType()
+			}
+		}
+		subItems['sep4'] = '-'
+		// Build options
+		const options = {}
 
-    // Sort array object
-    let vertexGroup = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.vertexDefinition.vertexGroup);
+		// Sort array object
+		let vertexGroup = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.vertexDefinition.vertexGroup)
 
-    vertexGroup.sort(function (a,b) {
-      return (a.groupType.toUpperCase()).localeCompare((b.groupType.toUpperCase()));
-    });
+		vertexGroup.sort(function (a,b) {
+			return (a.groupType.toUpperCase()).localeCompare((b.groupType.toUpperCase()))
+		})
 
-    const len = vertexGroup.length;
-    for (let i = 0; i < len; i++) {
-      let groupType = vertexGroup[i].groupType;
-      options[`${groupType}`] = groupType;
-    }
+		const len = vertexGroup.length
+		for (let i = 0; i < len; i++) {
+			let groupType = vertexGroup[i].groupType
+			options[`${groupType}`] = groupType
+		}
 
-    subItems.select = {
-      type: 'select',
-      size: 10,
-      options: options,
-      events: {
-        click: this.onSelectGroupType(this)
-      }
-    };
+		subItems.select = {
+			type: 'select',
+			size: 10,
+			options: options,
+			events: {
+				click: this.onSelectGroupType(this)
+			}
+		}
 
-    let dfd = jQuery.Deferred();
-    setTimeout(() => {
-      dfd.resolve(subItems);
-    }, 10);
-    return dfd.promise();
+		let dfd = jQuery.Deferred()
+		setTimeout(() => {
+			dfd.resolve(subItems)
+		}, 10)
+		return dfd.promise()
 	}
 	
 	onSelectGroupType(main) {
@@ -56801,25 +56801,25 @@ class MainMenuSegment {
 				y: main.opt.y,
 				groupType: this.value,
 				data: {}
-			};
-			main.parent.segmentMgmt.makePopupEditVertex(params);
-			$(`${main.selector}`).contextMenu("hide");
-    }
+			}
+			main.parent.segmentMgmt.makePopupEditVertex(params)
+			$(`${main.selector}`).contextMenu('hide')
+		}
 	}
 
 	makeCreateNewOption() {
 		if (this.vertexDefinition.vertexGroup.length > 1) {
 			return {
-				name: "Create New",
-				type: "sub",
-				icon: "fa-window-maximize",
+				name: 'Create New',
+				type: 'sub',
+				icon: 'fa-window-maximize',
 				items: this.loadGroupTypeItems(),
 				disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'createNew')
 			}
 		} else {
 			return {
-				name: "Create New",
-				icon: "fa-window-maximize",
+				name: 'Create New',
+				icon: 'fa-window-maximize',
 				disabled: !Object(__WEBPACK_IMPORTED_MODULE_0__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'createNew')
 			}
 		}
