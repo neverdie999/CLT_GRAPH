@@ -58206,10 +58206,7 @@ class CltMessageMapping {
 		} 
 		if (this.isEmptyContainerData(this.storeOutputMessage)) {
 			return Promise.reject('There is no Output data. Please import!')
-		} 
-		if (this.isEmptyContainerData(this.storeOperations)) {
-			return Promise.reject('There is no Operations data!')
-		} 
+		}
 
 		// Process data to export
 		// Need clone data cause case user export
