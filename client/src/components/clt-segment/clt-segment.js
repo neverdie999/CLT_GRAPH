@@ -32,8 +32,8 @@ class CltSegment {
 		if (!this.mandatoryDataElementConfig) {
 			this.mandatoryDataElementConfig = { 
 				mandatoryEvaluationFunc: (dataElement) => { return false },
-				clrWarning: '#ff8100',
-				clrAvailable: '#5aabff'
+				colorWarning: '#ff8100',
+				colorAvailable: '#5aabff'
 			}
 		}
 

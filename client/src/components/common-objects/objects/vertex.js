@@ -5,7 +5,9 @@ import * as d3 from 'd3'
 import {
 	VERTEX_ATTR_SIZE,
 	CONNECT_SIDE,
-	TYPE_CONNECT
+	TYPE_CONNECT,
+	DATA_ELEMENT_TYPE,
+	VERTEX_GROUP_TYPE
 } from '../../../common/const/index'
 
 import { 
@@ -36,7 +38,7 @@ class Vertex {
 		this.id = null
 		this.x = 0 //type: number, require: true, purpose: coordinate x
 		this.y = 0 //type: number, require: true, purpose: coordinate y
-		this.groupType = '' // Current is OPERATIONS or SEGMENT
+		this.groupType = '' // Current is OPERATION or SEGMENT
 		this.vertexType = '' // The details of group type
 		this.name = '' //type: string, require: false, purpose: vertex name
 		this.description = '' //type: string, require: false, purpose: content title when hover to vertex
@@ -408,48 +410,68 @@ class Vertex {
 	validateConnectionByUsage() {
 
 		if (!checkModePermission(this.viewMode.value, 'mandatoryCheck')) return true
+
+		if (this.groupType === VERTEX_GROUP_TYPE.OPERATION) return true
 		
 		let bFlag = true
-		const {mandatoryEvaluationFunc, clrWarning, clrAvailable} = this.mandatoryDataElementConfig
+		const {mandatoryEvaluationFunc, colorWarning, colorAvailable} = this.mandatoryDataElementConfig
 		
 		let dataElement = _.cloneDeep(this.data)
 		this.getConnectionStatus(dataElement)
 
-		// Check if any parent is conditional
-		let bHasAnyConditionalParent = false
+		// Checking if any parent is conditional
 		let parentId = this.parent
 		let parentObj = null
+		let bHasConditionalParent = false
 		while(parentId) {
 			parentObj = _.find(this.dataContainer.boundary, {'id': parentId})
 			if (!parentObj.mandatory) {
-				bHasAnyConditionalParent = true
+				bHasConditionalParent = true
 				break
 			}
 			
 			parentId = parentObj.parent
 		}
 
+		let bHasAllMandatoryParent = !bHasConditionalParent // For reading source code easily
+
+		if (this.parent) {
+			bHasAllMandatoryParent &= this.mandatory
+		} else {
+			bHasAllMandatoryParent = this.mandatory
+		}
+
 		for (let i = 0; i < dataElement.length; i++) {
+
+			if (dataElement[i].type == DATA_ELEMENT_TYPE.COMPOSITE) continue
+
 			if (mandatoryEvaluationFunc(dataElement[i])) {
 				if (dataElement[i].hasConnection) {
-					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable)
+					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', colorAvailable)
 
 				} else {
-					if ((!this.parent || !bHasAnyConditionalParent) && this.mandatory) {
-						// If have no parent or all parents are mandatory and segment is mandatory
+
+					let isMandatoryComposite = false
+					if (dataElement[i].type == DATA_ELEMENT_TYPE.COMPONENT) {
+						const parentComposite = this.findComposite(i)
+						isMandatoryComposite = mandatoryEvaluationFunc(parentComposite);
+						bHasAllMandatoryParent &= isMandatoryComposite
+					}
+
+					if (bHasAllMandatoryParent) {
 						// GRP[M] - SGM[M] - DE[M]
 						if (bFlag) bFlag = false
-						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning)
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', colorWarning)
 	
-					} else if (this.hasAnyConnectionOfOtherDataElement(dataElement, i)) {
+					} else if (this.hasAnyConnectionToOtherDataElement(dataElement, i, isMandatoryComposite)) {
 						// GRP[M] - SGM[C] - DE[M]
 						// GRP[C] - SGM[M] - DE[M]
 						// GRP[C] - SGM[C] - DE[M]
 						if (bFlag) bFlag = false
-						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning)
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', colorWarning)
 
 					} else {
-						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable)
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', colorAvailable)
 					}
 				}
 			}
@@ -459,7 +481,7 @@ class Vertex {
 	}
 
 	/**
-	 * 
+	 * Checking if any connection to each data element
 	 * @param {*} vertexId 
 	 * @param {*} dataElement 
 	 */
@@ -478,13 +500,48 @@ class Vertex {
 	 * 
 	 * @param {*} dataElement 
 	 * @param {*} idxCurDataElement 
+	 * @param {*} isMandatoryComposite if idxCurDataElement is a COMPONENT then this param will be use
 	 */
-	hasAnyConnectionOfOtherDataElement(dataElement, idxCurDataElement) {
-		for (let i = 0; i < dataElement.length; i++) {
-			if (i != idxCurDataElement && dataElement[i].hasConnection) return true
+	hasAnyConnectionToOtherDataElement(dataElement, idxCurDataElement, isMandatoryComposite) {
+		// In case of SIMPLE => checking connection for all others
+		if (dataElement[idxCurDataElement].type === DATA_ELEMENT_TYPE.SIMPLE) {
+			for (let i = 0; i < dataElement.length; i++) {
+				if (i != idxCurDataElement && dataElement[i].type !== DATA_ELEMENT_TYPE.COMPOSITE && dataElement[i].hasConnection) return true
+			}
+		} else if (dataElement[idxCurDataElement].type === DATA_ELEMENT_TYPE.COMPONENT) {
+			// In case of COMPONENT and its COMPOSITE is mandatory => same with SIMPLE
+			if (isMandatoryComposite) {
+				for (let i = 0; i < dataElement.length; i++) {
+					if (i != idxCurDataElement && dataElement[i].type !== DATA_ELEMENT_TYPE.COMPOSITE && dataElement[i].hasConnection) return true
+				}
+			} else {
+				// In case of COMPONENT and its COMPOSITE is CONDITIONAL => checking connection for others COMPONENT in the same COMPOSITE
+				let firstComponentIndex = idxCurDataElement
+				let lastComponentIndex = idxCurDataElement
+	
+				while (firstComponentIndex - 1 >= 0 && dataElement[firstComponentIndex - 1].type === DATA_ELEMENT_TYPE.COMPONENT) {
+					firstComponentIndex--
+					if (dataElement[firstComponentIndex].hasConnection) return true
+				}
+	
+				while (lastComponentIndex + 1 < dataElement.length && dataElement[lastComponentIndex + 1].type === DATA_ELEMENT_TYPE.COMPONENT) {
+					lastComponentIndex++
+					if (dataElement[lastComponentIndex].hasConnection) return true
+				}
+			} 
 		}
-
+			
 		return false
+	}
+
+	/**
+	 * Find Composite of Component at Component position
+	 * @param {*} componentIndex 
+	 */
+	findComposite(componentIndex) {
+		for (let i = componentIndex - 1; i >= 0; i--) {
+			if (this.data[i].type === DATA_ELEMENT_TYPE.COMPOSITE) return this.data[i]
+		}
 	}
 }
 

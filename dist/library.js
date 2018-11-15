@@ -951,42 +951,42 @@ function updateSizeGraph(dragObj) {
 function checkModePermission(viewMode, type) {
 	let data = {}
 
-	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].SHOW_ONLY] = [
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["p" /* VIEW_MODE */].SHOW_ONLY] = [
 		'showReduced',
 		'editVertex', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'isEnableDragBoundary', 'isEnableItemVisibleMenu', 'maxBoundaryRepeat', 'isBoundaryMandatory',
 		'nameSuffix', 'horizontalScroll', 'mandatoryCheck'
 	]
 
-	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].EDIT] = [
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["p" /* VIEW_MODE */].EDIT] = [
 		'createVertex', 'createBoundary', 'clearAll', 'showReduced',
 		'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',  'maxBoundaryRepeat', 'isBoundaryMandatory',
 		'nameSuffix', 'horizontalScroll', 'mandatoryCheck'
 	]
 
-	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].OPERATIONS] = [
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["p" /* VIEW_MODE */].OPERATIONS] = [
 		'createVertex', 'createBoundary', 'clearAll',
 		'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
 		'editBoundary', 'removeBoundary', 'copyAllBoundary', 'deleteAllBoundary', 'boundaryBtnConfirm', 'isEnableDragBoundary', 'isEnableItemVisibleMenu',
 		'horizontalScroll', 'autoAlignment'
 	]
 
-	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].INPUT_MESSAGE] = [
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["p" /* VIEW_MODE */].INPUT_MESSAGE] = [
 		'showReduced',
 		'editVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
 		'nameSuffix'
 	]
 
-	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].OUTPUT_MESSAGE] = [
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["p" /* VIEW_MODE */].OUTPUT_MESSAGE] = [
 		'showReduced',
 		'editVertex', 'vertexRepeat', 'isVertexMandatory',
 		'editBoundary', 'maxBoundaryRepeat', 'isBoundaryMandatory', 'isEnableItemVisibleMenu',
 		'nameSuffix', 'mandatoryCheck'
 	]
 
-	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["o" /* VIEW_MODE */].SEGMENT] = [
+	data[__WEBPACK_IMPORTED_MODULE_2__const_index__["p" /* VIEW_MODE */].SEGMENT] = [
 		'createNew', 'find', 'showReduced',
 		'editVertex', 'copyVertex', 'removeVertex', 'vertexBtnConfirm', 'vertexBtnAdd', 'vertexBtnDelete', 'isEnableDragVertex',
 		'horizontalScroll', 'mandatoryCheck'
@@ -1117,7 +1117,7 @@ const VIEW_MODE = {
 	OUTPUT_MESSAGE  : 'OUTPUT_MESSAGE',
 	SEGMENT         : 'SEGMENT',
 }
-/* harmony export (immutable) */ __webpack_exports__["o"] = VIEW_MODE;
+/* harmony export (immutable) */ __webpack_exports__["p"] = VIEW_MODE;
 
 
 // Boundary
@@ -1195,13 +1195,19 @@ const VERTEX_GROUP_OPTION = {
 /* harmony export (immutable) */ __webpack_exports__["n"] = VERTEX_GROUP_OPTION;
 
 
-// Padding size left and top
 const DATA_ELEMENT_TYPE = {
 	SIMPLE: 'SIMPLE',
 	COMPOSITE: 'COMPOSITE',
 	COMPONENT: 'COMPONENT'
 }
 /* harmony export (immutable) */ __webpack_exports__["e"] = DATA_ELEMENT_TYPE;
+
+
+const VERTEX_GROUP_TYPE = {
+	SEGMENT: 'SEGMENT',
+	OPERATION: 'OPERATION'
+}
+/* harmony export (immutable) */ __webpack_exports__["o"] = VERTEX_GROUP_TYPE;
 
 
 const COMMON_DATA = {
@@ -53547,7 +53553,7 @@ class Vertex {
 		this.id = null
 		this.x = 0 //type: number, require: true, purpose: coordinate x
 		this.y = 0 //type: number, require: true, purpose: coordinate y
-		this.groupType = '' // Current is OPERATIONS or SEGMENT
+		this.groupType = '' // Current is OPERATION or SEGMENT
 		this.vertexType = '' // The details of group type
 		this.name = '' //type: string, require: false, purpose: vertex name
 		this.description = '' //type: string, require: false, purpose: content title when hover to vertex
@@ -53919,48 +53925,68 @@ class Vertex {
 	validateConnectionByUsage() {
 
 		if (!Object(__WEBPACK_IMPORTED_MODULE_4__common_utilities_common_ult__["f" /* checkModePermission */])(this.viewMode.value, 'mandatoryCheck')) return true
+
+		if (this.groupType === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["o" /* VERTEX_GROUP_TYPE */].OPERATION) return true
 		
 		let bFlag = true
-		const {mandatoryEvaluationFunc, clrWarning, clrAvailable} = this.mandatoryDataElementConfig
+		const {mandatoryEvaluationFunc, colorWarning, colorAvailable} = this.mandatoryDataElementConfig
 		
 		let dataElement = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(this.data)
 		this.getConnectionStatus(dataElement)
 
-		// Check if any parent is conditional
-		let bHasAnyConditionalParent = false
+		// Checking if any parent is conditional
 		let parentId = this.parent
 		let parentObj = null
+		let bHasConditionalParent = false
 		while(parentId) {
 			parentObj = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.dataContainer.boundary, {'id': parentId})
 			if (!parentObj.mandatory) {
-				bHasAnyConditionalParent = true
+				bHasConditionalParent = true
 				break
 			}
 			
 			parentId = parentObj.parent
 		}
 
+		let bHasAllMandatoryParent = !bHasConditionalParent // For reading source code easily
+
+		if (this.parent) {
+			bHasAllMandatoryParent &= this.mandatory
+		} else {
+			bHasAllMandatoryParent = this.mandatory
+		}
+
 		for (let i = 0; i < dataElement.length; i++) {
+
+			if (dataElement[i].type == __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPOSITE) continue
+
 			if (mandatoryEvaluationFunc(dataElement[i])) {
 				if (dataElement[i].hasConnection) {
-					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable)
+					$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', colorAvailable)
 
 				} else {
-					if ((!this.parent || !bHasAnyConditionalParent) && this.mandatory) {
-						// If have no parent or all parents are mandatory and segment is mandatory
+
+					let isMandatoryComposite = false
+					if (dataElement[i].type == __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPONENT) {
+						const parentComposite = this.findComposite(i)
+						isMandatoryComposite = mandatoryEvaluationFunc(parentComposite);
+						bHasAllMandatoryParent &= isMandatoryComposite
+					}
+
+					if (bHasAllMandatoryParent) {
 						// GRP[M] - SGM[M] - DE[M]
 						if (bFlag) bFlag = false
-						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning)
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', colorWarning)
 	
-					} else if (this.hasAnyConnectionOfOtherDataElement(dataElement, i)) {
+					} else if (this.hasAnyConnectionToOtherDataElement(dataElement, i, isMandatoryComposite)) {
 						// GRP[M] - SGM[C] - DE[M]
 						// GRP[C] - SGM[M] - DE[M]
 						// GRP[C] - SGM[C] - DE[M]
 						if (bFlag) bFlag = false
-						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrWarning)
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', colorWarning)
 
 					} else {
-						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', clrAvailable)
+						$(`#${this.id} .property[prop='${this.id}${CONNECT_KEY}${i}']`).css('background-color', colorAvailable)
 					}
 				}
 			}
@@ -53970,7 +53996,7 @@ class Vertex {
 	}
 
 	/**
-	 * 
+	 * Checking if any connection to each data element
 	 * @param {*} vertexId 
 	 * @param {*} dataElement 
 	 */
@@ -53989,13 +54015,48 @@ class Vertex {
 	 * 
 	 * @param {*} dataElement 
 	 * @param {*} idxCurDataElement 
+	 * @param {*} isMandatoryComposite if idxCurDataElement is a COMPONENT then this param will be use
 	 */
-	hasAnyConnectionOfOtherDataElement(dataElement, idxCurDataElement) {
-		for (let i = 0; i < dataElement.length; i++) {
-			if (i != idxCurDataElement && dataElement[i].hasConnection) return true
+	hasAnyConnectionToOtherDataElement(dataElement, idxCurDataElement, isMandatoryComposite) {
+		// In case of SIMPLE => checking connection for all others
+		if (dataElement[idxCurDataElement].type === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].SIMPLE) {
+			for (let i = 0; i < dataElement.length; i++) {
+				if (i != idxCurDataElement && dataElement[i].type !== __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPOSITE && dataElement[i].hasConnection) return true
+			}
+		} else if (dataElement[idxCurDataElement].type === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPONENT) {
+			// In case of COMPONENT and its COMPOSITE is mandatory => same with SIMPLE
+			if (isMandatoryComposite) {
+				for (let i = 0; i < dataElement.length; i++) {
+					if (i != idxCurDataElement && dataElement[i].type !== __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPOSITE && dataElement[i].hasConnection) return true
+				}
+			} else {
+				// In case of COMPONENT and its COMPOSITE is CONDITIONAL => checking connection for others COMPONENT in the same COMPOSITE
+				let firstComponentIndex = idxCurDataElement
+				let lastComponentIndex = idxCurDataElement
+	
+				while (firstComponentIndex - 1 >= 0 && dataElement[firstComponentIndex - 1].type === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPONENT) {
+					firstComponentIndex--
+					if (dataElement[firstComponentIndex].hasConnection) return true
+				}
+	
+				while (lastComponentIndex + 1 < dataElement.length && dataElement[lastComponentIndex + 1].type === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPONENT) {
+					lastComponentIndex++
+					if (dataElement[lastComponentIndex].hasConnection) return true
+				}
+			} 
 		}
-
+			
 		return false
+	}
+
+	/**
+	 * Find Composite of Component at Component position
+	 * @param {*} componentIndex 
+	 */
+	findComposite(componentIndex) {
+		for (let i = componentIndex - 1; i >= 0; i--) {
+			if (this.data[i].type === __WEBPACK_IMPORTED_MODULE_3__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPOSITE) return this.data[i]
+		}
 	}
 }
 
@@ -57475,17 +57536,17 @@ class MainMgmt {
 		
 		let options = {
 			selector: $('.algetaContainer'),
-			viewMode: __WEBPACK_IMPORTED_MODULE_2__common_const_index__["o" /* VIEW_MODE */].EDIT,
+			viewMode: __WEBPACK_IMPORTED_MODULE_2__common_const_index__["p" /* VIEW_MODE */].EDIT,
 			mandatoryDataElementConfig: {
 				mandatoryEvaluationFunc: (dataElement) => {
 					if (!dataElement) return false
-					if ((dataElement.usage && dataElement.usage !== 'M') && !dataElement.mandatory) return false
-					if (dataElement.type && dataElement.type === __WEBPACK_IMPORTED_MODULE_2__common_const_index__["e" /* DATA_ELEMENT_TYPE */].COMPOSITE) return false
+					if (dataElement.usage !== undefined && dataElement.usage !== '' && dataElement.usage !== 'M') return false
+					if (dataElement.mandatory !== undefined && !dataElement.mandatory) return false
 	
 					return true
 				},
-				clrWarning: '#ff8100', // Orange
-				clrAvailable: '#5aabff' // Light blue
+				colorWarning: '#ff8100', // Orange
+				colorAvailable: '#5aabff' // Light blue
 			}
 		}
 
@@ -57521,7 +57582,7 @@ class MainMgmt {
    * @param modeGraph
    */
 	setGraphMode(modeGraph) {
-		let viewMode = modeGraph === 'S' ? __WEBPACK_IMPORTED_MODULE_2__common_const_index__["o" /* VIEW_MODE */].SHOW_ONLY : __WEBPACK_IMPORTED_MODULE_2__common_const_index__["o" /* VIEW_MODE */].EDIT
+		let viewMode = modeGraph === 'S' ? __WEBPACK_IMPORTED_MODULE_2__common_const_index__["p" /* VIEW_MODE */].SHOW_ONLY : __WEBPACK_IMPORTED_MODULE_2__common_const_index__["p" /* VIEW_MODE */].EDIT
 		this.cltGraph.setViewMode(viewMode)
 	}
 }
@@ -57648,14 +57709,14 @@ class FileMgmt {
 class CltGraph {
 	constructor(props) {
 		this.selector = props.selector
-		this.viewMode = {value: props.viewMode || __WEBPACK_IMPORTED_MODULE_8__common_const_index__["o" /* VIEW_MODE */].EDIT}
+		this.viewMode = {value: props.viewMode || __WEBPACK_IMPORTED_MODULE_8__common_const_index__["p" /* VIEW_MODE */].EDIT}
 		
 		this.mandatoryDataElementConfig = props.mandatoryDataElementConfig // The configuration for Data element validation
 		if (!this.mandatoryDataElementConfig) {
 			this.mandatoryDataElementConfig = { 
 				mandatoryEvaluationFunc: (dataElement) => { return false },
-				clrWarning: '#ff8100',
-				clrAvailable: '#5aabff'
+				colorWarning: '#ff8100',
+				colorAvailable: '#5aabff'
 			}
 		}
 
@@ -58160,7 +58221,7 @@ class CltGraph {
 		}
 	}
 
-	setViewMode(viewMode = __WEBPACK_IMPORTED_MODULE_8__common_const_index__["o" /* VIEW_MODE */].EDIT) {
+	setViewMode(viewMode = __WEBPACK_IMPORTED_MODULE_8__common_const_index__["p" /* VIEW_MODE */].EDIT) {
 		this.viewMode.value = viewMode
 	}
 
