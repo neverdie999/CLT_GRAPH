@@ -1,9 +1,9 @@
 import * as d3 from 'd3'
 import _ from 'lodash'
 import Boundary from './boundary'
-import PopUtils from '../../../common/utilities/popup.ult'
+import PopUtils from '../../../common/utilities/popup.util'
 import ColorHash from 'color-hash'
-import ObjectUtils from '../../../common/utilities/object.ult'
+import ObjectUtils from '../../../common/utilities/object.util'
 import BoundaryMenu from '../menu-context/boundary-menu'
 import BoundaryMenuItems from '../menu-context/boundary-menu-items'
 
@@ -15,7 +15,7 @@ import {
 	setMinBoundaryGraph,
 	checkModePermission,
 	segmentName
-} from '../../../common/utilities/common.ult'
+} from '../../../common/utilities/common.util'
 
 import {
 	REPEAT_RANGE, BOUNDARY_ATTR_SIZE

@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import _ from 'lodash'
 import Edge from './edge'
-import ObjectUtils from '../../../common/utilities/object.ult'
+import ObjectUtils from '../../../common/utilities/object.util'
 import EdgeMenu from '../menu-context/edge-menu'
 
 import {
@@ -10,7 +10,7 @@ import {
 
 import {
 	createPath,
-} from '../../../common/utilities/common.ult'
+} from '../../../common/utilities/common.util'
 
 const CONNECT_KEY = 'Connected'
 

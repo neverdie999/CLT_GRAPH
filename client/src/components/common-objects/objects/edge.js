@@ -2,7 +2,7 @@ import _ from 'lodash'
 import * as d3 from 'd3'
 
 import { LINE_TYPE } from '../../../common/const/index'
-import { generateObjectId, createPath } from '../../../common/utilities/common.ult'
+import { generateObjectId, createPath } from '../../../common/utilities/common.util'
 
 class Edge {
 	constructor(props) {

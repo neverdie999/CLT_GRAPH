@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import _ from 'lodash'
-import ObjectUtils from '../../common/utilities/object.ult'
+import ObjectUtils from '../../common/utilities/object.util'
 import VertexMgmt from '../common-objects/objects/vertex-mgmt'
 import BoundaryMgmt from '../common-objects/objects/boundary-mgmt'
 import EdgeMgmt from '../common-objects/objects/edge-mgmt'
@@ -10,7 +10,7 @@ import {
 	comShowMessage,
 	setSizeGraph,
 	setMinBoundaryGraph,
-} from '../../common/utilities/common.ult'
+} from '../../common/utilities/common.util'
 
 import { 
 	DEFAULT_CONFIG_GRAPH, VIEW_MODE,

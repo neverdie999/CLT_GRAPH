@@ -1,5 +1,5 @@
 
-import { readDataFileJson } from '../../../common/utilities/common.ult'
+import { readDataFileJson } from '../../../common/utilities/common.util'
 
 
 const ID_FOLDER_OPEN_FILE_MGMT = 'folderOpenFileMgmt'

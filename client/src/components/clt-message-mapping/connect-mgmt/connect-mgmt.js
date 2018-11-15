@@ -1,5 +1,5 @@
 
-import ObjectUtils from '../../../common/utilities/object.ult'
+import ObjectUtils from '../../../common/utilities/object.util'
 import EdgeMgmt from '../../common-objects/objects/edge-mgmt'
 
 class ConnectMgmt {

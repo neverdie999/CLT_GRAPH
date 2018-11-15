@@ -1,7 +1,7 @@
 import MainMenu from '../../common-objects/menu-context/main-menu'
 import VertexMgmt from '../../common-objects/objects/vertex-mgmt'
 import BoundaryMgmt from '../../common-objects/objects/boundary-mgmt'
-import ObjectUtils from '../../../common/utilities/object.ult'
+import ObjectUtils from '../../../common/utilities/object.util'
 
 import {
 	CONNECT_SIDE,
@@ -9,7 +9,7 @@ import {
 	VIEW_MODE,
 } from '../../../common/const/index'
 
-import { setSizeGraph } from '../../../common/utilities/common.ult'
+import { setSizeGraph } from '../../../common/utilities/common.util'
 
 class InputMgmt {
 	constructor(props) {

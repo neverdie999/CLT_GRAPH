@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import ColorHash from 'color-hash';
 import _ from "lodash";
-import ObjectUtils from '../../../common/utilities/object.ult';
+import ObjectUtils from '../../../common/utilities/object.util';
 
 import {
   BOUNDARY_ATTR_SIZE,
@@ -17,7 +17,7 @@ import {
   arrayMove,
   checkModePermission,
 	segmentName,
-} from '../../../common/utilities/common.ult';
+} from '../../../common/utilities/common.util';
 
 const CONNECT_KEY = 'Connected';
 

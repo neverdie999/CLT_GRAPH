@@ -7,7 +7,7 @@ import {
 	COMMON_DATA,
 	BOUNDARY_ATTR_SIZE
 } from '../const/index'
-import { setMinBoundaryGraph, checkModePermission } from './common.ult'
+import { setMinBoundaryGraph, checkModePermission } from './common.util'
 
 class ObjectUtils {
 	/**

@@ -1,7 +1,7 @@
 import MainMenu from '../../common-objects/menu-context/main-menu'
 import VertexMgmt from '../../common-objects/objects/vertex-mgmt'
 import BoundaryMgmt from '../../common-objects/objects/boundary-mgmt'
-import ObjectUtils from '../../../common/utilities/object.ult'
+import ObjectUtils from '../../../common/utilities/object.util'
 
 import {
 	DEFAULT_CONFIG_GRAPH, VIEW_MODE, CONNECT_SIDE
@@ -9,7 +9,7 @@ import {
 
 import {
 	setSizeGraph
-} from '../../../common/utilities/common.ult'
+} from '../../../common/utilities/common.util'
 
 class OperationsMgmt {
 	constructor(props) {

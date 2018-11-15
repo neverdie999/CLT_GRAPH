@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import _ from 'lodash'
-import ObjectUtils from '../../common/utilities/object.ult'
+import ObjectUtils from '../../common/utilities/object.util'
 import SegmentMgmt from '../common-objects/objects/segment-mgmt'
 import EdgeMgmt from '../common-objects/objects/edge-mgmt'
 import MainMenuSegment from '../common-objects/menu-context/main-menu-segment'
@@ -9,7 +9,7 @@ import {
 	comShowMessage,
 	setSizeGraph,
 	setMinBoundaryGraph
-} from '../../common/utilities/common.ult'
+} from '../../common/utilities/common.util'
 
 import { 
 	DEFAULT_CONFIG_GRAPH, VIEW_MODE, VERTEX_ATTR_SIZE, PADDING_POSITION_SVG, DATA_ELEMENT_TYPE,

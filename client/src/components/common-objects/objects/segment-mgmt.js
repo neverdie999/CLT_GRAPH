@@ -2,8 +2,8 @@ import _ from 'lodash'
 import ColorHash from 'color-hash'
 import * as d3 from 'd3'
 import Vertex from './vertex'
-import PopUtils from '../../../common/utilities/popup.ult'
-import ObjectUtils from '../../../common/utilities/object.ult'
+import PopUtils from '../../../common/utilities/popup.util'
+import ObjectUtils from '../../../common/utilities/object.util'
 import SegmentMenu from '../menu-context/segment-menu'
 
 import {
@@ -21,7 +21,7 @@ import {
 	setMinBoundaryGraph,
 	checkIsMatchRegexNumber,
 	comShowMessage,
-} from '../../../common/utilities/common.ult'
+} from '../../../common/utilities/common.util'
 
 
 const HTML_VERTEX_INFO_ID = 'vertexInfo'

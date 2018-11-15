@@ -1,7 +1,7 @@
 import {
 	COMMON_DATA,
 } from '../../../common/const/index'
-import { checkModePermission } from '../../../common/utilities/common.ult'
+import { checkModePermission } from '../../../common/utilities/common.util'
 
 class BoundaryMenu {
 	constructor(props) {

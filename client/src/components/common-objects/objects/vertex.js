@@ -18,7 +18,7 @@ import {
 	getKeyPrefix,
 	htmlEncode,
 	segmentName,
-} from '../../../common/utilities/common.ult'
+} from '../../../common/utilities/common.util'
 
 const CONNECT_KEY = 'Connected'
 

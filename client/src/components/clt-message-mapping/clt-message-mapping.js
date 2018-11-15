@@ -4,12 +4,12 @@ import InputMgmt from './input-mgmt/input-mgmt'
 import OutputMgmt from './output-mgmt/output-mgmt'
 import OperationsMgmt from './operations-mgmt/operations-mgmt'
 import ConnectMgmt from './connect-mgmt/connect-mgmt'
-import ObjectUtils from '../../common/utilities/object.ult'
+import ObjectUtils from '../../common/utilities/object.util'
 
 import {
 	comShowMessage,
 	setMinBoundaryGraph
-} from '../../common/utilities/common.ult'
+} from '../../common/utilities/common.util'
 
 import { 
 	VERTEX_ATTR_SIZE, BOUNDARY_ATTR_SIZE, TYPE_CONNECT

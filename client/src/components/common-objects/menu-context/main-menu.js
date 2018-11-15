@@ -1,4 +1,4 @@
-import {getCoorMouseClickRelativeToParent, checkModePermission} from '../../../common/utilities/common.ult'
+import {getCoorMouseClickRelativeToParent, checkModePermission} from '../../../common/utilities/common.util'
 import _ from 'lodash'
 
 class MainMenu {
