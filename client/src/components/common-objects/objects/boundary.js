@@ -5,7 +5,6 @@ import ObjectUtils from '../../../common/utilities/object.util';
 
 import {
   BOUNDARY_ATTR_SIZE,
-  BOUNDARY_ATTR_SIZE,
   VERTEX_ATTR_SIZE,
   TYPE_CONNECT,
   CONNECT_SIDE,

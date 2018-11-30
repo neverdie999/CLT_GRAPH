@@ -1,4 +1,5 @@
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const DIR_NAME = __dirname;
 const isDebug = !process.env.PRO ? true : false;
@@ -39,5 +40,22 @@ module.exports = {
         use: [ 'style-loader', 'css-loader', 'sass-loader' ]
       }
     ]
-  }
+	},
+	plugins: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+					warnings: false,
+					parse: {},
+					compress: {},
+					mangle: true, // Note `mangle.properties` is `false` by default.
+					output: null,
+					toplevel: false,
+					nameCache: null,
+					ie8: false,
+					keep_fnames: false,
+				},
+        extractComments: true
+      })
+    ],
+	mode: 'development'
 };
