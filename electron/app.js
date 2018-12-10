@@ -52,11 +52,11 @@ function callBackFunc(res) {
       }));
     break;
     case 'SampleMessage':
-      // mainWindow.loadURL(url.format ({
-      //   pathname: path.join(__dirname, '/../client/src/modules/segment-set-editor/index.html'),
-      //   protocol: 'file:',
-      //   slashes: true
-      // }));
+      mainWindow.loadURL(url.format ({
+        pathname: path.join(__dirname, '/../client/src/modules/sample-message-viewer/index.html'),
+        protocol: 'file:',
+        slashes: true
+      }));
     break;
   }
   
@@ -91,7 +91,7 @@ app.on('ready', async () => {
   }));
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   mainWindow.webContents.on('did-finish-load', () => {
     if (!mainWindow) {

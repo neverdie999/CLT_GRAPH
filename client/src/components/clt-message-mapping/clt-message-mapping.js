@@ -810,6 +810,8 @@ class CltMessageMapping {
 			this.findChildBranch(arrRes[i], childBranch, branch, 1)
 		}
 
+		if (arrFinalResult.length === 0) return
+
 		this.removeUnexpectedResult(arrFinalResult)
 
 		// link to real object
@@ -865,8 +867,8 @@ class CltMessageMapping {
 
 		// Remove all objects that have left connection
 		this.storeConnect.edge.forEach(e => {
-			_.remove(arrMappingConstObj, item => {
-				return item.id == e.target.vertexId
+			_.remove(arrMappingConstObj, item => {				
+				return this.isNodeConnectToObject(item, e.target)
 			})
 		})
 
@@ -910,7 +912,7 @@ class CltMessageMapping {
 				for (let k = 0; k < this.storeConnect.edge.length; k++) {
 					// Find edge that connect obj to output object
 					let edge = this.storeConnect.edge[k]
-					if (edge.source.svgId == this.operationsSvgId && edge.target.svgId == this.outputMessageSvgId && edge.source.vertexId == obj.id) {
+					if (edge.source.svgId == this.operationsSvgId && edge.target.svgId == this.outputMessageSvgId && this.isNodeConnectToObject(obj, edge.source)) {
 						for (let m = 0; m < listEdgeConnectToMappingConstObj.length; m++) {
 							// Find const edge that have the same target with above edge
 							let constEdge = listEdgeConnectToMappingConstObj[m]

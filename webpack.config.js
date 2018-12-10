@@ -19,11 +19,17 @@ const segmentSetEditor = [
   DIR_NAME + '/client/src/modules/segment-set-editor/index.js',
 ];
 
+const sampleMessageViewer = [
+  'babel-polyfill',
+  DIR_NAME + '/client/src/modules/sample-message-viewer/index.js',
+];
+
 module.exports = {
   entry: {
     library: library,
     messageMapping: messageMapping,
     segmentSetEditor: segmentSetEditor,
+		sampleMessageViewer: sampleMessageViewer
   },
   output: {
     path: path.resolve(DIR_NAME, 'dist'),

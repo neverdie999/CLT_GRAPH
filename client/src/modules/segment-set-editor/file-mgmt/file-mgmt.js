@@ -22,6 +22,10 @@ class FileMgmt {
 			$(`#${ID_CONTAINER_FILE_MGMT}`).slideToggle()
 		})
 
+		$(`#${ID_OPTION_FILE_TYPE_INPUT}`).change(event => {
+			$(`#${ID_INPUT_FILE_DATA}`).val('')
+		})
+
 		// Handle event on value change on input file
 		$(`#${ID_INPUT_FILE_DATA}`).change((event) => {
 			this.readJsonFile(event)
@@ -73,7 +77,6 @@ class FileMgmt {
 
 		//Hide file managememnt area
 		$(`#${ID_CONTAINER_FILE_MGMT}`).slideToggle()
-		$(`#${ID_INPUT_FILE_DATA}`).val(null)
 	}
 
 	clearInputFile() {

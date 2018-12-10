@@ -32,17 +32,17 @@
       <form class="form-horizontal">
         <div class="form-group">
           <label class="control-label font-weight-700 col-sm-2">File Input</label>
-          <div class="col-sm-4">
-            <div class="input-group group-type-file-input">
-              <select id="optionFileTypeInput" class="form-control">
+          <div class="col-sm-6">
+            <div class="group-type-file-input">
+              <select id="optionFileTypeInput" class="form-control" style="width: 200px">
                 <option value="VERTEX_TYPE" selected>Vertex Definition Operations</option>
                 <option value="GRPH_DATA">Graph Data Structure</option>
               </select>
-              <input type="file" class="form-control" id="inputFileData" name="inputFileData">
+              <input type="file" class="form-control" id="inputFileData" name="inputFileData" style="width: calc(100% - 200px)">
             </div>
           </div>
           <label class="control-label font-weight-700 col-sm-1" style="width: 70px">Mode</label>
-          <div class="col-sm-4">
+          <div class="col-sm-3">
             <label class="radio-inline">
               <input type="radio" name="graphMode" id="radioGraphEditMode" checked value="E">Edit Graph
             </label>
