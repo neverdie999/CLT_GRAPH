@@ -91,7 +91,7 @@ app.on('ready', async () => {
   }));
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.webContents.on('did-finish-load', () => {
     if (!mainWindow) {
