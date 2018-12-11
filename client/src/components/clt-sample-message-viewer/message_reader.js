@@ -1,6 +1,6 @@
 'use strict';
 
-const FileReader = require('../lib/file_reader');
+const FileReader = require('./file_reader');
 /**
  * @class
  * message sample reader.

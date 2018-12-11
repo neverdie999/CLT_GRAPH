@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="../../../assets/lib/jstree/themes/default/style.min.css" />
 <link rel='stylesheet' href='../../../styles/font-awesome/css/font-awesome.min.css'>
 <link rel="stylesheet" href="../../../styles/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="../../../styles/bootstrap/animate.min.css">
+
 <!-- Insert this line above script imports  -->
 <script>if (typeof module === 'object') {
 	window.module = module;
@@ -15,6 +17,9 @@
 <script src='../../../assets/lib/jquery/jquery.min.js'></script>
 <script src="../../../assets/lib/jstree/jstree.min.js"></script>
 <script src='../../../assets/lib/bootrap/bootstrap.js'></script>
+<script src='../../../assets/lib/bootrap/jquery.bootstrap-growl.js'></script>
+<script src='../../../assets/lib/bootrap/bootstrap-notify.js'></script>
+
 <!-- Insert this line after script imports -->
 <script>if (window.module) module = window.module;</script>
 
@@ -32,10 +37,15 @@
   <!-- PAGE CONTENT (S) -->
   <div class="content">
 				<div class="dialog-wrapper">
+					<!-- Error desc (S) -->
+					<div id="desc"></div>
+					<!-- Error desc (E) -->
+
 					<!-- Top button (S) -->
 					<div class="dialog-button-top" id="${HTML_GROUP_BTN_DYNAMIC_DATASET}_${this.svgId}">
 						<div class="row text-right">
 							<button id="editSample" class="btn-etc" style="display: none; line-height: 20px">Edit sample</button>
+							<button id="btnViewFullText" class="btn-etc" style="display: none; line-height: 20px">View full text</button>
 						</div>
 					</div>
 					<!-- Top button (E) -->
@@ -43,7 +53,7 @@
 					<!-- Table (S) -->
 					<form action="#" method="post">
 						<div class="dialog-search form-inline">
-							<table class="vertex-properties" style="border: 1">
+							<table class="vertex-properties">
 								<thead id="detailHead"></thead>
 								<tbody id="detailBody">
 								</tbody>
@@ -51,11 +61,6 @@
 						</div>
 					</form>
 					<!-- Table (E) -->
-
-					<!-- Error desc (S) -->
-					<div id="desc" style="display: none; font-weight: bold">
-					</div>
-					<!-- Error desc (E) -->
 				</div>
 			
 	</div>
@@ -68,7 +73,7 @@
 			<div>
 				<form class="form-horizontal">
 					<div class="form-group">
-						<label class="control-label font-weight-700 col-sm-2">Spec File</label>
+						<label class="control-label font-weight-700 col-sm-3">Spec File</label>
 						<div class="col-sm-6">
 							<div class="input-group" style="width: 100%">
 								<input type="file" class="form-control" id="specFile">
@@ -77,13 +82,10 @@
 					</div>
 
 					<div class="form-group">
-							<label class="control-label font-weight-700 col-sm-2">Sanple File</label>
+							<label class="control-label font-weight-700 col-sm-3">Sample File</label>
 							<div class="col-sm-6">
-								<div class="input-group">
+								<div class="input-group" style="width: 100%">
 									<input type="file" class="form-control" id="sampleFile">
-									<span class="input-group-btn">
-										<button class="btn btn-secondary" type="button" id="btnViewFullText">View full text</button>
-									</span>
 								</div>
 							</div>
 						</div>

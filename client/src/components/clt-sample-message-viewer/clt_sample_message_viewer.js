@@ -149,7 +149,7 @@ class cltSampleMessageViewer {
 			this.messageElement = this.main.getDetail(id);
 			if (this.messageElement.constructor.name === "MessageSegment") {
 				$('#editSample').show()
-				$('#desc').show()
+				$('#btnViewFullText').show()
 
 				$('#detailBody').html('');
 				$('#detailHead').html('');
@@ -169,7 +169,27 @@ class cltSampleMessageViewer {
 	
 	editSampleClickEvent() {
 		this.setMessageElement();
-		this.printError(this.main.reMatch(this.main.messageStructure));
+		let result = this.main.reMatch(this.main.messageStructure)
+		this.printError(result);
+
+		if (result) {
+			if (result.resultType === Symbol.for('SUCCESS')) {
+				$.notify({
+					message: 'Applied!'
+				},{
+					type: "success"
+				});
+			} else {
+				let regex = /(Symbol\()(.*)(\))/
+				let errorType = regex.exec(result.resultType.toString())
+
+				$.notify({
+					message: `[Failed] ${errorType[2]}!`
+				},{
+					type: "danger",
+				});
+			}
+		}
 	}
 
 	printMessageElement() {
@@ -231,10 +251,8 @@ class cltSampleMessageViewer {
 	}
 
 	printError(result) {
-		if (result) {
-			const text = `ERROR MESSAGE: ${result._desc}`;  
-			$('#desc').html(text);
-		}             
+		const text = `ERROR MESSAGE: ${result._desc}`; 
+		$('#desc').html(text);
 	}
 
 	
