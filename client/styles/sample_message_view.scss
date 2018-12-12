@@ -62,3 +62,10 @@ mark {
 	position: fixed;
 	overflow-y: auto;
 }
+
+.file-name {
+	position: absolute !important;
+	left: 109px !important;
+	width: calc(100% - 109px) !important;
+	background-color: white !important;
+}
