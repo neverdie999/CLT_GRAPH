@@ -131,7 +131,7 @@ class cltSampleMessageViewer {
 		if (this.sampleFile === '') return
 
 		const fullText = this.main.getAssembledMessage('\n');
-		$('#popupContent').text(fullText[1])
+		$('#popupContent').get(0).innerHTML = fullText.join('')
 
 		let options = {
 			popupId: `popupFullText`,
@@ -211,6 +211,18 @@ class cltSampleMessageViewer {
 							.append(`<td>${eachDataElement.description}</td>`)
 							.append(`<td ><input type="text" class="form-control" id="editValue${eachDataElement.name + seqTextBox}" value="${eachMessageDataElement.value.trim()}"></td>`)
 							.append('</tr>');
+
+						let main = this;
+						$(`#editValue${eachDataElement.name + seqTextBox}`).change(function(event) {
+							if (!main.validateByFormat($(this).val(), eachDataElement.format)) {
+								$(this).css('background-color', '#fb2d2d')
+								$(this).css('color', 'white')
+							} else {
+								$(this).css('background-color', '')
+								$(this).css('color', '')
+							}
+						})
+						
 						elementDataExist = true;
 					}
 					seqTextBox += 1;
@@ -255,7 +267,35 @@ class cltSampleMessageViewer {
 		$('#desc').html(text);
 	}
 
-	
+	validateByFormat(string='', format='AN999') { 
+    if (!format) { 
+      return true; 
+    } 
+ 
+    const normalizedFormat = format.trim().toUpperCase(); 
+    const regex = /([AN]{1,2})(\d+)/; 
+    const matched = normalizedFormat.match(regex); 
+    if (matched === null) { 
+      return true; 
+    } 
+ 
+    const [, dataFormat, length] = matched; 
+    if (string.length > parseInt(length, 10)) { 
+      return false; 
+    } 
+ 
+    if (dataFormat === 'A') { 
+      const regexAnyNumber = /\d+/; 
+      return !regexAnyNumber.test(string); 
+    } 
+ 
+    if (dataFormat === 'N') { 
+      const regexNumeric = /^(\+|-)?\d+[.,]?\d*$/; 
+      return regexNumeric.test(string); 
+    } 
+ 
+    return true; 
+  }
 }
 
 export default cltSampleMessageViewer
