@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<title>View Sample Message</title>
+<meta charset="UTF-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../../../assets/lib/jstree/themes/default/style.min.css" />
+<link rel='stylesheet' href='../../../styles/font-awesome/css/font-awesome.min.css'>
+<link rel="stylesheet" href="../../../styles/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="../../../styles/bootstrap/animate.min.css">
+
+<!-- Insert this line above script imports  -->
+<script>if (typeof module === 'object') {
+	window.module = module;
+	module = undefined;
+}</script>
+<script src='../../../assets/lib/jquery/jquery.min.js'></script>
+<script src="../../../assets/lib/jstree/jstree.min.js"></script>
+<script src='../../../assets/lib/bootrap/bootstrap.js'></script>
+<script src='../../../assets/lib/bootrap/jquery.bootstrap-growl.js'></script>
+<script src='../../../assets/lib/bootrap/bootstrap-notify.js'></script>
+
+<!-- Insert this line after script imports -->
+<script>if (window.module) module = window.module;</script>
+
+<body>
+	<!-- Tree view (S) -->
+  <nav class="w3-sidebar w3-blue w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;"
+    id="mySidebar"><br>
+    <div id="jstree">
+      <!-- <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> -->
+    </div>
+    <div id="node"></div>
+	</nav>
+	<!-- Tree view (E) -->
+	
+  <!-- PAGE CONTENT (S) -->
+  <div class="content">
+				<div class="dialog-wrapper">
+					<!-- Error desc (S) -->
+					<div id="desc"></div>
+					<!-- Error desc (E) -->
+
+					<!-- Top button (S) -->
+					<div class="dialog-button-top" id="${HTML_GROUP_BTN_DYNAMIC_DATASET}_${this.svgId}">
+						<div class="row text-right">
+							<button id="editSample" class="btn-etc" style="display: none; line-height: 20px">Edit sample</button>
+							<button id="btnViewFullText" class="btn-etc" style="display: none; line-height: 20px">View full text</button>
+						</div>
+					</div>
+					<!-- Top button (E) -->
+
+					<!-- Table (S) -->
+					<form action="#" method="post">
+						<div class="dialog-search form-inline">
+							<table class="vertex-properties">
+								<thead id="detailHead"></thead>
+								<tbody id="detailBody">
+								</tbody>
+							</table>
+						</div>
+					</form>
+					<!-- Table (E) -->
+				</div>
+			
+	</div>
+	<!-- PAGE CONTENT (E) -->
+	
+	<!-- File Management (S) -->
+	<div class="container-file">
+		<div id="folderOpenFileMgmt" class="icon-folder-file-mgmt fa fa-folder-open-o"></div>
+		<div class="container file-mgmt" id="containerFileMgmt">
+			<div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="control-label font-weight-700 col-sm-3">Spec File</label>
+						<div class="col-sm-6">
+							<div class="input-group" style="width: 100%">
+								<input type="file" class="form-control" id="specFile" style="width: 110px">
+								<input type="text" class="file-name form-control" id="specFileName" readonly>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+							<label class="control-label font-weight-700 col-sm-3">Sample File</label>
+							<div class="col-sm-6">
+								<div class="input-group" style="width: 100%">
+									<input type="file" class="form-control" id="sampleFile" style="width: 110px">
+									<input type="text" class="file-name form-control" id="sampleFileName" readonly>
+								</div>
+							</div>
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- File Management (E) -->
+</body>
+<script src="../../../../dist/sampleMessageViewer.js"></script>
+
+</html>

@@ -1,0 +1,71 @@
+.w3-sidebar{
+	height:100%;
+	width:200px;
+	background-color:#fff;
+	position:fixed!important;
+	z-index:1;
+	overflow:auto
+}
+.w3-blue,.w3-hover-blue:hover{
+	color:#fff!important;
+	background-color:#336699!important
+}
+body,h1,h2,h3,h4,h5 {
+	font-family: "Poppins", sans-serif
+}
+body {
+	font-size:16px;
+}
+.w3-half img{
+	margin-bottom:-6px;
+	margin-top:16px;
+	opacity:0.8;
+	cursor:pointer
+}
+.w3-half img:hover{
+	opacity:1
+}
+
+#detailHead, #detailBody {
+	font-family: "Poppins", sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+	margin-top:10px
+}
+#detailHead, td, #detailBody tr {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+#detailHead tr:hover {
+	background-color: #ddd;
+}
+#detailHead{
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #3D8BCD;
+	color: white;
+}
+mark {
+	background-color: red;
+	 color: black;
+}
+.content {
+	min-height: 250px;
+	padding: 15px;
+	margin-right: auto;
+	margin-left: 300px;
+	padding-left: 15px;
+	padding-right: 15px;
+	width: calc(100% - 300px);
+	height: 100%;
+	position: fixed;
+	overflow-y: auto;
+}
+
+.file-name {
+	position: absolute !important;
+	left: 109px !important;
+	width: calc(100% - 109px) !important;
+	background-color: white !important;
+}

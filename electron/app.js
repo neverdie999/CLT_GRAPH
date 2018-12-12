@@ -1,5 +1,7 @@
 //handle setupevents as quickly as possible
 const setupEvents = require('../installers/setupEvents')
+const MenuBuilder = require('./menu')
+//import MenuBuilder from "./menu";
 if (setupEvents.handleSquirrelEvent()) {
   // squirrel event handled and app will exit in 1000ms, so don't do anything else
   return;
@@ -26,6 +28,40 @@ let mainWindow = null;
 //     .catch(console.log);
 // };
 
+function callBackFunc(res) {
+  switch(res) {
+    case 'MessageSegment':
+      mainWindow.loadURL(url.format ({
+        pathname: path.join(__dirname, '/../client/src/modules/segment-set-editor/index.html'),
+        protocol: 'file:',
+        slashes: true
+      }));
+    break;
+    case 'MessageSpec':
+      mainWindow.loadURL(url.format ({
+        pathname: path.join(__dirname, '/../client/src/modules/graph-library/index.html'),
+        protocol: 'file:',
+        slashes: true
+      }));
+    break;
+    case 'MessageMapping':
+      mainWindow.loadURL(url.format ({
+        pathname: path.join(__dirname, '/../client/src/modules/message-mapping-gui/index.html'),
+        protocol: 'file:',
+        slashes: true
+      }));
+    break;
+    case 'SampleMessage':
+      mainWindow.loadURL(url.format ({
+        pathname: path.join(__dirname, '/../client/src/modules/sample-message-viewer/index.html'),
+        protocol: 'file:',
+        slashes: true
+      }));
+    break;
+  }
+  
+}
+
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -49,7 +85,7 @@ app.on('ready', async () => {
 
 
   mainWindow.loadURL(url.format ({
-    pathname: path.join(__dirname, '/../client/index.html'),
+    pathname: path.join(__dirname, '/../client/src/modules/message-mapping-gui/index.html'),
     protocol: 'file:',
     slashes: true
   }));
@@ -70,6 +106,11 @@ app.on('ready', async () => {
     // app.quit()
   });
 
-  // const menuBuilder = new MenuBuilder(mainWindow);
-  // menuBuilder.buildMenu();
+  const menuBuilder = new MenuBuilder({
+    mainWindow: mainWindow,
+    parent: this
+  }
+    
+  );
+  menuBuilder.buildMenu(callBackFunc);
 });

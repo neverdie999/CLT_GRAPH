@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>ALGETA GUI Mapping Tool</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel='stylesheet' href='../../../styles/font-awesome/css/font-awesome.min.css'>
+  <link rel='stylesheet' href='../../../styles/context-menu/jquery.contextMenu.css'>
+  <link rel="stylesheet" href="../../../styles/bootstrap/bootstrap.min.css">
+
+  <!-- Insert this line above script imports  -->
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+  <script src='../../../assets/lib/jquery/jquery.min.js'></script>
+  <script src='../../../assets/lib/jqueryui/jquery-ui.min.js'></script>
+  <script src='../../../assets/lib/bootrap/bootstrap.js'></script>
+  <script src="../../../assets/js/context-menu/jquery.contextMenu.js"></script>
+  <!-- Insert this line after script imports -->
+  <script>if (window.module) module = window.module;</script>
+</head>
+<body>
+	<div id="algetaContainer" class="algetaContainer"></div>
+
+	<!-- File Management (S) -->
+	<div class="container-file">
+		<div id="folderOpenFileMgmt" class="icon-folder-file-mgmt fa fa-folder-open-o"></div>
+		<div class="container file-mgmt" id="containerFileMgmt">
+			<div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="control-label font-weight-700 col-sm-2">File Input</label>
+						<div class="col-sm-6">
+							<div class="group-type-file-input">
+								<select id="optionFileTypeInput" class="form-control" style="width: 200px">
+									<option value="VERTEX_TYPE" selected>Vertex Group Definition</option>
+									<option value="GRPH_DATA">Segment Data Structure</option>
+								</select>
+								<input type="file" class="form-control" id="inputFileData" name="inputFileData" style="width: calc(100% - 200px)">
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label font-weight-700 col-sm-2">Save File</label>
+						<div class="col-sm-6">
+							<div class="input-group">
+								<input class="form-control" name="outFile" id="outputFileName" placeholder="Enter file name">
+								<span class="input-group-btn">
+									<button class="btn btn-secondary" type="button" style="margin-left: 1px" id="btnDownloadFile">Download</button>
+									<button class="btn btn-secondary" type="button" style="margin-left: 1px" id="btnExportImage">Export Image</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- File Management (E) -->
+
+	<!-- <canvas width="960" height="500" style="display:none"></canvas> -->
+	<div id="svgdataurl"></div>
+
+	<div id="loader" style="display:none"></div>
+
+</body>
+<script type="text/javascript" src="../../../../dist/segmentSetEditor.js"></script>
+</html>
